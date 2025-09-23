@@ -16,6 +16,7 @@
   ` "timestamp"    .Date `` `
   ` "created"      .Date `` `
   ` "lastmod"      .Lastmod `` `
+  ` "recurrenceRule" .Params.recurrenceRule `` `
   ` -}}
   {{ partial "ical/comp_event.ics" . }}
 {{ end }}

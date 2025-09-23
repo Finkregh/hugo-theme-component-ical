@@ -1,0 +1,72 @@
+{{- /* Recurrence Rule
+
+    RFC: https://tools.ietf.org/html/rfc5545#section-3.8.5.3
+
+    Formal Specification:
+
+       rrule      = "RRULE" rrulparam ":" recur CRLF
+
+       rrulparam  = *(";" other-param)
+
+       recur      = recur-rule-part *( ";" recur-rule-part )
+
+       recur-rule-part = ( "FREQ"
+                        / "UNTIL"
+                        / "COUNT"
+                        / "INTERVAL"
+                        / "BYSECOND"
+                        / "BYMINUTE"
+                        / "BYHOUR"
+                        / "BYDAY"
+                        / "BYMONTHDAY"
+                        / "BYYEARDAY"
+                        / "BYWEEKNO"
+                        / "BYMONTH"
+                        / "BYSETPOS"
+                        / "WKST" )
+                        "=" recur-rule-value
+
+    This implementation focuses on FREQ, INTERVAL, BYMONTH, BYDAY, and BYSETPOS.
+
+    Hugo Context Parameters:
+
+      - .freq      : A string value ("YEARLY" or "MONTHLY")
+      - .interval  : An integer value (default 1 if not specified)
+      - .byMonth   : An integer or array of integers (1-12 for months)
+      - .byDay     : A string or array of strings ("SU", "MO", "TU", "WE", "TH", "FR", "SA")
+      - .bySetPos  : An integer or array of integers (positive for nth occurrence, negative for last occurrences)
+*/ -}}
+
+{{- $parts := slice -}}
+
+{{- /* FREQ is required */ -}}
+{{- with .freq -}}
+  {{- $parts = $parts | append (printf "FREQ=%s" (partial "ical/dt_freq.ics" .)) -}}
+{{- else -}}
+  {{- errorf "RRULE requires a freq value" -}}
+{{- end -}}
+
+{{- /* INTERVAL is optional, default is 1 */ -}}
+{{- with .interval -}}
+  {{- $interval := . | int -}}
+  {{- if gt $interval 1 -}}
+    {{- $parts = $parts | append (printf "INTERVAL=%d" $interval) -}}
+  {{- end -}}
+{{- end -}}
+
+{{- /* BYMONTH */ -}}
+{{- with .byMonth -}}
+  {{- $parts = $parts | append (printf "BYMONTH=%s" (partial "ical/dt_month.ics" .)) -}}
+{{- end -}}
+
+{{- /* BYDAY */ -}}
+{{- with .byDay -}}
+  {{- $parts = $parts | append (printf "BYDAY=%s" (partial "ical/dt_weekday.ics" .)) -}}
+{{- end -}}
+
+{{- /* BYSETPOS */ -}}
+{{- with .bySetPos -}}
+  {{- $parts = $parts | append (printf "BYSETPOS=%s" (partial "ical/dt_setpos.ics" .)) -}}
+{{- end -}}
+
+RRULE:{{- delimit $parts ";" -}}

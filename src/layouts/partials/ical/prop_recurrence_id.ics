@@ -1,0 +1,36 @@
+{{- /* Recurrence ID
+
+    RFC: https://tools.ietf.org/html/rfc5545#section-3.8.4.4
+
+    Formal Specification:
+
+       recurid    = "RECURRENCE-ID" ridparam ":" ridval CRLF
+
+       ridparam   = *(
+                  ;
+                  ; The following are OPTIONAL,
+                  ; but MUST NOT occur more than once.
+                  ;
+                  (";" "VALUE" "=" ("DATE-TIME" / "DATE")) /
+                  (";" tzidparam) / (";" rangeparam) /
+                  ;
+                  ; The following is OPTIONAL,
+                  ; and MAY occur more than once.
+                  ;
+                  (";" other-param)
+                  ;
+                  )
+
+       ridval     = date-time / date
+       ;Value MUST match value type
+
+    Hugo Context Parameters:
+
+      - .dateTime   : A value suitable for the 'dateFormat' function.
+      - .justDate   : Include just the date without the time part.
+      - .timeZoneID : Time zone identifier if time is not in UTC.
+      - .isUTC      : A flag specifying if time is in UTC.
+      - .range      : Range parameter value ("THISANDFUTURE" or empty).
+*/ -}}
+
+RECURRENCE-ID{{- if .range }};{{ partial "ical/param_range.ics" . }}{{ end -}};{{- partial "ical/helper_date_time.ics" . -}}

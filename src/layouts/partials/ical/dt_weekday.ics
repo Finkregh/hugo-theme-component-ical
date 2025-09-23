@@ -1,0 +1,37 @@
+{{- /* Weekday
+
+    RFC: https://tools.ietf.org/html/rfc5545#section-3.3.10
+
+    Formal Specification:
+
+       weekday    = "SU" / "MO" / "TU" / "WE" / "TH" / "FR" / "SA"
+       ;Corresponding to SUNDAY, MONDAY, TUESDAY, WEDNESDAY, THURSDAY,
+       ;FRIDAY, and SATURDAY days of the week.
+
+    Hugo Context Parameters:
+
+      - . : A string value or array of string values representing weekdays
+*/ -}}
+
+{{- $validWeekdays := slice "SU" "MO" "TU" "WE" "TH" "FR" "SA" -}}
+{{- $result := slice -}}
+
+{{- if reflect.IsSlice . -}}
+  {{- range . -}}
+    {{- $weekday := . | upper -}}
+    {{- if in $validWeekdays $weekday -}}
+      {{- $result = $result | append $weekday -}}
+    {{- else -}}
+      {{- errorf "Invalid weekday value: %s. Must be one of SU, MO, TU, WE, TH, FR, SA" . -}}
+    {{- end -}}
+  {{- end -}}
+{{- else -}}
+  {{- $weekday := . | upper -}}
+  {{- if in $validWeekdays $weekday -}}
+    {{- $result = $result | append $weekday -}}
+  {{- else -}}
+    {{- errorf "Invalid weekday value: %s. Must be one of SU, MO, TU, WE, TH, FR, SA" . -}}
+  {{- end -}}
+{{- end -}}
+
+{{- delimit $result "," -}}

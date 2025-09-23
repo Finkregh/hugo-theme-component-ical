@@ -1,0 +1,24 @@
+{{ define "main" }}
+
+<h1>{{ .Title }}</h1>
+
+{{ .Content }}
+
+<h2>Event meta data</h2>
+<ul>
+  <li>Start: {{ .Params.startDate }}</li>
+  <li>End: {{ .Params.endDate }}</li>
+  <li>Location: {{ .Params.where }}</li>
+  <li>Orga: {{ .Params.orga }}</li>
+  <li>EMail: {{ .Params.orgaEmail }}</li>
+  <li>Cancelled: {{ .Params.cancelled }}</li>
+</ul>
+
+<p>
+  {{ with .OutputFormats.Get "Calendar" }}
+  Get the calendar file for this event:
+  <a href="{{ .RelPermalink }}" type="text/calendar">{{ $.Title }}.ics</a>
+  {{ end }}
+</p>
+
+{{ end }}
