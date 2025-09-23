@@ -54,6 +54,7 @@ jobs:
         
     - name: Validate iCalendar files
       run: |
+        source .venv/bin/activate
         python scripts/validate_ics.py
         
     - name: Upload build artifacts
