@@ -1,0 +1,23 @@
+{{ define "main" }}
+
+<h1>{{ .Title }}</h1>
+{{ .Content }}
+
+{{ with .Pages }}
+<ul>
+  {{ range . }}
+  <li>
+    <a href="{{ .Permalink }}">{{ .Title }}</a>
+  </li>
+  {{ end }}
+</ul>
+{{ end }}
+
+<p>
+  {{ with .OutputFormats.Get "Calendar" }}
+  Get the calendar file with all events
+  <a href="{{ .RelPermalink }}" type="text/calendar">here</a>.
+  {{ end }}
+</p>
+
+{{ end }}

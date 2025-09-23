@@ -1,0 +1,17 @@
+baseURL = "https://raoulb.github.io/hugo-ical-templates-demo/"
+languageCode = "en-us"
+
+title = "Hugo Calendar Templates Demo Site"
+
+
+# Define calendar output via cascading front matter for event pages only
+#[outputs]
+#  page = ["HTML", "Calendar"]
+#  section = ["HTML", "Calendar"]
+
+
+[outputFormats.Calendar]
+  baseName = "calendar"
+  permalinkable = true
+  # Avoid webcal scheme
+  protocol = "https://"

@@ -1,0 +1,41 @@
+{{- /* Set Position
+
+    RFC: https://tools.ietf.org/html/rfc5545#section-3.3.10
+
+    Formal Specification:
+
+       setposday  = yeardaynum
+
+       yeardaynum = (["+"] / "-") ordyrday
+
+       ordyrday   = 1*3DIGIT      ;1 to 366
+
+    For BYSETPOS, values can be positive (1st, 2nd, 3rd, etc.) or negative (-1 for last, -2 for second-to-last, etc.)
+    Zero is not allowed.
+
+    Hugo Context Parameters:
+
+      - . : An integer value or array of integer values representing set positions
+*/ -}}
+
+{{- $result := slice -}}
+
+{{- if reflect.IsSlice . -}}
+  {{- range . -}}
+    {{- $pos := . | int -}}
+    {{- if ne $pos 0 -}}
+      {{- $result = $result | append $pos -}}
+    {{- else -}}
+      {{- errorf "Invalid BYSETPOS value: %s. Cannot be zero" . -}}
+    {{- end -}}
+  {{- end -}}
+{{- else -}}
+  {{- $pos := . | int -}}
+  {{- if ne $pos 0 -}}
+    {{- $result = $result | append $pos -}}
+  {{- else -}}
+    {{- errorf "Invalid BYSETPOS value: %s. Cannot be zero" . -}}
+  {{- end -}}
+{{- end -}}
+
+{{- delimit $result "," -}}

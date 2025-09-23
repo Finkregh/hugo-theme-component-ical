@@ -166,13 +166,67 @@ does not come with a suitable
 Major TODO
 ----------
 
-- Recurrence rules
 - Timezone component
 
 In principle all missing parts (properties, parameters, components) could
 be handled by the same way. They were just not in focus for the primary
 application envisioned: distributing machine-readable information about
 upcoming events directly from within Hugo.
+
+
+RRULE Examples
+--------------
+
+The RRULE implementation supports YEARLY and MONTHLY frequencies with BYMONTH, BYDAY, and BYSETPOS components. Here are some examples of how to use recurrence rules in your Hugo context:
+
+### Third Sunday of April (yearly)
+```yaml
+recurrenceRule:
+  freq: "YEARLY"
+  byMonth: 4
+  byDay: "SU"
+  bySetPos: 3
+```
+Generates: `RRULE:FREQ=YEARLY;BYMONTH=4;BYDAY=SU;BYSETPOS=3`
+
+### First and second Monday of October (yearly)
+```yaml
+recurrenceRule:
+  freq: "YEARLY"
+  byMonth: 10
+  byDay: "MO"
+  bySetPos: [1, 2]
+```
+Generates: `RRULE:FREQ=YEARLY;BYMONTH=10;BYDAY=MO;BYSETPOS=1,2`
+
+### Every 29th of every other month
+```yaml
+recurrenceRule:
+  freq: "MONTHLY"
+  interval: 2
+  byMonthDay: 29
+```
+Note: This example requires BYMONTHDAY support which is not yet implemented.
+
+### Every last Sunday of every 3 months
+```yaml
+recurrenceRule:
+  freq: "MONTHLY"
+  interval: 3
+  byDay: "SU"
+  bySetPos: -1
+```
+Generates: `RRULE:FREQ=MONTHLY;INTERVAL=3;BYDAY=SU;BYSETPOS=-1`
+
+### Every fourth Sunday of every 3 months
+```yaml
+recurrenceRule:
+  freq: "MONTHLY"
+  interval: 3
+  byDay: "SU"
+  bySetPos: 4
+```
+Generates: `RRULE:FREQ=MONTHLY;INTERVAL=3;BYDAY=SU;BYSETPOS=4`
 
 
 Specification
@@ -209,7 +263,7 @@ From [rfc 5545](https://tools.ietf.org/html/rfc5545)
 - [x]   3.2.10.  Language
 - [ ]   3.2.11.  Group or List Membership
 - [ ]   3.2.12.  Participation Status
-- [ ]   3.2.13.  Recurrence Identifier Range
+- [x]   3.2.13.  Recurrence Identifier Range
 - [ ]   3.2.14.  Alarm Trigger Relationship
 - [ ]   3.2.15.  Relationship Type
 - [ ]   3.2.16.  Participation Role
@@ -229,7 +283,7 @@ From [rfc 5545](https://tools.ietf.org/html/rfc5545)
 - [x]   3.3.7.  Float
 - [x]   3.3.8.  Integer
 - [ ]   3.3.9.  Period of Time
-- [ ]   3.3.10.  Recurrence Rule
+- [x]   3.3.10.  Recurrence Rule
 - [x]   3.3.11.  Text
 - [x]   3.3.12.  Time
 - [x]   3.3.13.  URI
@@ -291,7 +345,7 @@ From [rfc 5545](https://tools.ietf.org/html/rfc5545)
 - [ ]   3.8.4.1.  Attendee
 - [x]   3.8.4.2.  Contact
 - [x]   3.8.4.3.  Organizer
-- [ ]   3.8.4.4.  Recurrence ID
+- [x]   3.8.4.4.  Recurrence ID
 - [ ]   3.8.4.5.  Related To
 - [x]   3.8.4.6.  Uniform Resource Locator
 - [x]   3.8.4.7.  Unique Identifier
@@ -300,7 +354,7 @@ From [rfc 5545](https://tools.ietf.org/html/rfc5545)
 
 - [ ]   3.8.5.1.  Exception Date-Times
 - [ ]   3.8.5.2.  Recurrence Date-Times
-- [ ]   3.8.5.3.  Recurrence Rule
+- [x]   3.8.5.3.  Recurrence Rule
 
 3.8.6.  Alarm Component Properties
 

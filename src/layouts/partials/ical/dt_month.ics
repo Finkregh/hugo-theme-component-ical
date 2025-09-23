@@ -1,0 +1,34 @@
+{{- /* Month
+
+    RFC: https://tools.ietf.org/html/rfc5545#section-3.3.10
+
+    Formal Specification:
+
+       monthnum   = 1*2DIGIT       ;1 to 12
+
+    Hugo Context Parameters:
+
+      - . : An integer value or array of integer values representing months (1-12)
+*/ -}}
+
+{{- $result := slice -}}
+
+{{- if reflect.IsSlice . -}}
+  {{- range . -}}
+    {{- $month := . | int -}}
+    {{- if and (ge $month 1) (le $month 12) -}}
+      {{- $result = $result | append $month -}}
+    {{- else -}}
+      {{- errorf "Invalid month value: %s. Must be between 1 and 12" . -}}
+    {{- end -}}
+  {{- end -}}
+{{- else -}}
+  {{- $month := . | int -}}
+  {{- if and (ge $month 1) (le $month 12) -}}
+    {{- $result = $result | append $month -}}
+  {{- else -}}
+    {{- errorf "Invalid month value: %s. Must be between 1 and 12" . -}}
+  {{- end -}}
+{{- end -}}
+
+{{- delimit $result "," -}}

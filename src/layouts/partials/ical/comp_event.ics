@@ -117,6 +117,12 @@
           .email           : A text string containing an email address.
           .directory       : An uri pointing to a directory entry.
           .lang            : A string representing a valid language tag.
+      - .recurrenceRule  : Recurrence rule for repeating events.
+          .freq            : A string value ("YEARLY" or "MONTHLY").
+          .interval        : An integer value (default 1 if not specified).
+          .byMonth         : An integer or array of integers (1-12 for months).
+          .byDay           : A string or array of strings ("SU", "MO", "TU", "WE", "TH", "FR", "SA").
+          .bySetPos        : An integer or array of integers (positive for nth occurrence, negative for last occurrences).
 */ -}}
 
 BEGIN:VEVENT
@@ -138,6 +144,7 @@ BEGIN:VEVENT
 {{ partial "ical/prop_time_transparency.ics" }}
 {{ with .url }}{{ partial "ical/prop_url.ics" . }}{{ end }}
 {{/* recurid */ -}}
+{{ with .recurrenceRule }}{{ partial "ical/prop_recurrence_rule.ics" . }}{{ end }}
 {{ with .eventEnd }}{{ partial "ical/prop_date_time_end.ics" (merge . (dict "justDate" $.allDay)) }}{{ end }}
 {{/* duration */ -}}
 {{/* attach */ -}}
