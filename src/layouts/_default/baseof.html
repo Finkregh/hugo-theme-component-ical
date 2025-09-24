@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="{{ .Site.Language.Lang }}">
+  <head>
+    <title>{{ .Site.Title }} | {{ .Page.Title }}</title>
+    {{ with .OutputFormats.Get "Calendar" }}
+    <meta http-equiv="Content-Security-Policy" content="font-src data:" />
+    <!-- <script type="importmap">
+      {
+        "imports": {
+          "@fullcalendar/core": "https://cdn.skypack.dev/@fullcalendar/core@6.1.19",
+          "@fullcalendar/daygrid": "https://cdn.skypack.dev/@fullcalendar/daygrid@6.1.19",
+          "@fullcalendar/icalendar": "https://cdn.jsdelivr.net/npm/@fullcalendar/icalendar@6.1.19/+esm"
+        }
+      }
+    </script> -->
+    <script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.19/index.global.min.js"></script>
+    <script src="https://unpkg.com/ical.js/dist/ical.es5.min.cjs"></script>
+    <script src=" https://cdn.jsdelivr.net/npm/@fullcalendar/icalendar@6.1.19/index.global.min.js "></script>
+    <script src="https://cdn.jsdelivr.net/npm/@fullcalendar/core@6.1.19/locales-all.global.min.js"></script>
+    <!--
+    <script>
+      //import { Calendar } from "@fullcalendar/core";
+      //import deLocale from '@fullcalendar/core/locales/all.js';
+      //import enLocale from '@fullcalendar/core/locales/en';
+      //import dayGridPlugin from "@fullcalendar/daygrid";
+      //import iCalendarPlugin from "@fullcalendar/icalendar";
+      document.addEventListener('DOMContentLoaded', function() {
+        var initialLocaleCode = 'de';
+        var localeSelectorEl = document.getElementById('locale-selector');
+        const calendarEl = document.getElementById("calendar");
+        const calendar = new Calendar(calendarEl, {
+          plugins: [iCalendarPlugin, dayGridPlugin],
+          headerToolbar: {
+            left: "prev,next today",
+            center: "title",
+            right: "dayGridMonth,timeGridWeek,timeGridDay,listWeek",
+          },
+          locale: initialLocaleCode,
+          weekNumbers: true,
+          initialView: "dayGridMonth",
+          events: {
+            url: "{{ .RelPermalink }}",
+            //url: "https://www.kayaposoft.com/enrico/ics/v2.0?country=deu&fromDate=01-01-2025&toDate=31-12-2025&region=bw&holidayType=public_holiday&lang=de",
+            format: "ics", // important!
+          },
+        });
+        calendar.render();
+        // build the locale selector's options
+        calendar.getAvailableLocaleCodes().forEach(function(localeCode) {
+        var optionEl = document.createElement('option');
+        optionEl.value = localeCode;
+        optionEl.selected = localeCode == initialLocaleCode;
+        optionEl.innerText = localeCode;
+        localeSelectorEl.appendChild(optionEl);
+        });
+
+        // when the selected option changes, dynamically change the calendar option
+        localeSelectorEl.addEventListener('change', function() {
+        if (this.value) {
+            calendar.setOption('locale', this.value);
+        }
+        });
+      });
+    </script>-->
+    <script>
+      //import { Calendar } from '@fullcalendar/core'
+      //import iCalendarPlugin from '@fullcalendar/icalendar'
+      document.addEventListener("DOMContentLoaded", function () {
+        var initialLocaleCode = "de";
+        var localeSelectorEl = document.getElementById("locale-selector");
+        var calendarEl = document.getElementById("calendar");
+
+        var calendar = new FullCalendar.Calendar(calendarEl, {
+          headerToolbar: {
+            left: "prev,next today",
+            center: "title",
+            right: "dayGridMonth,timeGridWeek,timeGridDay,listMonth",
+          },
+          locale: initialLocaleCode,
+          buttonIcons: false, // show the prev/next text
+          weekNumbers: true,
+          navLinks: true, // can click day/week names to navigate views
+          editable: true,
+          dayMaxEvents: true, // allow "more" link when too many events
+          //events: '/api/demo-feeds/events.json?overload-day'
+          //plugins: [iCalendarPlugin, FullCalendar.dayGridPlugin],
+          events: {
+            url: "{{ .RelPermalink }}",
+            //url: "https://www.kayaposoft.com/enrico/ics/v2.0?country=deu&fromDate=01-01-2025&toDate=31-12-2025&region=bw&holidayType=public_holiday&lang=de",
+            format: "ics", // important!
+          },
+        });
+
+        calendar.render();
+
+        // build the locale selector's options
+        calendar.getAvailableLocaleCodes().forEach(function (localeCode) {
+          var optionEl = document.createElement("option");
+          optionEl.value = localeCode;
+          optionEl.selected = localeCode == initialLocaleCode;
+          optionEl.innerText = localeCode;
+          localeSelectorEl.appendChild(optionEl);
+        });
+
+        // when the selected option changes, dynamically change the calendar option
+        localeSelectorEl.addEventListener("change", function () {
+          if (this.value) {
+            calendar.setOption("locale", this.value);
+          }
+        });
+      });
+    </script>
+    {{ end }}
+    <meta charset="utf-8" />
+    {{ hugo.Generator }}
+  </head>
+
+  <body>
+    {{ block "main" . }} {{ end }}
+  </body>
+</html>

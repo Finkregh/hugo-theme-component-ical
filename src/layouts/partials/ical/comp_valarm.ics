@@ -1,0 +1,146 @@
+{{- /* VALARM Component
+
+    RFC : https://tools.ietf.org/html/rfc5545#section-3.6.6
+
+    Formal specification:
+
+       alarmc     = "BEGIN" ":" "VALARM" CRLF
+                    (audioprop / dispprop / emailprop)
+                    "END" ":" "VALARM" CRLF
+
+       audioprop  = *(
+                  ;
+                  ; 'action' and 'trigger' are both REQUIRED,
+                  ; but MUST NOT occur more than once.
+                  ;
+                  action / trigger /
+                  ;
+                  ; 'duration' and 'repeat' are both OPTIONAL,
+                  ; and MUST NOT occur more than once each;
+                  ; but if one occurs, so MUST the other.
+                  ;
+                  duration / repeat /
+                  ;
+                  ; The following is OPTIONAL,
+                  ; but MUST NOT occur more than once.
+                  ;
+                  attach /
+                  ;
+                  ; The following are OPTIONAL,
+                  ; and MAY occur more than once.
+                  ;
+                  x-prop / iana-prop
+                  ;
+                  )
+
+       dispprop   = *(
+                  ;
+                  ; The following are REQUIRED,
+                  ; but MUST NOT occur more than once.
+                  ;
+                  action / description / trigger /
+                  ;
+                  ; 'duration' and 'repeat' are both OPTIONAL,
+                  ; and MUST NOT occur more than once each;
+                  ; but if one occurs, so MUST the other.
+                  ;
+                  duration / repeat /
+                  ;
+                  ; The following are OPTIONAL,
+                  ; and MAY occur more than once.
+                  ;
+                  x-prop / iana-prop
+                  ;
+                  )
+
+       emailprop  = *(
+                  ;
+                  ; The following are REQUIRED,
+                  ; but MUST NOT occur more than once.
+                  ;
+                  action / description / trigger / summary /
+                  ;
+                  ; The following is REQUIRED,
+                  ; and MAY occur more than once.
+                  ;
+                  attendee /
+                  ;
+                  ; 'duration' and 'repeat' are both OPTIONAL,
+                  ; and MUST NOT occur more than once each;
+                  ; but if one occurs, so MUST the other.
+                  ;
+                  duration / repeat /
+                  ;
+                  ; The following are OPTIONAL,
+                  ; and MAY occur more than once.
+                  ;
+                  attach / x-prop / iana-prop
+                  ;
+                  )
+
+    Hugo Context Parameters:
+
+      - .action          : The action to be invoked when the alarm is triggered.
+                          One of "AUDIO", "DISPLAY", or "EMAIL".
+      - .trigger         : The trigger for the alarm.
+          .duration        : A duration string (e.g., "-PT15M" for 15 minutes before).
+          .dateTime        : An absolute date/time for the trigger.
+          .related         : "START" or "END" (default "START").
+      - .description     : A description for DISPLAY and EMAIL alarms.
+          .text            : The alarm description text.
+          .lang            : A string representing a valid language tag.
+      - .summary         : A summary for EMAIL alarms.
+          .text            : The alarm summary text.
+          .lang            : A string representing a valid language tag.
+      - .attendee        : Attendees for EMAIL alarms (array).
+          .email           : Email address.
+          .commonName      : Display name.
+      - .attach          : Audio file attachment for AUDIO alarms.
+          .uri             : URI to the audio file.
+          .mediaType       : MIME type of the attachment.
+      - .duration        : Duration for repeating alarms.
+      - .repeat          : Number of times to repeat the alarm.
+*/ -}}
+
+BEGIN:VALARM
+
+{{/* ACTION is required for all alarm types */}}
+{{ with .action }}ACTION:{{ . }}{{ end }}
+
+{{/* TRIGGER is required for all alarm types */}}
+{{ with .trigger }}
+{{- if .duration }}
+{{- if .related }}TRIGGER;RELATED={{ .related }}:{{ .duration }}{{ else }}TRIGGER:{{ .duration }}{{ end }}
+{{- else if .dateTime }}
+TRIGGER;VALUE=DATE-TIME:{{ dateFormat "20060102T150405Z" .dateTime }}
+{{- end }}
+{{- end }}
+
+{{/* Properties specific to DISPLAY alarms */}}
+{{ if eq .action "DISPLAY" }}
+{{ with .description }}{{ partial "ical/prop_description.ics" . }}{{ end }}
+{{ end }}
+
+{{/* Properties specific to EMAIL alarms */}}
+{{ if eq .action "EMAIL" }}
+{{ with .description }}{{ partial "ical/prop_description.ics" . }}{{ end }}
+{{ with .summary }}{{ partial "ical/prop_summary.ics" . }}{{ end }}
+{{ range .attendee }}
+ATTENDEE{{ with .commonName }};CN={{ . }}{{ end }}:mailto:{{ .email }}
+{{ end }}
+{{ end }}
+
+{{/* Properties specific to AUDIO alarms */}}
+{{ if eq .action "AUDIO" }}
+{{ with .attach }}
+ATTACH{{ with .mediaType }};FMTTYPE={{ . }}{{ end }}:{{ .uri }}
+{{ end }}
+{{ end }}
+
+{{/* Optional repeat properties (both duration and repeat must be present if either is used) */}}
+{{ if and .duration .repeat }}
+DURATION:{{ .duration }}
+REPEAT:{{ .repeat }}
+{{ end }}
+
+END:VALARM
