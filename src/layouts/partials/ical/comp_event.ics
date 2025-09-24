@@ -160,4 +160,7 @@ BEGIN:VEVENT
 {{/* conference */ -}}
 {{ with .image }}{{ partial "ical/prop_image.ics" . }}{{ end }}
 
+{{/* VALARM components */}}
+{{ range .alarms }}{{ partial "ical/comp_valarm.ics" . }}{{ end }}
+
 END:VEVENT

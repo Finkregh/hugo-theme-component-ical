@@ -56,12 +56,24 @@ class ICalValidator:
 
     def log_error(self, message: str, **kwargs: Any) -> None:
         """Log an error message."""
-        self.errors.append(message)
+        # Include file name in the error message if available
+        ics_file = kwargs.get('ics_file', '')
+        if ics_file:
+            formatted_message = f"{message} (file: {ics_file})"
+        else:
+            formatted_message = message
+        self.errors.append(formatted_message)
         log.error(message, **kwargs)
 
     def log_warning(self, message: str, **kwargs: Any) -> None:
         """Log a warning message."""
-        self.warnings.append(message)
+        # Include file name in the warning message if available
+        ics_file = kwargs.get('ics_file', '')
+        if ics_file:
+            formatted_message = f"{message} (file: {ics_file})"
+        else:
+            formatted_message = message
+        self.warnings.append(formatted_message)
         log.warning(message, **kwargs)
 
     def log_info(self, message: str, **kwargs: Any) -> None:
@@ -89,7 +101,11 @@ class ICalValidator:
             )
         return {}
 
-    def validate_ical_structure(self, cal: Calendar, ics_file: str) -> Component | None:
+    def validate_ical_structure(
+        self,
+        cal: Component,
+        ics_file: str,
+    ) -> Component | None:
         """Validate basic iCalendar structure."""
         self.log_info("Validating structure", ics_file=ics_file)
 
@@ -284,6 +300,102 @@ class ICalValidator:
                 ics_file=ics_file,
             )
 
+    def validate_valarm_components(
+        self,
+        event: Component,
+        frontmatter: dict[str, Any],
+        ics_file: str,
+    ) -> None:
+        """Validate VALARM components against frontmatter."""
+        if "alarms" not in frontmatter:
+            return  # No alarms expected
+
+        self.log_info("Validating VALARM components", ics_file=ics_file)
+
+        # Find VALARM components
+        valarms = [
+            component for component in event.walk() if component.name == "VALARM"
+        ]
+        expected_alarms = frontmatter["alarms"]
+
+        if len(valarms) != len(expected_alarms):
+            self.log_error(
+                "VALARM count mismatch",
+                ics_file=ics_file,
+                expected=len(expected_alarms),
+                actual=len(valarms),
+            )
+            return
+
+        # Validate each VALARM component
+        for i, (valarm, expected_alarm) in enumerate(
+            zip(valarms, expected_alarms, strict=True),
+        ):
+            self._validate_single_valarm(valarm, expected_alarm, ics_file, i)
+
+    def _validate_single_valarm(
+        self,
+        valarm: Component,
+        expected_alarm: dict[str, Any],
+        ics_file: str,
+        alarm_index: int,
+    ) -> None:
+        """Validate a single VALARM component."""
+        # Check ACTION
+        if "action" in expected_alarm:
+            actual_action = valarm.get("ACTION")
+            expected_action = expected_alarm["action"]
+            if str(actual_action) != expected_action:
+                self.log_error(
+                    f"VALARM[{alarm_index}] ACTION mismatch",
+                    ics_file=ics_file,
+                    expected=expected_action,
+                    actual=str(actual_action),
+                )
+
+        # Check TRIGGER
+        if "trigger" in expected_alarm:
+            actual_trigger = valarm.get("TRIGGER")
+            expected_trigger = expected_alarm["trigger"]
+            if "duration" in expected_trigger:
+                # Convert both to strings and strip whitespace for comparison
+                actual_trigger_str = str(actual_trigger).strip()
+                expected_trigger_str = expected_trigger["duration"].strip()
+                if actual_trigger_str != expected_trigger_str:
+                    self.log_error(
+                        f"VALARM[{alarm_index}] TRIGGER duration mismatch",
+                        ics_file=ics_file,
+                        expected=expected_trigger_str,
+                        actual=actual_trigger_str,
+                    )
+
+        # Check DESCRIPTION for DISPLAY and EMAIL alarms
+        if (
+            expected_alarm.get("action") in ["DISPLAY", "EMAIL"]
+            and "description" in expected_alarm
+        ):
+            actual_description = valarm.get("DESCRIPTION")
+            expected_description = expected_alarm["description"]["text"]
+            if str(actual_description) != expected_description:
+                self.log_error(
+                    f"VALARM[{alarm_index}] DESCRIPTION mismatch",
+                    ics_file=ics_file,
+                    expected=expected_description,
+                    actual=str(actual_description),
+                )
+
+        # Check SUMMARY for EMAIL alarms
+        if expected_alarm.get("action") == "EMAIL" and "summary" in expected_alarm:
+            actual_summary = valarm.get("SUMMARY")
+            expected_summary = expected_alarm["summary"]["text"]
+            if str(actual_summary) != expected_summary:
+                self.log_error(
+                    f"VALARM[{alarm_index}] SUMMARY mismatch",
+                    ics_file=ics_file,
+                    expected=expected_summary,
+                    actual=str(actual_summary),
+                )
+
     def validate_recurrence_rule(
         self,
         event: Component,
@@ -335,6 +447,7 @@ class ICalValidator:
             if frontmatter:
                 self.validate_event_properties(event, frontmatter, ics_file)
                 self.validate_recurrence_rule(event, frontmatter, ics_file)
+                self.validate_valarm_components(event, frontmatter, ics_file)
 
         self.validated_files += 1
         return True
@@ -455,13 +568,49 @@ class ICalValidator:
 
         if self.errors:
             report.append("ERRORS:")
-            report.extend(f"  - {error}" for error in self.errors)
-            report.append("")
+            # Group errors by file
+            error_by_file: dict[str, list[str]] = {}
+            for error in self.errors:
+                if "(file: " in error:
+                    parts = error.split("(file: ")
+                    message = parts[0].strip()
+                    file_part = parts[1].rstrip(")")
+                    if file_part not in error_by_file:
+                        error_by_file[file_part] = []
+                    error_by_file[file_part].append(message)
+                else:
+                    if "General" not in error_by_file:
+                        error_by_file["General"] = []
+                    error_by_file["General"].append(error)
+            
+            for file_name, file_errors in error_by_file.items():
+                report.append(f"  📁 {file_name}:")
+                for error in file_errors:
+                    report.append(f"    - {error}")
+                report.append("")
 
         if self.warnings:
             report.append("WARNINGS:")
-            report.extend(f"  - {warning}" for warning in self.warnings)
-            report.append("")
+            # Group warnings by file
+            warning_by_file: dict[str, list[str]] = {}
+            for warning in self.warnings:
+                if "(file: " in warning:
+                    parts = warning.split("(file: ")
+                    message = parts[0].strip()
+                    file_part = parts[1].rstrip(")")
+                    if file_part not in warning_by_file:
+                        warning_by_file[file_part] = []
+                    warning_by_file[file_part].append(message)
+                else:
+                    if "General" not in warning_by_file:
+                        warning_by_file["General"] = []
+                    warning_by_file["General"].append(warning)
+            
+            for file_name, file_warnings in warning_by_file.items():
+                report.append(f"  📁 {file_name}:")
+                for warning in file_warnings:
+                    report.append(f"    - {warning}")
+                report.append("")
 
         if not self.errors and not self.warnings:
             report.append("✅ All validations passed!")
