@@ -3,3 +3,6 @@ icalendar>=5.0.0
 python-dateutil>=2.8.0
 PyYAML>=6.0.0
 structlog>=23.0.0
+types-PyYAML
+types-python-dateutil
+types-icalendar

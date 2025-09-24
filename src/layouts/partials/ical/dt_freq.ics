@@ -7,16 +7,17 @@
        freq       = "SECONDLY" / "MINUTELY" / "HOURLY" / "DAILY"
                   / "WEEKLY" / "MONTHLY" / "YEARLY"
 
-    This implementation focuses on YEARLY and MONTHLY frequencies only.
+    This implementation supports all valid frequency values.
 
     Hugo Context Parameters:
 
-      - . : A string value that should be "YEARLY" or "MONTHLY"
+      - . : A string value that should be one of "SECONDLY", "MINUTELY", "HOURLY", "DAILY", "WEEKLY", "MONTHLY", or "YEARLY"
 */ -}}
 
 {{- $freq := . | upper -}}
-{{- if or (eq $freq "YEARLY") (eq $freq "MONTHLY") -}}
+{{- $validFreqs := slice "SECONDLY" "MINUTELY" "HOURLY" "DAILY" "WEEKLY" "MONTHLY" "YEARLY" -}}
+{{- if in $validFreqs $freq -}}
 {{- $freq -}}
 {{- else -}}
-{{- errorf "Invalid FREQ value: %s. Must be YEARLY or MONTHLY" . -}}
+{{- errorf "Invalid FREQ value: %s. Must be one of: %s" . (delimit $validFreqs ", ") -}}
 {{- end -}}
