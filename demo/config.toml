@@ -13,12 +13,14 @@ title = "Hugo Calendar Templates Demo Site"
 [outputFormats.Calendar]
   baseName = "calendar"
   mediaType = "text/calendar"
+  isPlainText = true
   permalinkable = true
+  suffix = "ics"
   # Avoid webcal scheme
   protocol = "https://"
 
 [outputFormats.CalendarWithAlarms]
-  baseName = "calendarwithalarms"
+  baseName = "calendar-alarms"
   mediaType = "text/calendar"
   isPlainText = true
   permalinkable = true
