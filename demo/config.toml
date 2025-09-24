@@ -5,13 +5,23 @@ title = "Hugo Calendar Templates Demo Site"
 
 
 # Define calendar output via cascading front matter for event pages only
-#[outputs]
-#  page = ["HTML", "Calendar"]
-#  section = ["HTML", "Calendar"]
+[outputs]
+  page = ["HTML", "Calendar", "CalendarWithAlarms"]
+  section = ["HTML", "Calendar", "CalendarWithAlarms"]
 
 
 [outputFormats.Calendar]
   baseName = "calendar"
+  mediaType = "text/calendar"
   permalinkable = true
+  # Avoid webcal scheme
+  protocol = "https://"
+
+[outputFormats.CalendarWithAlarms]
+  baseName = "calendarwithalarms"
+  mediaType = "text/calendar"
+  isPlainText = true
+  permalinkable = true
+  suffix = "ics"
   # Avoid webcal scheme
   protocol = "https://"
