@@ -229,6 +229,131 @@ recurrenceRule:
 Generates: `RRULE:FREQ=MONTHLY;INTERVAL=3;BYDAY=SU;BYSETPOS=4`
 
 
+Alarm Examples
+--------------
+
+The VALARM implementation supports DISPLAY, EMAIL, and AUDIO alarms with flexible trigger configurations. Alarms can be triggered at specific times relative to the event start or end, or at absolute date-times. Here are examples of how to configure alarms in your Hugo context:
+
+### Display Alarm (Popup Reminder)
+```yaml
+alarms:
+  - action: "DISPLAY"
+    trigger:
+      duration: "-PT15M"  # 15 minutes before event start
+    description:
+      text: "Meeting starts in 15 minutes"
+      lang: "en"
+```
+
+### Email Alarm with Multiple Recipients
+```yaml
+alarms:
+  - action: "EMAIL"
+    trigger:
+      duration: "-PT1H"   # 1 hour before event start
+    description:
+      text: "Don't forget about the meeting in 1 hour"
+      lang: "en"
+    summary:
+      text: "Meeting Reminder"
+      lang: "en"
+    attendee:
+      - email: "john.doe@example.com"
+        commonName: "John Doe"
+      - email: "jane.smith@example.com"
+        commonName: "Jane Smith"
+```
+
+### Audio Alarm with Sound File
+```yaml
+alarms:
+  - action: "AUDIO"
+    trigger:
+      duration: "-PT5M"   # 5 minutes before event start
+    attach:
+      uri: "file:///System/Library/Sounds/Glass.aiff"
+      mediaType: "audio/aiff"
+```
+
+### Alarm Triggered Relative to Event End
+```yaml
+alarms:
+  - action: "DISPLAY"
+    trigger:
+      duration: "PT0M"    # At event end time
+      related: "END"
+    description:
+      text: "Meeting has ended"
+      lang: "en"
+```
+
+### Absolute Time Trigger
+```yaml
+alarms:
+  - action: "DISPLAY"
+    trigger:
+      dateTime: "2025-01-15T13:45:00"  # Specific date and time
+    description:
+      text: "Meeting reminder at specific time"
+      lang: "en"
+```
+
+### Repeating Alarm
+```yaml
+alarms:
+  - action: "DISPLAY"
+    trigger:
+      duration: "-PT15M"
+    description:
+      text: "Repeating reminder"
+      lang: "en"
+    duration: "PT5M"      # Repeat every 5 minutes
+    repeat: 3             # Repeat 3 times total
+```
+
+### Multiple Alarms for One Event
+You can configure multiple alarms for a single event by providing an array:
+
+```yaml
+alarms:
+  - action: "EMAIL"
+    trigger:
+      duration: "-P1D"    # 1 day before
+    description:
+      text: "Meeting tomorrow"
+    summary:
+      text: "Tomorrow's Meeting"
+    attendee:
+      - email: "team@example.com"
+        commonName: "Team"
+  - action: "DISPLAY"
+    trigger:
+      duration: "-PT30M"  # 30 minutes before
+    description:
+      text: "Meeting in 30 minutes"
+  - action: "AUDIO"
+    trigger:
+      duration: "-PT5M"   # 5 minutes before
+    attach:
+      uri: "https://example.com/alarm.wav"
+      mediaType: "audio/wav"
+```
+
+### Duration Format Reference
+Duration values use ISO 8601 duration format:
+- `PT15M` = 15 minutes
+- `PT1H` = 1 hour
+- `P1D` = 1 day
+- `P1W` = 1 week
+- `-PT15M` = 15 minutes before (negative for "before")
+- `PT15M` = 15 minutes after (positive for "after")
+
+### Supported Alarm Actions
+- **DISPLAY**: Shows a popup or notification in calendar applications
+- **EMAIL**: Sends email reminders to specified attendees
+- **AUDIO**: Plays a sound file (requires `attach` with audio file URI)
+
+
 Specification
 -------------
 

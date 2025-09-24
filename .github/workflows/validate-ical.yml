@@ -2,68 +2,48 @@ name: Validate iCalendar Files
 
 on:
   pull_request:
-    branches: [ main, master ]
+    branches: [main, master]
   workflow_dispatch:
 
 jobs:
   validate-ical:
     runs-on: ubuntu-latest
-    
+
     steps:
-    - name: Checkout repository
-      uses: actions/checkout@v4
-      
-    - name: Set up Python
-      uses: actions/setup-python@v4
-      with:
-        python-version: '3.11'
-        
-    - name: Install the latest version of uv
-      uses: astral-sh/setup-uv@v6
-        
-    - name: Install Python dependencies
-      run: |
-        uv venv .venv
-        source .venv/bin/activate
-        uv pip install -r scripts/requirements.txt
-        
-    - name: Install Hugo
-      run: |
-        HUGO_VERSION=$(curl -s https://api.github.com/repos/gohugoio/hugo/releases/latest | grep '"tag_name":' | sed -E 's/.*"([^"]+)".*/\1/' | sed 's/v//')
-        wget -O hugo.deb https://github.com/gohugoio/hugo/releases/latest/download/hugo_extended_${HUGO_VERSION}_linux-amd64.deb
-        sudo dpkg -i hugo.deb
-        hugo version
-        
-    - name: Copy source layouts to demo
-      run: |
-        echo "Copying src/layouts/partials/* to demo/layouts/partials/"
-        cp -r src/layouts/partials/* demo/layouts/partials/
-        echo "Files copied successfully"
-        
-    - name: Build Hugo site
-      run: |
-        pushd demo || exit 1
-        echo "Building Hugo site..."
-        hugo build build
-        echo "Hugo build completed"
-        popd || exit 1
-        
-    - name: List generated files
-      run: |
-        echo "Generated .ics files:"
-        find demo/public/events -name "*.ics" -type f | sort
-        
-    - name: Validate iCalendar files
-      run: |
-        source .venv/bin/activate
-        python scripts/validate_ics.py
-        
-    - name: Upload build artifacts
-      uses: actions/upload-artifact@v4
-      if: always()
-      with:
-        name: hugo-build-output
-        path: |
-          demo/public/
-          validation-report.txt
-        retention-days: 7
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: "3.11"
+
+      - name: Install the latest version of uv
+        uses: astral-sh/setup-uv@v6
+        with:
+          activate-environment: true
+          enable-cache: true
+
+      - name: Install Just
+        uses: extractions/setup-just@v3
+
+      - name: Install Hugo
+        uses: peaceiris/actions-hugo@v3
+
+      - name: Run tests with just
+        run: just test
+
+      - name: List generated files
+        run: |
+          echo "Generated .ics files:"
+          find demo/public/events -name "*.ics" -type f | sort
+
+      - name: Upload build artifacts
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: hugo-build-output
+          path: |
+            demo/public/
+            validation-report.txt
+          retention-days: 7
