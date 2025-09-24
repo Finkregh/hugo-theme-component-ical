@@ -10,6 +10,6 @@ build_hugo: sync_partials
     hugo build --quiet
 
 run_ics_validation: build_hugo
-    source .venv/bin/activate
+    # source .venv/bin/activate
     uv pip install -r scripts/requirements.txt
     python3 scripts/validate_ics.py

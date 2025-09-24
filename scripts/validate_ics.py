@@ -57,22 +57,16 @@ class ICalValidator:
     def log_error(self, message: str, **kwargs: Any) -> None:
         """Log an error message."""
         # Include file name in the error message if available
-        ics_file = kwargs.get('ics_file', '')
-        if ics_file:
-            formatted_message = f"{message} (file: {ics_file})"
-        else:
-            formatted_message = message
+        ics_file = kwargs.get("ics_file", "")
+        formatted_message = f"{message} (file: {ics_file})" if ics_file else message
         self.errors.append(formatted_message)
         log.error(message, **kwargs)
 
     def log_warning(self, message: str, **kwargs: Any) -> None:
         """Log a warning message."""
         # Include file name in the warning message if available
-        ics_file = kwargs.get('ics_file', '')
-        if ics_file:
-            formatted_message = f"{message} (file: {ics_file})"
-        else:
-            formatted_message = message
+        ics_file = kwargs.get("ics_file", "")
+        formatted_message = f"{message} (file: {ics_file})" if ics_file else message
         self.warnings.append(formatted_message)
         log.warning(message, **kwargs)
 
@@ -358,9 +352,22 @@ class ICalValidator:
             actual_trigger = valarm.get("TRIGGER")
             expected_trigger = expected_alarm["trigger"]
             if "duration" in expected_trigger:
-                # Convert both to strings and strip whitespace for comparison
-                actual_trigger_str = str(actual_trigger).strip()
+                # Get the raw TRIGGER value from the iCalendar component
+                # The iCalendar library parses TRIGGER into vDDDTypes objects
+                # We need to get the original string value for comparison
                 expected_trigger_str = expected_trigger["duration"].strip()
+
+                # Try to get the raw value from the component
+                actual_trigger_str = None
+                if hasattr(actual_trigger, "to_ical"):
+                    # Get the raw iCalendar representation
+                    actual_trigger_str = (
+                        actual_trigger.to_ical().decode("utf-8").strip()
+                    )
+                else:
+                    # Fallback to string representation
+                    actual_trigger_str = str(actual_trigger).strip()
+
                 if actual_trigger_str != expected_trigger_str:
                     self.log_error(
                         f"VALARM[{alarm_index}] TRIGGER duration mismatch",
@@ -582,7 +589,7 @@ class ICalValidator:
                     if "General" not in error_by_file:
                         error_by_file["General"] = []
                     error_by_file["General"].append(error)
-            
+
             for file_name, file_errors in error_by_file.items():
                 report.append(f"  📁 {file_name}:")
                 for error in file_errors:
@@ -605,7 +612,7 @@ class ICalValidator:
                     if "General" not in warning_by_file:
                         warning_by_file["General"] = []
                     warning_by_file["General"].append(warning)
-            
+
             for file_name, file_warnings in warning_by_file.items():
                 report.append(f"  📁 {file_name}:")
                 for warning in file_warnings:
