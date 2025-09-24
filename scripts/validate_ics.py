@@ -8,12 +8,15 @@ This script validates the generated .ics files to ensure they:
 4. Match the source markdown content
 """
 
+# ruff: noqa: T201, ANN401, E501
+
 import sys
 from pathlib import Path
 from typing import Any
 
 import structlog
 import yaml
+from dateutil.rrule import rrulestr
 from icalendar import Calendar, Component
 
 # Configure structlog
@@ -194,7 +197,11 @@ class ICalValidator:
     ) -> None:
         """Validate BYDAY parameter."""
         if "byDay" in expected_rule:
-            expected_day = [expected_rule["byDay"]]
+            expected_day = expected_rule["byDay"]
+            # Normalize to list for comparison
+            if not isinstance(expected_day, list):
+                expected_day = [expected_day]
+
             actual_day = rrule.get("BYDAY")
             if actual_day != expected_day:
                 self.log_error(
@@ -244,6 +251,39 @@ class ICalValidator:
                     actual=actual_interval,
                 )
 
+    def show_recurrence_entries(self, event: Component, ics_file: str) -> None:
+        """Show the first 4 entries from recurrence rules."""
+        rrule = event.get("RRULE")
+        if not rrule:
+            return
+
+        dtstart = event.get("DTSTART")
+        if not dtstart:
+            return
+
+        try:
+            # Convert rrule to string format for dateutil
+            rrule_str = str(rrule).replace("RRULE:", "")
+            start_dt = dtstart.dt
+
+            # Handle timezone-aware datetime
+            if hasattr(start_dt, "replace") and start_dt.tzinfo is None:
+                start_dt = start_dt.replace(tzinfo=None)
+
+            # Generate first 4 occurrences
+            rule = rrulestr(rrule_str, dtstart=start_dt)
+            occurrences = list(rule[:4])
+
+            print(f"\n📅 First 4 recurrence entries for {ics_file}:")
+            for i, occurrence in enumerate(occurrences, 1):
+                print(f"  {i}. {occurrence.strftime('%Y-%m-%d %H:%M:%S')}")
+
+        except Exception as e:  # noqa: BLE001
+            self.log_warning(
+                f"Could not generate recurrence entries: {e}",
+                ics_file=ics_file,
+            )
+
     def validate_recurrence_rule(
         self,
         event: Component,
@@ -260,6 +300,9 @@ class ICalValidator:
         if not rrule:
             self.log_error("Expected RRULE but none found", ics_file=ics_file)
             return
+
+        # Show first 4 recurrence entries
+        self.show_recurrence_entries(event, ics_file)
 
         expected_rule = frontmatter["recurrenceRule"]
 
@@ -309,6 +352,75 @@ class ICalValidator:
                 return md_file
         return None
 
+    def verify_recurrence_rule_consistency(self) -> bool:
+        """Verify that markdown files with recurrenceRule have RRULE in their .ics files."""
+        print("\n🔍 Verifying recurrence rule consistency...")
+
+        # Find all markdown files with recurrenceRule
+        md_files = list(Path("demo/content/events").glob("*.md"))
+        md_files = [f for f in md_files if f.name != "_index.md"]
+
+        success = True
+        files_with_recurrence = 0
+
+        for md_file in sorted(md_files):
+            frontmatter = self.parse_markdown_frontmatter(str(md_file))
+            if "recurrenceRule" in frontmatter:
+                files_with_recurrence += 1
+                event_name = md_file.stem
+                ics_file = f"demo/public/events/{event_name}/calendar.ics"
+
+                print(f"📋 Checking {event_name}:")
+                print(f"   Markdown: {md_file}")
+                print(f"   ICS file: {ics_file}")
+
+                if not Path(ics_file).exists():
+                    self.log_error(
+                        f"ICS file not found for {event_name}",
+                        md_file=str(md_file),
+                    )
+                    success = False
+                    continue
+
+                try:
+                    ics_data = Path(ics_file).read_text(encoding="utf-8")
+                    cal = Calendar.from_ical(ics_data)
+
+                    # Find VEVENT component
+                    events = [
+                        component
+                        for component in cal.walk()
+                        if component.name == "VEVENT"
+                    ]
+                    if not events:
+                        self.log_error(
+                            f"No VEVENT found in {ics_file}",
+                            md_file=str(md_file),
+                        )
+                        success = False
+                        continue
+
+                    event = events[0]
+                    rrule = event.get("RRULE")
+
+                    if rrule:
+                        print(f"   ✅ RRULE found: {rrule}")
+                    else:
+                        self.log_error(
+                            f"RRULE missing in {ics_file} but recurrenceRule present in {md_file}",
+                        )
+                        success = False
+
+                except Exception as e:  # noqa: BLE001
+                    self.log_error(
+                        f"Error processing {ics_file}: {e}",
+                        md_file=str(md_file),
+                    )
+                    success = False
+
+        print(f"\n📊 Found {files_with_recurrence} markdown files with recurrenceRule")
+        return success
+
     def validate_all_files(self) -> bool:
         """Validate all .ics files in the demo/public/events directory."""
         ics_files = list(Path("demo/public/events").rglob("*.ics"))
@@ -324,6 +436,10 @@ class ICalValidator:
             md_file = self.find_corresponding_markdown(str(ics_file))
             if not self.validate_ics_file(str(ics_file), md_file):
                 success = False
+
+        # Also verify recurrence rule consistency
+        if not self.verify_recurrence_rule_consistency():
+            success = False
 
         return success
 
@@ -355,21 +471,21 @@ class ICalValidator:
         # Write report to file
         Path("validation-report.txt").write_text(report_content, encoding="utf-8")
 
-        print(f"\n{report_content}")  # noqa: T201
+        print(f"\n{report_content}")
 
         return len(self.errors) == 0
 
 
 def main() -> None:
     """Run the main validation process."""
-    print("Starting iCalendar validation...")  # noqa: T201
+    print("Starting iCalendar validation...")
 
     validator = ICalValidator()
     validator.validate_all_files()
     overall_success = validator.generate_report()
 
     if overall_success:
-        print("\n✅ Validation completed successfully!")  # noqa: T201
+        print("\n✅ Validation completed successfully!")
         sys.exit(0)
     else:
         print(

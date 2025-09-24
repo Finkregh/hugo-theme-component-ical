@@ -42,10 +42,11 @@ jobs:
         
     - name: Build Hugo site
       run: |
-        cd demo
+        pushd demo || exit 1
         echo "Building Hugo site..."
         hugo build build
         echo "Hugo build completed"
+        popd || exit 1
         
     - name: List generated files
       run: |
