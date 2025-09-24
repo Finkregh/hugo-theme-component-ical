@@ -2,7 +2,7 @@
 title: Quarterly Team Review
 
 startDate: 2024-01-28T15:00:00+01:00
-endDate:   2024-01-28T17:00:00+01:00
+#endDate:   2024-01-28T17:00:00+01:00
 where: "Conference Room A, Headquarters"
 orga: "Team Lead"
 orgaEmail: "teamlead@example.org"
