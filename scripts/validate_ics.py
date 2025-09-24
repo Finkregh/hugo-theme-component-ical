@@ -301,31 +301,51 @@ class ICalValidator:
         ics_file: str,
     ) -> None:
         """Validate VALARM components against frontmatter."""
-        if "alarms" not in frontmatter:
-            return  # No alarms expected
-
-        self.log_info("Validating VALARM components", ics_file=ics_file)
+        # Determine if this is a calendar-alarms.ics file or regular calendar.ics
+        is_alarms_file = "calendar-alarms.ics" in ics_file
 
         # Find VALARM components
         valarms = [
             component for component in event.walk() if component.name == "VALARM"
         ]
-        expected_alarms = frontmatter["alarms"]
 
-        if len(valarms) != len(expected_alarms):
-            self.log_error(
-                "VALARM count mismatch",
-                ics_file=ics_file,
-                expected=len(expected_alarms),
-                actual=len(valarms),
-            )
+        if "alarms" not in frontmatter:
+            # No alarms defined in frontmatter
+            if valarms:
+                self.log_error(
+                    "Unexpected VALARM components found",
+                    ics_file=ics_file,
+                    actual=len(valarms),
+                )
             return
 
-        # Validate each VALARM component
-        for i, (valarm, expected_alarm) in enumerate(
-            zip(valarms, expected_alarms, strict=True),
-        ):
-            self._validate_single_valarm(valarm, expected_alarm, ics_file, i)
+        self.log_info("Validating VALARM components", ics_file=ics_file)
+        expected_alarms = frontmatter["alarms"]
+
+        if is_alarms_file:
+            # For calendar-alarms.ics files, expect all alarms to be present
+            if len(valarms) != len(expected_alarms):
+                self.log_error(
+                    "VALARM count mismatch in alarms file",
+                    ics_file=ics_file,
+                    expected=len(expected_alarms),
+                    actual=len(valarms),
+                )
+                return
+
+            # Validate each VALARM component
+            for i, (valarm, expected_alarm) in enumerate(
+                zip(valarms, expected_alarms, strict=True),
+            ):
+                self._validate_single_valarm(valarm, expected_alarm, ics_file, i)
+        # For regular calendar.ics files, expect NO alarms even if defined in frontmatter
+        elif valarms:
+            self.log_error(
+                "Regular calendar file should not contain VALARM components",
+                ics_file=ics_file,
+                expected=0,
+                actual=len(valarms),
+            )
 
     def _validate_single_valarm(
         self,
@@ -464,8 +484,13 @@ class ICalValidator:
         # Extract event name from path
         # e.g., demo/public/events/event_3_yearly_april/calendar.ics
         # -> event_3_yearly_april
+        # Also handle calendar-alarms.ics files
         path_parts = Path(ics_file).parts
-        if len(path_parts) >= MIN_PATH_PARTS and path_parts[-1] == CALENDAR_FILENAME:
+        filename = path_parts[-1]
+
+        if len(path_parts) >= MIN_PATH_PARTS and (
+            filename == CALENDAR_FILENAME or filename == "calendar-alarms.ics"
+        ):
             event_name = path_parts[-2]
             md_file = f"demo/content/events/{event_name}.md"
             if Path(md_file).exists():

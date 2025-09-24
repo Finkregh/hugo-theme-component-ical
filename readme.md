@@ -421,7 +421,7 @@ From [rfc 5545](https://tools.ietf.org/html/rfc5545)
 - [ ]   3.6.3.  Journal Component
 - [ ]   3.6.4.  Free/Busy Component
 - [ ]   3.6.5.  Time Zone Component
-- [ ]   3.6.6.  Alarm Component
+- [x]   3.6.6.  Alarm Component
 
 3.7.  Calendar Properties
 
