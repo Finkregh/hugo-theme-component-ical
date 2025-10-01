@@ -6,10 +6,18 @@ This script validates the generated .ics files to ensure they:
 2. Contain expected properties
 3. Have correct recurrence rules
 4. Match the source markdown content
+
+Usage:
+    python validate_ics.py <base_path>
+
+Where <base_path> is the root directory containing the Hugo site structure.
+For theme component: hugo-theme-component-ical/.github/exampleSite
+For demo site: demo
 """
 
 # ruff: noqa: T201, ANN401, E501
 
+import argparse
 import sys
 from pathlib import Path
 from typing import Any
@@ -479,11 +487,10 @@ class ICalValidator:
         self.validated_files += 1
         return True
 
-    def find_corresponding_markdown(self, ics_file: str) -> str | None:
+    def find_corresponding_markdown(self, ics_file: str, base_path: str) -> str | None:
         """Find the corresponding markdown file for an .ics file."""
-        # Extract event name from path
-        # e.g., demo/public/events/event_3_yearly_april/calendar.ics
-        # -> event_3_yearly_april
+        # Extract content name from path
+        # e.g., base_path/public/posts/post-1/calendar.ics -> post-1
         # Also handle calendar-alarms.ics files
         path_parts = Path(ics_file).parts
         filename = path_parts[-1]
@@ -491,18 +498,35 @@ class ICalValidator:
         if len(path_parts) >= MIN_PATH_PARTS and (
             filename == CALENDAR_FILENAME or filename == "calendar-alarms.ics"
         ):
-            event_name = path_parts[-2]
-            md_file = f"demo/content/events/{event_name}.md"
-            if Path(md_file).exists():
-                return md_file
+            # Get the content type and name from the path
+            # Look for patterns like .../public/posts/post-1/calendar.ics or .../public/articles/article_1/calendar.ics
+            if "public" in path_parts:
+                public_index = path_parts.index("public")
+                if public_index + 2 < len(path_parts):
+                    content_type = path_parts[public_index + 1]  # posts, articles, etc.
+                    content_name = path_parts[
+                        public_index + 2
+                    ]  # post-1, article_1, etc.
+                    md_file = f"{base_path}/content/{content_type}/{content_name}.md"
+                    if Path(md_file).exists():
+                        return md_file
         return None
 
-    def verify_recurrence_rule_consistency(self) -> bool:
+    def verify_recurrence_rule_consistency(self, base_path: str) -> bool:
         """Verify that markdown files with recurrenceRule have RRULE in their .ics files."""
         print("\n🔍 Verifying recurrence rule consistency...")
 
         # Find all markdown files with recurrenceRule
-        md_files = list(Path("demo/content/events").glob("*.md"))
+        content_dir = Path(base_path) / "content"
+        if not content_dir.exists():
+            self.log_warning(f"Content directory not found: {content_dir}")
+            return True
+
+        md_files = []
+        for subdir in content_dir.iterdir():
+            if subdir.is_dir() and subdir.name != "_index.md":
+                md_files.extend(list(subdir.glob("*.md")))
+
         md_files = [f for f in md_files if f.name != "_index.md"]
 
         success = True
@@ -512,16 +536,19 @@ class ICalValidator:
             frontmatter = self.parse_markdown_frontmatter(str(md_file))
             if "recurrenceRule" in frontmatter:
                 files_with_recurrence += 1
-                event_name = md_file.stem
-                ics_file = f"demo/public/events/{event_name}/calendar.ics"
+                content_name = md_file.stem
+                content_type = md_file.parent.name
+                ics_file = (
+                    f"{base_path}/public/{content_type}/{content_name}/calendar.ics"
+                )
 
-                print(f"📋 Checking {event_name}:")
+                print(f"📋 Checking {content_name}:")
                 print(f"   Markdown: {md_file}")
                 print(f"   ICS file: {ics_file}")
 
                 if not Path(ics_file).exists():
                     self.log_error(
-                        f"ICS file not found for {event_name}",
+                        f"ICS file not found for {content_name}",
                         md_file=str(md_file),
                     )
                     success = False
@@ -566,24 +593,30 @@ class ICalValidator:
         print(f"\n📊 Found {files_with_recurrence} markdown files with recurrenceRule")
         return success
 
-    def validate_all_files(self) -> bool:
-        """Validate all .ics files in the demo/public/events directory."""
-        ics_files = list(Path("demo/public/events").rglob("*.ics"))
+    def validate_all_files(self, base_path: str) -> bool:
+        """Validate all .ics files in the specified base path."""
+        public_dir = Path(base_path) / "public"
+        if not public_dir.exists():
+            self.log_error(
+                f"Public directory not found: relative '{public_dir}', absolute '{public_dir.resolve()}'"
+            )
+            return False
 
+        ics_files = list(public_dir.rglob("*.ics"))
         if not ics_files:
-            self.log_error("No .ics files found in demo/public/events/")
+            self.log_error(f"No .ics files found in {public_dir}")
             return False
 
         self.log_info("Found files to validate", count=len(ics_files))
 
         success = True
         for ics_file in sorted(ics_files):
-            md_file = self.find_corresponding_markdown(str(ics_file))
+            md_file = self.find_corresponding_markdown(str(ics_file), base_path)
             if not self.validate_ics_file(str(ics_file), md_file):
                 success = False
 
         # Also verify recurrence rule consistency
-        if not self.verify_recurrence_rule_consistency():
+        if not self.verify_recurrence_rule_consistency(base_path):
             success = False
 
         return success
@@ -659,11 +692,23 @@ class ICalValidator:
 
 def main() -> None:
     """Run the main validation process."""
-    print("Starting iCalendar validation...")
+    parser = argparse.ArgumentParser(
+        description="Validate iCalendar files generated by Hugo templates"
+    )
+    parser.add_argument(
+        "base_path",
+        nargs="?",
+        default="exampleSite",
+        help="Base path to Hugo site (default: exampleSite)",
+    )
+
+    args = parser.parse_args()
+
+    print(f"Starting iCalendar validation for: {args.base_path}")
 
     validator = ICalValidator()
-    validator.validate_all_files()
-    overall_success = validator.generate_report()
+    overall_success = validator.validate_all_files(args.base_path)
+    validator.generate_report()
 
     if overall_success:
         print("\n✅ Validation completed successfully!")

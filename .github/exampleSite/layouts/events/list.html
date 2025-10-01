@@ -31,3 +31,7 @@
     <div style="max-width: 900px; margin: 0 auto;" id='calendar'></div>{{ end }}
 </p>
 {{ end }}
+
+<!-- include used for CI tests, remove below part -->
+{{ partial "events/timezone.ics" . }}
+

@@ -1,181 +1,179 @@
-Hugo iCalendar Templates
-========================
+# Hugo iCalendar Theme Component
 
-About
------
+A Hugo theme component to generate [iCalendar](https://en.wikipedia.org/wiki/ICalendar) files from your Hugo content.
 
-A set of simple templates for [Hugo](https://gohugo.io/) to generate
-[iCalendar](https://en.wikipedia.org/wiki/ICalendar) files.
+This project provides a set of simple templates for [Hugo](https://gohugo.io/) to generate [iCalendar](https://en.wikipedia.org/wiki/ICalendar) files. It follows the 80/20 rule with a special focus on *event data* and strives to be RFC compliant.
 
-This project does *not* provide a complete implementation of all features
-the iCalendar specification contains. It rather follows the 80/20 rule and
-with a special focus on *event data*.
+**Original work:** This theme component is based on [hugo-ical-templates](https://github.com/raoulb/hugo-ical-templates) by Raoul B.
 
-All the templates strive to be RFC compliant and produce output files
-that adhere to the specification. No special hacks are included
-to work around broken calendar software or the like.
+## Installation
 
+### 1. Add Hugo module
 
-This project does not provide a full turn-key solution and some
-assembly will be required in most cases. Understanding of Hugo and
-especially Hugo's [templating system](https://gohugo.io/templates/)
-is still recommended.
+Add this theme component as a Hugo module to your project's `hugo.toml` config file:
 
-The system is highly flexible and should adapt or extend easily to more
-exotic use cases. On some spots the chosen defaults might be a bit opinionated.
-
-
-The partial template snippets from this project should help to easily avoid the
-most common mistakes when creating `ics` files. However, there is absolutely
-no validation, neither on the syntactic nor the semantic level. You can always
-use an external [validation service](https://icalendar.org/validator.html)
-to check the output.
-
-
-Usage
------
-
-### Step 1
-
-Copy the partial templates from `src/layouts/partials/ical/*.ics` to your
-project's layout directory. Usually this would be `.../layouts/partials/ical/`.
-
-See also (Hugo documentation):
-- [partials](https://gohugo.io/templates/partials/)
-
-
-### Step 2
-
-Have template files for the `Calendar` output format. Examples
-for a single page (`single.calendar.ics`) and a list page
-(`list.calendar.ics`) can be found in this repository.
-
-See also (Hugo documentation):
-- [output format](https://gohugo.io/templates/output-formats/)
-- [single page templates](https://gohugo.io/templates/single-page-templates/)
-- [list page templates](https://gohugo.io/templates/lists/)
-
-
-### Step 3
-
-Activate and configure the `Calendar` output format, either in your `config.toml`
-or more with fine-grained control via the content front matter.
-
-For example (in `toml` syntax) activate via:
+```toml
+[module]
+[[module.imports]]
+path = 'github.com/finkregh/hugo-theme-component-ical'
 ```
+
+### 2. Configure output formats
+
+You need to configure the `Calendar` and `CalendarWithAlarms` output formats in your config:
+
+```toml
 [outputs]
-  page = ["HTML", "Calendar"]
-  section = ["HTML", "Calendar"]
-```
+  page = ["HTML", "Calendar", "CalendarWithAlarms"]
+  section = ["HTML", "Calendar", "CalendarWithAlarms"]
 
-You need to configure this output format a bit:
-```
 [outputFormats.Calendar]
   baseName = "calendar"
-  # Avoid unencrypted webcal scheme
-  protocol = "https://"
+  mediaType = "text/calendar"
+  isPlainText = true
   permalinkable = true
+  suffix = "ics"
+  # Avoid webcal scheme
+  protocol = "https://"
+
+[outputFormats.CalendarWithAlarms]
+  baseName = "calendar-alarms"
+  mediaType = "text/calendar"
+  isPlainText = true
+  permalinkable = true
+  suffix = "ics"
+  # Avoid webcal scheme
+  protocol = "https://"
 ```
 
-See also (Hugo documentation):
-- [configure output formats](https://gohugo.io/templates/output-formats/#configure-output-formats)
+The `CalendarWithAlarms` output format generates iCalendar files that include alarm/reminder components (VALARM) in addition to the event data. This allows calendar applications to display notifications and reminders for events at specified times before the event starts.
 
+### 3. Use the partials
 
-### Step 4
+The theme component provides iCalendar partials that you can use in your templates. The partials are located in the vendor namespace at `partials/vendor/finkregh/ical/`.
 
-Feed in your own data from arbitrary Hugo context variables into the calendar
-templates from step 2. See the `header.ics` and `event.ics` files in this
-repository for a simple example.
+Create template files for the `Calendar` output format in your theme or site:
 
-Note: While it can be unavoidable for certain edge cases to directly adapt the
-      top level partials from step 2 this should in general not be necessary.
+- `single.calendar.ics` - for individual pages
+- `list.calendar.ics` - for list pages
 
+Example usage in your templates:
 
-Collect and add all timezone definitions you need to the `timezone.ics` partial.
-
-Note: You can download ready-made `ics` files for all well known
-      time zones from [http://tzurl.org](http://tzurl.org).
-
-For example for `Europe/Zurich`:
-
-* [http://tzurl.org/zoneinfo-outlook/Europe/Zurich](http://tzurl.org/zoneinfo-outlook/Europe/Zurich)
-
-
-### Step 5
-
-Link the generated `ics` files for download on your `html` pages.
-
-A snippet like this should do:
+```html
+{{ partial "vendor/finkregh/ical/comp_event.ics" . }}
 ```
+
+### 4. Link to calendar files
+
+Link the generated `ics` files for download on your `html` pages:
+
+```html
 {{ with .OutputFormats.Get "Calendar" }}
     <a href="{{ .RelPermalink }}" type="text/calendar">{{ $.Title }}</a>
 {{ end }}
 ```
 
-See also (Hugo documentation):
-- [link to output formats](https://gohugo.io/templates/output-formats/#link-to-output-formats)
-- [get another output format](https://gohugo.io/content-management/cross-references/#get-another-output-format)
-- [reference your rss feed in head](https://gohugo.io/templates/rss/#reference-your-rss-feed-in-head)
+For calendars with alarms:
 
+```html
+{{ with .OutputFormats.Get "CalendarWithAlarms" }}
+    <a href="{{ .RelPermalink }}" type="text/calendar">{{ $.Title }} (with alarms)</a>
+{{ end }}
+```
 
-Demo Site
----------
+## Example Templates
 
-A fully working minimal site can be found in [this repository](https://github.com/raoulb/hugo-ical-templates-demo).
+Here are minimal example templates for event pages:
 
+### Single Event Template (`single.html`)
 
-Known Issues
-------------
+```html
+{{ define "main" }}
 
-### No folding of long lines
+<h1>{{ .Title }}</h1>
 
-Due to the way the templates work, we do not fold long lines.
-However, this is actually fine as the RFC writes *SHOULD*
-instead of *MUST*:
+{{ .Content }}
 
-> Lines of text SHOULD NOT be longer than 75 octets, excluding the line
-> break.  Long content lines SHOULD be split into a multiple line
-> representations using a line "folding" technique.
+<h2>Event meta data</h2>
+<ul>
+  <li>Start: {{ .Params.startDate }}</li>
+  <li>End: {{ .Params.endDate }}</li>
+  {{ if .Params.where }}
+  <li>Location: {{ .Params.where }}</li>
+  {{ end }} {{ if .Params.orga }}
+  <li>Orga: {{ .Params.orga }}</li>
+  {{ end }} {{ if .Params.orgaEmail }}
+  <li>EMail: {{ .Params.orgaEmail }}</li>
+  {{ end }} {{ if .Params.cancelled }}
+  <li>Cancelled: {{ .Params.cancelled }}</li>
+  {{ end }} {{ if .Params.recurrenceRule }}
+  <li>
+    Recurrence Rules:<br />
+    <ul>
+      {{ range $k, $v := .Params.recurrenceRule }}
+      <li>{{ $k }}: {{ $v }}</li>
+      {{ end }}
+    </ul>
+  </li>
+  {{ end }}
+</ul>
 
-See: https://tools.ietf.org/html/rfc5545#section-3.1
+<p>
+  {{ with .OutputFormats.Get "Calendar" }} Get the calendar file for this event:
+  <a href="{{ .RelPermalink }}" type="text/calendar">{{ $.Title }}.ics</a>
+  {{ end }}
+</p>
 
+{{ end }}
+```
 
-### No `CRLF` line termination
+### Event List Template (`list.html`)
 
-This is the one place where we knowingly break RFC compliance.
-While this is not correct per se, it hopefully is a minor issue
-with today's calendar software.
+```html
+{{ define "main" }}
 
-> The iCalendar object is organized into individual lines of text,
-> called content lines.  Content lines are delimited by a line break,
-> which is a CRLF sequence (CR character followed by LF character).
+<h1>{{ .Title }}</h1>
+{{ .Content }}
 
-See: https://tools.ietf.org/html/rfc5545#section-3.1
+{{ with .Pages }}
+<ul>
+  {{ range . }}
+  <li>
+    <a href="{{ .Permalink }}">{{ .Title }}</a>
+  </li>
+  {{ end }}
+</ul>
+{{ end }}
 
+<p>
+  {{ with .OutputFormats.Get "Calendar" }}
+  Get the calendar file with all events (without alarms)
+  <a href="{{ .RelPermalink }}" type="text/calendar">here</a>.
+  {{ end }}
+</p>
+<p>
+  {{ with .OutputFormats.Get "CalendarWithAlarms" }}
+  Get the calendar file with all events (including alarms)
+  <a href="{{ .RelPermalink }}" type="text/calendar">here</a>.
+  {{ end }}
+</p>
 
-### Empty lines
+{{ end }}
+```
 
-The generated `ics` files often contain many completely empty lines.
-This could in principle be avoided by more careful
-[whitespace control](https://gohugo.io/templates/introduction/#whitespace)
-inside the templates or some post processing. (Unfortunately Hugo
-does not come with a suitable
-[asset minification](https://gohugo.io/hugo-pipes/minification/) method.)
+## About
 
+This project does *not* provide a complete implementation of all features the iCalendar specification contains. It rather follows the 80/20 rule and with a special focus on *event data*.
 
-Major TODO
-----------
+All the templates strive to be RFC compliant and produce output files that adhere to the specification. No special hacks are included to work around broken calendar software or the like.
 
-- Timezone component
+This project does not provide a full turn-key solution and some assembly will be required in most cases. Understanding of Hugo and especially Hugo's [templating system](https://gohugo.io/templates/) is still recommended.
 
-In principle all missing parts (properties, parameters, components) could
-be handled by the same way. They were just not in focus for the primary
-application envisioned: distributing machine-readable information about
-upcoming events directly from within Hugo.
+The system is highly flexible and should adapt or extend easily to more exotic use cases. On some spots the chosen defaults might be a bit opinionated.
 
+The partial template snippets from this project should help to easily avoid the most common mistakes when creating `ics` files. However, there is absolutely no validation, neither on the syntactic nor the semantic level. You can always use an external [validation service](https://icalendar.org/validator.html) to check the output.
 
-RRULE Examples
---------------
+## RRULE Examples
 
 The RRULE implementation supports YEARLY and MONTHLY frequencies with BYMONTH, BYDAY, and BYSETPOS components. Here are some examples of how to use recurrence rules in your Hugo context:
 
@@ -199,15 +197,6 @@ recurrenceRule:
 ```
 Generates: `RRULE:FREQ=YEARLY;BYMONTH=10;BYDAY=MO;BYSETPOS=1,2`
 
-### Every 29th of every other month
-```yaml
-recurrenceRule:
-  freq: "MONTHLY"
-  interval: 2
-  byMonthDay: 29
-```
-Note: This example requires BYMONTHDAY support which is not yet implemented.
-
 ### Every last Sunday of every 3 months
 ```yaml
 recurrenceRule:
@@ -218,21 +207,9 @@ recurrenceRule:
 ```
 Generates: `RRULE:FREQ=MONTHLY;INTERVAL=3;BYDAY=SU;BYSETPOS=-1`
 
-### Every fourth Sunday of every 3 months
-```yaml
-recurrenceRule:
-  freq: "MONTHLY"
-  interval: 3
-  byDay: "SU"
-  bySetPos: 4
-```
-Generates: `RRULE:FREQ=MONTHLY;INTERVAL=3;BYDAY=SU;BYSETPOS=4`
+## Alarm Examples
 
-
-Alarm Examples
---------------
-
-The VALARM implementation supports DISPLAY, EMAIL, and AUDIO alarms with flexible trigger configurations. Alarms can be triggered at specific times relative to the event start or end, or at absolute date-times. Here are examples of how to configure alarms in your Hugo context:
+The VALARM implementation supports DISPLAY, EMAIL, and AUDIO alarms with flexible trigger configurations. Here are examples of how to configure alarms in your Hugo context:
 
 ### Display Alarm (Popup Reminder)
 ```yaml
@@ -264,81 +241,6 @@ alarms:
         commonName: "Jane Smith"
 ```
 
-### Audio Alarm with Sound File
-```yaml
-alarms:
-  - action: "AUDIO"
-    trigger:
-      duration: "-PT5M"   # 5 minutes before event start
-    attach:
-      uri: "file:///System/Library/Sounds/Glass.aiff"
-      mediaType: "audio/aiff"
-```
-
-### Alarm Triggered Relative to Event End
-```yaml
-alarms:
-  - action: "DISPLAY"
-    trigger:
-      duration: "PT0M"    # At event end time
-      related: "END"
-    description:
-      text: "Meeting has ended"
-      lang: "en"
-```
-
-### Absolute Time Trigger
-```yaml
-alarms:
-  - action: "DISPLAY"
-    trigger:
-      dateTime: "2025-01-15T13:45:00"  # Specific date and time
-    description:
-      text: "Meeting reminder at specific time"
-      lang: "en"
-```
-
-### Repeating Alarm
-```yaml
-alarms:
-  - action: "DISPLAY"
-    trigger:
-      duration: "-PT15M"
-    description:
-      text: "Repeating reminder"
-      lang: "en"
-    duration: "PT5M"      # Repeat every 5 minutes
-    repeat: 3             # Repeat 3 times total
-```
-
-### Multiple Alarms for One Event
-You can configure multiple alarms for a single event by providing an array:
-
-```yaml
-alarms:
-  - action: "EMAIL"
-    trigger:
-      duration: "-P1D"    # 1 day before
-    description:
-      text: "Meeting tomorrow"
-    summary:
-      text: "Tomorrow's Meeting"
-    attendee:
-      - email: "team@example.com"
-        commonName: "Team"
-  - action: "DISPLAY"
-    trigger:
-      duration: "-PT30M"  # 30 minutes before
-    description:
-      text: "Meeting in 30 minutes"
-  - action: "AUDIO"
-    trigger:
-      duration: "-PT5M"   # 5 minutes before
-    attach:
-      uri: "https://example.com/alarm.wav"
-      mediaType: "audio/wav"
-```
-
 ### Duration Format Reference
 Duration values use ISO 8601 duration format:
 - `PT15M` = 15 minutes
@@ -348,185 +250,155 @@ Duration values use ISO 8601 duration format:
 - `-PT15M` = 15 minutes before (negative for "before")
 - `PT15M` = 15 minutes after (positive for "after")
 
-### Supported Alarm Actions
-- **DISPLAY**: Shows a popup or notification in calendar applications
-- **EMAIL**: Sends email reminders to specified attendees
-- **AUDIO**: Plays a sound file (requires `attach` with audio file URI)
+## Known Issues
 
+### No folding of long lines
 
-Specification
--------------
+Due to the way the templates work, we do not fold long lines. However, this is actually fine as the RFC writes *SHOULD* instead of *MUST*:
 
-- RFC 5545:
-  [Internet Calendaring and Scheduling Core Object Specification (iCalendar)](https://tools.ietf.org/html/rfc5545)
+> Lines of text SHOULD NOT be longer than 75 octets, excluding the line break. Long content lines SHOULD be split into a multiple line representations using a line "folding" technique.
 
-- RFC 7986:
-  [New Properties for iCalendar](https://tools.ietf.org/html/rfc7986)
+See: https://tools.ietf.org/html/rfc5545#section-3.1
 
+### No `CRLF` line termination
 
-Implementation Status
----------------------
+This is the one place where we knowingly break RFC compliance. While this is not correct per se, it hopefully is a minor issue with today's calendar software.
 
-Note: This list tracks the implementation by partial template snippets.
-      Some properties like 3.7.x are hardcoded in the top level templates.
-      The `Time Zone Component` is handled differently (see step 4 above).
+> The iCalendar object is organized into individual lines of text, called content lines. Content lines are delimited by a line break, which is a CRLF sequence (CR character followed by LF character).
 
+See: https://tools.ietf.org/html/rfc5545#section-3.1
+
+## Specification
+
+- RFC 5545: [Internet Calendaring and Scheduling Core Object Specification (iCalendar)](https://tools.ietf.org/html/rfc5545)
+- RFC 7986: [New Properties for iCalendar](https://tools.ietf.org/html/rfc7986)
+
+## Implementation Status
 
 From [rfc 5545](https://tools.ietf.org/html/rfc5545)
 
-3.2.  Property Parameters
+### 3.2. Property Parameters
 
-- [x]   3.2.1.  Alternate Text Representation
-- [x]   3.2.2.  Common Name
-- [ ]   3.2.3.  Calendar User Type
-- [ ]   3.2.4.  Delegators
-- [ ]   3.2.5.  Delegatees
-- [x]   3.2.6.  Directory Entry Reference
-- [ ]   3.2.7.  Inline Encoding
-- [x]   3.2.8.  Format Type
-- [ ]   3.2.9.  Free/Busy Time Type
-- [x]   3.2.10.  Language
-- [ ]   3.2.11.  Group or List Membership
-- [ ]   3.2.12.  Participation Status
-- [x]   3.2.13.  Recurrence Identifier Range
-- [ ]   3.2.14.  Alarm Trigger Relationship
-- [ ]   3.2.15.  Relationship Type
-- [ ]   3.2.16.  Participation Role
-- [ ]   3.2.17.  RSVP Expectation
-- [ ]   3.2.18.  Sent By
-- [x]   3.2.19.  Time Zone Identifier
-- [x]   3.2.20.  Value Data Types
+- [x] 3.2.1. Alternate Text Representation
+- [x] 3.2.2. Common Name
+- [ ] 3.2.3. Calendar User Type
+- [ ] 3.2.4. Delegators
+- [ ] 3.2.5. Delegatees
+- [x] 3.2.6. Directory Entry Reference
+- [ ] 3.2.7. Inline Encoding
+- [x] 3.2.8. Format Type
+- [ ] 3.2.9. Free/Busy Time Type
+- [x] 3.2.10. Language
+- [ ] 3.2.11. Group or List Membership
+- [ ] 3.2.12. Participation Status
+- [x] 3.2.13. Recurrence Identifier Range
+- [ ] 3.2.14. Alarm Trigger Relationship
+- [ ] 3.2.15. Relationship Type
+- [ ] 3.2.16. Participation Role
+- [ ] 3.2.17. RSVP Expectation
+- [ ] 3.2.18. Sent By
+- [x] 3.2.19. Time Zone Identifier
+- [x] 3.2.20. Value Data Types
 
-3.3.  Property Value Data Types
+### 3.3. Property Value Data Types
 
-- [ ]   3.3.1.  Binary
-- [x]   3.3.2.  Boolean
-- [x]   3.3.3.  Calendar User Address
-- [x]   3.3.4.  Date
-- [x]   3.3.5.  Date-Time
-- [x]   3.3.6.  Duration
-- [x]   3.3.7.  Float
-- [x]   3.3.8.  Integer
-- [ ]   3.3.9.  Period of Time
-- [x]   3.3.10.  Recurrence Rule
-- [x]   3.3.11.  Text
-- [x]   3.3.12.  Time
-- [x]   3.3.13.  URI
-- [ ]   3.3.14.  UTC Offset
+- [ ] 3.3.1. Binary
+- [x] 3.3.2. Boolean
+- [x] 3.3.3. Calendar User Address
+- [x] 3.3.4. Date
+- [x] 3.3.5. Date-Time
+- [x] 3.3.6. Duration
+- [x] 3.3.7. Float
+- [x] 3.3.8. Integer
+- [ ] 3.3.9. Period of Time
+- [x] 3.3.10. Recurrence Rule
+- [x] 3.3.11. Text
+- [x] 3.3.12. Time
+- [x] 3.3.13. URI
+- [ ] 3.3.14. UTC Offset
 
-3.6.  Calendar Components
+### 3.6. Calendar Components
 
-- [x]   3.6.1.  Event Component
-- [ ]   3.6.2.  To-Do Component
-- [ ]   3.6.3.  Journal Component
-- [ ]   3.6.4.  Free/Busy Component
-- [ ]   3.6.5.  Time Zone Component
-- [x]   3.6.6.  Alarm Component
+- [x] 3.6.1. Event Component
+- [ ] 3.6.2. To-Do Component
+- [ ] 3.6.3. Journal Component
+- [ ] 3.6.4. Free/Busy Component
+- [ ] 3.6.5. Time Zone Component
+- [x] 3.6.6. Alarm Component
 
-3.7.  Calendar Properties
+### 3.8. Component Properties
 
-- [ ]   3.7.1.  Calendar Scale
-- [ ]   3.7.2.  Method
-- [ ]   3.7.3.  Product Identifier
-- [ ]   3.7.4.  Version
+#### 3.8.1. Descriptive Component Properties
 
-3.8.  Component Properties
+- [ ] 3.8.1.1. Attachment
+- [ ] 3.8.1.2. Categories
+- [x] 3.8.1.3. Classification
+- [x] 3.8.1.4. Comment
+- [x] 3.8.1.5. Description
+- [x] 3.8.1.6. Geographic Position
+- [x] 3.8.1.7. Location
+- [ ] 3.8.1.8. Percent Complete
+- [ ] 3.8.1.9. Priority
+- [ ] 3.8.1.10. Resources
+- [x] 3.8.1.11. Status
+- [x] 3.8.1.12. Summary
 
-3.8.1.  Descriptive Component Properties
+#### 3.8.2. Date and Time Component Properties
 
-- [ ]   3.8.1.1.  Attachment
-- [ ]   3.8.1.2.  Categories
-- [x]   3.8.1.3.  Classification
-- [x]   3.8.1.4.  Comment
-- [x]   3.8.1.5.  Description
-- [x]   3.8.1.6.  Geographic Position
-- [x]   3.8.1.7.  Location
-- [ ]   3.8.1.8.  Percent Complete
-- [ ]   3.8.1.9.  Priority
-- [ ]   3.8.1.10.  Resources
-- [x]   3.8.1.11.  Status
-- [x]   3.8.1.12.  Summary
+- [ ] 3.8.2.1. Date-Time Completed
+- [x] 3.8.2.2. Date-Time End
+- [ ] 3.8.2.3. Date-Time Due
+- [x] 3.8.2.4. Date-Time Start
+- [x] 3.8.2.5. Duration
+- [ ] 3.8.2.6. Free/Busy Time
+- [x] 3.8.2.7. Time Transparency
 
-3.8.2.  Date and Time Component Properties
+#### 3.8.4. Relationship Component Properties
 
-- [ ]   3.8.2.1.  Date-Time Completed
-- [x]   3.8.2.2.  Date-Time End
-- [ ]   3.8.2.3.  Date-Time Due
-- [x]   3.8.2.4.  Date-Time Start
-- [x]   3.8.2.5.  Duration
-- [ ]   3.8.2.6.  Free/Busy Time
-- [x]   3.8.2.7.  Time Transparency
+- [ ] 3.8.4.1. Attendee
+- [x] 3.8.4.2. Contact
+- [x] 3.8.4.3. Organizer
+- [x] 3.8.4.4. Recurrence ID
+- [ ] 3.8.4.5. Related To
+- [x] 3.8.4.6. Uniform Resource Locator
+- [x] 3.8.4.7. Unique Identifier
 
-3.8.3.  Time Zone Component Properties
+#### 3.8.5. Recurrence Component Properties
 
-- [ ]   3.8.3.1.  Time Zone Identifier
-- [ ]   3.8.3.2.  Time Zone Name
-- [ ]   3.8.3.3.  Time Zone Offset From
-- [ ]   3.8.3.4.  Time Zone Offset To
-- [ ]   3.8.3.5.  Time Zone URL
+- [ ] 3.8.5.1. Exception Date-Times
+- [ ] 3.8.5.2. Recurrence Date-Times
+- [x] 3.8.5.3. Recurrence Rule
 
-3.8.4.  Relationship Component Properties
+#### 3.8.7. Change Management Component Properties
 
-- [ ]   3.8.4.1.  Attendee
-- [x]   3.8.4.2.  Contact
-- [x]   3.8.4.3.  Organizer
-- [x]   3.8.4.4.  Recurrence ID
-- [ ]   3.8.4.5.  Related To
-- [x]   3.8.4.6.  Uniform Resource Locator
-- [x]   3.8.4.7.  Unique Identifier
+- [x] 3.8.7.1. Date-Time Created
+- [x] 3.8.7.2. Date-Time Stamp
+- [x] 3.8.7.3. Last Modified
+- [x] 3.8.7.4. Sequence Number
 
-3.8.5.  Recurrence Component Properties
+From [rfc 7986](https://tools.ietf.org/html/rfc7986)
 
-- [ ]   3.8.5.1.  Exception Date-Times
-- [ ]   3.8.5.2.  Recurrence Date-Times
-- [x]   3.8.5.3.  Recurrence Rule
+### 5. Properties
 
-3.8.6.  Alarm Component Properties
+- [x] 5.1. NAME Property
+- [x] 5.2. DESCRIPTION Property
+- [x] 5.3. UID Property
+- [x] 5.4. LAST-MODIFIED Property
+- [x] 5.5. URL Property
+- [ ] 5.6. CATEGORIES Property
+- [x] 5.7. REFRESH-INTERVAL Property
+- [x] 5.8. SOURCE Property
+- [x] 5.9. COLOR Property
+- [x] 5.10. IMAGE Property
+- [ ] 5.11. CONFERENCE Property
 
-- [ ]   3.8.6.1.  Action
-- [ ]   3.8.6.2.  Repeat Count
-- [ ]   3.8.6.3.  Trigger
+### 6. Property Parameters
 
-3.8.7.  Change Management Component Properties
+- [x] 6.1. DISPLAY Property Parameter
+- [x] 6.2. EMAIL Property Parameter
+- [ ] 6.3. FEATURE Property Parameter
+- [ ] 6.4. LABEL Property Parameter
 
-- [x]   3.8.7.1.  Date-Time Created
-- [x]   3.8.7.2.  Date-Time Stamp
-- [x]   3.8.7.3.  Last Modified
-- [x]   3.8.7.4.  Sequence Number
-
-3.8.8.  Miscellaneous Component Properties
-
-- [ ]   3.8.8.1.  IANA Properties
-- [ ]   3.8.8.2.  Non-Standard Properties
-- [ ]   3.8.8.3.  Request Status
-
-
-From [rfc 7986]( https://tools.ietf.org/html/rfc7986)
-
-5.  Properties
-
-- [x]   5.1.  NAME Property
-- [x]   5.2.  DESCRIPTION Property
-- [x]   5.3.  UID Property
-- [x]   5.4.  LAST-MODIFIED Property
-- [x]   5.5.  URL Property
-- [ ]   5.6.  CATEGORIES Property
-- [x]   5.7.  REFRESH-INTERVAL Property
-- [x]   5.8.  SOURCE Property
-- [x]   5.9.  COLOR Property
-- [x]   5.10.  IMAGE Property
-- [ ]   5.11.  CONFERENCE Property
-
-6.  Property Parameters
-
-- [x]   6.1.  DISPLAY Property Parameter
-- [x]   6.2.  EMAIL Property Parameter
-- [ ]   6.3.  FEATURE Property Parameter
-- [ ]   6.4.  LABEL Property Parameter
-
-
-Etc
 ---
 
-Hopefully, this whole project will some day be superseded by something
-better, maybe even directly built into Hugo.
+*This [hugo theme component](https://gohugo.io/hugo-modules/theme-components/) was scaffolded with the [cookiecutter-hugo-theme-component](https://github.com/devidw/cookiecutter-hugo-theme-component) template.*
