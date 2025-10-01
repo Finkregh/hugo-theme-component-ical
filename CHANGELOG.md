@@ -2,6 +2,12 @@
 All notable changes to this project will be documented in this file. See [conventional commits](https://www.conventionalcommits.org/) for commit guidelines.
 
 - - -
+## [1.0.1](https://https://github.com/finkregh/hugo-theme-component-ical@/compare/f760dd52cde72c2383891d0b60ab24d27ff4d9c4..1.0.1) - 2025-10-01
+#### Bug Fixes
+- wrong path to ics in js - ([f760dd5](https://https://github.com/finkregh/hugo-theme-component-ical@/commit/f760dd52cde72c2383891d0b60ab24d27ff4d9c4)) - Oluf Lorenzen
+
+- - -
+
 ## [1.0.0](https://https://github.com/finkregh/hugo-theme-component-ical@/compare/33eb74923a798a664a0c3d08ea73c369915c7c74..1.0.0) - 2025-10-01
 #### Continuous Integration
 - add config - ([7a746a0](https://https://github.com/finkregh/hugo-theme-component-ical@/commit/7a746a02ed99218732093c2b4238b4f73c635b89)) - Oluf Lorenzen
