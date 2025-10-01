@@ -1,3 +1,7 @@
+.github/exampleSite/package-lock.json
+.github/exampleSite/package.hugo.json
+.github/exampleSite/package.json
+
 # OS
 .DS_STORE
 # Created by https://www.toptal.com/developers/gitignore/api/python

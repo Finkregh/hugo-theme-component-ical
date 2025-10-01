@@ -121,7 +121,7 @@ If you do not have npm installed a pre-built file is also available which you ca
 > This has been created manually and will not be updated with each release, use with caution!
 
 ```text
-{{ $prebuilt := resources.Get "js/vendor/finkregh/ical/minified.min.babfb8f7eb7d4657b2bd086e76d99acf2ba21f7c6b1a1c5edd63f50506e80176" | resources.Fingerprint "sha256"}}
+{{ $prebuilt := resources.Get "js/vendor/finkregh/ical/minified.min.2c0b8eb566757daf33d80723a369c40de708920b6faeb3f6016302e4d986635d" | resources.Fingerprint "sha256"}}
 <script src="{{ $prebuilt.Permalink }}" type="module" defer></script>
 ```
 

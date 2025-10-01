@@ -24,7 +24,7 @@ document.addEventListener('DOMContentLoaded', function () {
         editable: true,
         dayMaxEvents: true, // allow "more" link when too many events
         events: {
-            url: window.location.pathname, // This will be the iCal feed URL
+            url: window.location.pathname + '/calendar.ics', // This will be the iCal feed URL
             format: 'ics' // important!
         }
     });
