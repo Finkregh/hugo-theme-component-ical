@@ -2,6 +2,12 @@
 All notable changes to this project will be documented in this file. See [conventional commits](https://www.conventionalcommits.org/) for commit guidelines.
 
 - - -
+## [1.1.0](https://https://github.com/finkregh/hugo-theme-component-ical@/compare/b1a8766719537ad4dabfa68023cea8677ed8c370..1.1.0) - 2025-10-01
+#### Features
+- allow selecting all locales - ([b1a8766](https://https://github.com/finkregh/hugo-theme-component-ical@/commit/b1a8766719537ad4dabfa68023cea8677ed8c370)) - Oluf Lorenzen
+
+- - -
+
 ## [1.0.1](https://https://github.com/finkregh/hugo-theme-component-ical@/compare/f760dd52cde72c2383891d0b60ab24d27ff4d9c4..1.0.1) - 2025-10-01
 #### Bug Fixes
 - wrong path to ics in js - ([f760dd5](https://https://github.com/finkregh/hugo-theme-component-ical@/commit/f760dd52cde72c2383891d0b60ab24d27ff4d9c4)) - Oluf Lorenzen
