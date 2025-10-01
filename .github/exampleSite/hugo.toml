@@ -1,0 +1,41 @@
+baseURL = 'https://example.org/'
+languageCode = 'en-us'
+title = 'Demo of hugo-theme-component-ical'
+
+# required for the CI tests
+themesDir = '../../..'
+
+[module]
+# This theme component
+[[module.imports]]
+path = 'hugo-theme-component-ical'
+# Use this in your own site
+# path = 'github.com/finkregh/hugo-theme-component-ical'
+
+# The base theme for the demo site
+[[module.imports]]
+    path = 'golang.foundata.com/hugo-theme-dev'
+
+# Define calendar output via cascading front matter for event pages only
+[outputs]
+page = ["HTML", "Calendar", "CalendarWithAlarms"]
+section = ["HTML", "Calendar", "CalendarWithAlarms"]
+
+
+[outputFormats.Calendar]
+baseName = "calendar"
+mediaType = "text/calendar"
+isPlainText = true
+permalinkable = true
+suffix = "ics"
+# Avoid webcal scheme
+protocol = "https://"
+
+[outputFormats.CalendarWithAlarms]
+baseName = "calendar-alarms"
+mediaType = "text/calendar"
+isPlainText = true
+permalinkable = true
+suffix = "ics"
+# Avoid webcal scheme
+protocol = "https://"
