@@ -8,41 +8,47 @@ This project provides a set of simple templates for [Hugo](https://gohugo.io/) t
 
 ## Installation
 
-### 1. Add submodule
+### 1. Add Hugo module
 
-Clone this theme component to your project's `themes` directory:
+Add this theme component as a Hugo module to your project's `hugo.toml` config file:
 
-```bash
-git submodule add https://github.com/finkregh/hugo-theme-component-ical ./themes/hugo-theme-component-ical
+```toml
+[module]
+[[module.imports]]
+path = 'github.com/finkregh/hugo-theme-component-ical'
 ```
 
-### 2. Add config
+### 2. Configure output formats
 
-Add this theme component to your list of themes inside your project's `config` file (either `.yaml`, `.toml` or `.json`):
-
-| Format | Syntax |
-|--------|--------|
-| `config.yaml` | ```yaml<br>theme:<br>  - "…"<br>  - "hugo-theme-component-ical"<br>  - "…"<br>``` |
-| `config.toml` | ```toml<br>theme = ["…", "hugo-theme-component-ical", "…"]<br>``` |
-| `config.json` | ```json<br>"theme": ["…", "hugo-theme-component-ical", "…"]<br>``` |
-
-### 3. Configure output formats
-
-You need to configure the `Calendar` output format in your config:
+You need to configure the `Calendar` and `CalendarWithAlarms` output formats in your config:
 
 ```toml
 [outputs]
-  page = ["HTML", "Calendar"]
-  section = ["HTML", "Calendar"]
+  page = ["HTML", "Calendar", "CalendarWithAlarms"]
+  section = ["HTML", "Calendar", "CalendarWithAlarms"]
 
 [outputFormats.Calendar]
   baseName = "calendar"
-  # Avoid unencrypted webcal scheme
-  protocol = "https://"
+  mediaType = "text/calendar"
+  isPlainText = true
   permalinkable = true
+  suffix = "ics"
+  # Avoid webcal scheme
+  protocol = "https://"
+
+[outputFormats.CalendarWithAlarms]
+  baseName = "calendar-alarms"
+  mediaType = "text/calendar"
+  isPlainText = true
+  permalinkable = true
+  suffix = "ics"
+  # Avoid webcal scheme
+  protocol = "https://"
 ```
 
-### 4. Use the partials
+The `CalendarWithAlarms` output format generates iCalendar files that include alarm/reminder components (VALARM) in addition to the event data. This allows calendar applications to display notifications and reminders for events at specified times before the event starts.
+
+### 3. Use the partials
 
 The theme component provides iCalendar partials that you can use in your templates. The partials are located in the vendor namespace at `partials/vendor/finkregh/ical/`.
 
@@ -57,13 +63,101 @@ Example usage in your templates:
 {{ partial "vendor/finkregh/ical/comp_event.ics" . }}
 ```
 
-### 5. Link to calendar files
+### 4. Link to calendar files
 
 Link the generated `ics` files for download on your `html` pages:
 
 ```html
 {{ with .OutputFormats.Get "Calendar" }}
     <a href="{{ .RelPermalink }}" type="text/calendar">{{ $.Title }}</a>
+{{ end }}
+```
+
+For calendars with alarms:
+
+```html
+{{ with .OutputFormats.Get "CalendarWithAlarms" }}
+    <a href="{{ .RelPermalink }}" type="text/calendar">{{ $.Title }} (with alarms)</a>
+{{ end }}
+```
+
+## Example Templates
+
+Here are minimal example templates for event pages:
+
+### Single Event Template (`single.html`)
+
+```html
+{{ define "main" }}
+
+<h1>{{ .Title }}</h1>
+
+{{ .Content }}
+
+<h2>Event meta data</h2>
+<ul>
+  <li>Start: {{ .Params.startDate }}</li>
+  <li>End: {{ .Params.endDate }}</li>
+  {{ if .Params.where }}
+  <li>Location: {{ .Params.where }}</li>
+  {{ end }} {{ if .Params.orga }}
+  <li>Orga: {{ .Params.orga }}</li>
+  {{ end }} {{ if .Params.orgaEmail }}
+  <li>EMail: {{ .Params.orgaEmail }}</li>
+  {{ end }} {{ if .Params.cancelled }}
+  <li>Cancelled: {{ .Params.cancelled }}</li>
+  {{ end }} {{ if .Params.recurrenceRule }}
+  <li>
+    Recurrence Rules:<br />
+    <ul>
+      {{ range $k, $v := .Params.recurrenceRule }}
+      <li>{{ $k }}: {{ $v }}</li>
+      {{ end }}
+    </ul>
+  </li>
+  {{ end }}
+</ul>
+
+<p>
+  {{ with .OutputFormats.Get "Calendar" }} Get the calendar file for this event:
+  <a href="{{ .RelPermalink }}" type="text/calendar">{{ $.Title }}.ics</a>
+  {{ end }}
+</p>
+
+{{ end }}
+```
+
+### Event List Template (`list.html`)
+
+```html
+{{ define "main" }}
+
+<h1>{{ .Title }}</h1>
+{{ .Content }}
+
+{{ with .Pages }}
+<ul>
+  {{ range . }}
+  <li>
+    <a href="{{ .Permalink }}">{{ .Title }}</a>
+  </li>
+  {{ end }}
+</ul>
+{{ end }}
+
+<p>
+  {{ with .OutputFormats.Get "Calendar" }}
+  Get the calendar file with all events (without alarms)
+  <a href="{{ .RelPermalink }}" type="text/calendar">here</a>.
+  {{ end }}
+</p>
+<p>
+  {{ with .OutputFormats.Get "CalendarWithAlarms" }}
+  Get the calendar file with all events (including alarms)
+  <a href="{{ .RelPermalink }}" type="text/calendar">here</a>.
+  {{ end }}
+</p>
+
 {{ end }}
 ```
 
