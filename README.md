@@ -18,6 +18,14 @@ Add this theme component as a Hugo module to your project's `hugo.toml` config f
 path = 'github.com/finkregh/hugo-theme-component-ical'
 ```
 
+Fetch or update the configured modules:
+
+```shell
+hugo mod get -u ./...
+```
+
+If you do not have npm installed and still want the entries shown as calendar scroll down to (5.).
+
 ### 2. Configure output formats
 
 You need to configure the `Calendar` and `CalendarWithAlarms` output formats in your config:
@@ -48,21 +56,6 @@ You need to configure the `Calendar` and `CalendarWithAlarms` output formats in 
 
 The `CalendarWithAlarms` output format generates iCalendar files that include alarm/reminder components (VALARM) in addition to the event data. This allows calendar applications to display notifications and reminders for events at specified times before the event starts.
 
-### 3. Use the partials
-
-The theme component provides iCalendar partials that you can use in your templates. The partials are located in the vendor namespace at `partials/vendor/finkregh/ical/`.
-
-Create template files for the `Calendar` output format in your theme or site:
-
-- `single.calendar.ics` - for individual pages
-- `list.calendar.ics` - for list pages
-
-Example usage in your templates:
-
-```html
-{{ partial "vendor/finkregh/ical/comp_event.ics" . }}
-```
-
 ### 4. Link to calendar files
 
 Link the generated `ics` files for download on your `html` pages:
@@ -81,19 +74,75 @@ For calendars with alarms:
 {{ end }}
 ```
 
+### 5. (optional) display calendar via javascript
+
+Some javascript libraries are used to display the calendar entries visually.
+
+If you do not want to display the calendar entries on your website you can skip this section.
+
+#### With npm
+
+```shell
+# Initial setup
+hugo mod npm pack
+npm update
+
+# To get the latest version later
+npm update
+```
+
+The generated (minified) javascript file can be served as a separate file or directly inside the respective webpage:
+
+```html
+<head>
+    [...]
+    {{ if and (.OutputFormats.Get "Calendar") (eq .Type "events") }}
+    <meta http-equiv="Content-Security-Policy" content="font-src data:" />
+
+    <!-- as separate file -->
+    {{ partial "events/javascript.html" . }}
+    <!-- OR inside the html -->
+    {{ partial "events/javascript-inline.html" . }}
+
+    {{ end }}
+    [...]
+</head>
+```
+
+Inline does not required an additional request, not-inline does make the HTML bigger. Decide for yourself what to use.
+
+Either way the javascript will only be included in places where a calendar entry exists and it will not require loading anything from a third party (besides when building the static files).
+
+#### Without npm
+
+If you do not have npm installed a pre-built file is also available which you can insert into your templates:
+
+> [!WARNING]
+> This has been created manually and will not be updated with each release, use with caution!
+
+```text
+{{ $prebuilt := resources.Get "js/vendor/finkregh/ical/minified.min.babfb8f7eb7d4657b2bd086e76d99acf2ba21f7c6b1a1c5edd63f50506e80176" | resources.Fingerprint "sha256"}}
+<script src="{{ $prebuilt.Permalink }}" type="module" defer></script>
+```
+
+Alternatlively load the javascript from a third party (the versions here might be outdated too!):
+
+```html
+<script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.19/index.global.min.js"></script>
+<script src=" https://cdn.jsdelivr.net/npm/@fullcalendar/icalendar@6.1.19/index.global.min.js "></script>
+<script src="https://cdn.jsdelivr.net/npm/@fullcalendar/core@6.1.19/locales-all.global.min.js"></script>
+<script src="https://unpkg.com/ical.js/dist/ical.es5.min.cjs"></script>
+{{ $themejs := resources.Get "js/vendor/finkregh/ical/script.js" | js.Build $options | resources.Minify | resources.Fingerprint "sha256"}}
+<script src="{{ $themejs.Permalink }}" type="module" defer></script>
+```
+
 ## Example Templates
 
-Here are minimal example templates for event pages:
+Here are example templates for event pages, they are also used in the [demo](.github/exampleSite/layouts/events/):
 
 ### Single Event Template (`single.html`)
 
 ```html
-{{ define "main" }}
-
-<h1>{{ .Title }}</h1>
-
-{{ .Content }}
-
 <h2>Event meta data</h2>
 <ul>
   <li>Start: {{ .Params.startDate }}</li>
@@ -123,28 +172,11 @@ Here are minimal example templates for event pages:
   <a href="{{ .RelPermalink }}" type="text/calendar">{{ $.Title }}.ics</a>
   {{ end }}
 </p>
-
-{{ end }}
 ```
 
 ### Event List Template (`list.html`)
 
 ```html
-{{ define "main" }}
-
-<h1>{{ .Title }}</h1>
-{{ .Content }}
-
-{{ with .Pages }}
-<ul>
-  {{ range . }}
-  <li>
-    <a href="{{ .Permalink }}">{{ .Title }}</a>
-  </li>
-  {{ end }}
-</ul>
-{{ end }}
-
 <p>
   {{ with .OutputFormats.Get "Calendar" }}
   Get the calendar file with all events (without alarms)
@@ -161,23 +193,46 @@ Here are minimal example templates for event pages:
 {{ end }}
 ```
 
-## About
+## Event specification
 
-This project does *not* provide a complete implementation of all features the iCalendar specification contains. It rather follows the 80/20 rule and with a special focus on *event data*.
+The events are specified in the fontmatter, all parts are optional from the templating perspective, you as the user need to be aware what is required.
 
-All the templates strive to be RFC compliant and produce output files that adhere to the specification. No special hacks are included to work around broken calendar software or the like.
+The time format is `{YEAR}-{MONTH}-{DAY}T{HOUR}:{MINUTE}:{SECOND}+{TIMEZONE_HOUR}:{TIMEZONE_MINUTE}`.
 
-This project does not provide a full turn-key solution and some assembly will be required in most cases. Understanding of Hugo and especially Hugo's [templating system](https://gohugo.io/templates/) is still recommended.
+```yaml
+---
+title: Important Event!11
 
-The system is highly flexible and should adapt or extend easily to more exotic use cases. On some spots the chosen defaults might be a bit opinionated.
+# First occurrence, this also defines the timeframe for the calendar entry
+startDate: 2024-01-08T09:00:00+01:00
+endDate:   2024-01-08T09:30:00+01:00
+# Location
+where: "Meeting Room 1, Main Office"
+# Who created the event
+orga: "Scrum Master"
+# Contact
+orgaEmail: "scrummaster@example.org"
+---
+```
 
-The partial template snippets from this project should help to easily avoid the most common mistakes when creating `ics` files. However, there is absolutely no validation, neither on the syntactic nor the semantic level. You can always use an external [validation service](https://icalendar.org/validator.html) to check the output.
+You might want to look into the specifications (RFC 5545: [Internet Calendaring and Scheduling Core Object Specification (iCalendar)](https://tools.ietf.org/html/rfc5545), RFC 7986: [New Properties for iCalendar](https://tools.ietf.org/html/rfc7986)) as the examples here only show part of what is possible.
 
-## RRULE Examples
+### Recurrence
 
-The RRULE implementation supports YEARLY and MONTHLY frequencies with BYMONTH, BYDAY, and BYSETPOS components. Here are some examples of how to use recurrence rules in your Hugo context:
+The RRULE implementation supports YEARLY and MONTHLY frequencies with BYMONTH, BYDAY, and BYSETPOS components.
 
-### Third Sunday of April (yearly)
+#### Every monday
+
+```yaml
+
+# Every Monday
+recurrenceRule:
+  freq: "WEEKLY"
+  byDay: "MO"
+```
+
+#### Third Sunday of April (yearly)
+
 ```yaml
 recurrenceRule:
   freq: "YEARLY"
@@ -185,9 +240,11 @@ recurrenceRule:
   byDay: "SU"
   bySetPos: 3
 ```
+
 Generates: `RRULE:FREQ=YEARLY;BYMONTH=4;BYDAY=SU;BYSETPOS=3`
 
-### First and second Monday of October (yearly)
+#### First and second Monday of October (yearly)
+
 ```yaml
 recurrenceRule:
   freq: "YEARLY"
@@ -195,9 +252,11 @@ recurrenceRule:
   byDay: "MO"
   bySetPos: [1, 2]
 ```
+
 Generates: `RRULE:FREQ=YEARLY;BYMONTH=10;BYDAY=MO;BYSETPOS=1,2`
 
-### Every last Sunday of every 3 months
+#### Every last Sunday of every 3 months
+
 ```yaml
 recurrenceRule:
   freq: "MONTHLY"
@@ -205,13 +264,18 @@ recurrenceRule:
   byDay: "SU"
   bySetPos: -1
 ```
+
 Generates: `RRULE:FREQ=MONTHLY;INTERVAL=3;BYDAY=SU;BYSETPOS=-1`
 
-## Alarm Examples
+### Alarm settings
 
-The VALARM implementation supports DISPLAY, EMAIL, and AUDIO alarms with flexible trigger configurations. Here are examples of how to configure alarms in your Hugo context:
+The VALARM implementation supports DISPLAY, EMAIL, and AUDIO alarms with flexible trigger configurations.
 
-### Display Alarm (Popup Reminder)
+> [!NOTE]
+> I did not test these, so try not to wake up (others) in the middle of the night ;-)
+
+#### Display Alarm (Popup Reminder)
+
 ```yaml
 alarms:
   - action: "DISPLAY"
@@ -222,7 +286,8 @@ alarms:
       lang: "en"
 ```
 
-### Email Alarm with Multiple Recipients
+#### Email Alarm with Multiple Recipients
+
 ```yaml
 alarms:
   - action: "EMAIL"
@@ -235,20 +300,35 @@ alarms:
       text: "Meeting Reminder"
       lang: "en"
     attendee:
-      - email: "john.doe@example.com"
-        commonName: "John Doe"
+      - email: "Ahmed.doe@example.com"
+        commonName: "Ahmed Doe"
       - email: "jane.smith@example.com"
         commonName: "Jane Smith"
 ```
 
-### Duration Format Reference
+#### Duration Format Reference
+
 Duration values use ISO 8601 duration format:
+
 - `PT15M` = 15 minutes
 - `PT1H` = 1 hour
 - `P1D` = 1 day
 - `P1W` = 1 week
 - `-PT15M` = 15 minutes before (negative for "before")
 - `PT15M` = 15 minutes after (positive for "after")
+
+## About
+
+This project does *not* provide a complete implementation of all features the iCalendar specification contains. It rather follows the 80/20 rule and with a special focus on *event data*.
+
+All the templates strive to be RFC compliant and produce output files that adhere to the specification. No special hacks are included to work around broken calendar software or the like.
+
+This project does not provide a full turn-key solution and some assembly will be required in most cases. Understanding of Hugo and especially Hugo's [templating system](https://gohugo.io/templates/) is still recommended.
+
+The system is highly flexible and should adapt or extend easily to more exotic use cases. On some spots the chosen defaults might be a bit opinionated.
+
+The partial template snippets from this project should help to easily avoid the most common mistakes when creating `ics` files. However, there is absolutely no validation, neither on the syntactic nor the semantic level. You can always use an external [validation service](https://icalendar.org/validator.html) to check the output.
+
 
 ## Known Issues
 

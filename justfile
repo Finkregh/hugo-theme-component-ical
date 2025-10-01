@@ -4,18 +4,27 @@ test:  hugo_go_modules build_hugo run_ics_validation
 test_debug:  hugo_go_modules build_hugo_debug run_ics_validation
     @echo "Running debug..."
 
+localserve_build:  hugo_go_modules build_hugo_localhost
+    @echo "Starting local server at https://localhost:4443"
+    python3 server.py
+
 [working-directory: '.github/exampleSite']
 hugo_go_modules:
     hugo mod get -u ./...
     hugo mod tidy
+    hugo mod npm pack
+    npm update
 
 [working-directory: '.github/exampleSite']
 build_hugo:
-    hugo build --quiet --cleanDestinationDir
+    hugo build --quiet --cleanDestinationDir --baseURL https://finkregh.github.io/hugo-theme-component-ical/
 
 [working-directory: '.github/exampleSite']
 build_hugo_debug:
-    hugo build --logLevel debug --cleanDestinationDir
+    hugo build --logLevel debug --cleanDestinationDir --baseURL https://finkregh.github.io/hugo-theme-component-ical/
+
+build_hugo_localhost:
+    hugo build --baseURL https://localhost:4443/ --cleanDestinationDir
 
 [working-directory: '.github']
 run_ics_validation: build_hugo

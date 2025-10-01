@@ -1,0 +1,4 @@
+    {{ $defines := dict "process.env.NODE_ENV" "production" }}
+    {{ $options := dict "targetPath" "js/vendor/finkregh/ical/minified.js" "defines" $defines }}
+    {{ $built := resources.Get "js/vendor/finkregh/ical/script.js" | js.Build $options | resources.Minify | resources.Fingerprint "sha256"}}
+    <script type="module" defer>{{ $built.Content }}</script>
