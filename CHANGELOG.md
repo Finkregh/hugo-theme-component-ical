@@ -2,28 +2,28 @@
 All notable changes to this project will be documented in this file. See [conventional commits](https://www.conventionalcommits.org/) for commit guidelines.
 
 - - -
-## [1.1.0](https://https://github.com/finkregh/hugo-theme-component-ical@/compare/b1a8766719537ad4dabfa68023cea8677ed8c370..1.1.0) - 2025-10-01
+## [1.1.0](https://github.com/finkregh/hugo-theme-component-ical@/compare/b1a8766719537ad4dabfa68023cea8677ed8c370..1.1.0) - 2025-10-01
 #### Features
-- allow selecting all locales - ([b1a8766](https://https://github.com/finkregh/hugo-theme-component-ical@/commit/b1a8766719537ad4dabfa68023cea8677ed8c370)) - Oluf Lorenzen
+- allow selecting all locales - ([b1a8766](https://github.com/finkregh/hugo-theme-component-ical@/commit/b1a8766719537ad4dabfa68023cea8677ed8c370)) - Oluf Lorenzen
 
 - - -
 
-## [1.0.1](https://https://github.com/finkregh/hugo-theme-component-ical@/compare/f760dd52cde72c2383891d0b60ab24d27ff4d9c4..1.0.1) - 2025-10-01
+## [1.0.1](https://github.com/finkregh/hugo-theme-component-ical@/compare/f760dd52cde72c2383891d0b60ab24d27ff4d9c4..1.0.1) - 2025-10-01
 #### Bug Fixes
-- wrong path to ics in js - ([f760dd5](https://https://github.com/finkregh/hugo-theme-component-ical@/commit/f760dd52cde72c2383891d0b60ab24d27ff4d9c4)) - Oluf Lorenzen
+- wrong path to ics in js - ([f760dd5](https://github.com/finkregh/hugo-theme-component-ical@/commit/f760dd52cde72c2383891d0b60ab24d27ff4d9c4)) - Oluf Lorenzen
 
 - - -
 
-## [1.0.0](https://https://github.com/finkregh/hugo-theme-component-ical@/compare/33eb74923a798a664a0c3d08ea73c369915c7c74..1.0.0) - 2025-10-01
+## [1.0.0](https://github.com/finkregh/hugo-theme-component-ical@/compare/33eb74923a798a664a0c3d08ea73c369915c7c74..1.0.0) - 2025-10-01
 #### Continuous Integration
-- add config - ([7a746a0](https://https://github.com/finkregh/hugo-theme-component-ical@/commit/7a746a02ed99218732093c2b4238b4f73c635b89)) - Oluf Lorenzen
+- add config - ([7a746a0](https://github.com/finkregh/hugo-theme-component-ical@/commit/7a746a02ed99218732093c2b4238b4f73c635b89)) - Oluf Lorenzen
 #### Features
-- provide templates for show calendar via js, cleanup docs - ([e23b7a0](https://https://github.com/finkregh/hugo-theme-component-ical@/commit/e23b7a0aaab47a0314f42fef4365ed5c2611be79)) - Oluf Lorenzen
-- alarm component - ([5020cc5](https://https://github.com/finkregh/hugo-theme-component-ical@/commit/5020cc5d874304c451d144e6c7f4e58b24ea9b7c)) - Oluf Lorenzen
-- add recurrence - ([9dca73b](https://https://github.com/finkregh/hugo-theme-component-ical@/commit/9dca73bc82616826ead1609d7a683c57b9d8eca2)) - Oluf Lorenzen
-- add recurrence - ([33eb749](https://https://github.com/finkregh/hugo-theme-component-ical@/commit/33eb74923a798a664a0c3d08ea73c369915c7c74)) - Oluf Lorenzen
+- provide templates for show calendar via js, cleanup docs - ([e23b7a0](https://github.com/finkregh/hugo-theme-component-ical@/commit/e23b7a0aaab47a0314f42fef4365ed5c2611be79)) - Oluf Lorenzen
+- alarm component - ([5020cc5](https://github.com/finkregh/hugo-theme-component-ical@/commit/5020cc5d874304c451d144e6c7f4e58b24ea9b7c)) - Oluf Lorenzen
+- add recurrence - ([9dca73b](https://github.com/finkregh/hugo-theme-component-ical@/commit/9dca73bc82616826ead1609d7a683c57b9d8eca2)) - Oluf Lorenzen
+- add recurrence - ([33eb749](https://github.com/finkregh/hugo-theme-component-ical@/commit/33eb74923a798a664a0c3d08ea73c369915c7c74)) - Oluf Lorenzen
 #### Miscellaneous Chores
-- add renovate config - ([a11bbe6](https://https://github.com/finkregh/hugo-theme-component-ical@/commit/a11bbe6e6a65ef6b2a24ba34cefc48f615b7e133)) - Oluf Lorenzen
+- add renovate config - ([a11bbe6](https://github.com/finkregh/hugo-theme-component-ical@/commit/a11bbe6e6a65ef6b2a24ba34cefc48f615b7e133)) - Oluf Lorenzen
 
 - - -
 
