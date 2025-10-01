@@ -4,12 +4,12 @@ import dayGridPlugin from '@fullcalendar/daygrid';
 import timeGridPlugin from '@fullcalendar/timegrid';
 import listPlugin from '@fullcalendar/list';
 import iCalendarPlugin from '@fullcalendar/icalendar';
+import allLocales from '@fullcalendar/core/locales-all';
 
 document.addEventListener('DOMContentLoaded', function () {
     var initialLocaleCode = 'de';
     var localeSelectorEl = document.getElementById('locale-selector');
     var calendarEl = document.getElementById('calendar');
-
     var calendar = new Calendar(calendarEl, {
         plugins: [dayGridPlugin, timeGridPlugin, listPlugin, iCalendarPlugin],
         headerToolbar: {
@@ -17,6 +17,7 @@ document.addEventListener('DOMContentLoaded', function () {
             center: 'title',
             right: 'dayGridMonth,timeGridWeek,timeGridDay,listMonth'
         },
+        locales: allLocales,
         locale: initialLocaleCode,
         buttonIcons: false, // show the prev/next text
         weekNumbers: true,
@@ -28,6 +29,7 @@ document.addEventListener('DOMContentLoaded', function () {
             format: 'ics' // important!
         }
     });
+    calendar.setOption('locale', 'de-de');
 
     calendar.render();
 
