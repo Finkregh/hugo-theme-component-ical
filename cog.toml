@@ -1,0 +1,29 @@
+from_latest_tag = false
+ignore_merge_commits = true
+disable_changelog = false
+generate_mono_repository_global_tag = true
+branch_whitelist = []
+skip_ci = "[skip ci]"
+skip_untracked = false
+pre_package_bump_hooks = []
+post_package_bump_hooks = []
+pre_bump_hooks = []
+post_bump_hooks = [
+    "git push",
+    "git push --tags",
+]
+
+[changelog]
+path = "CHANGELOG.md"
+authors = []
+template = "remote"
+remote = "https://github.com"
+repository = "hugo-theme-component-ical@"
+owner = "finkregh"
+
+[commit_types]
+chore = { bump_patch = true }
+revert = { bump_minor = true }
+docs = { bump_patch = true }
+style = { bump_patch = true }
+perf = { bump_patch = true }
