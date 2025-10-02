@@ -2,6 +2,12 @@
 All notable changes to this project will be documented in this file. See [conventional commits](https://www.conventionalcommits.org/) for commit guidelines.
 
 - - -
+## [v0.0.1](https://github.com/finkregh/hugo-theme-component-ical@/compare/d72297b2aa54cf8f5a26d4ae83245ffb8ebd768e..v0.0.1) - 2025-10-02
+#### Miscellaneous Chores
+- add .editorconfig - ([d72297b](https://github.com/finkregh/hugo-theme-component-ical@/commit/d72297b2aa54cf8f5a26d4ae83245ffb8ebd768e)) - Oluf Lorenzen
+
+- - -
+
 ## [1.1.0](https://github.com/finkregh/hugo-theme-component-ical@/compare/b1a8766719537ad4dabfa68023cea8677ed8c370..1.1.0) - 2025-10-01
 #### Features
 - allow selecting all locales - ([b1a8766](https://github.com/finkregh/hugo-theme-component-ical@/commit/b1a8766719537ad4dabfa68023cea8677ed8c370)) - Oluf Lorenzen
