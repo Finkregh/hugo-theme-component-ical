@@ -2,6 +2,29 @@
 All notable changes to this project will be documented in this file. See [conventional commits](https://www.conventionalcommits.org/) for commit guidelines.
 
 - - -
+## [v2.0.0](https://github.com/finkregh/hugo-theme-component-ical@/compare/v0.0.1..v2.0.0) - 2025-10-02
+#### Continuous Integration
+- fix checkout - ([b256a7f](https://github.com/finkregh/hugo-theme-component-ical@/commit/b256a7f72d863f63e6d36b4efaef76226b585743)) - Oluf Lorenzen
+
+- - -
+
+## [v0.0.1](https://github.com/finkregh/hugo-theme-component-ical@/compare/0bdd44473b68347ff9532a591ea5a19dc1dc93a1..v0.0.1) - 2025-10-02
+#### Continuous Integration
+- add release workflow - ([c7355d7](https://github.com/finkregh/hugo-theme-component-ical@/commit/c7355d798f92c47f0ae0f39ffc9529766a6be1d1)) - Oluf Lorenzen
+- fix versioning - ([029ddc1](https://github.com/finkregh/hugo-theme-component-ical@/commit/029ddc18787c5801d96ad09ed30cbe662e1446f7)) - Oluf Lorenzen
+- fix changelog links - ([0d87158](https://github.com/finkregh/hugo-theme-component-ical@/commit/0d871580050f0affb094b1487723498a19a82d3b)) - Oluf Lorenzen
+- use Hugo extended - ([b2cb3b6](https://github.com/finkregh/hugo-theme-component-ical@/commit/b2cb3b64e7596d8ae1a3b317dee3c14fa8ef4c2c)) - Oluf Lorenzen
+#### Documentation
+- extend readme and demo - ([73bb496](https://github.com/finkregh/hugo-theme-component-ical@/commit/73bb496b1db5c452a96f7f7731951d4a550eccd2)) - Oluf Lorenzen
+#### Features
+- provide single/list event template - ([8ec28a5](https://github.com/finkregh/hugo-theme-component-ical@/commit/8ec28a54f8d3e514373f925384928d45e7e57608)) - Oluf Lorenzen
+#### Miscellaneous Chores
+- **(version)** v0.0.1 - ([72dabef](https://github.com/finkregh/hugo-theme-component-ical@/commit/72dabef2987ce5a54db660eae89b4db594dbc4d0)) - cog-bot
+- add .editorconfig - ([d72297b](https://github.com/finkregh/hugo-theme-component-ical@/commit/d72297b2aa54cf8f5a26d4ae83245ffb8ebd768e)) - Oluf Lorenzen
+- move files following hugo v0.146.0 - ([089f233](https://github.com/finkregh/hugo-theme-component-ical@/commit/089f23317b3f38b30e860817c47c240e079d3831)) - Oluf Lorenzen
+
+- - -
+
 ## [v0.0.1](https://github.com/finkregh/hugo-theme-component-ical@/compare/d72297b2aa54cf8f5a26d4ae83245ffb8ebd768e..v0.0.1) - 2025-10-02
 #### Miscellaneous Chores
 - add .editorconfig - ([d72297b](https://github.com/finkregh/hugo-theme-component-ical@/commit/d72297b2aa54cf8f5a26d4ae83245ffb8ebd768e)) - Oluf Lorenzen
