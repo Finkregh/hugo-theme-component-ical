@@ -12,7 +12,13 @@ jobs:
         with:
           fetch-depth: 0
       - name: Semver release
-        uses: cocogitto/cocogitto-action@v3.11
+        id: cog
+        uses: finkregh/cocogitto-action@output-version-changelog
         with:
           release: true
           check: false
+      - name: Release
+        uses: softprops/action-gh-release@v2.3.3
+        with:
+          body: ${{ steps.cog.outputs.changelog }}
+          tag_name: ${{ steps.cog.outputs.version }}

@@ -29,3 +29,4 @@ revert = { bump_minor = true }
 docs = { bump_patch = true }
 style = { bump_patch = true }
 perf = { bump_patch = true }
+ci = { bump_patch = true }
