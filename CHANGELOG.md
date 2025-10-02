@@ -2,6 +2,13 @@
 All notable changes to this project will be documented in this file. See [conventional commits](https://www.conventionalcommits.org/) for commit guidelines.
 
 - - -
+## [v2.0.1](https://github.com/finkregh/hugo-theme-component-ical@/compare/f8a9d6f8afb538a101a4e4b4bea29973ec6ae303..v2.0.1) - 2025-10-02
+#### Continuous Integration
+- ci-skip on bump - ([fa4c44c](https://github.com/finkregh/hugo-theme-component-ical@/commit/fa4c44c5dc66802a277282f811b0b27f84208366)) - Oluf Lorenzen
+- create release - ([f8a9d6f](https://github.com/finkregh/hugo-theme-component-ical@/commit/f8a9d6f8afb538a101a4e4b4bea29973ec6ae303)) - Oluf Lorenzen
+
+- - -
+
 ## [v2.0.0](https://github.com/finkregh/hugo-theme-component-ical@/compare/v0.0.1..v2.0.0) - 2025-10-02
 #### Continuous Integration
 - fix checkout - ([b256a7f](https://github.com/finkregh/hugo-theme-component-ical@/commit/b256a7f72d863f63e6d36b4efaef76226b585743)) - Oluf Lorenzen
