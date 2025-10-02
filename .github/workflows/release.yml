@@ -9,7 +9,10 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v5
+        with:
+          fetch-depth: 0
       - name: Semver release
         uses: cocogitto/cocogitto-action@v3.11
         with:
           release: true
+          check: false
