@@ -17,7 +17,7 @@ post_bump_hooks = [
 path = "CHANGELOG.md"
 authors = []
 template = "remote"
-remote = "https://github.com"
+remote = "github.com"
 repository = "hugo-theme-component-ical@"
 owner = "finkregh"
 
