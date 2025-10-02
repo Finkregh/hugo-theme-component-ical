@@ -1,16 +1,94 @@
+<!--
+    from <https://github.com/foundata/hugo-theme-dev/blob/v1.0.0/layouts/baseof.html>
+    copy here required to add the javascript for the calendar    
+-->
 <!DOCTYPE html>
-<html lang="{{ .Site.Language.Lang }}">
-  <head>
-    <title>{{ .Site.Title }} | {{ .Page.Title }}</title>
+<html lang="{{- .Site.Language | default `` -}}"
+      dir="{{- cond (.Params.rtl | default false) `rtl` `ltr` -}}"
+      class="no-js">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  {{/*
+    Remove no-js class from <html> tag by using JavaScript. .no-js can be used
+    to use unique CSS for no-javascript users. More information:
+    * https://www.paulirish.com/2009/avoiding-the-fouc-v3/#comment-3943313994
+    * https://developer.mozilla.org/en-US/docs/Learn/Tools_and_testing/Cross_browser_testing/Feature_detection
+  */}}
+  <script>(function(C){C.remove('no-js');C.add('js')})(document.documentElement.classList)</script>
+
+  <!-- Start calendar javascript -->
     {{ if and (.OutputFormats.Get "Calendar") (eq .Type "events") }}
     <meta http-equiv="Content-Security-Policy" content="font-src data:" />
     {{ partial "events/javascript.html" . }}
     {{ end }}
-    <meta charset="utf-8" />
-    {{ hugo.Generator }}
-  </head>
+<!-- End calendar javascript -->
 
-  <body>
-    {{ block "main" . }} {{ end }}
-  </body>
+  <title>
+    {{ if .IsHome }}{{ (site.Title | .Page.RenderString) }}{{ else }}{{ ((printf "%s | %s" .Title site.Title) | .Page.RenderString) }}{{ end }}
+  </title>
+
+  {{ if not hugo.IsProduction }}
+  <meta name="robots" content="noindex,nofollow">
+  {{ end }}
+</head>
+<body>
+
+
+  <header>
+    <h1>
+      <a href="{{ site.Home.RelPermalink }}">{{ site.Title | .Page.RenderString }}</a>
+    </h1>
+
+    {{ if and (.AllTranslations) (gt (len .AllTranslations) 1) (.Param "feature.langNav" | default true) }}
+    <nav>
+      {{ range .AllTranslations }}
+        [ <a href="{{ .Permalink }}" style="{{ cond (eq ($.Page.Lang | string | lower) (.Language | string | lower)) `font-weight: bold` `` }}"> {{/* highlight current language selection */}}{{ .Lang }}</a> ]
+      {{ end }}
+      {{ (i18n "baseof.currentLanguageBold") }}
+    </nav>
+    {{ end }}
+
+    {{ if and (site.RegularPages) (.Param "feature.pagesNav" | default true) }}
+    <nav>
+      <p>
+        {{ (i18n "baseof.listOfAllRegularPages") }}
+      </p>
+      <ul>
+      {{ range site.RegularPages }}
+        <li>
+          <a href="{{ .RelPermalink }}">{{ .LinkTitle | .Page.RenderString }}</a>
+        </li>
+      {{ end }}
+      </ul>
+    </nav>
+    {{ end }}
+  </header>
+
+  <hr>
+
+  <main style="margin-top: 50px; margin-bottom: 50px;">
+    {{ block "main" . }}{{ end }}
+  </main>
+
+  <hr>
+
+  <footer>
+    {{ if (.Param "feature.debug" | default false) }}
+      {{ ((i18n "baseof.debugDumpOf" (dict "Name" ".Page"
+                                           "Desc" "page object in the template context")) | .Page.RenderString) }}
+      <pre>{{ debug.Dump .Page }}</pre>
+
+      {{ ((i18n "baseof.debugDumpOf" (dict "Name" ".Params"
+                                           "Desc" "map defined in the current Page's front matter")) | .Page.RenderString) }}
+      <pre>{{ debug.Dump .Params }}</pre>
+
+      {{ ((i18n "baseof.debugDumpOf"  (dict "Name" ".Site.Params"
+                                            "Desc" "custom parameters as defined in the [site config](https://gohugo.io/methods/site/)")) | .Page.RenderString) }}
+      <pre>{{ debug.Dump .Site.Params }}</pre>
+    {{ end }}
+  </footer>
+
+</body>
 </html>

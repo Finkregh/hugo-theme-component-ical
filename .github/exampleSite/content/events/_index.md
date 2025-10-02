@@ -4,7 +4,7 @@ title: Our Events
 cascade:
   outputs:
   - html
-  - calendar
+  - Calendar
   - CalendarWithAlarms
 ---
 Read here about our events.

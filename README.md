@@ -6,6 +6,11 @@ This project provides a set of simple templates for [Hugo](https://gohugo.io/) t
 
 **Original work:** This theme component is based on [hugo-ical-templates](https://github.com/raoulb/hugo-ical-templates) by Raoul B.
 
+- [**Demo**](https://finkregh.github.io/hugo-theme-component-ical/)
+- [source for the demo](https://github.com/Finkregh/hugo-theme-component-ical/tree/main/.github/exampleSite)
+- [CI workflow](https://github.com/Finkregh/hugo-theme-component-ical/blob/main/.github/workflows/validate-ical.yml)
+- [commands used to build the demo](https://github.com/Finkregh/hugo-theme-component-ical/blob/main/justfile)
+
 ## Installation
 
 ### 1. Add Hugo module
@@ -21,6 +26,9 @@ path = 'github.com/finkregh/hugo-theme-component-ical'
 Fetch or update the configured modules:
 
 ```shell
+# if you did not already do this before (change the url)
+hugo mod init yourgithost.com/you/repo
+
 hugo mod get -u ./...
 ```
 

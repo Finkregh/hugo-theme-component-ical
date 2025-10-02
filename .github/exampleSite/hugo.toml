@@ -14,13 +14,16 @@ path = 'hugo-theme-component-ical'
 
 # The base theme for the demo site
 [[module.imports]]
-    path = 'golang.foundata.com/hugo-theme-dev'
+path = 'golang.foundata.com/hugo-theme-dev'
+
+[params]
+[params.feature]
+debug = true # default: false
 
 # Define calendar output via cascading front matter for event pages only
 [outputs]
 page = ["HTML", "Calendar", "CalendarWithAlarms"]
 section = ["HTML", "Calendar", "CalendarWithAlarms"]
-
 
 [outputFormats.Calendar]
 baseName = "calendar"
