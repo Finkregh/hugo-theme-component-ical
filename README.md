@@ -121,6 +121,26 @@ Inline does not required an additional request, not-inline does make the HTML bi
 
 Either way the javascript will only be included in places where a calendar entry exists and it will not require loading anything from a third party (besides when building the static files).
 
+##### Prepared partial
+
+The component provides a partial you can include in your `layouts/events/`.
+
+`single.html`:
+
+```text
+{{ if templates.Exists "partials/vendor/finkregh/ical/events/single.html" }}
+    {{ partial "vendor/finkregh/ical/events/single.html" . }}
+{{ end }}
+```
+
+`list.html`:
+
+```text
+{{ if templates.Exists "partials/vendor/finkregh/ical/events/list.html" }}
+    {{ partial "vendor/finkregh/ical/events/list.html" . }}
+{{ end }}
+```
+
 #### Without npm
 
 If you do not have npm installed a pre-built file is also available which you can insert into your templates:

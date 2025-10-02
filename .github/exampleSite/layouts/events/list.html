@@ -13,21 +13,6 @@
 </ul>
 {{ end }}
 
-<p>
-  {{ with .OutputFormats.Get "Calendar" }}
-  Get the calendar file with all events (without alarms)
-  <a href="{{ .RelPermalink }}" type="text/calendar">here</a>.
-  {{ end }}
-</p>
-<p>
-  {{ with .OutputFormats.Get "CalendarWithAlarms" }}
-  Get the calendar file with all events (including alarms)
-  <a href="{{ .RelPermalink }}" type="text/calendar">here</a>.
-  {{ end }}
-</p>
-<p>{{ with .OutputFormats.Get "Calendar" }}
-    Locales:
-    <select id='locale-selector'></select>
-    <div style="max-width: 900px; margin: 0 auto;" id='calendar'></div>{{ end }}
-</p>
+{{ partial "vendor/finkregh/ical/events/list.html" . }}
+
 {{ end }}

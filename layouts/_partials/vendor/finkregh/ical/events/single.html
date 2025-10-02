@@ -1,0 +1,34 @@
+<h2>Event meta data</h2>
+<ul>
+  <li>Start: {{ .Params.startDate }}</li>
+  <li>End: {{ .Params.endDate }}</li>
+  {{ if .Params.where }}
+  <li>Location: {{ .Params.where }}</li>
+  {{ end }} {{ if .Params.orga }}
+  <li>Orga: {{ .Params.orga }}</li>
+  {{ end }} {{ if .Params.orgaEmail }}
+  <li>EMail: {{ .Params.orgaEmail }}</li>
+  {{ end }} {{ if .Params.cancelled }}
+  <li>Cancelled: {{ .Params.cancelled }}</li>
+  {{ end }} {{ if .Params.recurrenceRule }}
+  <li>
+    Recurrence Rules:<br />
+    <ul>
+      {{ range $k, $v := .Params.recurrenceRule }}
+      <li>{{ $k }}: {{ $v }}</li>
+      {{ end }}
+    </ul>
+  </li>
+  {{ end }}
+</ul>
+
+<p>
+  {{ with .OutputFormats.Get "Calendar" }} Get the calendar file for this event:
+  <a href="{{ .RelPermalink }}" type="text/calendar">{{ $.Title }}.ics</a>
+  {{ end }}
+</p>
+<p>{{ with .OutputFormats.Get "Calendar" }}
+    Locales:
+    <select id='locale-selector'></select>
+    <div style="max-width: 900px; margin: 0 auto;" id='calendar'></div>{{ end }}
+</p>
