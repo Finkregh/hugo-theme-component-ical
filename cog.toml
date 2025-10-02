@@ -12,6 +12,8 @@ post_bump_hooks = [
     "git push",
     "git push --tags",
 ]
+# required for go to get the latest version 🙄
+tag_prefix = "v"
 
 [changelog]
 path = "CHANGELOG.md"
