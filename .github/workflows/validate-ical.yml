@@ -21,6 +21,7 @@ concurrency:
 
 jobs:
   validate-ical:
+    name: Built Site, validate iCal files, and Deploy to GitHub Pages (if on main branch)
     runs-on: ubuntu-latest
 
     steps:
