@@ -17,6 +17,7 @@ jobs:
         with:
           release: true
           check: false
+          additional-args-bump: '--skip-ci'
       - name: Release
         uses: softprops/action-gh-release@v2.3.3
         with:
