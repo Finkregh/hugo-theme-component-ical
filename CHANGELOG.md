@@ -2,6 +2,20 @@
 All notable changes to this project will be documented in this file. See [conventional commits](https://www.conventionalcommits.org/) for commit guidelines.
 
 - - -
+## [v3.0.0](https://github.com/finkregh/hugo-theme-component-ical@/compare/feefbfc2200519a0891b33f9b7883a3cb0e71134..v3.0.0) - 2025-10-07
+#### Features
+- move html partials to vendor/finkregh/ical/events/ - ([475bfaa](https://github.com/finkregh/hugo-theme-component-ical@/commit/475bfaae79ef22539b8911c1d42f44ebe122f07c)) - Oluf Lorenzen
+#### Miscellaneous Chores
+- **(deps)** update softprops/action-gh-release action to v2.3.4 - ([264d1a7](https://github.com/finkregh/hugo-theme-component-ical@/commit/264d1a7f20ba234b9bed0a2359772d60acc16435)) - renovate[bot]
+- **(deps)** update actions/upload-pages-artifact action to v4 - ([82dac1b](https://github.com/finkregh/hugo-theme-component-ical@/commit/82dac1bc5340e2884db7bc773374d1777049eba9)) - renovate[bot]
+- **(deps)** update actions/setup-python action to v6 - ([a539321](https://github.com/finkregh/hugo-theme-component-ical@/commit/a539321afe3f11d1512cc56d664fd86ebfbca4ed)) - renovate[bot]
+- **(deps)** update actions/checkout action to v5 - ([3ec5253](https://github.com/finkregh/hugo-theme-component-ical@/commit/3ec525359a06193f93c6721255a7ce9235746ca2)) - renovate[bot]
+- **(deps)** update dependency python to 3.13 - ([3d1aa62](https://github.com/finkregh/hugo-theme-component-ical@/commit/3d1aa6237bb24fe585899fa0343bcd9cb05ee02c)) - renovate[bot]
+- add theme metadata - ([c2a3d0a](https://github.com/finkregh/hugo-theme-component-ical@/commit/c2a3d0aa8b48a1c0e1ea4cee11965058096ab992)) - Oluf Lorenzen
+- configure renovate - ([feefbfc](https://github.com/finkregh/hugo-theme-component-ical@/commit/feefbfc2200519a0891b33f9b7883a3cb0e71134)) - Oluf Lorenzen
+
+- - -
+
 ## [v2.0.1](https://github.com/finkregh/hugo-theme-component-ical@/compare/f8a9d6f8afb538a101a4e4b4bea29973ec6ae303..v2.0.1) - 2025-10-02
 #### Continuous Integration
 - ci-skip on bump - ([fa4c44c](https://github.com/finkregh/hugo-theme-component-ical@/commit/fa4c44c5dc66802a277282f811b0b27f84208366)) - Oluf Lorenzen
