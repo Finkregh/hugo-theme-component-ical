@@ -3,6 +3,15 @@ All notable changes to this project will be documented in this file. See [conven
 
 - - -
 
+## v0.10.0
+
+- unfuck versioning, which seems to be quite the mess in the go world <https://jerrynsh.com/4-ways-of-bumping-go-major-version/>
+  I deleted all previous higher versions. 
+
+See CHANGELOG.md for previous changes.
+
+- - -
+
 ## [v3.0.2](https://github.com/finkregh/hugo-theme-component-ical@/compare/33fbc0ffe581b332146bd37e1857620fd9dbee1c..v3.0.2) - 2025-10-07
 #### Bug Fixes
 - Update go.mod - ([406e61a](https://github.com/finkregh/hugo-theme-component-ical@/commit/406e61a64ca07f6985ed5fc9a3f38e75d0885e7b)) - Oluf Lorenzen

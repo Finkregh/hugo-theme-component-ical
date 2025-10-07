@@ -3,7 +3,7 @@ description = "A Hugo theme component to generate iCalendar files."
 homepage = "https://github.com/finkregh/hugo-theme-component-ical"
 demosite = "https://finkregh.github.io/hugo-theme-component-ical/"
 
-license = "GPL-3.0-or-later"
+license = "MIT"
 licenselink = "https://github.com/finkregh/hugo-theme-component-ical/blob/main/LICENSE"
 authors = [{ name = "Oluf Lorenzen", homepage = "https://oluflorenzen.de" }]
 

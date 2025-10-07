@@ -1,3 +1,3 @@
-module github.com/finkregh/hugo-theme-component-ical/v4
+module github.com/finkregh/hugo-theme-component-ical
 
 go 1.18
