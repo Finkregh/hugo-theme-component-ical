@@ -1,0 +1,12 @@
+name = "hugo-theme-component-ical"
+description = "A Hugo theme component to generate iCalendar files."
+homepage = "https://github.com/finkregh/hugo-theme-component-ical"
+demosite = "https://finkregh.github.io/hugo-theme-component-ical/"
+
+license = "GPL-3.0-or-later"
+licenselink = "https://github.com/finkregh/hugo-theme-component-ical/blob/main/LICENSE"
+authors = [{ name = "Oluf Lorenzen", homepage = "https://oluflorenzen.de" }]
+
+tags = ["ical", "icalendar", "component"]
+features = ["minimalist"]
+min_version = "0.146.0"
