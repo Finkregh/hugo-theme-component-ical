@@ -2,6 +2,13 @@
 All notable changes to this project will be documented in this file. See [conventional commits](https://www.conventionalcommits.org/) for commit guidelines.
 
 - - -
+## [v3.0.1](https://github.com/finkregh/hugo-theme-component-ical@/compare/b3dadbce2977570d1aa4de8d59754c734130b5c1..v3.0.1) - 2025-10-07
+#### Miscellaneous Chores
+- bump version in go.mod - ([13faf42](https://github.com/finkregh/hugo-theme-component-ical@/commit/13faf429d5a0d041c33b2d9823ff7915907b9154)) - Oluf Lorenzen
+- link v3, thanks go - ([2bba3df](https://github.com/finkregh/hugo-theme-component-ical@/commit/2bba3df333dbc428eea13bb7d73c9f86425ffbc3)) - Oluf Lorenzen
+
+- - -
+
 ## [v3.0.0](https://github.com/finkregh/hugo-theme-component-ical@/compare/feefbfc2200519a0891b33f9b7883a3cb0e71134..v3.0.0) - 2025-10-07
 #### Features
 - move html partials to vendor/finkregh/ical/events/ - ([475bfaa](https://github.com/finkregh/hugo-theme-component-ical@/commit/475bfaae79ef22539b8911c1d42f44ebe122f07c)) - Oluf Lorenzen
