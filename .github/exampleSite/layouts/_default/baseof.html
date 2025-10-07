@@ -18,12 +18,9 @@
   */}}
   <script>(function(C){C.remove('no-js');C.add('js')})(document.documentElement.classList)</script>
 
-  <!-- Start calendar javascript -->
-    {{ if and (.OutputFormats.Get "Calendar") (eq .Type "events") }}
-    <meta http-equiv="Content-Security-Policy" content="font-src data:" />
-    {{ partial "events/javascript.html" . }}
-    {{ end }}
-<!-- End calendar javascript -->
+  <!-- Begin calendar javascript -->
+  {{ partial "vendor/finkregh/ical/js.html" . }}
+  <!-- End calendar javascript -->
 
   <title>
     {{ if .IsHome }}{{ (site.Title | .Page.RenderString) }}{{ else }}{{ ((printf "%s | %s" .Title site.Title) | .Page.RenderString) }}{{ end }}

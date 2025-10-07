@@ -26,13 +26,11 @@ path = 'github.com/finkregh/hugo-theme-component-ical'
 Fetch or update the configured modules:
 
 ```shell
-# if you did not already do this before (change the url)
-hugo mod init yourgithost.com/you/repo
+# if you did not already do this before (change the domain/url)
+hugo mod init yourdomain.com
 
 hugo mod get -u ./...
 ```
-
-If you do not have npm installed and still want the entries shown as calendar scroll down to (5.).
 
 ### 2. Configure output formats
 
@@ -84,14 +82,14 @@ For calendars with alarms:
 
 ### 5. (optional) display calendar via javascript
 
-Some javascript libraries are used to display the calendar entries visually.
+Some javascript libraries are used to display the calendar entries visually. They are downloaded from npmjs.org when the site is built and then served from *here*.
 
 If you do not want to display the calendar entries on your website you can skip this section.
 
 #### With npm
 
 ```shell
-# Initial setup
+# Initial setup (after hugo mod get from above)
 hugo mod npm pack
 npm update
 
@@ -102,22 +100,24 @@ npm update
 The generated (minified) javascript file can be served as a separate file or directly inside the respective webpage:
 
 ```html
-<head>
-    [...]
-    {{ if and (.OutputFormats.Get "Calendar") (eq .Type "events") }}
-    <meta http-equiv="Content-Security-Policy" content="font-src data:" />
+<!-- separate .js file -->
+  <!-- Begin calendar javascript -->
+  {{ partial "vendor/finkregh/ical/js.html" . }}
+  <!-- End calendar javascript -->
 
-    <!-- as separate file -->
-    {{ partial "events/javascript.html" . }}
-    <!-- OR inside the html -->
-    {{ partial "events/javascript-inline.html" . }}
-
-    {{ end }}
-    [...]
-</head>
+<!-- inside the html -->
+  <!-- Begin calendar javascript -->
+  {{ partial "vendor/finkregh/ical/js-inline.html" . }}
+  <!-- End calendar javascript -->
 ```
 
-Inline does not required an additional request, not-inline does make the HTML bigger. Decide for yourself what to use.
+This generates:
+
+- if the page has a calendar entry (`if and (.OutputFormats.Get "Calendar") (eq .Type "events")`):
+  - `<meta http-equiv="Content-Security-Policy" content="font-src data:" />`
+  - JS referenced by a file or inline
+
+Inline does not required an additional request, not-inline does make the HTML bigger (on every page where a calendar exists). Decide for yourself what to use.
 
 Either way the javascript will only be included in places where a calendar entry exists and it will not require loading anything from a third party (besides when building the static files).
 
@@ -128,17 +128,13 @@ The component provides a partial you can include in your `layouts/events/`.
 `single.html`:
 
 ```text
-{{ if templates.Exists "partials/vendor/finkregh/ical/events/single.html" }}
-    {{ partial "vendor/finkregh/ical/events/single.html" . }}
-{{ end }}
+{{ partial "vendor/finkregh/ical/events/single.html" . }}
 ```
 
 `list.html`:
 
 ```text
-{{ if templates.Exists "partials/vendor/finkregh/ical/events/list.html" }}
-    {{ partial "vendor/finkregh/ical/events/list.html" . }}
-{{ end }}
+{{ partial "vendor/finkregh/ical/events/list.html" . }}
 ```
 
 #### Without npm
@@ -150,7 +146,7 @@ If you do not have npm installed a pre-built file is also available which you ca
 
 ```text
 {{ $prebuilt := resources.Get "js/vendor/finkregh/ical/minified.min.2c0b8eb566757daf33d80723a369c40de708920b6faeb3f6016302e4d986635d" | resources.Fingerprint "sha256"}}
-<script src="{{ $prebuilt.Permalink }}" type="module" defer></script>
+<script src="{{ $prebuilt.Permalink }}" type="module" {{ if $isProd }}integrity="{{ $prebuilt.Data.Integrity }}"{{ end }} defer></script>
 ```
 
 Alternatlively load the javascript from a third party (the versions here might be outdated too!):
@@ -161,64 +157,7 @@ Alternatlively load the javascript from a third party (the versions here might b
 <script src="https://cdn.jsdelivr.net/npm/@fullcalendar/core@6.1.19/locales-all.global.min.js"></script>
 <script src="https://unpkg.com/ical.js/dist/ical.es5.min.cjs"></script>
 {{ $themejs := resources.Get "js/vendor/finkregh/ical/script.js" | js.Build $options | resources.Minify | resources.Fingerprint "sha256"}}
-<script src="{{ $themejs.Permalink }}" type="module" defer></script>
-```
-
-## Example Templates
-
-Here are example templates for event pages, they are also used in the [demo](.github/exampleSite/layouts/events/):
-
-### Single Event Template (`single.html`)
-
-```html
-<h2>Event meta data</h2>
-<ul>
-  <li>Start: {{ .Params.startDate }}</li>
-  <li>End: {{ .Params.endDate }}</li>
-  {{ if .Params.where }}
-  <li>Location: {{ .Params.where }}</li>
-  {{ end }} {{ if .Params.orga }}
-  <li>Orga: {{ .Params.orga }}</li>
-  {{ end }} {{ if .Params.orgaEmail }}
-  <li>EMail: {{ .Params.orgaEmail }}</li>
-  {{ end }} {{ if .Params.cancelled }}
-  <li>Cancelled: {{ .Params.cancelled }}</li>
-  {{ end }} {{ if .Params.recurrenceRule }}
-  <li>
-    Recurrence Rules:<br />
-    <ul>
-      {{ range $k, $v := .Params.recurrenceRule }}
-      <li>{{ $k }}: {{ $v }}</li>
-      {{ end }}
-    </ul>
-  </li>
-  {{ end }}
-</ul>
-
-<p>
-  {{ with .OutputFormats.Get "Calendar" }} Get the calendar file for this event:
-  <a href="{{ .RelPermalink }}" type="text/calendar">{{ $.Title }}.ics</a>
-  {{ end }}
-</p>
-```
-
-### Event List Template (`list.html`)
-
-```html
-<p>
-  {{ with .OutputFormats.Get "Calendar" }}
-  Get the calendar file with all events (without alarms)
-  <a href="{{ .RelPermalink }}" type="text/calendar">here</a>.
-  {{ end }}
-</p>
-<p>
-  {{ with .OutputFormats.Get "CalendarWithAlarms" }}
-  Get the calendar file with all events (including alarms)
-  <a href="{{ .RelPermalink }}" type="text/calendar">here</a>.
-  {{ end }}
-</p>
-
-{{ end }}
+<script src="{{ $themejs.Permalink }}" type="module" {{ if $isProd }}integrity="{{ $themejs.Data.Integrity }}"{{ end }} defer></script>
 ```
 
 ## Event specification
@@ -357,7 +296,6 @@ The system is highly flexible and should adapt or extend easily to more exotic u
 
 The partial template snippets from this project should help to easily avoid the most common mistakes when creating `ics` files. However, there is absolutely no validation, neither on the syntactic nor the semantic level. You can always use an external [validation service](https://icalendar.org/validator.html) to check the output.
 
-
 ## Known Issues
 
 ### No folding of long lines
@@ -366,7 +304,7 @@ Due to the way the templates work, we do not fold long lines. However, this is a
 
 > Lines of text SHOULD NOT be longer than 75 octets, excluding the line break. Long content lines SHOULD be split into a multiple line representations using a line "folding" technique.
 
-See: https://tools.ietf.org/html/rfc5545#section-3.1
+See: <https://tools.ietf.org/html/rfc5545#section-3.1>
 
 ### No `CRLF` line termination
 
@@ -374,7 +312,32 @@ This is the one place where we knowingly break RFC compliance. While this is not
 
 > The iCalendar object is organized into individual lines of text, called content lines. Content lines are delimited by a line break, which is a CRLF sequence (CR character followed by LF character).
 
-See: https://tools.ietf.org/html/rfc5545#section-3.1
+See: <https://tools.ietf.org/html/rfc5545#section-3.1>
+
+## Development
+
+PRs, issues, comments, etc. are welcome!
+
+You can use the setup in `.github/exampleSite/` to test things locally.
+
+Directory structure:
+
+- `.github/exampleSite/`
+  - example implementation, also used to generate the demo site
+- `.github/scripts/`
+  - python script used in the CI to validate the generated `.ics` files
+- `.github/workflows/`
+  - tests, deployment of the demo site
+- `assets/js/vendor/finkregh/ical/`
+  - JavaScript files
+- `assets/saas/vendor/finkregh/ical/`
+  - unused
+- `layouts/*.ics`, `layouts/_partials/events/`, `layouts/_partials/ical/`
+  - various parts to generate the `.ics` files
+- `layouts/_partials/vendor/finkregh/ical/js{,-inline}.html`
+  - `<script ...>` to get all required JS
+- `layouts/_partials/vendor/finkregh/ical/events/`
+  - example template for single/list views
 
 ## Specification
 

@@ -2,15 +2,14 @@ baseURL = 'https://finkregh.github.io/hugo-theme-component-ical/'
 languageCode = 'en-us'
 title = 'Demo of hugo-theme-component-ical'
 
-# required for the CI tests, not required otherwise
-themesDir = '../../..'
-
 [module]
+# replacement pointing to local folder, required to get _this_ variant in the CI
+# not required otherwise
+replacements = 'github.com/finkregh/hugo-theme-component-ical -> ../../..'
+
 # This theme component
 [[module.imports]]
-path = 'hugo-theme-component-ical'
-# Use this in your own site
-# path = 'github.com/finkregh/hugo-theme-component-ical'
+path = 'github.com/finkregh/hugo-theme-component-ical'
 
 # The base theme for the demo site
 [[module.imports]]
