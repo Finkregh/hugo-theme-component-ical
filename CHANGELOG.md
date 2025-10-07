@@ -2,6 +2,14 @@
 All notable changes to this project will be documented in this file. See [conventional commits](https://www.conventionalcommits.org/) for commit guidelines.
 
 - - -
+## [v3.0.2](https://github.com/finkregh/hugo-theme-component-ical@/compare/33fbc0ffe581b332146bd37e1857620fd9dbee1c..v3.0.2) - 2025-10-07
+#### Bug Fixes
+- Update go.mod - ([406e61a](https://github.com/finkregh/hugo-theme-component-ical@/commit/406e61a64ca07f6985ed5fc9a3f38e75d0885e7b)) - Oluf Lorenzen
+#### Miscellaneous Chores
+- **(version)** v3.0.1 [skip ci] - ([33fbc0f](https://github.com/finkregh/hugo-theme-component-ical@/commit/33fbc0ffe581b332146bd37e1857620fd9dbee1c)) - Oluf Lorenzen
+
+- - -
+
 ## [v3.0.1](https://github.com/finkregh/hugo-theme-component-ical@/compare/b3dadbce2977570d1aa4de8d59754c734130b5c1..v3.0.1) - 2025-10-07
 #### Miscellaneous Chores
 - bump version in go.mod - ([13faf42](https://github.com/finkregh/hugo-theme-component-ical@/commit/13faf429d5a0d041c33b2d9823ff7915907b9154)) - Oluf Lorenzen
