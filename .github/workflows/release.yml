@@ -20,7 +20,7 @@ jobs:
           additional-args-bump: '--skip-ci'
           tag-prefix: 'v'
       - name: Release
-        uses: softprops/action-gh-release@v2.3.4
+        uses: softprops/action-gh-release@v2.4.1
         with:
           body: ${{ steps.cog.outputs.changelog }}
           tag_name: ${{ steps.cog.outputs.version }}
