@@ -51,7 +51,7 @@ jobs:
       - name: Run tests with just
         env:
             JUST_COLOR: always
-            GOPROXY=direct
+            GOPROXY: direct
         run: just test_debug
 
       - name: List generated files
