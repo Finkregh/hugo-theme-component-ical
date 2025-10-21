@@ -1,0 +1,18 @@
+{{ define "main" }}
+
+<h1>{{ .Title }}</h1>
+{{ .Content }}
+
+{{ with .Pages }}
+<ul>
+  {{ range . }}
+  <li>
+    <a href="{{ .Permalink }}">{{ .Title }}</a>
+  </li>
+  {{ end }}
+</ul>
+{{ end }}
+
+{{ partial "vendor/finkregh/ical/events/list.html" . }}
+
+{{ end }}
