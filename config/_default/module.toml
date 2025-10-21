@@ -2,6 +2,29 @@
   [module.hugoVersion]
   min = "0.146.0"
 
+[outputs]
+home = ["HTML", "RSS"]
+page = ["HTML", "RSS", "Calendar", "CalendarWithAlarms"]
+section = ["HTML", "RSS", "Calendar", "CalendarWithAlarms"]
+
+[outputFormats.Calendar]
+baseName = "calendar"
+mediaType = "text/calendar"
+isPlainText = true
+permalinkable = true
+suffix = "ics"
+# Avoid webcal scheme
+protocol = "https://"
+
+[outputFormats.CalendarWithAlarms]
+baseName = "calendar-alarms"
+mediaType = "text/calendar"
+isPlainText = true
+permalinkable = true
+suffix = "ics"
+# Avoid webcal scheme
+protocol = "https://"
+
 #[[module.mounts]]
 #source = 'layouts'
 #target = 'layouts'
