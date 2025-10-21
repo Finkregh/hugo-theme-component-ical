@@ -1,7 +1,0 @@
-[module]
-[[module.mounts]]
-source = 'layouts'
-target = 'layouts'
-[[module.mounts]]
-source = 'assets/js/vendor/finkregh/ical'
-target = 'assets/js/vendor/finkregh/ical'
