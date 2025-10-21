@@ -28,6 +28,6 @@ protocol = "https://"
 #[[module.mounts]]
 #source = 'layouts'
 #target = 'layouts'
-#[[module.mounts]]
-#source = 'assets'
-#target = 'assets'
+[[module.mounts]]
+source = 'assets'
+target = 'assets'
