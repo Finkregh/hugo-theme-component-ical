@@ -1,3 +1,5 @@
+# only for <https://github.com/gohugoio/hugoThemesSiteBuilder>
+
 name = "hugo-theme-component-ical"
 description = "A Hugo theme component to generate iCalendar files."
 homepage = "https://github.com/finkregh/hugo-theme-component-ical"
@@ -10,11 +12,3 @@ authors = [{ name = "Oluf Lorenzen", homepage = "https://oluflorenzen.de" }]
 tags = ["ical", "icalendar", "component"]
 features = ["minimalist"]
 min_version = "0.146.0"
-
-[module]
-[[module.mounts]]
-source = 'layouts'
-target = 'layouts'
-[[module.mounts]]
-source = 'assets/js/vendor/finkregh/ical'
-target = 'assets/js/vendor/finkregh/ical'
