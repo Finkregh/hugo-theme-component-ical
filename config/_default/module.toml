@@ -2,7 +2,6 @@
   [module.hugoVersion]
   min = "0.146.0"
 
-[module]
 [[module.mounts]]
 source = 'layouts'
 target = 'layouts'
