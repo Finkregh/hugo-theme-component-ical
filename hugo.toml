@@ -1,6 +1,14 @@
 [module]
-  [module.hugoVersion]
-  min = "0.146.0"
+[module.hugoVersion]
+min = "0.150.0"
+
+[[module.mounts]]
+source = 'layouts'
+target = 'layouts'
+[[module.mounts]]
+source = 'assets'
+target = 'assets'
+includeFiles = "**"
 
 [outputs]
 home = ["HTML", "RSS"]
@@ -24,10 +32,3 @@ permalinkable = true
 suffix = "ics"
 # Avoid webcal scheme
 protocol = "https://"
-
-#[[module.mounts]]
-#source = 'layouts'
-#target = 'layouts'
-#[[module.mounts]]
-#source = 'assets'
-#target = 'assets'

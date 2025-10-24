@@ -1,11 +1,20 @@
-{{ if and (.OutputFormats.Get "Calendar") (eq .Type "events") }}
-{{- $isProd := hugo.IsProduction -}}
-{{ if not $isProd }}<!-- BEGIN block from {{ templates.Current.Filename }} -->{{ end }}
-<meta http-equiv="Content-Security-Policy" content="font-src data:" />
-
-{{ $defines := dict "process.env.NODE_ENV" "production" }}
-{{ $options := dict "targetPath" "js/vendor/finkregh/ical/minified.js" "defines" $defines }}
-{{ $js := resources.Get "js/vendor/finkregh/ical/script.js" | js.Build $options | resources.Minify | resources.Fingerprint "sha256"}}
-<script type="module" defer>{{ $js.Content }}</script>
-{{ if not $isProd }}<!-- END block from {{ templates.Current.Filename }} -->{{ end }}
-{{ end }}
+{{- if and (.OutputFormats.Get "Calendar") (eq .Type "events") }}
+  <meta http-equiv="Content-Security-Policy" content="font-src data:" />
+  {{- with resources.Get "js/vendor/finkregh/ical/script.js" }}
+    {{- $opts := dict
+      "minify" (not hugo.IsDevelopment)
+      "sourceMap" (cond hugo.IsDevelopment "external" "")
+      "targetPath" "js/vendor/finkregh/ical/script.js"
+    }}
+    {{- with . | js.Build $opts }}
+      {{- if hugo.IsDevelopment }}
+        <!-- block from {{ templates.Current.Filename }} -->
+        <script defer>{{ .Content }}</script>
+      {{- else }}
+        {{- with . | fingerprint }}
+          <script defer>{{ .Content }}</script>
+        {{- end }}
+      {{- end }}
+    {{- end }}
+  {{- end }}
+{{- end }}
