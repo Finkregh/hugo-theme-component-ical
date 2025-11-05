@@ -10,7 +10,7 @@ title = 'Demo of hugo-theme-component-ical'
 # This theme component
 [[module.imports]]
 path = 'github.com/finkregh/hugo-theme-component-ical'
-version = "dev"
+version = "main"
 
 # The base theme for the demo site
 [[module.imports]]
