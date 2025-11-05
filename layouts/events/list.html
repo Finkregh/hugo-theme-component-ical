@@ -13,6 +13,8 @@
 </ul>
 {{ end }}
 
+{{/* partial "events/event_list.html" . */}}
 {{ partial "vendor/finkregh/ical/events/list.html" . }}
+{{ partial "events/js.html" . }}
 
 {{ end }}
