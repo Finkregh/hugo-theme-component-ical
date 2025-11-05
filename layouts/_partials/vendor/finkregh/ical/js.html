@@ -1,5 +1,4 @@
 {{- if and (.OutputFormats.Get "Calendar") (eq .Type "events") }}
-  <meta http-equiv="Content-Security-Policy" content="font-src data:" />
   {{- with resources.Get "js/vendor/finkregh/ical/script.js" }}
     {{- $opts := dict
       "minify" (not hugo.IsDevelopment)
