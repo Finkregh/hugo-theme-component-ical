@@ -1,0 +1,3 @@
+{{- if and (.OutputFormats.Get "Calendar") (eq .Type "events") }}
+  {{- partial "calendar_js" . }}
+{{- end }}

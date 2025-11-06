@@ -4,6 +4,7 @@
 
 {{ .Content }}
 
-{{ partial "vendor/finkregh/ical/events/single.html" . }}
+{{ partial "calendar_single" . }}
+{{ partial "calendar_js" . }}
 
 {{ end }}
