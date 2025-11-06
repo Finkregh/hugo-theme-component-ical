@@ -1,0 +1,89 @@
+BEGIN:VCALENDAR
+
+
+
+
+
+VERSION:2.0
+PRODID:-//Hugo Calendar Templates//Event Template//EN
+CALSCALE:GREGORIAN
+METHOD:PUBLISH
+
+UID:88aa212e637e8196af91540dce2cb49e
+
+URL:https://finkregh.github.io/hugo-theme-component-ical/events/event_2/
+REFRESH-INTERVAL;VALUE=DURATION:P1W
+SOURCE;VALUE=URI:https://finkregh.github.io/hugo-theme-component-ical/events/event_2/calendar.ics
+COLOR:crimson
+NAME;LANGUAGE=de-CH:Example Events
+DESCRIPTION;LANGUAGE=de-CH:Example Events Calendar
+
+
+X-WR-CALNAME:Example Events
+X-WR-CALDESC:Example Events Calendar
+
+
+
+
+BEGIN:VTIMEZONE
+
+TZID:Europe/Zurich
+TZURL:http://tzurl.org/zoneinfo-outlook/Europe/Zurich
+X-LIC-LOCATION:Europe/Zurich
+
+BEGIN:DAYLIGHT
+TZNAME:CEST
+TZOFFSETFROM:+0100
+TZOFFSETTO:+0200
+DTSTART:19700329T020000
+RRULE:FREQ=YEARLY;BYMONTH=3;BYDAY=-1SU
+END:DAYLIGHT
+
+BEGIN:STANDARD
+TZNAME:CET
+TZOFFSETFROM:+0200
+TZOFFSETTO:+0100
+DTSTART:19701025T030000
+RRULE:FREQ=YEARLY;BYMONTH=10;BYDAY=-1SU
+END:STANDARD
+
+END:VTIMEZONE
+
+
+
+
+
+
+BEGIN:VEVENT
+
+DTSTAMP:00010101T000000Z
+UID:88aa212e637e8196af91540dce2cb49e
+DTSTART;VALUE=DATE-TIME;TZID=Europe/Zurich:20200930T140000
+CLASS:PUBLIC
+
+DESCRIPTION;LANGUAGE=de-CH:Our first monthly developer meeting.\nFront matter:\ntitle: Developer meeting 1 startDate: 2020-09-30T14:00:00+02:00 endDate: 2020-09-30T17:00:00+02:00 where: "Meeting room 1\, Headquarters" orga: "F. Nord" orgaEmail: "me@example.org" cancelled: true
+
+
+LOCATION;LANGUAGE=de-CH:
+
+
+STATUS:CANCELLED
+SUMMARY;LANGUAGE=de-CH:Developer meeting 1
+TRANSP:OPAQUE
+URL:https://finkregh.github.io/hugo-theme-component-ical/events/event_2/
+
+DTEND;VALUE=DATE-TIME;TZID=Europe/Zurich:20200930T170000
+
+CONTACT;LANGUAGE=de-CH:F. Nord: me@example.org
+COLOR:crimson
+
+
+
+
+
+END:VEVENT
+
+
+
+
+END:VCALENDAR
