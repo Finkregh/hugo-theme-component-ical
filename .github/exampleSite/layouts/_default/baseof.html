@@ -22,7 +22,6 @@
   <meta http-equiv="Content-Security-Policy" content="font-src data:" />
   <!-- End calendar CSP -->
   {{ partial "calendar_js_conditional" . }}
-  {{ partial "vendor/finkregh/ical/js" . }}
 
   <title>
     {{ if .IsHome }}{{ (site.Title | .Page.RenderString) }}{{ else }}{{ ((printf "%s | %s" .Title site.Title) | .Page.RenderString) }}{{ end }}
