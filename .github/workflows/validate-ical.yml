@@ -74,6 +74,12 @@ jobs:
             validation-report.txt
           retention-days: 7
 
+      - name: Deploy preview
+        uses: rossjrw/pr-preview-action@v1
+        if: github.ref != 'refs/heads/main' && github.server_url == 'https://github.com'
+        with:
+          source-dir: ./.github/exampleSite/public/
+
       - name: Setup Pages
         if: github.ref == 'refs/heads/main' && github.server_url == 'https://github.com'
         uses: actions/configure-pages@v5
