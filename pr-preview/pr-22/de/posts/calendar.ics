@@ -11,9 +11,9 @@ METHOD:PUBLISH
 
 UID:a190fa6339c5d772efaf64062b6a8e98
 LAST-MODIFIED:20250827T100000Z
-URL:https://finkregh.github.io/hugo-theme-component-ical/de/posts/
+URL:https://finkregh.github.io/hugo-theme-component-ical/pr-preview/pr-22/de/posts/
 REFRESH-INTERVAL;VALUE=DURATION:P1W
-SOURCE;VALUE=URI:https://finkregh.github.io/hugo-theme-component-ical/de/posts/calendar.ics
+SOURCE;VALUE=URI:https://finkregh.github.io/hugo-theme-component-ical/pr-preview/pr-22/de/posts/calendar.ics
 COLOR:crimson
 NAME;LANGUAGE=de-CH:Example Events
 DESCRIPTION;LANGUAGE=de-CH:Example Events Calendar
@@ -71,7 +71,7 @@ LOCATION;LANGUAGE=de-CH:
 STATUS:CONFIRMED
 SUMMARY;LANGUAGE=de-CH:Beitrag 1
 TRANSP:OPAQUE
-URL:https://finkregh.github.io/hugo-theme-component-ical/de/posts/post-1/
+URL:https://finkregh.github.io/hugo-theme-component-ical/pr-preview/pr-22/de/posts/post-1/
 
 DTEND;VALUE=DATE-TIME;TZID=Europe/Zurich:00010101T000000
 

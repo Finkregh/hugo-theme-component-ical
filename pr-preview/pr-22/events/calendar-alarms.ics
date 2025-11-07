@@ -11,9 +11,9 @@ METHOD:PUBLISH
 
 UID:03c1ca7de80bdb806a60bce3d3b7f652
 
-URL:https://finkregh.github.io/hugo-theme-component-ical/events/
+URL:https://finkregh.github.io/hugo-theme-component-ical/pr-preview/pr-22/events/
 REFRESH-INTERVAL;VALUE=DURATION:P1W
-SOURCE;VALUE=URI:https://finkregh.github.io/hugo-theme-component-ical/events/calendar.ics
+SOURCE;VALUE=URI:https://finkregh.github.io/hugo-theme-component-ical/pr-preview/pr-22/events/calendar.ics
 COLOR:crimson
 NAME;LANGUAGE=de-CH:Example Events
 DESCRIPTION;LANGUAGE=de-CH:Example Events Calendar
@@ -71,7 +71,7 @@ LOCATION;LANGUAGE=de-CH:
 STATUS:CONFIRMED
 SUMMARY;LANGUAGE=de-CH:Annual Spring Conference
 TRANSP:OPAQUE
-URL:https://finkregh.github.io/hugo-theme-component-ical/events/event_3_yearly_april/
+URL:https://finkregh.github.io/hugo-theme-component-ical/pr-preview/pr-22/events/event_3_yearly_april/
 RRULE:FREQ=YEARLY;BYMONTH=4;BYDAY=SU;BYSETPOS=3
 DTEND;VALUE=DATE-TIME;TZID=Europe/Zurich:20240421T170000
 
@@ -107,7 +107,7 @@ LOCATION;LANGUAGE=de-CH:
 STATUS:CANCELLED
 SUMMARY;LANGUAGE=de-CH:Developer meeting 1
 TRANSP:OPAQUE
-URL:https://finkregh.github.io/hugo-theme-component-ical/events/event_2/
+URL:https://finkregh.github.io/hugo-theme-component-ical/pr-preview/pr-22/events/event_2/
 
 DTEND;VALUE=DATE-TIME;TZID=Europe/Zurich:20200930T170000
 
@@ -143,7 +143,7 @@ LOCATION;LANGUAGE=de-CH:
 STATUS:CONFIRMED
 SUMMARY;LANGUAGE=de-CH:Every Monday
 TRANSP:OPAQUE
-URL:https://finkregh.github.io/hugo-theme-component-ical/events/event_7_every_monday/
+URL:https://finkregh.github.io/hugo-theme-component-ical/pr-preview/pr-22/events/event_7_every_monday/
 RRULE:FREQ=WEEKLY;BYDAY=MO
 DTEND;VALUE=DATE-TIME;TZID=Europe/Zurich:20240108T093000
 
@@ -179,7 +179,7 @@ LOCATION;LANGUAGE=de-CH:
 STATUS:CONFIRMED
 SUMMARY;LANGUAGE=de-CH:Every Monday and Friday
 TRANSP:OPAQUE
-URL:https://finkregh.github.io/hugo-theme-component-ical/events/event_8_monday_friday/
+URL:https://finkregh.github.io/hugo-theme-component-ical/pr-preview/pr-22/events/event_8_monday_friday/
 RRULE:FREQ=WEEKLY;BYDAY=MO,FR
 DTEND;VALUE=DATE-TIME;TZID=Europe/Zurich:20240108T161500
 
@@ -215,7 +215,7 @@ LOCATION;LANGUAGE=de-CH:
 STATUS:CONFIRMED
 SUMMARY;LANGUAGE=de-CH:Every Second Tuesday
 TRANSP:OPAQUE
-URL:https://finkregh.github.io/hugo-theme-component-ical/events/event_9_second_tuesday/
+URL:https://finkregh.github.io/hugo-theme-component-ical/pr-preview/pr-22/events/event_9_second_tuesday/
 RRULE:FREQ=WEEKLY;INTERVAL=2;BYDAY=TU
 DTEND;VALUE=DATE-TIME;TZID=Europe/Zurich:20240109T153000
 
@@ -251,7 +251,7 @@ LOCATION;LANGUAGE=de-CH:
 STATUS:CONFIRMED
 SUMMARY;LANGUAGE=de-CH:Every Third Thursday of the Month
 TRANSP:OPAQUE
-URL:https://finkregh.github.io/hugo-theme-component-ical/events/event_10_third_thursday/
+URL:https://finkregh.github.io/hugo-theme-component-ical/pr-preview/pr-22/events/event_10_third_thursday/
 RRULE:FREQ=MONTHLY;BYDAY=TH;BYSETPOS=3
 DTEND;VALUE=DATE-TIME;TZID=Europe/Zurich:20240118T123000
 
@@ -287,7 +287,7 @@ LOCATION;LANGUAGE=de-CH:
 STATUS:CONFIRMED
 SUMMARY;LANGUAGE=de-CH:Initial Presentation
 TRANSP:OPAQUE
-URL:https://finkregh.github.io/hugo-theme-component-ical/events/event_1/
+URL:https://finkregh.github.io/hugo-theme-component-ical/pr-preview/pr-22/events/event_1/
 
 DTEND;VALUE=DATE-TIME;TZID=Europe/Zurich:20200826T220000
 
@@ -323,7 +323,7 @@ LOCATION;LANGUAGE=de-CH:Conference Room A
 STATUS:CONFIRMED
 SUMMARY;LANGUAGE=de-CH:Meeting with Alarm Reminders
 TRANSP:OPAQUE
-URL:https://finkregh.github.io/hugo-theme-component-ical/events/event_11_with_alarm/
+URL:https://finkregh.github.io/hugo-theme-component-ical/pr-preview/pr-22/events/event_11_with_alarm/
 
 DTEND;VALUE=DATE-TIME;TZID=Europe/Zurich:20250115T153000
 
@@ -436,7 +436,7 @@ LOCATION;LANGUAGE=de-CH:
 STATUS:CONFIRMED
 SUMMARY;LANGUAGE=de-CH:Monthly Workshop Series
 TRANSP:OPAQUE
-URL:https://finkregh.github.io/hugo-theme-component-ical/events/event_6_monthly_fourth_sunday/
+URL:https://finkregh.github.io/hugo-theme-component-ical/pr-preview/pr-22/events/event_6_monthly_fourth_sunday/
 RRULE:FREQ=MONTHLY;INTERVAL=3;BYDAY=SU;BYSETPOS=4
 DTEND;VALUE=DATE-TIME;TZID=Europe/Zurich:20240128T160000
 
@@ -472,7 +472,7 @@ LOCATION;LANGUAGE=de-CH:
 STATUS:CONFIRMED
 SUMMARY;LANGUAGE=de-CH:October Training Sessions
 TRANSP:OPAQUE
-URL:https://finkregh.github.io/hugo-theme-component-ical/events/event_4_october_mondays/
+URL:https://finkregh.github.io/hugo-theme-component-ical/pr-preview/pr-22/events/event_4_october_mondays/
 RRULE:FREQ=YEARLY;BYMONTH=10;BYDAY=MO;BYSETPOS=1,2
 DTEND;VALUE=DATE-TIME;TZID=Europe/Zurich:20241007T120000
 
@@ -508,7 +508,7 @@ LOCATION;LANGUAGE=de-CH:
 STATUS:CONFIRMED
 SUMMARY;LANGUAGE=de-CH:Quarterly Team Review
 TRANSP:OPAQUE
-URL:https://finkregh.github.io/hugo-theme-component-ical/events/event_5_monthly_last_sunday/
+URL:https://finkregh.github.io/hugo-theme-component-ical/pr-preview/pr-22/events/event_5_monthly_last_sunday/
 RRULE:FREQ=MONTHLY;INTERVAL=3;BYDAY=SU;BYSETPOS=-1
 DTEND;VALUE=DATE-TIME;TZID=Europe/Zurich:00010101T000000
 

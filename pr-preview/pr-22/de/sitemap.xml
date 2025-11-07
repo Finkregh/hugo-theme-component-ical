@@ -2,67 +2,67 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   <url>
-    <loc>https://finkregh.github.io/hugo-theme-component-ical/de/posts/post-1/</loc>
+    <loc>https://finkregh.github.io/hugo-theme-component-ical/pr-preview/pr-22/de/posts/post-1/</loc>
     <lastmod>2025-08-27T10:00:00+00:00</lastmod>
     <xhtml:link
                 rel="alternate"
                 hreflang="en-us"
-                href="https://finkregh.github.io/hugo-theme-component-ical/posts/post-1/"
+                href="https://finkregh.github.io/hugo-theme-component-ical/pr-preview/pr-22/posts/post-1/"
                 />
     <xhtml:link
                 rel="alternate"
                 hreflang="de"
-                href="https://finkregh.github.io/hugo-theme-component-ical/de/posts/post-1/"
+                href="https://finkregh.github.io/hugo-theme-component-ical/pr-preview/pr-22/de/posts/post-1/"
                 />
   </url><url>
-    <loc>https://finkregh.github.io/hugo-theme-component-ical/de/posts/</loc>
+    <loc>https://finkregh.github.io/hugo-theme-component-ical/pr-preview/pr-22/de/posts/</loc>
     <lastmod>2025-08-27T10:00:00+00:00</lastmod>
     <xhtml:link
                 rel="alternate"
                 hreflang="en-us"
-                href="https://finkregh.github.io/hugo-theme-component-ical/posts/"
+                href="https://finkregh.github.io/hugo-theme-component-ical/pr-preview/pr-22/posts/"
                 />
     <xhtml:link
                 rel="alternate"
                 hreflang="de"
-                href="https://finkregh.github.io/hugo-theme-component-ical/de/posts/"
+                href="https://finkregh.github.io/hugo-theme-component-ical/pr-preview/pr-22/de/posts/"
                 />
   </url><url>
-    <loc>https://finkregh.github.io/hugo-theme-component-ical/de/</loc>
+    <loc>https://finkregh.github.io/hugo-theme-component-ical/pr-preview/pr-22/de/</loc>
     <lastmod>2025-08-27T10:00:00+00:00</lastmod>
     <xhtml:link
                 rel="alternate"
                 hreflang="en-us"
-                href="https://finkregh.github.io/hugo-theme-component-ical/"
+                href="https://finkregh.github.io/hugo-theme-component-ical/pr-preview/pr-22/"
                 />
     <xhtml:link
                 rel="alternate"
                 hreflang="de"
-                href="https://finkregh.github.io/hugo-theme-component-ical/de/"
+                href="https://finkregh.github.io/hugo-theme-component-ical/pr-preview/pr-22/de/"
                 />
   </url><url>
-    <loc>https://finkregh.github.io/hugo-theme-component-ical/de/categories/</loc>
+    <loc>https://finkregh.github.io/hugo-theme-component-ical/pr-preview/pr-22/de/categories/</loc>
     <xhtml:link
                 rel="alternate"
                 hreflang="en-us"
-                href="https://finkregh.github.io/hugo-theme-component-ical/categories/"
+                href="https://finkregh.github.io/hugo-theme-component-ical/pr-preview/pr-22/categories/"
                 />
     <xhtml:link
                 rel="alternate"
                 hreflang="de"
-                href="https://finkregh.github.io/hugo-theme-component-ical/de/categories/"
+                href="https://finkregh.github.io/hugo-theme-component-ical/pr-preview/pr-22/de/categories/"
                 />
   </url><url>
-    <loc>https://finkregh.github.io/hugo-theme-component-ical/de/tags/</loc>
+    <loc>https://finkregh.github.io/hugo-theme-component-ical/pr-preview/pr-22/de/tags/</loc>
     <xhtml:link
                 rel="alternate"
                 hreflang="en-us"
-                href="https://finkregh.github.io/hugo-theme-component-ical/tags/"
+                href="https://finkregh.github.io/hugo-theme-component-ical/pr-preview/pr-22/tags/"
                 />
     <xhtml:link
                 rel="alternate"
                 hreflang="de"
-                href="https://finkregh.github.io/hugo-theme-component-ical/de/tags/"
+                href="https://finkregh.github.io/hugo-theme-component-ical/pr-preview/pr-22/de/tags/"
                 />
   </url>
 </urlset>

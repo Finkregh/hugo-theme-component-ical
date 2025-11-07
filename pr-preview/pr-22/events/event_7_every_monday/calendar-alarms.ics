@@ -11,9 +11,9 @@ METHOD:PUBLISH
 
 UID:190ee21d91545e60b3708976b35af3f7
 
-URL:https://finkregh.github.io/hugo-theme-component-ical/events/event_7_every_monday/
+URL:https://finkregh.github.io/hugo-theme-component-ical/pr-preview/pr-22/events/event_7_every_monday/
 REFRESH-INTERVAL;VALUE=DURATION:P1W
-SOURCE;VALUE=URI:https://finkregh.github.io/hugo-theme-component-ical/events/event_7_every_monday/calendar.ics
+SOURCE;VALUE=URI:https://finkregh.github.io/hugo-theme-component-ical/pr-preview/pr-22/events/event_7_every_monday/calendar.ics
 COLOR:crimson
 NAME;LANGUAGE=de-CH:Example Events
 DESCRIPTION;LANGUAGE=de-CH:Example Events Calendar
@@ -70,7 +70,7 @@ LOCATION;LANGUAGE=de-CH:
 STATUS:CONFIRMED
 SUMMARY;LANGUAGE=de-CH:Every Monday
 TRANSP:OPAQUE
-URL:https://finkregh.github.io/hugo-theme-component-ical/events/event_7_every_monday/
+URL:https://finkregh.github.io/hugo-theme-component-ical/pr-preview/pr-22/events/event_7_every_monday/
 RRULE:FREQ=WEEKLY;BYDAY=MO
 DTEND;VALUE=DATE-TIME;TZID=Europe/Zurich:20240108T093000
 
