@@ -17,7 +17,7 @@ hugo_go_modules:
 
 [working-directory: '.github/exampleSite']
 build_hugo:
-    hugo build --quiet --cleanDestinationDir --baseURL https://finkregh.github.io/hugo-theme-component-ical/
+    hugo build --quiet --cleanDestinationDir --baseURL https://finkregh.github.io/hugo-theme-component-ical/pr-preview/pr-${PR_NUMBER}
 
 [working-directory: '.github/exampleSite']
 build_hugo_debug:

@@ -3,6 +3,11 @@ name: Validate iCalendar Files
 on:
   pull_request:
     branches: [main]
+    types:
+      - opened
+      - reopened
+      - synchronize
+      - closed
   push:
     branches: [main]
   workflow_dispatch:
@@ -12,6 +17,8 @@ permissions:
   contents: write
   pages: write
   id-token: write
+  pull-requests: write
+ 
 # Allow only one concurrent deployment, skipping runs queued between the run in-progress and latest queued.
 # However, do NOT cancel in-progress runs as we want to allow these production deployments to complete.
 concurrency:
@@ -48,9 +55,11 @@ jobs:
           extended: true
 
       - name: Run tests with just
+        if: github.ref != 'refs/heads/main' && github.server_url == 'https://github.com'
         env:
             JUST_COLOR: always
             GOPROXY: direct
+            PR_NUMBER: ${{ github.event.number }}
         run: |
           # replace 'version = "main"' in .github/exampleSite/hugo.toml with the current branch name
           echo sed -i "s/version = \".*\"/version = \"${GITHUB_HEAD_REF}\"/" .github/exampleSite/hugo.toml
@@ -58,10 +67,18 @@ jobs:
           echo "Set theme version to ${GITHUB_HEAD_REF} in .github/exampleSite/hugo.toml"
           just test_debug
 
+      - name: build with just
+        if: github.ref == 'refs/heads/main' && github.server_url == 'https://github.com'
+        env:
+            JUST_COLOR: always
+            GOPROXY: direct
+        run: |
+          just test
+
       - name: List generated files
         run: |
           echo "Generated .ics files:"
-          find .github/exampleSite/public/events -name "*.ics" -type f | sort
+          find .github/exampleSite/public -type f | sort
 
       - name: Upload build artifacts
         uses: actions/upload-artifact@v5
@@ -77,7 +94,16 @@ jobs:
         uses: rossjrw/pr-preview-action@v1
         if: github.ref != 'refs/heads/main' && github.server_url == 'https://github.com'
         with:
-          source-dir: ./.github/exampleSite/public/
+          source-dir: ./.github/exampleSite/public
+
+      - name: Deploy main
+        uses: JamesIves/github-pages-deploy-action@v4
+        if: github.ref == 'refs/heads/main' && github.server_url == 'https://github.com'
+        with:
+          folder: ./.github/exampleSite/public
+          branch: gh-pages
+          clean-exclude: pr-preview
+          force: false
 
       - name: Setup Pages
         if: github.ref == 'refs/heads/main' && github.server_url == 'https://github.com'
