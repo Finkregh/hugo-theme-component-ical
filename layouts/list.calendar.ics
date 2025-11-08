@@ -1,6 +1,8 @@
 BEGIN:VCALENDAR
 
-{{ partial "events/header.ics" . }}
+{{- with partial "events/header.ics" . }}
+{{ . }}
+{{- end }}
 
 {{ partial "events/timezone.ics" . }}
 
