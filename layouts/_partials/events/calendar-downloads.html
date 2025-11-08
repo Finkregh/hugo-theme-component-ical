@@ -1,0 +1,53 @@
+{{- /* Calendar Download Links Section */ -}}
+<section class="calendar-downloads-section" aria-labelledby="downloads-heading">
+  <h2 id="downloads-heading" class="section-title">
+    <span class="icon">
+      {{ partial "calendar_icon.html" "download" }}
+    </span>
+    {{ T "ical_calendar_downloads" | default "Download Calendar" }}
+  </h2>
+  
+  <div class="download-options">
+    {{- /* Download all events without alarms */ -}}
+    {{ with .OutputFormats.Get "Calendar" }}
+    <div class="download-option">
+      <p>
+        {{ T "templates_get_calendar_file_no_alarms" | default "Get calendar file without alarms" }}
+        <a href="{{ .RelPermalink }}" type="text/calendar" class="download-btn">
+          <span class="icon">
+            {{ partial "calendar_icon.html" "download" }}
+          </span>
+          {{ T "templates_here_link" | default "here" }}
+        </a>.
+      </p>
+    </div>
+    {{ end }}
+
+    {{- /* Download all events with alarms */ -}}
+    {{ with .OutputFormats.Get "CalendarWithAlarms" }}
+    <div class="download-option">
+      <p>
+        {{ T "templates_get_calendar_file_with_alarms" | default "Get calendar file with alarms" }}
+        <a href="{{ .RelPermalink }}" type="text/calendar" class="download-btn">
+          <span class="icon">
+            {{ partial "calendar_icon.html" "download" }}
+          </span>
+          {{ T "templates_here_link" | default "here" }}
+        </a>.
+      </p>
+    </div>
+    {{ end }}
+  </div>
+
+  {{- /* Interactive Calendar Widget */ -}}
+  {{ with .OutputFormats.Get "Calendar" }}
+  <div class="calendar-widget-section">
+    <h3 class="widget-title">{{ T "ical_interactive_calendar" | default "Interactive Calendar" }}</h3>
+    <div class="calendar-controls">
+      <label for="locale-selector">{{ T "templates_locales" | default "Locales" }}:</label>
+      <select id="locale-selector" class="locale-selector"></select>
+    </div>
+    <div class="single-event-calendar" id="calendar"></div>
+  </div>
+  {{ end }}
+</section>

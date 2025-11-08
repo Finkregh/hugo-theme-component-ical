@@ -17,4 +17,4 @@
       - . : A string containing one of these predefined values.
 */ -}}
 
-CLASS:{{- . | default "PUBLIC" | upper -}}
+CLASS:{{- . | default "PUBLIC" | upper }}

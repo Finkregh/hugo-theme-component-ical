@@ -3,14 +3,14 @@ languageCode = 'en-us'
 title = 'Demo of hugo-theme-component-ical'
 
 [module]
-# replacement pointing to local folder, required to get _this_ variant in the CI
+# replacement pointing to local folder, ONLY use locally!
 # not required otherwise
-#replacements = 'github.com/finkregh/hugo-theme-component-ical -> ../../..'
+replacements = 'github.com/finkregh/hugo-theme-component-ical -> ../../..'
 
 # This theme component
 [[module.imports]]
 path = 'github.com/finkregh/hugo-theme-component-ical'
-version = "main"
+version = "refactor"
 
 # The base theme for the demo site
 [[module.imports]]

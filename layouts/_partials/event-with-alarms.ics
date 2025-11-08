@@ -1,8 +1,7 @@
-{{/* Adapt the dict here to fit your data model. See 'comp_event.ics' for available keys. */}}
-
-{{/* Multiline hack from: https://github.com/gohugoio/hugoDocs/issues/764#issuecomment-625711237 */}}
-
-{{ with dict `` `
+{{- /* Adapt the dict here to fit your data model. See 'comp_event.ics' for available keys. */ -}}
+{{- /* Multiline hack from: https://github.com/gohugoio/hugoDocs/issues/764#issuecomment-625711237 */ -}}
+{{- warnf "Partial used: %s" templates.Current.Name -}}
+{{- with dict `` `
   ` "description"  (dict "text" .Plain "lang" "de-CH") `` `
   ` "summary"      (dict "text" .Title "lang" "de-CH") `` `
   ` "eventStart"   (dict "dateTime" .Params.startDate "timeZoneID" "Europe/Zurich") `` `
@@ -18,6 +17,5 @@
   ` "lastmod"      .Lastmod `` `
   ` "recurrenceRule" .Params.recurrenceRule `` `
   ` "alarms"        .Params.alarms `` `
-  ` -}}
-  {{ partial "ical/comp_event.ics" . }}
-{{ end }}
+  ` -}}{{ partial "ical/comp_event.ics" . }}
+{{ end -}}

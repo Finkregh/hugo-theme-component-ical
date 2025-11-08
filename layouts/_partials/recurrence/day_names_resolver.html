@@ -1,0 +1,214 @@
+{{- /*
+  Day Names Resolver Utility Partial
+  
+  Converts RFC day codes (MO, TU, WE, TH, FR, SA, SU) to localized human-readable day names.
+  This partial centralizes day code to day name conversion logic that was previously scattered
+  throughout the monolithic recurrence_human_readable.html template.
+  
+  Updated in Phase 1 to support ordinal BYDAY format parsing.
+  
+  Input Parameters:
+    - days: (required) Can be either:
+      * Single day code string: "MO"
+      * Single ordinal day code: "3TH", "-1FR"
+      * Array of day codes: ["MO", "FR"]
+      * Array of ordinal day codes: ["1MO", "3MO", "-1FR"]
+    - extractOrdinals: (optional) boolean - if true, returns dict with ordinals and days
+  
+  Output:
+    - When extractOrdinals is false (default):
+      * Single day: "Monday"
+      * Multiple days: "Monday and Friday"
+    - When extractOrdinals is true:
+      * Returns dict: { "ordinals": [3, -1], "days": ["TH", "FR"], "dayNames": ["Thursday", "Friday"] }
+  
+  Usage Examples:
+    {{ partial "recurrence/day_names_resolver.html" (dict "days" "MO") }}
+    {{ partial "recurrence/day_names_resolver.html" (dict "days" "3TH") }}
+    {{ partial "recurrence/day_names_resolver.html" (dict "days" (slice "1MO" "3MO")) }}
+    {{ partial "recurrence/day_names_resolver.html" (dict "days" "3TH" "extractOrdinals" true) }}
+  
+  Features:
+    - Uses Hugo's time.Format function for proper localization
+    - Handles both string and slice inputs consistently
+    - Parses ordinal BYDAY format (e.g., "3TH" → ordinal=3, day=TH)
+    - Supports negative ordinals (e.g., "-1FR" → ordinal=-1, day=FR)
+    - Comprehensive input validation and error handling
+    - Supports all standard RFC day codes: MO, TU, WE, TH, FR, SA, SU
+    - Provides meaningful error messages for debugging
+    - Backward compatible with existing non-ordinal usage
+*/ -}}
+
+{{- /* Input validation - ensure days parameter is provided */ -}}
+{{- if not (isset . "days") -}}
+  {{- errorf "day_names_resolver.html: Missing required parameter 'days'. Usage: {{ partial \"recurrence/day_names_resolver.html\" (dict \"days\" \"MO\") }}" -}}
+{{- end -}}
+
+{{- $days := .days -}}
+{{- $extractOrdinals := .extractOrdinals | default false -}}
+
+{{- /* Validate that days parameter is not empty */ -}}
+{{- if not $days -}}
+  {{- errorf "day_names_resolver.html: Parameter 'days' cannot be empty or nil" -}}
+{{- end -}}
+
+
+{{- /* 
+  Create localized day names mapping using Hugo's time.Format function
+  This approach ensures proper localization support by using actual dates
+  that correspond to each day of the week:
+  - Sunday: 2021-11-07 (a known Sunday)
+  - Monday: 2021-11-01 (a known Monday)  
+  - Tuesday: 2021-11-02 (a known Tuesday)
+  - Wednesday: 2021-11-03 (a known Wednesday)
+  - Thursday: 2021-11-04 (a known Thursday)
+  - Friday: 2021-11-05 (a known Friday)
+  - Saturday: 2021-11-06 (a known Saturday)
+*/ -}}
+{{- $dayNames := dict 
+  "SU" (time.Format "Monday" "2021-11-07")
+  "MO" (time.Format "Monday" "2021-11-01") 
+  "TU" (time.Format "Monday" "2021-11-02")
+  "WE" (time.Format "Monday" "2021-11-03")
+  "TH" (time.Format "Monday" "2021-11-04")
+  "FR" (time.Format "Monday" "2021-11-05")
+  "SA" (time.Format "Monday" "2021-11-06")
+-}}
+
+{{- /* Handle single day code (string input) */ -}}
+{{- if not (reflect.IsSlice $days) -}}
+  {{- /* Parse the single day input for ordinal information */ -}}
+  {{- $input := $days | upper -}}
+  {{- $dayCode := "" -}}
+  {{- $ordinal := 0 -}}
+  {{- $hasOrdinal := false -}}
+  
+  {{- /* Check if input matches ordinal pattern: optional minus, digits, then day code */ -}}
+  {{- $ordinalPattern := "^(-?[0-9]+)([A-Z]{2})$" -}}
+  {{- $matches := findRE $ordinalPattern $input -}}
+  
+  {{- if $matches -}}
+    {{- /* Extract ordinal and day code from the match */ -}}
+    {{- $fullMatch := index $matches 0 -}}
+    {{- $ordinalStr := replaceRE $ordinalPattern "$1" $fullMatch -}}
+    {{- $dayCode = replaceRE $ordinalPattern "$2" $fullMatch -}}
+    
+    {{- /* Validate day code */ -}}
+    {{- if not (isset $dayNames $dayCode) -}}
+      {{- errorf "day_names_resolver.html: Invalid day code '%s' in ordinal format '%s'. Valid codes are: MO, TU, WE, TH, FR, SA, SU" $dayCode $input -}}
+    {{- end -}}
+    
+    {{- /* Convert ordinal string to integer */ -}}
+    {{- $ordinal = $ordinalStr | int -}}
+    {{- if eq $ordinal 0 -}}
+      {{- errorf "day_names_resolver.html: Invalid ordinal '0' in format '%s'. Ordinal must be a non-zero integer." $input -}}
+    {{- end -}}
+    {{- $hasOrdinal = true -}}
+  {{- else -}}
+    {{- /* No ordinal found, treat as plain day code */ -}}
+    {{- $dayCode = $input -}}
+    {{- if not (isset $dayNames $dayCode) -}}
+      {{- errorf "day_names_resolver.html: Invalid day code '%s'. Valid codes are: MO, TU, WE, TH, FR, SA, SU" $dayCode -}}
+    {{- end -}}
+  {{- end -}}
+  
+  {{- /* Get the localized day name */ -}}
+  {{- $dayName := index $dayNames $dayCode -}}
+  
+  {{- /* Return based on extractOrdinals flag */ -}}
+  {{- if $extractOrdinals -}}
+    {{- /* Return structured data */ -}}
+    {{- $ordinals := slice -}}
+    {{- $dayCodes := slice $dayCode -}}
+    {{- $dayNamesList := slice $dayName -}}
+    {{- if $hasOrdinal -}}
+      {{- $ordinals = slice $ordinal -}}
+    {{- end -}}
+    {{- dict "ordinals" $ordinals "days" $dayCodes "dayNames" $dayNamesList -}}
+  {{- else -}}
+    {{- /* Return just the day name for backward compatibility */ -}}
+    {{- $dayName -}}
+  {{- end -}}
+
+{{- else -}}
+  {{- /* Handle multiple day codes (slice input) */ -}}
+  
+  {{- /* Validate that slice is not empty */ -}}
+  {{- if eq (len $days) 0 -}}
+    {{- errorf "day_names_resolver.html: Days array cannot be empty" -}}
+  {{- end -}}
+  
+  {{- /* Parse all days and collect information */ -}}
+  {{- $dayList := slice -}}
+  {{- $ordinalsList := slice -}}
+  {{- $dayCodesList := slice -}}
+  {{- $dayNamesList := slice -}}
+  
+  {{- range $days -}}
+    {{- /* Parse each day input for ordinal information */ -}}
+    {{- $input := . | upper -}}
+    {{- $dayCode := "" -}}
+    {{- $ordinal := 0 -}}
+    {{- $hasOrdinal := false -}}
+    
+    {{- /* Check if input matches ordinal pattern: optional minus, digits, then day code */ -}}
+    {{- $ordinalPattern := "^(-?[0-9]+)([A-Z]{2})$" -}}
+    {{- $matches := findRE $ordinalPattern $input -}}
+    
+    {{- if $matches -}}
+      {{- /* Extract ordinal and day code from the match */ -}}
+      {{- $fullMatch := index $matches 0 -}}
+      {{- $ordinalStr := replaceRE $ordinalPattern "$1" $fullMatch -}}
+      {{- $dayCode = replaceRE $ordinalPattern "$2" $fullMatch -}}
+      
+      {{- /* Validate day code */ -}}
+      {{- if not (isset $dayNames $dayCode) -}}
+        {{- errorf "day_names_resolver.html: Invalid day code '%s' in ordinal format '%s'. Valid codes are: MO, TU, WE, TH, FR, SA, SU" $dayCode $input -}}
+      {{- end -}}
+      
+      {{- /* Convert ordinal string to integer */ -}}
+      {{- $ordinal = $ordinalStr | int -}}
+      {{- if eq $ordinal 0 -}}
+        {{- errorf "day_names_resolver.html: Invalid ordinal '0' in format '%s'. Ordinal must be a non-zero integer." $input -}}
+      {{- end -}}
+      {{- $hasOrdinal = true -}}
+    {{- else -}}
+      {{- /* No ordinal found, treat as plain day code */ -}}
+      {{- $dayCode = $input -}}
+      {{- if not (isset $dayNames $dayCode) -}}
+        {{- errorf "day_names_resolver.html: Invalid day code '%s'. Valid codes are: MO, TU, WE, TH, FR, SA, SU" $dayCode -}}
+      {{- end -}}
+    {{- end -}}
+    
+    {{- /* Get the localized day name */ -}}
+    {{- $dayName := index $dayNames $dayCode -}}
+    
+    {{- /* Collect data for both modes */ -}}
+    {{- $dayList = $dayList | append $dayName -}}
+    {{- $dayCodesList = $dayCodesList | append $dayCode -}}
+    {{- $dayNamesList = $dayNamesList | append $dayName -}}
+    {{- if $hasOrdinal -}}
+      {{- $ordinalsList = $ordinalsList | append $ordinal -}}
+    {{- end -}}
+  {{- end -}}
+  
+  {{- /* Return based on extractOrdinals flag */ -}}
+  {{- if $extractOrdinals -}}
+    {{- /* Return structured data */ -}}
+    {{- dict "ordinals" $ordinalsList "days" $dayCodesList "dayNames" $dayNamesList -}}
+  {{- else -}}
+    {{- /* Join day names with proper conjunction for backward compatibility */ -}}
+    {{- if eq (len $dayList) 1 -}}
+      {{- /* Single item - should not happen in slice context, but handle gracefully */ -}}
+      {{- index $dayList 0 -}}
+    {{- else if eq (len $dayList) 2 -}}
+      {{- /* Two items: "Monday and Friday" */ -}}
+      {{- printf "%s and %s" (index $dayList 0) (index $dayList 1) -}}
+    {{- else -}}
+      {{- /* Multiple items: "Monday, Wednesday and Friday" */ -}}
+      {{- $lastDay := index $dayList (sub (len $dayList) 1) -}}
+      {{- $otherDays := first (sub (len $dayList) 1) $dayList -}}
+      {{- printf "%s and %s" (delimit $otherDays ", ") $lastDay -}}
+    {{- end -}}
+  {{- end -}}
+{{- end -}}

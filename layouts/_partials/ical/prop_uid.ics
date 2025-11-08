@@ -14,4 +14,4 @@
       - . : A unique identifier string.
 */ -}}
 
-UID:{{- partial "ical/dt_text.ics" . -}}
+UID:{{- partial "ical/dt_text.ics" . }}

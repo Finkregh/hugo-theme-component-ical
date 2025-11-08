@@ -1,0 +1,238 @@
+{{- /*
+  Monthly Frequency Handler - RECUR-005
+  
+  Handles all monthly recurrence patterns by extracting and centralizing the monthly frequency logic
+  that was previously embedded in the monolithic recurrence_human_readable.html template.
+  
+  This is the first frequency handler in Phase 2 of the Hugo template refactoring project.
+  Updated to support embedded ordinal BYDAY format from Phase 1.
+  
+  Input: dict "rule" $rule
+  Where $rule contains the recurrence rule data with properties:
+    - freq: "MONTHLY" (required)
+    - interval: integer (default: 1) - how many months between occurrences
+    - byDay: string or slice - day codes like "SU", "MO", or ordinal format like "3TH", "-1FR"
+    - bySetPos: integer or slice - position indicators like 1, -1, etc. (legacy format)
+    - byMonthDay: integer or slice - specific day of month like 15, 31, etc.
+  
+  Output: String with human-readable monthly frequency description
+  
+  Pattern Priority (most specific to least specific):
+    1. byDay with embedded ordinals (new format): "3TH", "-1FR"
+    2. byDay + bySetPos (legacy format): "last Sunday of the month", "first Monday of the month"
+    3. byMonthDay: "15th of the month", "31st of the month"
+    4. Simple interval: "Every month", "Every 3 months"
+  
+  Examples:
+    - {freq: "MONTHLY", byDay: "3TH"} → "Every third Thursday of the month"
+    - {freq: "MONTHLY", byDay: "SU", bySetPos: -1} → "Every last Sunday of the month"
+    - {freq: "MONTHLY", byMonthDay: 15} → "Every month on day 15"
+    - {freq: "MONTHLY", interval: 3} → "Every 3 months"
+  
+  Phase 1 Utility Integration:
+    - Uses ordinal_position.html for bySetPos handling
+    - Uses interval_formatter.html for interval formatting
+    - Uses day_names_resolver.html for byDay resolution with ordinal parsing
+  
+  Error Handling:
+    - Validates required rule parameter
+    - Validates frequency is MONTHLY
+    - Provides meaningful error messages for debugging
+    - Handles edge cases and invalid combinations
+*/ -}}
+
+{{- /* Input validation - ensure rule parameter is provided */ -}}
+{{- if not .rule -}}
+  {{- errorf "monthly_frequency.html: missing required parameter 'rule'. Usage: {{ partial \"recurrence/monthly_frequency.html\" (dict \"rule\" $rule) }}" -}}
+{{- end -}}
+
+{{- $rule := .rule -}}
+
+{{- /* Validate that rule is a dictionary/map */ -}}
+{{- if not (reflect.IsMap $rule) -}}
+  {{- errorf "monthly_frequency.html: parameter 'rule' must be a dictionary/map, got %T: %v" $rule $rule -}}
+{{- end -}}
+
+{{- /* Validate frequency is MONTHLY */ -}}
+{{- $freq := $rule.freq | default "" | lower -}}
+{{- if ne $freq "monthly" -}}
+  {{- errorf "monthly_frequency.html: rule frequency must be 'MONTHLY', got: %s" $rule.freq -}}
+{{- end -}}
+
+{{- /* Extract rule parameters with case-insensitive fallbacks */ -}}
+{{- $byDay := or $rule.byDay $rule.byday -}}
+{{- $bySetPos := or $rule.bySetPos $rule.bysetpos -}}
+{{- $byMonthDay := or $rule.byMonthDay $rule.bymonthday -}}
+{{- $interval := $rule.interval | default 1 -}}
+
+{{- /* Validate interval is a positive integer - be flexible with numeric types */ -}}
+{{- $intervalInt := 0 -}}
+{{- $intervalType := printf "%T" $interval -}}
+{{- if or (eq $intervalType "int") (eq $intervalType "int64") (eq $intervalType "uint64") (eq $intervalType "float64") -}}
+  {{- $intervalInt = $interval | int -}}
+{{- else if eq $intervalType "string" -}}
+  {{- if findRE "^[0-9]+$" $interval -}}
+    {{- $intervalInt = $interval | int -}}
+  {{- else -}}
+    {{- errorf "monthly_frequency.html: interval must be a positive integer, got string: %v" $interval -}}
+  {{- end -}}
+{{- else -}}
+  {{- errorf "monthly_frequency.html: interval must be a positive integer, got %T: %v" $interval $interval -}}
+{{- end -}}
+
+{{- if le $intervalInt 0 -}}
+  {{- errorf "monthly_frequency.html: interval must be a positive integer, got: %v" $interval -}}
+{{- end -}}
+
+{{- /* Initialize result variable */ -}}
+{{- $result := "" -}}
+
+{{- /*
+  Pattern Priority Handling:
+  1. byDay with embedded ordinals (new format): "3TH", "-1FR"
+  2. byDay + bySetPos (legacy format): "last Sunday of the month"
+  3. byMonthDay: "15th of the month"
+  4. Simple interval: "Every 3 months"
+*/ -}}
+
+{{- /* Priority 1: Handle byDay with embedded ordinals or legacy byDay + bySetPos */ -}}
+{{- if $byDay -}}
+  {{- /* Check if byDay contains embedded ordinals by examining the input directly */ -}}
+  {{- $hasEmbeddedOrdinals := false -}}
+  {{- $ordinalPattern := "^-?[0-9]+[A-Z]{2}$" -}}
+  
+  {{- if reflect.IsSlice $byDay -}}
+    {{- /* Check if any element in the slice matches ordinal pattern */ -}}
+    {{- range $byDay -}}
+      {{- $dayStr := . | upper -}}
+      {{- if findRE $ordinalPattern $dayStr -}}
+        {{- $hasEmbeddedOrdinals = true -}}
+      {{- end -}}
+    {{- end -}}
+  {{- else -}}
+    {{- /* Check if single string matches ordinal pattern */ -}}
+    {{- $dayStr := $byDay | upper -}}
+    {{- if findRE $ordinalPattern $dayStr -}}
+      {{- $hasEmbeddedOrdinals = true -}}
+    {{- end -}}
+  {{- end -}}
+  
+  {{- if $hasEmbeddedOrdinals -}}
+    {{- /* Handle new embedded ordinal format: "3TH", "-1FR", ["1MO", "3MO"] */ -}}
+    {{- $dayName := partial "recurrence/day_names_resolver.html" (dict "days" $byDay) -}}
+    
+    {{- /* Extract ordinals manually since we can't access them from the parsed result */ -}}
+    {{- $ordinals := slice -}}
+    {{- if reflect.IsSlice $byDay -}}
+      {{- range $byDay -}}
+        {{- $dayStr := . | upper -}}
+        {{- $ordinalStr := replaceRE "^(-?[0-9]+)[A-Z]{2}$" "$1" $dayStr -}}
+        {{- if ne $ordinalStr $dayStr -}}
+          {{- $ordinals = $ordinals | append ($ordinalStr | int) -}}
+        {{- end -}}
+      {{- end -}}
+    {{- else -}}
+      {{- $dayStr := $byDay | upper -}}
+      {{- $ordinalStr := replaceRE "^(-?[0-9]+)[A-Z]{2}$" "$1" $dayStr -}}
+      {{- if ne $ordinalStr $dayStr -}}
+        {{- $ordinals = $ordinals | append ($ordinalStr | int) -}}
+      {{- end -}}
+    {{- end -}}
+    
+    {{- /* Use the extracted ordinals */ -}}
+    {{- $ordinalText := partial "recurrence/ordinal_position.html" (dict "position" $ordinals) -}}
+    
+    {{- /* Format the complete monthly pattern */ -}}
+    {{- if eq $intervalInt 1 -}}
+      {{- $result = T "ical_recurrence_every_ordinal_day_of_month" (dict "ordinal" $ordinalText "day" $dayName) -}}
+    {{- else -}}
+      {{- /* Use interval_formatter.html for consistent interval formatting */ -}}
+      {{- $intervalText := partial "recurrence/interval_formatter.html" (dict "interval" $intervalInt "unit" "month") -}}
+      {{- /* Replace "Every" with interval-specific text and add day/position details */ -}}
+      {{- $result = T "ical_recurrence_interval_on_ordinal_day" (dict "interval" $intervalText "ordinal" $ordinalText "day" $dayName) -}}
+    {{- end -}}
+    
+  {{- else if $bySetPos -}}
+    {{- /* Handle legacy byDay + bySetPos format for backward compatibility */ -}}
+    {{- $dayName := partial "recurrence/day_names_resolver.html" (dict "days" $byDay) -}}
+    
+    {{- /* Use ordinal_position.html to convert positions to readable ordinals */ -}}
+    {{- $ordinalText := partial "recurrence/ordinal_position.html" (dict "position" $bySetPos) -}}
+    
+    {{- /* Format the complete monthly pattern */ -}}
+    {{- if eq $intervalInt 1 -}}
+      {{- $result = T "ical_recurrence_every_ordinal_day_of_month" (dict "ordinal" $ordinalText "day" $dayName) -}}
+    {{- else -}}
+      {{- /* Use interval_formatter.html for consistent interval formatting */ -}}
+      {{- $intervalText := partial "recurrence/interval_formatter.html" (dict "interval" $intervalInt "unit" "month") -}}
+      {{- /* Replace "Every" with interval-specific text and add day/position details */ -}}
+      {{- $result = T "ical_recurrence_interval_on_ordinal_day" (dict "interval" $intervalText "ordinal" $ordinalText "day" $dayName) -}}
+    {{- end -}}
+    
+  {{- else -}}
+    {{- /* byDay without ordinals or bySetPos - warn about ambiguity */ -}}
+    {{- warnf "monthly_frequency.html: byDay specified without ordinals or bySetPos in monthly rule. This may produce ambiguous results. Rule: %v" $rule -}}
+    {{- $dayName := partial "recurrence/day_names_resolver.html" (dict "days" $byDay) -}}
+    {{- if eq $intervalInt 1 -}}
+      {{- $result = T "ical_recurrence_every_month_on_day" (dict "day" $dayName) -}}
+    {{- else -}}
+      {{- $intervalText := partial "recurrence/interval_formatter.html" (dict "interval" $intervalInt "unit" "month") -}}
+      {{- $result = T "ical_recurrence_interval_on_day" (dict "interval" $intervalText "day" $dayName) -}}
+    {{- end -}}
+  {{- end -}}
+
+{{- /* Priority 2: Handle byMonthDay patterns */ -}}
+{{- else if $byMonthDay -}}
+  {{- /* Handle single or multiple month days */ -}}
+  {{- if reflect.IsSlice $byMonthDay -}}
+    {{- /* Multiple month days - validate and format */ -}}
+    {{- if eq (len $byMonthDay) 0 -}}
+      {{- errorf "monthly_frequency.html: byMonthDay slice cannot be empty" -}}
+    {{- end -}}
+    
+    {{- /* Validate each day in the slice */ -}}
+    {{- range $byMonthDay -}}
+      {{- $dayInt := . | int -}}
+      {{- if or (le $dayInt 0) (gt $dayInt 31) -}}
+        {{- errorf "monthly_frequency.html: invalid byMonthDay value '%v'. Must be between 1 and 31." . -}}
+      {{- end -}}
+    {{- end -}}
+    
+    {{- /* Format multiple days */ -}}
+    {{- $dayString := delimit $byMonthDay " and " -}}
+    {{- if eq $intervalInt 1 -}}
+      {{- $result = T "ical_recurrence_every_month_on_day" (dict "day" $dayString) -}}
+    {{- else -}}
+      {{- $intervalText := partial "recurrence/interval_formatter.html" (dict "interval" $intervalInt "unit" "month") -}}
+      {{- $result = T "ical_recurrence_interval_on_day" (dict "interval" $intervalText "day" $dayString) -}}
+    {{- end -}}
+  {{- else -}}
+    {{- /* Single month day - validate */ -}}
+    {{- $dayInt := $byMonthDay | int -}}
+    {{- if or (le $dayInt 0) (gt $dayInt 31) -}}
+      {{- errorf "monthly_frequency.html: invalid byMonthDay value '%v'. Must be between 1 and 31." $byMonthDay -}}
+    {{- end -}}
+    
+    {{- /* Format single day */ -}}
+    {{- if eq $intervalInt 1 -}}
+      {{- $result = T "ical_recurrence_every_month_on_day" (dict "day" ($byMonthDay | int)) -}}
+    {{- else -}}
+      {{- $intervalText := partial "recurrence/interval_formatter.html" (dict "interval" $intervalInt "unit" "month") -}}
+      {{- $result = T "ical_recurrence_interval_on_day" (dict "interval" $intervalText "day" ($byMonthDay | int)) -}}
+    {{- end -}}
+  {{- end -}}
+
+{{- /* Priority 3: Handle simple monthly intervals (fallback) */ -}}
+{{- else -}}
+  {{- /* Use interval_formatter.html for consistent formatting */ -}}
+  {{- $result = partial "recurrence/interval_formatter.html" (dict "interval" $intervalInt "unit" "month") -}}
+{{- end -}}
+
+{{- /*
+  Additional validation: Check for invalid combinations
+  Note: With the new embedded ordinal format, byDay without bySetPos is now valid
+  when ordinals are embedded in the byDay values (e.g., "3TH", "-1FR")
+*/ -}}
+
+{{- /* Return the formatted result */ -}}
+{{- $result -}}

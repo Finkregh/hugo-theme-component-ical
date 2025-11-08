@@ -1,19 +1,84 @@
-{{ define "main" }}
+{{- define "main" -}}
+<main class="events-list-container">
+  <header class="events-list-header">
+    <h1 class="events-list-title">
+      <span class="icon">
+        {{ partial "calendar_icon.html" "calender" }}
+      </span>
+      {{ T "ical_events_list_title" }}
+    </h1>
+  </header>
 
-<h1>{{ .Title }}</h1>
-{{ .Content }}
+  {{- /* Include calendar download links */ -}}
+  {{ partial "events/calendar-downloads.html" . }}
 
-{{ with .Pages }}
-<ul>
-  {{ range . }}
-  <li>
-    <a href="{{ .Permalink }}">{{ .Title }}</a>
-  </li>
-  {{ end }}
-</ul>
-{{ end }}
+  {{- /* Separate events into upcoming and past */ -}}
+  {{- $now := now -}}
+  {{- $upcomingEvents := slice -}}
+  {{- $pastEvents := slice -}}
+  
+  {{- range .Pages -}}
+    {{- if .Params.startDate -}}
+      {{- $eventDate := .Params.startDate -}}
+      {{- if gt $eventDate $now -}}
+        {{- $upcomingEvents = $upcomingEvents | append . -}}
+      {{- else -}}
+        {{- $pastEvents = $pastEvents | append . -}}
+      {{- end -}}
+    {{- end -}}
+  {{- end -}}
 
-{{ partial "calendar_list" . }}
-{{ partial "calendar_js" . }}
+  {{- /* Sort events by date */ -}}
+  {{- $upcomingEvents = sort $upcomingEvents ".Params.startDate" "asc" -}}
+  {{- $pastEvents = sort $pastEvents ".Params.startDate" "desc" -}}
 
-{{ end }}
+  {{- /* Display upcoming events */ -}}
+  {{- if $upcomingEvents -}}
+  <section class="events-section upcoming-events" aria-labelledby="upcoming-heading">
+    <h2 id="upcoming-heading" class="section-title">
+      <span class="icon">
+        {{ partial "calendar_icon.html" "arrow-right" }}
+      </span>
+      {{ T "ical_events_list_upcoming" }}
+    </h2>
+    <ul class="events-grid" role="list">
+      {{- range $upcomingEvents -}}
+        <li class="events-grid-item">
+          {{ partial "events/event-card.html" . }}
+        </li>
+      {{- end -}}
+    </ul>
+  </section>
+  {{- end -}}
+
+  {{- /* Display past events */ -}}
+  {{- if $pastEvents -}}
+  <section class="events-section past-events" aria-labelledby="past-heading">
+    <h2 id="past-heading" class="section-title">
+      <span class="icon">
+        {{ partial "calendar_icon.html" "time" }}
+      </span>
+      {{ T "ical_events_list_past" }}
+    </h2>
+    <ul class="events-grid" role="list">
+      {{- range $pastEvents -}}
+        <li class="events-grid-item">
+          {{ partial "events/event-card.html" . }}
+        </li>
+      {{- end -}}
+    </ul>
+  </section>
+  {{- end -}}
+
+  {{- /* No events message */ -}}
+  {{- if and (not $upcomingEvents) (not $pastEvents) -}}
+  <div class="no-events-message" role="status" aria-live="polite">
+    <span class="icon no-events-icon">
+      {{ partial "calendar_icon.html" "circle-info" }}
+    </span>
+    <p>{{ T "ical_events_list_no_events" }}</p>
+  </div>
+  {{- end -}}
+</main>
+{{ partial "calendar_js.html" . }}
+{{- end -}}

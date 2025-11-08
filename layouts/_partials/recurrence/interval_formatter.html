@@ -1,0 +1,95 @@
+{{- /* 
+  Interval Formatter Utility Partial
+  
+  Standardizes interval formatting across all frequency types in recurrence rules.
+  This partial extracts and centralizes the interval formatting logic that was
+  previously scattered throughout the monolithic recurrence_human_readable.html template.
+  
+  Input: dict "interval" $interval "unit" $unit
+    - interval: integer (e.g., 1, 2, 3, 4, ...)
+    - unit: string (e.g., "day", "week", "month", "year")
+  
+  Output: String with standardized interval formatting
+    - interval=1: "Every day", "Every week", "Every month", "Every year"
+    - interval>1: "Every 2 days", "Every 3 weeks", "Every 4 months", "Every 5 years"
+  
+  Examples:
+    - {interval: 1, unit: "day"} → "Every day"
+    - {interval: 2, unit: "week"} → "Every 2 weeks"
+    - {interval: 3, unit: "month"} → "Every 3 months"
+    - {interval: 1, unit: "year"} → "Every year"
+  
+  Error Handling:
+    - Returns error message for missing or invalid parameters
+    - Validates interval is a positive integer
+    - Validates unit is a supported frequency type
+  
+  Implementation Notes:
+    - Uses Hugo's built-in pluralize function for proper pluralization
+    - Handles both singular (interval=1) and plural (interval>1) cases
+    - Follows Hugo template best practices for type safety
+    - Provides comprehensive input validation
+*/ -}}
+
+{{- /* Input validation and parameter extraction */ -}}
+{{- $interval := .interval -}}
+{{- $unit := .unit -}}
+
+{{- /* Validate required parameters are present */ -}}
+{{- if not $interval -}}
+  {{- errorf "interval_formatter: missing required parameter 'interval'" -}}
+{{- end -}}
+
+{{- if not $unit -}}
+  {{- errorf "interval_formatter: missing required parameter 'unit'" -}}
+{{- end -}}
+
+{{- /* Validate interval is a positive integer */ -}}
+{{- $intervalInt := 0 -}}
+{{- if reflect.IsSlice $interval -}}
+  {{- errorf "interval_formatter: 'interval' must be an integer, got slice: %v" $interval -}}
+{{- else if eq (printf "%T" $interval) "string" -}}
+  {{- /* Try to convert string to int */ -}}
+  {{- $intervalInt = int $interval -}}
+  {{- if le $intervalInt 0 -}}
+    {{- errorf "interval_formatter: 'interval' must be a positive integer, got: %v" $interval -}}
+  {{- end -}}
+{{- else if or (eq (printf "%T" $interval) "int") (eq (printf "%T" $interval) "int64") (eq (printf "%T" $interval) "uint64") (eq (printf "%T" $interval) "float64") -}}
+  {{- $intervalInt = int $interval -}}
+  {{- if le $intervalInt 0 -}}
+    {{- errorf "interval_formatter: 'interval' must be a positive integer, got: %v" $interval -}}
+  {{- end -}}
+{{- else -}}
+  {{- errorf "interval_formatter: 'interval' must be an integer, got %T: %v" $interval $interval -}}
+{{- end -}}
+
+{{- /* Validate unit is a supported frequency type */ -}}
+{{- $validUnits := slice "day" "week" "month" "year" -}}
+{{- $unitLower := $unit | lower -}}
+{{- if not (in $validUnits $unitLower) -}}
+  {{- errorf "interval_formatter: unsupported unit '%s'. Valid units are: %s" $unit (delimit $validUnits ", ") -}}
+{{- end -}}
+
+{{- /* Format the interval based on singular vs plural cases */ -}}
+{{- $result := "" -}}
+
+{{- if eq $intervalInt 1 -}}
+  {{- /* Singular case: interval = 1 */ -}}
+  {{- if eq $unitLower "day" -}}
+    {{- $result = T "ical_recurrence_every_day" -}}
+  {{- else if eq $unitLower "week" -}}
+    {{- $result = T "ical_recurrence_every_week" -}}
+  {{- else if eq $unitLower "month" -}}
+    {{- $result = T "ical_recurrence_every_month" -}}
+  {{- else if eq $unitLower "year" -}}
+    {{- $result = T "ical_recurrence_every_year" -}}
+  {{- end -}}
+{{- else -}}
+  {{- /* Plural case: interval > 1 */ -}}
+  {{- /* Use translation system with pluralization support */ -}}
+  {{- $pluralUnit := T (printf "ical_%s" $unitLower) $intervalInt -}}
+  {{- $result = T "ical_recurrence_every_interval" (dict "count" $intervalInt "unit" $pluralUnit) -}}
+{{- end -}}
+
+{{- /* Return the formatted result */ -}}
+{{- $result -}}

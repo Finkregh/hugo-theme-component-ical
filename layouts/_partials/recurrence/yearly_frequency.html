@@ -1,0 +1,321 @@
+{{- /*
+  Yearly Frequency Handler - RECUR-006
+  
+  Handles all yearly recurrence patterns by extracting and centralizing the yearly frequency logic
+  that was previously embedded in the monolithic recurrence_human_readable.html template.
+  
+  This is the second frequency handler in Phase 2 of the Hugo template refactoring project.
+  Updated to support embedded ordinal BYDAY format from Phase 1.
+  
+  Input: dict "rule" $rule
+  Where $rule contains the recurrence rule data with properties:
+    - freq: "YEARLY" (required)
+    - interval: integer (default: 1) - how many years between occurrences
+    - byMonth: integer (1-12) - specific month like 4 for April
+    - byDay: string or slice - day codes like "SU", "MO", or ordinal format like "3TH", "-1FR"
+    - bySetPos: integer or slice - position indicators like 1, -1, 3, etc. (legacy format)
+  
+  Output: String with human-readable yearly frequency description
+  
+  Pattern Priority (most specific to least specific):
+    1. byMonth + byDay with embedded ordinals (new format): "3TH" in April
+    2. byMonth + byDay + bySetPos (legacy format): "third Sunday of April", "last Monday of December"
+    3. byMonth: "every April", "every December"
+    4. Simple interval: "Every year", "Every 2 years"
+  
+  Examples:
+    - {freq: "YEARLY", byMonth: 4, byDay: "3SU"} → "Every year on the third Sunday of April"
+    - {freq: "YEARLY", byMonth: 4, byDay: "SU", bySetPos: 3} → "Every year on the third Sunday of April"
+    - {freq: "YEARLY", byMonth: 4} → "Every year in April"
+    - {freq: "YEARLY", interval: 2} → "Every 2 years"
+  
+  Phase 1 Utility Integration:
+    - Uses ordinal_position.html for bySetPos handling
+    - Uses interval_formatter.html for interval formatting
+    - Uses day_names_resolver.html for byDay resolution with ordinal parsing
+  
+  Error Handling:
+    - Validates required rule parameter
+    - Validates frequency is YEARLY
+    - Validates byMonth is between 1-12
+    - Provides meaningful error messages for debugging
+    - Handles edge cases and invalid combinations
+*/ -}}
+
+{{- /* Input validation - ensure rule parameter is provided */ -}}
+{{- if not .rule -}}
+  {{- errorf "yearly_frequency.html: missing required parameter 'rule'. Usage: {{ partial \"recurrence/yearly_frequency.html\" (dict \"rule\" $rule) }}" -}}
+{{- end -}}
+
+{{- $rule := .rule -}}
+
+{{- /* Validate that rule is a dictionary/map */ -}}
+{{- if not (reflect.IsMap $rule) -}}
+  {{- errorf "yearly_frequency.html: parameter 'rule' must be a dictionary/map, got %T: %v" $rule $rule -}}
+{{- end -}}
+
+{{- /* Validate frequency is YEARLY */ -}}
+{{- $freq := $rule.freq | default "" | lower -}}
+{{- if ne $freq "yearly" -}}
+  {{- errorf "yearly_frequency.html: rule frequency must be 'YEARLY', got: %s" $rule.freq -}}
+{{- end -}}
+
+{{- /* Extract rule parameters with case-insensitive fallbacks */ -}}
+{{- $byMonth := or $rule.byMonth $rule.bymonth -}}
+{{- $byDay := or $rule.byDay $rule.byday -}}
+{{- $bySetPos := or $rule.bySetPos $rule.bysetpos -}}
+{{- $interval := $rule.interval | default 1 -}}
+
+{{- /* Validate interval is a positive integer - be flexible with numeric types */ -}}
+{{- $intervalInt := 0 -}}
+{{- $intervalType := printf "%T" $interval -}}
+{{- if or (eq $intervalType "int") (eq $intervalType "int64") (eq $intervalType "uint64") (eq $intervalType "float64") -}}
+  {{- $intervalInt = $interval | int -}}
+{{- else if eq $intervalType "string" -}}
+  {{- if findRE "^[0-9]+$" $interval -}}
+    {{- $intervalInt = $interval | int -}}
+  {{- else -}}
+    {{- errorf "yearly_frequency.html: interval must be a positive integer, got string: %v" $interval -}}
+  {{- end -}}
+{{- else -}}
+  {{- errorf "yearly_frequency.html: interval must be a positive integer, got %T: %v" $interval $interval -}}
+{{- end -}}
+
+{{- if le $intervalInt 0 -}}
+  {{- errorf "yearly_frequency.html: interval must be a positive integer, got: %v" $interval -}}
+{{- end -}}
+
+{{- /* Validate byMonth if provided */ -}}
+{{- if $byMonth -}}
+  {{- $monthInt := 0 -}}
+  {{- $monthType := printf "%T" $byMonth -}}
+  {{- if or (eq $monthType "int") (eq $monthType "int64") (eq $monthType "uint64") (eq $monthType "float64") -}}
+    {{- $monthInt = $byMonth | int -}}
+  {{- else if eq $monthType "string" -}}
+    {{- if findRE "^[0-9]+$" $byMonth -}}
+      {{- $monthInt = $byMonth | int -}}
+    {{- else -}}
+      {{- errorf "yearly_frequency.html: byMonth must be a valid month number (1-12), got string: %v" $byMonth -}}
+    {{- end -}}
+  {{- else -}}
+    {{- errorf "yearly_frequency.html: byMonth must be a valid month number (1-12), got %T: %v" $byMonth $byMonth -}}
+  {{- end -}}
+  
+  {{- if or (le $monthInt 0) (gt $monthInt 12) -}}
+    {{- errorf "yearly_frequency.html: byMonth must be between 1 and 12, got: %v" $byMonth -}}
+  {{- end -}}
+{{- end -}}
+
+{{- /* Initialize result variable */ -}}
+{{- $result := "" -}}
+
+{{- /*
+  Pattern Priority Handling:
+  1. byMonth + byDay with embedded ordinals (new format): "3TH" in April
+  2. byMonth + byDay + bySetPos (legacy format): "third Sunday of April"
+  3. byMonth: "every April"
+  4. Simple interval: "Every 2 years"
+*/ -}}
+
+{{- /* Priority 1: Handle byMonth + byDay combinations (most complex) */ -}}
+{{- if and $byMonth $byDay -}}
+  {{- /* Check if byDay contains embedded ordinals using the enhanced day_names_resolver */ -}}
+  {{- $parsedDays := partial "recurrence/day_names_resolver.html" (dict "days" $byDay "extractOrdinals" true) -}}
+  {{- $hasEmbeddedOrdinals := false -}}
+  {{- if reflect.IsMap $parsedDays -}}
+    {{- $hasEmbeddedOrdinals = gt (len $parsedDays.ordinals) 0 -}}
+  {{- end -}}
+  
+  {{- if $hasEmbeddedOrdinals -}}
+    {{- /* Handle new embedded ordinal format: "3TH", "-1FR", ["1MO", "3MO"] */ -}}
+    {{- $dayName := partial "recurrence/day_names_resolver.html" (dict "days" $byDay) -}}
+    
+    {{- /* Use the extracted ordinals from the parsed days */ -}}
+    {{- $ordinalText := partial "recurrence/ordinal_position.html" (dict "position" $parsedDays.ordinals) -}}
+    
+    {{- /* Convert month number to localized month name using Hugo's time functions */ -}}
+    {{- $monthName := "" -}}
+    {{- $monthInt := $byMonth | int -}}
+    {{- if eq $monthInt 1 -}}
+      {{- $monthName = time.Format "January" "2021-01-01" -}}
+    {{- else if eq $monthInt 2 -}}
+      {{- $monthName = time.Format "January" "2021-02-01" -}}
+    {{- else if eq $monthInt 3 -}}
+      {{- $monthName = time.Format "January" "2021-03-01" -}}
+    {{- else if eq $monthInt 4 -}}
+      {{- $monthName = time.Format "January" "2021-04-01" -}}
+    {{- else if eq $monthInt 5 -}}
+      {{- $monthName = time.Format "January" "2021-05-01" -}}
+    {{- else if eq $monthInt 6 -}}
+      {{- $monthName = time.Format "January" "2021-06-01" -}}
+    {{- else if eq $monthInt 7 -}}
+      {{- $monthName = time.Format "January" "2021-07-01" -}}
+    {{- else if eq $monthInt 8 -}}
+      {{- $monthName = time.Format "January" "2021-08-01" -}}
+    {{- else if eq $monthInt 9 -}}
+      {{- $monthName = time.Format "January" "2021-09-01" -}}
+    {{- else if eq $monthInt 10 -}}
+      {{- $monthName = time.Format "January" "2021-10-01" -}}
+    {{- else if eq $monthInt 11 -}}
+      {{- $monthName = time.Format "January" "2021-11-01" -}}
+    {{- else if eq $monthInt 12 -}}
+      {{- $monthName = time.Format "January" "2021-12-01" -}}
+    {{- end -}}
+    
+    {{- /* Format the complete yearly pattern */ -}}
+    {{- if eq $intervalInt 1 -}}
+      {{- $result = T "ical_recurrence_every_year_on_ordinal_day_of_month" (dict "ordinal" $ordinalText "day" $dayName "month" $monthName) -}}
+    {{- else -}}
+      {{- /* Use interval_formatter.html for consistent interval formatting */ -}}
+      {{- $intervalText := partial "recurrence/interval_formatter.html" (dict "interval" $intervalInt "unit" "year") -}}
+      {{- /* Replace "Every" with interval-specific text and add day/position/month details */ -}}
+      {{- $result = T "ical_recurrence_interval_on_ordinal_day_of_month" (dict "interval" $intervalText "ordinal" $ordinalText "day" $dayName "month" $monthName) -}}
+    {{- end -}}
+    
+  {{- else if $bySetPos -}}
+    {{- /* Handle legacy byMonth + byDay + bySetPos format for backward compatibility */ -}}
+    {{- $dayName := partial "recurrence/day_names_resolver.html" (dict "days" $byDay) -}}
+    
+    {{- /* Use ordinal_position.html to convert positions to readable ordinals */ -}}
+    {{- $ordinalText := partial "recurrence/ordinal_position.html" (dict "position" $bySetPos) -}}
+    
+    {{- /* Convert month number to localized month name using Hugo's time functions */ -}}
+    {{- $monthName := "" -}}
+    {{- $monthInt := $byMonth | int -}}
+    {{- if eq $monthInt 1 -}}
+      {{- $monthName = time.Format "January" "2021-01-01" -}}
+    {{- else if eq $monthInt 2 -}}
+      {{- $monthName = time.Format "January" "2021-02-01" -}}
+    {{- else if eq $monthInt 3 -}}
+      {{- $monthName = time.Format "January" "2021-03-01" -}}
+    {{- else if eq $monthInt 4 -}}
+      {{- $monthName = time.Format "January" "2021-04-01" -}}
+    {{- else if eq $monthInt 5 -}}
+      {{- $monthName = time.Format "January" "2021-05-01" -}}
+    {{- else if eq $monthInt 6 -}}
+      {{- $monthName = time.Format "January" "2021-06-01" -}}
+    {{- else if eq $monthInt 7 -}}
+      {{- $monthName = time.Format "January" "2021-07-01" -}}
+    {{- else if eq $monthInt 8 -}}
+      {{- $monthName = time.Format "January" "2021-08-01" -}}
+    {{- else if eq $monthInt 9 -}}
+      {{- $monthName = time.Format "January" "2021-09-01" -}}
+    {{- else if eq $monthInt 10 -}}
+      {{- $monthName = time.Format "January" "2021-10-01" -}}
+    {{- else if eq $monthInt 11 -}}
+      {{- $monthName = time.Format "January" "2021-11-01" -}}
+    {{- else if eq $monthInt 12 -}}
+      {{- $monthName = time.Format "January" "2021-12-01" -}}
+    {{- end -}}
+    
+    {{- /* Format the complete yearly pattern */ -}}
+    {{- if eq $intervalInt 1 -}}
+      {{- $result = T "ical_recurrence_every_year_on_ordinal_day_of_month" (dict "ordinal" $ordinalText "day" $dayName "month" $monthName) -}}
+    {{- else -}}
+      {{- /* Use interval_formatter.html for consistent interval formatting */ -}}
+      {{- $intervalText := partial "recurrence/interval_formatter.html" (dict "interval" $intervalInt "unit" "year") -}}
+      {{- /* Replace "Every" with interval-specific text and add day/position/month details */ -}}
+      {{- $result = T "ical_recurrence_interval_on_ordinal_day_of_month" (dict "interval" $intervalText "ordinal" $ordinalText "day" $dayName "month" $monthName) -}}
+    {{- end -}}
+    
+  {{- else -}}
+    {{- /* byMonth + byDay without ordinals or bySetPos - warn about ambiguity */ -}}
+    {{- warnf "yearly_frequency.html: byDay specified without ordinals or bySetPos in yearly rule. This may produce ambiguous results. Rule: %v" $rule -}}
+    {{- $dayName := partial "recurrence/day_names_resolver.html" (dict "days" $byDay) -}}
+    
+    {{- /* Convert month number to localized month name */ -}}
+    {{- $monthName := "" -}}
+    {{- $monthInt := $byMonth | int -}}
+    {{- if eq $monthInt 1 -}}
+      {{- $monthName = time.Format "January" "2021-01-01" -}}
+    {{- else if eq $monthInt 2 -}}
+      {{- $monthName = time.Format "January" "2021-02-01" -}}
+    {{- else if eq $monthInt 3 -}}
+      {{- $monthName = time.Format "January" "2021-03-01" -}}
+    {{- else if eq $monthInt 4 -}}
+      {{- $monthName = time.Format "January" "2021-04-01" -}}
+    {{- else if eq $monthInt 5 -}}
+      {{- $monthName = time.Format "January" "2021-05-01" -}}
+    {{- else if eq $monthInt 6 -}}
+      {{- $monthName = time.Format "January" "2021-06-01" -}}
+    {{- else if eq $monthInt 7 -}}
+      {{- $monthName = time.Format "January" "2021-07-01" -}}
+    {{- else if eq $monthInt 8 -}}
+      {{- $monthName = time.Format "January" "2021-08-01" -}}
+    {{- else if eq $monthInt 9 -}}
+      {{- $monthName = time.Format "January" "2021-09-01" -}}
+    {{- else if eq $monthInt 10 -}}
+      {{- $monthName = time.Format "January" "2021-10-01" -}}
+    {{- else if eq $monthInt 11 -}}
+      {{- $monthName = time.Format "January" "2021-11-01" -}}
+    {{- else if eq $monthInt 12 -}}
+      {{- $monthName = time.Format "January" "2021-12-01" -}}
+    {{- end -}}
+    
+    {{- /* Format simple pattern with day and month */ -}}
+    {{- if eq $intervalInt 1 -}}
+      {{- $result = T "ical_recurrence_every_year_on_day_in_month" (dict "day" $dayName "month" $monthName) -}}
+    {{- else -}}
+      {{- $intervalText := partial "recurrence/interval_formatter.html" (dict "interval" $intervalInt "unit" "year") -}}
+      {{- $result = T "ical_recurrence_interval_on_day_in_month" (dict "interval" $intervalText "day" $dayName "month" $monthName) -}}
+    {{- end -}}
+  {{- end -}}
+
+{{- /* Priority 2: Handle simple byMonth patterns */ -}}
+{{- else if $byMonth -}}
+  {{- /* Convert month number to localized month name using Hugo's time functions */ -}}
+  {{- $monthName := "" -}}
+  {{- $monthInt := $byMonth | int -}}
+  {{- if eq $monthInt 1 -}}
+    {{- $monthName = time.Format "January" "2021-01-01" -}}
+  {{- else if eq $monthInt 2 -}}
+    {{- $monthName = time.Format "January" "2021-02-01" -}}
+  {{- else if eq $monthInt 3 -}}
+    {{- $monthName = time.Format "January" "2021-03-01" -}}
+  {{- else if eq $monthInt 4 -}}
+    {{- $monthName = time.Format "January" "2021-04-01" -}}
+  {{- else if eq $monthInt 5 -}}
+    {{- $monthName = time.Format "January" "2021-05-01" -}}
+  {{- else if eq $monthInt 6 -}}
+    {{- $monthName = time.Format "January" "2021-06-01" -}}
+  {{- else if eq $monthInt 7 -}}
+    {{- $monthName = time.Format "January" "2021-07-01" -}}
+  {{- else if eq $monthInt 8 -}}
+    {{- $monthName = time.Format "January" "2021-08-01" -}}
+  {{- else if eq $monthInt 9 -}}
+    {{- $monthName = time.Format "January" "2021-09-01" -}}
+  {{- else if eq $monthInt 10 -}}
+    {{- $monthName = time.Format "January" "2021-10-01" -}}
+  {{- else if eq $monthInt 11 -}}
+    {{- $monthName = time.Format "January" "2021-11-01" -}}
+  {{- else if eq $monthInt 12 -}}
+    {{- $monthName = time.Format "January" "2021-12-01" -}}
+  {{- end -}}
+  
+  {{- /* Format simple monthly pattern */ -}}
+  {{- if eq $intervalInt 1 -}}
+    {{- $result = T "ical_recurrence_every_year_in_month" (dict "month" $monthName) -}}
+  {{- else -}}
+    {{- $intervalText := partial "recurrence/interval_formatter.html" (dict "interval" $intervalInt "unit" "year") -}}
+    {{- $result = T "ical_recurrence_interval_in_month" (dict "interval" $intervalText "month" $monthName) -}}
+  {{- end -}}
+
+{{- /* Priority 3: Handle simple yearly intervals (fallback) */ -}}
+{{- else -}}
+  {{- /* Use interval_formatter.html for consistent formatting */ -}}
+  {{- $result = partial "recurrence/interval_formatter.html" (dict "interval" $intervalInt "unit" "year") -}}
+{{- end -}}
+
+{{- /*
+  Additional validation: Check for invalid combinations
+  Note: With the new embedded ordinal format, byDay without bySetPos is now valid
+  when ordinals are embedded in the byDay values (e.g., "3TH", "-1FR")
+  Also, bySetPos without byDay is invalid (position of what?)
+*/ -}}
+
+{{- if and $bySetPos (not $byDay) -}}
+  {{- warnf "yearly_frequency.html: bySetPos specified without byDay in yearly rule. This may produce ambiguous results. Rule: %v" $rule -}}
+{{- end -}}
+
+{{- /* Return the formatted result */ -}}
+{{- $result -}}

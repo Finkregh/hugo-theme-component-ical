@@ -10,10 +10,12 @@ localserve_build:  hugo_go_modules build_hugo_localhost
 
 [working-directory: '.github/exampleSite']
 hugo_go_modules:
-    hugo mod get ./...
+    hugo mod get -u ./...
     hugo mod tidy
+    rm -rf _vendor || true
+    hugo mod vendor
     hugo mod npm pack
-    npm update
+    npm install
 
 [working-directory: '.github/exampleSite']
 build_hugo:
@@ -21,11 +23,15 @@ build_hugo:
 
 [working-directory: '.github/exampleSite']
 build_hugo_debug:
-    hugo build --cleanDestinationDir --printPathWarnings --printUnusedTemplates --printI18nWarnings --logLevel debug --buildDrafts --templateMetrics --templateMetricsHints --environment testing --baseURL https://finkregh.github.io/hugo-theme-component-ical/
+    hugo build --cleanDestinationDir --printPathWarnings --printI18nWarnings --logLevel debug --buildDrafts --environment development --baseURL https://finkregh.github.io/hugo-theme-component-ical/
+
+[working-directory: '.github/exampleSite']
+build_hugo_debug_verbose:
+    hugo build --cleanDestinationDir --printPathWarnings --printUnusedTemplates --printI18nWarnings --logLevel debug --buildDrafts --templateMetrics --templateMetricsHints --environment development --baseURL https://finkregh.github.io/hugo-theme-component-ical/
 
 [working-directory: '.github/exampleSite']
 build_hugo_localhost:
-    hugo build --cleanDestinationDir --printPathWarnings --printUnusedTemplates --printI18nWarnings --logLevel debug --buildDrafts --templateMetrics --templateMetricsHints --environment testing --baseURL https://localhost:4443/
+    hugo build --cleanDestinationDir --printPathWarnings --printUnusedTemplates --printI18nWarnings --logLevel debug --buildDrafts --templateMetrics --templateMetricsHints --environment development --baseURL https://localhost:4443/
 
 [working-directory: '.github']
 run_ics_validation: build_hugo

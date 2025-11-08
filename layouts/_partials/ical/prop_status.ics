@@ -33,4 +33,4 @@
       - . : A string containing one of these predefined values.
 */ -}}
 
-STATUS:{{- . | upper -}}
+STATUS:{{- . | upper }}

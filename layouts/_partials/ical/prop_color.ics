@@ -14,5 +14,4 @@
       - . : A string containing a valid CSS3 color name.
             See also: https://www.w3.org/TR/css-color-3/
 */ -}}
-
-COLOR:{{- partial "ical/dt_text.ics" . -}}
+COLOR:{{- partial "ical/dt_text.ics" . }}

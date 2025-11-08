@@ -3,6 +3,7 @@ title: Demo Page for ical events from hugo front matter
 ---
 * [Articles]({{< relref "articles/" >}})
 * [Events]({{< relref "events/" >}})
+* [Meetings]({{< relref "meetings/" >}})
 * [About]({{< relref "about/" >}})
 
 This demo site shows regular pages (Articles) as well as pages with ical data (Events).

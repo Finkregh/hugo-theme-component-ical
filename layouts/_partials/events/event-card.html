@@ -1,0 +1,80 @@
+{{- /* 
+  Event Card Partial for Events List
+  
+  Displays a single event in card format with translations support.
+  Used by layouts/events/list.html for consistent event display.
+  
+  Input: Event page context
+  Output: HTML event card with proper styling and translations
+*/ -}}
+
+<article class="event-card {{ if .Params.cancelled }}event-cancelled{{ end }}">
+  <header class="event-card-header">
+    <h3 class="event-card-title">
+      <a href="{{ .RelPermalink }}">{{ .Title }}</a>
+      {{- if .Params.cancelled -}}
+        <span class="cancelled-badge">{{ T "ical_events_list_cancelled" }}</span>
+      {{- end -}}
+    </h3>
+  </header>
+  
+  <div class="event-card-content">
+    {{- if .Params.startDate -}}
+    <div class="event-card-detail">
+      <span class="detail-icon">
+        {{ partial "calendar_icon.html" "time" }}
+      </span>
+      <span class="detail-label">{{ T "ical_events_list_when" }}:</span>
+      <span class="detail-value">
+        <time datetime="{{ .Params.startDate | dateFormat "2006-01-02T15:04:05Z07:00" }}">
+          {{ time.Format ":date_long" .Params.startDate }}
+          {{- if .Params.endDate -}}
+            {{- if ne (time.Format "2006-01-02" .Params.startDate) (time.Format "2006-01-02" .Params.endDate) -}}
+              - <time datetime="{{ .Params.endDate | dateFormat "2006-01-02T15:04:05Z07:00" }}">{{ time.Format ":date_long" .Params.endDate }}</time>
+            {{- end -}}
+          {{- end -}}
+        </time>
+      </span>
+    </div>
+    {{- end -}}
+
+    {{- if or .Params.where .Params.location -}}
+    <div class="event-card-detail">
+      <span class="detail-icon">
+        {{ partial "calendar_icon.html" "location-dot" }}
+      </span>
+      <span class="detail-label">{{ T "ical_events_list_where" }}:</span>
+      <span class="detail-value">
+        <address class="event-card-location">{{ or .Params.where .Params.location }}</address>
+      </span>
+    </div>
+    {{- end -}}
+
+    {{- if .Params.recurrenceRule -}}
+    <div class="event-card-detail">
+      <span class="detail-icon">
+        {{ partial "calendar_icon.html" "arrow-right" }}
+      </span>
+      <span class="detail-label">{{ T "ical_events_list_recurring" }}:</span>
+      <span class="detail-value">
+        {{ partial "recurrence_human_readable.html" . }}
+      </span>
+    </div>
+    {{- end -}}
+
+    {{- if .Summary -}}
+    <div class="event-card-summary">
+      {{ .Summary }}
+    </div>
+    {{- end -}}
+  </div>
+
+  <footer class="event-card-footer">
+    <a href="{{ .RelPermalink }}" class="view-details-btn">
+      <span class="icon">
+        {{ partial "calendar_icon.html" "arrow-right" }}
+      </span>
+      {{ T "ical_events_list_view_details" }}
+    </a>
+  </footer>
+</article>

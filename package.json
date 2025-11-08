@@ -22,12 +22,15 @@
     "devDependencies": {}
   },
   "dependencies": {
-    "@fullcalendar/core": "^6.1.19",
-    "@fullcalendar/daygrid": "^6.1.19",
-    "@fullcalendar/icalendar": "^6.1.19",
-    "@fullcalendar/list": "^6.1.19",
-    "@fullcalendar/timegrid": "^6.1.19",
-    "ical.js": "^2.0.0"
+    "@fullcalendar/core": "^6.1.20",
+    "@fullcalendar/daygrid": "^6.1.20",
+    "@fullcalendar/icalendar": "^6.1.20",
+    "@fullcalendar/list": "^6.1.20",
+    "@fullcalendar/timegrid": "^6.1.20",
+    "ical.js": "^1.4.0"
   },
-  "devDependencies": {}
+  "devDependencies": {
+    "stylelint": "^17.0.0",
+    "stylelint-config-standard": "^40.0.0"
+  }
 }

@@ -18,5 +18,4 @@
 
       - . : A string containing one of these predefined values.
 */ -}}
-
-TRANSP:{{- . | default "OPAQUE" | upper -}}
+TRANSP:{{- . | default "OPAQUE" | upper }}

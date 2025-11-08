@@ -14,4 +14,4 @@
       - . : An uri value pointing to more information.
 */ -}}
 
-URL:{{- partial "ical/dt_uri.ics" . -}}
+URL:{{- partial "ical/dt_uri.ics" . }}

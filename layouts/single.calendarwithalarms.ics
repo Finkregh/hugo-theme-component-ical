@@ -1,9 +1,9 @@
+{{- warnf "Template used: %s" templates.Current.Name -}}
+{{- /* Check if current page has valid event metadata before generating calendar */ -}}
+{{- if .Params.startDate -}}
 BEGIN:VCALENDAR
-
-{{ partial "events/header.ics" . }}
-
-{{ partial "events/timezone.ics" . }}
-
-{{ partial "events/event-with-alarms.ics" . }}
-
+{{- partial "header.ics" . -}}
+{{- partial "timezone.ics" . }}
+{{- partial "event-with-alarms.ics" . -}}
 END:VCALENDAR
+{{- end -}}

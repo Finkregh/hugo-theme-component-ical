@@ -1,6 +1,7 @@
 .github/exampleSite/package-lock.json
 .github/exampleSite/package.hugo.json
 .github/exampleSite/package.json
+.github/exampleSite/_vendor/
 
 # OS
 .DS_STORE

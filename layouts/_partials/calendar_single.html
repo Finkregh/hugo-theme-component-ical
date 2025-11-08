@@ -1,34 +1,243 @@
-<h2>Event meta data</h2>
-<ul>
-  <li>Start: {{ .Params.startDate }}</li>
-  <li>End: {{ .Params.endDate }}</li>
-  {{ if .Params.where }}
-  <li>Location: {{ .Params.where }}</li>
-  {{ end }} {{ if .Params.orga }}
-  <li>Orga: {{ .Params.orga }}</li>
-  {{ end }} {{ if .Params.orgaEmail }}
-  <li>EMail: {{ .Params.orgaEmail }}</li>
-  {{ end }} {{ if .Params.cancelled }}
-  <li>Cancelled: {{ .Params.cancelled }}</li>
-  {{ end }} {{ if .Params.recurrenceRule }}
-  <li>
-    Recurrence Rules:<br />
-    <ul>
-      {{ range $k, $v := .Params.recurrenceRule }}
-      <li>{{ $k }}: {{ $v }}</li>
-      {{ end }}
-    </ul>
-  </li>
-  {{ end }}
-</ul>
+<!-- Event Metadata Card -->
+<article class="event-metadata-card">
+  <header class="event-header">
+    <h2 class="event-title">
+      <span class="icon">
+        {{ partial "calendar_icon.html" "calender" }}
+      </span>
+      {{ T "ical_event_details" }}
+    </h2>
+  </header>
+  
+  <div class="event-details">
+    <!-- Date and Time Section -->
+    <section class="event-section" aria-labelledby="datetime-heading">
+      <h3 id="datetime-heading" class="section-title">
+        <span class="icon">
+          {{ partial "calendar_icon.html" "time" }}
+        </span>
+        {{ T "ical_date_time" }}
+      </h3>
+      <dl class="detail-list">
+        <div class="detail-item">
+          <dt class="detail-label">{{ T "ical_start" }}:</dt>
+          <dd class="detail-value">
+            <time datetime="{{ .Params.startDate | dateFormat "2006-01-02T15:04:05Z07:00" }}">
+              {{ time.Format ":date_long" .Params.startDate }}, {{ time.Format ":time_long" .Params.startDate }}
+            </time>
+          </dd>
+        </div>
+        {{ if .Params.endDate }}
+        <div class="detail-item">
+          <dt class="detail-label">{{ T "ical_end" }}:</dt>
+          <dd class="detail-value">
+            <time datetime="{{ .Params.endDate | dateFormat "2006-01-02T15:04:05Z07:00" }}">
+              {{ time.Format ":date_long" .Params.endDate }}, {{ time.Format ":time_long" .Params.endDate }}
+            </time>
+          </dd>
+        </div>
+        {{ end }}
+      </dl>
+    </section>
 
-<p>
-  {{ with .OutputFormats.Get "Calendar" }} Get the calendar file for this event:
-  <a href="{{ .RelPermalink }}" type="text/calendar">{{ $.Title }}.ics</a>
+    <!-- Location Section -->
+    {{ if or .Params.where .Params.location }}
+    <section class="event-section" aria-labelledby="location-heading">
+      <h3 id="location-heading" class="section-title">
+        <span class="icon">
+          {{ partial "calendar_icon.html" "location-dot" }}
+        </span>
+        {{ T "ical_location" }}
+      </h3>
+      <address class="event-location">
+        {{ or .Params.where .Params.location }}
+      </address>
+    </section>
+    {{ end }}
+
+    <!-- Organizer Section -->
+    {{ if or .Params.orga .Params.orgaEmail }}
+    <section class="event-section" aria-labelledby="organizer-heading">
+      <h3 id="organizer-heading" class="section-title">
+        <span class="icon">
+          {{ partial "calendar_icon.html" "envelope" }}
+        </span>
+        {{ T "ical_organizer" }}
+      </h3>
+      <address class="event-organizer">
+        <dl class="detail-list">
+          {{ if .Params.orga }}
+          <div class="detail-item">
+            <dt class="detail-label">{{ T "ical_name" }}:</dt>
+            <dd class="detail-value">{{ .Params.orga }}</dd>
+          </div>
+          {{ end }}
+          {{ if .Params.orgaEmail }}
+          <div class="detail-item">
+            <dt class="detail-label">{{ T "ical_email" }}:</dt>
+            <dd class="detail-value">
+              <a href="mailto:{{ .Params.orgaEmail }}">{{ .Params.orgaEmail }}</a>
+            </dd>
+          </div>
+          {{ end }}
+        </dl>
+      </address>
+    </section>
+    {{ end }}
+
+    <!-- Status Section -->
+    {{ if .Params.cancelled }}
+    <section class="event-section event-cancelled" aria-labelledby="status-heading">
+      <h3 id="status-heading" class="section-title">
+        <span class="icon">
+          {{ partial "calendar_icon.html" "triangle-exclamation" }}
+        </span>
+        {{ T "ical_status" }}
+      </h3>
+      <div class="status-notice">
+        <span class="cancelled-notice">{{ T "ical_event_cancelled_notice" }}</span>
+      </div>
+    </section>
+    {{ end }}
+
+    <!-- Recurrence Section -->
+    {{ if .Params.recurrenceRule }}
+    <section class="event-section" aria-labelledby="recurrence-heading">
+      <h3 id="recurrence-heading" class="section-title">
+        <span class="icon">
+          {{ partial "calendar_icon.html" "arrow-right" }}
+        </span>
+        {{ T "ical_recurrence" }}
+      </h3>
+      <div class="recurrence-content">
+        <div class="recurrence-summary">
+          {{ partial "recurrence_human_readable.html" . }}
+        </div>
+        <details class="technical-details">
+          <summary class="technical-summary">{{ T "ical_technical_details" }}</summary>
+          <div class="technical-content">
+            <dl class="detail-list">
+              {{ range $k, $v := .Params.recurrenceRule }}
+              <div class="detail-item">
+                <dt class="detail-label">{{ $k | title }}:</dt>
+                <dd class="detail-value">{{ $v }}</dd>
+              </div>
+              {{ end }}
+            </dl>
+          </div>
+        </details>
+      </div>
+    </section>
+    {{ end }}
+
+    <!-- Alarms Section -->
+    {{ if .Params.alarms }}
+    <section class="event-section" aria-labelledby="reminders-heading">
+      <h3 id="reminders-heading" class="section-title">
+        <span class="icon">
+          {{ partial "calendar_icon.html" "bell" }}
+        </span>
+        {{ T "ical_reminders" }}
+      </h3>
+      <ul class="alarms-list" role="list">
+        {{ range .Params.alarms }}
+        <li class="alarm-item">
+          <span class="alarm-type">{{ .action | title }}</span>
+          {{ if .trigger.duration }}
+          <span class="alarm-timing">{{ .trigger.duration }}</span>
+          {{ end }}
+          {{ if .description.text }}
+          <span class="alarm-description">{{ .description.text }}</span>
+          {{ end }}
+        </li>
+        {{ end }}
+      </ul>
+    </section>
+    {{ end }}
+  </div>
+
+  <!-- Download Section -->
+  {{ with .OutputFormats.Get "Calendar" }}
+  <footer class="event-actions">
+    <a href="{{ .RelPermalink }}" type="text/calendar" class="download-btn">
+      <span class="icon">
+        {{ partial "calendar_icon.html" "download" }}
+      </span>
+      {{ T "ical_download_ics" (dict "title" $.Title) }}
+    </a>
+  </footer>
   {{ end }}
-</p>
-<p>{{ with .OutputFormats.Get "Calendar" }}
-    Locales:
-    <select id='locale-selector'></select>
-    <div style="max-width: 900px; margin: 0 auto;" id='calendar'></div>{{ end }}
-</p>
+</article>
+
+<!-- Calendar Widget -->
+{{ with .OutputFormats.Get "Calendar" }}
+<section class="event-calendar-widget" aria-labelledby="calendar-heading">
+  <header class="calendar-header">
+    <h3 id="calendar-heading">{{ T "ical_calendar_view" }}</h3>
+    <div class="calendar-controls">
+      <label for="locale-selector">{{ T "ical_language_label" }}</label>
+      <select id="locale-selector" class="locale-selector"></select>
+    </div>
+  </header>
+  <div id="calendar" class="single-event-calendar" role="application" aria-label="{{ T "ical_calendar_view" }}"></div>
+</section>
+{{ end }}
+
+<script>
+// Enhanced calendar configuration for single events
+document.addEventListener("DOMContentLoaded", function () {
+  var initialLocaleCode = "de";
+  var localeSelectorEl = document.getElementById("locale-selector");
+  var calendarEl = document.getElementById("calendar");
+  
+  if (calendarEl) {
+    var calendar = new FullCalendar.Calendar(calendarEl, {
+      plugins: [FullCalendar.dayGridPlugin, FullCalendar.listPlugin, FullCalendar.iCalendarPlugin],
+      initialView: 'listMonth',
+      headerToolbar: {
+        left: 'prev,next',
+        center: 'title',
+        right: 'dayGridMonth,listMonth'
+      },
+      height: 'auto',
+      locales: FullCalendar.allLocales,
+      locale: initialLocaleCode,
+      buttonIcons: false,
+      weekNumbers: false,
+      navLinks: false,
+      editable: false,
+      dayMaxEvents: true,
+      eventDisplay: 'block',
+      events: {
+        url: window.location.pathname + "/calendar.ics",
+        format: 'ics'
+      },
+      eventDidMount: function(info) {
+        // Highlight the current event
+        info.el.style.backgroundColor = 'var(--calendar-accent-color-light)';
+        info.el.style.borderColor = 'var(--calendar-accent-color)';
+      }
+    });
+    
+    calendar.setOption("locale", "de-de");
+    calendar.render();
+
+    // Build locale selector
+    if (localeSelectorEl) {
+      calendar.getAvailableLocaleCodes().forEach(function (localeCode) {
+        var optionEl = document.createElement("option");
+        optionEl.value = localeCode;
+        optionEl.selected = localeCode == initialLocaleCode;
+        optionEl.innerText = localeCode;
+        localeSelectorEl.appendChild(optionEl);
+      });
+
+      localeSelectorEl.addEventListener("change", function () {
+        if (this.value) {
+          calendar.setOption("locale", this.value);
+        }
+      });
+    }
+  }
+});
+</script>

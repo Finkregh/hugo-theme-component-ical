@@ -46,27 +46,54 @@
   {{- errorf "RRULE requires a freq value" -}}
 {{- end -}}
 
-{{- /* INTERVAL is optional, default is 1 */ -}}
+{{- /* INTERVAL is required, always include it (RFC 5545 compliance) */ -}}
+{{- $interval := 1 -}}
 {{- with .interval -}}
-  {{- $interval := . | int -}}
-  {{- if gt $interval 1 -}}
-    {{- $parts = $parts | append (printf "INTERVAL=%d" $interval) -}}
-  {{- end -}}
+  {{- $interval = . | int -}}
 {{- end -}}
+{{- $parts = $parts | append (printf "INTERVAL=%d" $interval) -}}
 
 {{- /* BYMONTH */ -}}
 {{- with .byMonth -}}
   {{- $parts = $parts | append (printf "BYMONTH=%s" (partial "ical/dt_month.ics" .)) -}}
 {{- end -}}
 
-{{- /* BYDAY */ -}}
-{{- with .byDay -}}
-  {{- $parts = $parts | append (printf "BYDAY=%s" (partial "ical/dt_weekday.ics" .)) -}}
+{{- /* Handle BYDAY and BYSETPOS - convert BYDAY+BYSETPOS to ordinal BYDAY format for RFC 5545 compliance */ -}}
+{{- $skipBySetPos := false -}}
+{{- if and .byDay .bySetPos -}}
+  {{- /* Convert BYDAY+BYSETPOS combination to ordinal BYDAY format */ -}}
+  {{- $byDayValue := .byDay -}}
+  {{- $bySetPosValue := .bySetPos -}}
+  
+  {{- /* Handle single bySetPos value */ -}}
+  {{- if not (reflect.IsSlice $bySetPosValue) -}}
+    {{- $bySetPosValue = slice $bySetPosValue -}}
+  {{- end -}}
+  
+  {{- /* Handle single byDay value */ -}}
+  {{- if not (reflect.IsSlice $byDayValue) -}}
+    {{- $byDayValue = slice $byDayValue -}}
+  {{- end -}}
+  
+  {{- /* Convert to ordinal format if we have single day and single position */ -}}
+  {{- if and (eq (len $byDayValue) 1) (eq (len $bySetPosValue) 1) -}}
+    {{- $day := index $byDayValue 0 -}}
+    {{- $pos := index $bySetPosValue 0 -}}
+    {{- $ordinalDay := printf "%d%s" $pos $day -}}
+    {{- $parts = $parts | append (printf "BYDAY=%s" $ordinalDay) -}}
+    {{- $skipBySetPos = true -}}
+  {{- else -}}
+    {{- /* Multiple days or positions - keep separate BYDAY and BYSETPOS */ -}}
+    {{- $parts = $parts | append (printf "BYDAY=%s" (partial "ical/dt_weekday.ics" .byDay)) -}}
+  {{- end -}}
+{{- else if .byDay -}}
+  {{- /* Only BYDAY without BYSETPOS */ -}}
+  {{- $parts = $parts | append (printf "BYDAY=%s" (partial "ical/dt_weekday.ics" .byDay)) -}}
 {{- end -}}
 
-{{- /* BYSETPOS */ -}}
-{{- with .bySetPos -}}
-  {{- $parts = $parts | append (printf "BYSETPOS=%s" (partial "ical/dt_setpos.ics" .)) -}}
+{{- /* BYSETPOS - only include if not converted to ordinal BYDAY */ -}}
+{{- if and .bySetPos (not $skipBySetPos) -}}
+  {{- $parts = $parts | append (printf "BYSETPOS=%s" (partial "ical/dt_setpos.ics" .bySetPos)) -}}
 {{- end -}}
 
-RRULE:{{- delimit $parts ";" -}}
+RRULE:{{- delimit $parts ";" }}

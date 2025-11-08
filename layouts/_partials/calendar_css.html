@@ -1,0 +1,17 @@
+{{ $styles := slice "css/calendar.css" "css/components/calendar-single.css" "css/components/events-list.css" }}
+{{ if eq hugo.Environment "development" }}
+  {{ range $styles }}
+    {{ with resources.Get . }}
+        <link rel="stylesheet" href="{{ .RelPermalink }}">
+    {{ end }}
+  {{ end }}
+{{ else }}
+{{ $cssConcatenated := slice }}
+{{ range $index, $style := $styles }}
+  {{ with resources.Get $style }}
+    {{ $cssConcatenated = $cssConcatenated | append . }}
+  {{ end }}
+{{ end }}
+  {{ $bundleCSS := $cssConcatenated | resources.Concat "css/calendar.bundle.css" | resources.Minify | resources.Fingerprint "sha512" }}
+  <link type="text/css" rel="stylesheet" href="{{ $bundleCSS.RelPermalink }}" integrity="{{ $bundleCSS.Data.Integrity }}" />
+{{ end }}

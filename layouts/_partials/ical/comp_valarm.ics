@@ -103,44 +103,49 @@
 */ -}}
 
 BEGIN:VALARM
-
-{{/* ACTION is required for all alarm types */}}
-{{ with .action }}ACTION:{{ . }}{{ end }}
-
-{{/* TRIGGER is required for all alarm types */}}
-{{ with .trigger }}
+{{- /* ACTION is required for all alarm types */ -}}
+{{- with .action }}
+ACTION:{{ . }}
+{{- end }}
+{{- /* TRIGGER is required for all alarm types */ -}}
+{{- with .trigger }}
 {{- if .duration }}
-{{- if .related }}TRIGGER;RELATED={{ .related }}:{{ .duration }}{{ else }}TRIGGER:{{ .duration }}{{ end }}
+{{- if .related }}
+TRIGGER;RELATED={{ .related }}:{{ .duration }}
+{{- else }}
+TRIGGER:{{ .duration }}
+{{- end -}}
 {{- else if .dateTime }}
 TRIGGER;VALUE=DATE-TIME:{{ dateFormat "20060102T150405Z" .dateTime }}
+{{- end -}}
+{{- end -}}
+{{- /* Properties specific to DISPLAY alarms */ -}}
+{{- if eq .action "DISPLAY" -}}
+{{- with .description }}
+{{ partial "ical/prop_description.ics" . -}}
+{{- end -}}
+{{- end -}}
+{{- /* Properties specific to EMAIL alarms */ -}}
+{{- if eq .action "EMAIL" }}
+{{- with .description }}
+{{ partial "ical/prop_description.ics" . }}
 {{- end }}
-{{- end }}
-
-{{/* Properties specific to DISPLAY alarms */}}
-{{ if eq .action "DISPLAY" }}
-{{ with .description }}{{ partial "ical/prop_description.ics" . }}{{ end }}
-{{ end }}
-
-{{/* Properties specific to EMAIL alarms */}}
-{{ if eq .action "EMAIL" }}
-{{ with .description }}{{ partial "ical/prop_description.ics" . }}{{ end }}
-{{ with .summary }}{{ partial "ical/prop_summary.ics" . }}{{ end }}
-{{ range .attendee }}
+{{- with .summary }}
+{{ partial "ical/prop_summary.ics" . -}}
+{{- end -}}
+{{- range .attendee }}
 ATTENDEE{{ with .commonName }};CN={{ . }}{{ end }}:mailto:{{ .email }}
-{{ end }}
-{{ end }}
-
-{{/* Properties specific to AUDIO alarms */}}
-{{ if eq .action "AUDIO" }}
-{{ with .attach }}
+{{- end }}
+{{- end }}
+{{- /* Properties specific to AUDIO alarms */ -}}
+{{- if eq .action "AUDIO" }}
+{{- with .attach }}
 ATTACH{{ with .mediaType }};FMTTYPE={{ . }}{{ end }}:{{ .uri }}
-{{ end }}
-{{ end }}
-
-{{/* Optional repeat properties (both duration and repeat must be present if either is used) */}}
-{{ if and .duration .repeat }}
+{{- end }}
+{{- end }}
+{{- /* Optional repeat properties (both duration and repeat must be present if either is used) */ -}}
+{{- if and .duration .repeat -}}
 DURATION:{{ .duration }}
 REPEAT:{{ .repeat }}
-{{ end }}
-
+{{- end }}
 END:VALARM
