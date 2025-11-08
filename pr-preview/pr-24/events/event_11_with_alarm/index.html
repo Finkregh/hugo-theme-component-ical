@@ -1,0 +1,303 @@
+
+<!DOCTYPE html>
+<html lang="en"
+      dir="ltr"
+      class="no-js">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <script>(function(C){C.remove('no-js');C.add('js')})(document.documentElement.classList)</script>
+
+  
+  <meta http-equiv="Content-Security-Policy" content="font-src data:" />
+  
+  
+
+
+<script type="module" src="https://finkregh.github.io/hugo-theme-component-ical/pr-preview/pr-24/js/vendor/finkregh/ical/minified.min.58bc470799ffbeee539664e69b0edbd13ca9e7eb4f64e1faadcf4955524f5f6b3e5ab9d46de1195ae7a3abe6558a9e1ee3855f38ed702ea8a9e9e0daf81f117c.js" integrity="sha512-WLxHB5n/vu5TlmTmmw7b0Typ5&#43;tPZOH6rc9JVVJPX2s&#43;WrnUbeEZWuejq&#43;ZVip4e44VfOO1wLqip6eDa&#43;B8RfA==" defer></script>
+
+
+
+  <title>
+    Meeting with Alarm Reminders | Demo of hugo-theme-component-ical
+  </title>
+
+  
+</head>
+<body>
+
+
+  <header>
+    <h1>
+      <a href="/hugo-theme-component-ical/pr-preview/pr-24/">Demo of hugo-theme-component-ical</a>
+    </h1>
+
+    
+
+    
+    <nav>
+      <p>
+        List of all regular pages:
+      </p>
+      <ul>
+      
+        <li>
+          <a href="/hugo-theme-component-ical/pr-preview/pr-24/posts/post-1/">Post 1</a>
+        </li>
+      
+        <li>
+          <a href="/hugo-theme-component-ical/pr-preview/pr-24/about/">About this site</a>
+        </li>
+      
+        <li>
+          <a href="/hugo-theme-component-ical/pr-preview/pr-24/events/event_3_yearly_april/">Annual Spring Conference</a>
+        </li>
+      
+        <li>
+          <a href="/hugo-theme-component-ical/pr-preview/pr-24/events/event_2/">Developer meeting 1</a>
+        </li>
+      
+        <li>
+          <a href="/hugo-theme-component-ical/pr-preview/pr-24/events/event_7_every_monday/">Every Monday</a>
+        </li>
+      
+        <li>
+          <a href="/hugo-theme-component-ical/pr-preview/pr-24/events/event_8_monday_friday/">Every Monday and Friday</a>
+        </li>
+      
+        <li>
+          <a href="/hugo-theme-component-ical/pr-preview/pr-24/events/event_9_second_tuesday/">Every Second Tuesday</a>
+        </li>
+      
+        <li>
+          <a href="/hugo-theme-component-ical/pr-preview/pr-24/events/event_10_third_thursday/">Every Third Thursday of the Month</a>
+        </li>
+      
+        <li>
+          <a href="/hugo-theme-component-ical/pr-preview/pr-24/events/event_1/">Initial Presentation</a>
+        </li>
+      
+        <li>
+          <a href="/hugo-theme-component-ical/pr-preview/pr-24/events/event_11_with_alarm/">Meeting with Alarm Reminders</a>
+        </li>
+      
+        <li>
+          <a href="/hugo-theme-component-ical/pr-preview/pr-24/events/event_6_monthly_fourth_sunday/">Monthly Workshop Series</a>
+        </li>
+      
+        <li>
+          <a href="/hugo-theme-component-ical/pr-preview/pr-24/events/event_4_october_mondays/">October Training Sessions</a>
+        </li>
+      
+        <li>
+          <a href="/hugo-theme-component-ical/pr-preview/pr-24/events/event_5_monthly_last_sunday/">Quarterly Team Review</a>
+        </li>
+      
+        <li>
+          <a href="/hugo-theme-component-ical/pr-preview/pr-24/articles/article_1/">Read the docs</a>
+        </li>
+      
+        <li>
+          <a href="/hugo-theme-component-ical/pr-preview/pr-24/articles/article_2/">Study the templates</a>
+        </li>
+      
+      </ul>
+    </nav>
+    
+  </header>
+
+  <hr>
+
+  <main style="margin-top: 50px; margin-bottom: 50px;">
+    
+
+<h1>Meeting with Alarm Reminders</h1>
+
+<p>This is a meeting that demonstrates VALARM functionality with multiple types of alarms:</p>
+<ol>
+<li><strong>Display Alarm</strong>: Shows a popup 15 minutes before the meeting</li>
+<li><strong>Email Alarm</strong>: Sends email reminders 1 hour before to attendees</li>
+<li><strong>Audio Alarm</strong>: Plays a sound 5 minutes before the meeting</li>
+</ol>
+<p>The alarms are configured in the front matter and will be included in the generated iCalendar file.</p>
+<p>Front matter:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-yaml" data-lang="yaml"><span style="display:flex;"><span><span style="color:#f92672">title</span>: <span style="color:#e6db74">&#34;Meeting with Alarm Reminders&#34;</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">startDate</span>: <span style="color:#e6db74">&#34;2025-01-15T14:00:00&#34;</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">endDate</span>: <span style="color:#e6db74">&#34;2025-01-15T15:30:00&#34;</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">location</span>: <span style="color:#e6db74">&#34;Conference Room A&#34;</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">orga</span>: <span style="color:#e6db74">&#34;John Doe&#34;</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">orgaEmail</span>: <span style="color:#e6db74">&#34;john.doe@example.com&#34;</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">alarms</span>:
+</span></span><span style="display:flex;"><span>  - <span style="color:#f92672">action</span>: <span style="color:#e6db74">&#34;DISPLAY&#34;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">trigger</span>:
+</span></span><span style="display:flex;"><span>      <span style="color:#f92672">duration</span>: <span style="color:#e6db74">&#34;-PT15M&#34;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">description</span>:
+</span></span><span style="display:flex;"><span>      <span style="color:#f92672">text</span>: <span style="color:#e6db74">&#34;Meeting starts in 15 minutes&#34;</span>
+</span></span><span style="display:flex;"><span>      <span style="color:#f92672">lang</span>: <span style="color:#e6db74">&#34;en&#34;</span>
+</span></span><span style="display:flex;"><span>  - <span style="color:#f92672">action</span>: <span style="color:#e6db74">&#34;EMAIL&#34;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">trigger</span>:
+</span></span><span style="display:flex;"><span>      <span style="color:#f92672">duration</span>: <span style="color:#e6db74">&#34;-PT1H&#34;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">description</span>:
+</span></span><span style="display:flex;"><span>      <span style="color:#f92672">text</span>: <span style="color:#e6db74">&#34;Don&#39;t forget about the meeting in 1 hour&#34;</span>
+</span></span><span style="display:flex;"><span>      <span style="color:#f92672">lang</span>: <span style="color:#e6db74">&#34;en&#34;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">summary</span>:
+</span></span><span style="display:flex;"><span>      <span style="color:#f92672">text</span>: <span style="color:#e6db74">&#34;Meeting Reminder&#34;</span>
+</span></span><span style="display:flex;"><span>      <span style="color:#f92672">lang</span>: <span style="color:#e6db74">&#34;en&#34;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">attendee</span>:
+</span></span><span style="display:flex;"><span>      - <span style="color:#f92672">email</span>: <span style="color:#e6db74">&#34;john.doe@example.com&#34;</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">commonName</span>: <span style="color:#e6db74">&#34;John Doe&#34;</span>
+</span></span><span style="display:flex;"><span>      - <span style="color:#f92672">email</span>: <span style="color:#e6db74">&#34;jane.smith@example.com&#34;</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">commonName</span>: <span style="color:#e6db74">&#34;Jane Smith&#34;</span>
+</span></span><span style="display:flex;"><span>  - <span style="color:#f92672">action</span>: <span style="color:#e6db74">&#34;AUDIO&#34;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">trigger</span>:
+</span></span><span style="display:flex;"><span>      <span style="color:#f92672">duration</span>: <span style="color:#e6db74">&#34;-PT5M&#34;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">attach</span>:
+</span></span><span style="display:flex;"><span>      <span style="color:#f92672">uri</span>: <span style="color:#e6db74">&#34;file:///System/Library/Sounds/Glass.aiff&#34;</span>
+</span></span><span style="display:flex;"><span>      <span style="color:#f92672">mediaType</span>: <span style="color:#e6db74">&#34;audio/aiff&#34;</span>
+</span></span></code></pre></div>
+
+<h2>Event meta data</h2>
+<ul>
+  <li>Start: 2025-01-15T14:00:00</li>
+  <li>End: 2025-01-15T15:30:00</li>
+   
+  <li>Orga: John Doe</li>
+   
+  <li>EMail: john.doe@example.com</li>
+    
+</ul>
+
+<p>
+   Get the calendar file for this event:
+  <a href="/hugo-theme-component-ical/pr-preview/pr-24/events/event_11_with_alarm/calendar.ics" type="text/calendar">Meeting with Alarm Reminders.ics</a>
+  
+</p>
+<p>
+    Locales:
+    <select id='locale-selector'></select>
+    <div style="max-width: 900px; margin: 0 auto;" id='calendar'></div>
+</p>
+
+
+
+
+<script type="module" src="https://finkregh.github.io/hugo-theme-component-ical/pr-preview/pr-24/js/vendor/finkregh/ical/minified.min.58bc470799ffbeee539664e69b0edbd13ca9e7eb4f64e1faadcf4955524f5f6b3e5ab9d46de1195ae7a3abe6558a9e1ee3855f38ed702ea8a9e9e0daf81f117c.js" integrity="sha512-WLxHB5n/vu5TlmTmmw7b0Typ5&#43;tPZOH6rc9JVVJPX2s&#43;WrnUbeEZWuejq&#43;ZVip4e44VfOO1wLqip6eDa&#43;B8RfA==" defer></script>
+
+
+
+  </main>
+
+  <hr>
+
+  <footer>
+    
+      Debug dump of <code>.Page</code> (page object in the template context):
+      <pre>{
+  &#34;Date&#34;: &#34;0001-01-01T00:00:00Z&#34;,
+  &#34;Lastmod&#34;: &#34;0001-01-01T00:00:00Z&#34;,
+  &#34;PublishDate&#34;: &#34;0001-01-01T00:00:00Z&#34;,
+  &#34;ExpiryDate&#34;: &#34;0001-01-01T00:00:00Z&#34;,
+  &#34;Aliases&#34;: null,
+  &#34;BundleType&#34;: &#34;&#34;,
+  &#34;Description&#34;: &#34;&#34;,
+  &#34;Draft&#34;: false,
+  &#34;IsHome&#34;: false,
+  &#34;Keywords&#34;: null,
+  &#34;Kind&#34;: &#34;page&#34;,
+  &#34;Layout&#34;: &#34;&#34;,
+  &#34;LinkTitle&#34;: &#34;Meeting with Alarm Reminders&#34;,
+  &#34;IsNode&#34;: false,
+  &#34;IsPage&#34;: true,
+  &#34;Path&#34;: &#34;/events/event_11_with_alarm&#34;,
+  &#34;Slug&#34;: &#34;&#34;,
+  &#34;Lang&#34;: &#34;en&#34;,
+  &#34;IsSection&#34;: false,
+  &#34;Section&#34;: &#34;events&#34;,
+  &#34;Sitemap&#34;: {
+    &#34;ChangeFreq&#34;: &#34;&#34;,
+    &#34;Priority&#34;: -1,
+    &#34;Filename&#34;: &#34;sitemap.xml&#34;,
+    &#34;Disable&#34;: false
+  },
+  &#34;Type&#34;: &#34;events&#34;,
+  &#34;Weight&#34;: 0
+}</pre>
+
+      Debug dump of <code>.Params</code> (map defined in the current Page&rsquo;s front matter):
+      <pre>{
+  &#34;alarms&#34;: [
+    {
+      &#34;action&#34;: &#34;DISPLAY&#34;,
+      &#34;description&#34;: {
+        &#34;lang&#34;: &#34;en&#34;,
+        &#34;text&#34;: &#34;Meeting starts in 15 minutes&#34;
+      },
+      &#34;trigger&#34;: {
+        &#34;duration&#34;: &#34;-PT15M&#34;
+      }
+    },
+    {
+      &#34;action&#34;: &#34;EMAIL&#34;,
+      &#34;attendee&#34;: [
+        {
+          &#34;commonName&#34;: &#34;John Doe&#34;,
+          &#34;email&#34;: &#34;john.doe@example.com&#34;
+        },
+        {
+          &#34;commonName&#34;: &#34;Jane Smith&#34;,
+          &#34;email&#34;: &#34;jane.smith@example.com&#34;
+        }
+      ],
+      &#34;description&#34;: {
+        &#34;lang&#34;: &#34;en&#34;,
+        &#34;text&#34;: &#34;Don&#39;t forget about the meeting in 1 hour&#34;
+      },
+      &#34;summary&#34;: {
+        &#34;lang&#34;: &#34;en&#34;,
+        &#34;text&#34;: &#34;Meeting Reminder&#34;
+      },
+      &#34;trigger&#34;: {
+        &#34;duration&#34;: &#34;-PT1H&#34;
+      }
+    },
+    {
+      &#34;action&#34;: &#34;AUDIO&#34;,
+      &#34;attach&#34;: {
+        &#34;mediaType&#34;: &#34;audio/aiff&#34;,
+        &#34;uri&#34;: &#34;file:///System/Library/Sounds/Glass.aiff&#34;
+      },
+      &#34;trigger&#34;: {
+        &#34;duration&#34;: &#34;-PT5M&#34;
+      }
+    }
+  ],
+  &#34;draft&#34;: false,
+  &#34;enddate&#34;: &#34;2025-01-15T15:30:00&#34;,
+  &#34;iscjklanguage&#34;: false,
+  &#34;location&#34;: &#34;Conference Room A&#34;,
+  &#34;orga&#34;: &#34;John Doe&#34;,
+  &#34;orgaemail&#34;: &#34;john.doe@example.com&#34;,
+  &#34;outputs&#34;: [
+    &#34;html&#34;,
+    &#34;Calendar&#34;,
+    &#34;CalendarWithAlarms&#34;
+  ],
+  &#34;startdate&#34;: &#34;2025-01-15T14:00:00&#34;,
+  &#34;title&#34;: &#34;Meeting with Alarm Reminders&#34;
+}</pre>
+
+      Debug dump of <code>.Site.Params</code> (custom parameters as defined in the <a href="https://gohugo.io/methods/site/">site config</a>):
+      <pre>{
+  &#34;feature&#34;: {
+    &#34;debug&#34;: true,
+    &#34;langnav&#34;: true,
+    &#34;pagesnav&#34;: true
+  }
+}</pre>
+    
+  </footer>
+
+</body>
+</html>

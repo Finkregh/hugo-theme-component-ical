@@ -1,0 +1,89 @@
+BEGIN:VCALENDAR
+
+
+
+
+
+VERSION:2.0
+PRODID:-//Hugo Calendar Templates//Event Template//EN
+CALSCALE:GREGORIAN
+METHOD:PUBLISH
+
+UID:f99e9c85c9ea7d07a90d77e33eab90a9
+
+URL:https://finkregh.github.io/hugo-theme-component-ical/pr-preview/pr-24/events/event_9_second_tuesday/
+REFRESH-INTERVAL;VALUE=DURATION:P1W
+SOURCE;VALUE=URI:https://finkregh.github.io/hugo-theme-component-ical/pr-preview/pr-24/events/event_9_second_tuesday/calendar.ics
+COLOR:crimson
+NAME;LANGUAGE=de-CH:Example Events
+DESCRIPTION;LANGUAGE=de-CH:Example Events Calendar
+
+
+X-WR-CALNAME:Example Events
+X-WR-CALDESC:Example Events Calendar
+
+
+
+
+BEGIN:VTIMEZONE
+
+TZID:Europe/Zurich
+TZURL:http://tzurl.org/zoneinfo-outlook/Europe/Zurich
+X-LIC-LOCATION:Europe/Zurich
+
+BEGIN:DAYLIGHT
+TZNAME:CEST
+TZOFFSETFROM:+0100
+TZOFFSETTO:+0200
+DTSTART:19700329T020000
+RRULE:FREQ=YEARLY;BYMONTH=3;BYDAY=-1SU
+END:DAYLIGHT
+
+BEGIN:STANDARD
+TZNAME:CET
+TZOFFSETFROM:+0200
+TZOFFSETTO:+0100
+DTSTART:19701025T030000
+RRULE:FREQ=YEARLY;BYMONTH=10;BYDAY=-1SU
+END:STANDARD
+
+END:VTIMEZONE
+
+
+
+
+
+
+BEGIN:VEVENT
+
+DTSTAMP:00010101T000000Z
+UID:f99e9c85c9ea7d07a90d77e33eab90a9
+DTSTART;VALUE=DATE-TIME;TZID=Europe/Zurich:20240109T140000
+CLASS:PUBLIC
+
+DESCRIPTION;LANGUAGE=de-CH:Bi-weekly planning meeting held every second Tuesday. The team reviews progress from the previous two weeks\, discusses upcoming priorities\, and allocates resources for the next sprint cycle.\nFront matter:\ntitle: Every Second Tuesday startDate: 2024-01-09T14:00:00+01:00 endDate: 2024-01-09T15:30:00+01:00 where: "Conference Room B\, Second Floor" orga: "Department Head" orgaEmail: "depthead@example.org" # Every second Tuesday (every other Tuesday) recurrenceRule: freq: "WEEKLY" interval: 2 byDay: "TU"
+
+
+LOCATION;LANGUAGE=de-CH:
+
+
+STATUS:CONFIRMED
+SUMMARY;LANGUAGE=de-CH:Every Second Tuesday
+TRANSP:OPAQUE
+URL:https://finkregh.github.io/hugo-theme-component-ical/pr-preview/pr-24/events/event_9_second_tuesday/
+RRULE:FREQ=WEEKLY;INTERVAL=2;BYDAY=TU
+DTEND;VALUE=DATE-TIME;TZID=Europe/Zurich:20240109T153000
+
+CONTACT;LANGUAGE=de-CH:Department Head: depthead@example.org
+COLOR:crimson
+
+
+
+
+
+END:VEVENT
+
+
+
+
+END:VCALENDAR
