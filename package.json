@@ -27,7 +27,7 @@
     "@fullcalendar/icalendar": "^6.1.19",
     "@fullcalendar/list": "^6.1.19",
     "@fullcalendar/timegrid": "^6.1.19",
-    "ical.js": "^1.4.0"
+    "ical.js": "^2.0.0"
   },
   "devDependencies": {}
 }

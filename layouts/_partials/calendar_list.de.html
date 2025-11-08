@@ -1,0 +1,15 @@
+<p>
+  {{ with .OutputFormats.Get "Calendar" }}
+  <a href="{{ .RelPermalink }}" type="text/calendar">Kalender-Datei zum abbonieren (ohne Alarmierung)</a>.
+  {{ end }}
+</p>
+<p>
+  {{ with .OutputFormats.Get "CalendarWithAlarms" }}
+  <a href="{{ .RelPermalink }}" type="text/calendar">Kalender-Datei zum abbonieren (mit Alarmierung)</a>.
+  {{ end }}
+</p>
+<p>{{ with .OutputFormats.Get "Calendar" }}
+    Sprachauswahl:
+    <select id='locale-selector'></select>
+    <div style="max-width: 900px; margin: 0 auto;" id='calendar'></div>{{ end }}
+</p>

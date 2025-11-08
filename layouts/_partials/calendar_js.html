@@ -1,17 +1,13 @@
-  {{- with resources.Get "js/vendor/finkregh/ical/script.js" }}
-    {{- $opts := dict
-      "minify" (not hugo.IsDevelopment)
-      "sourceMap" (cond hugo.IsDevelopment "external" "")
-      "targetPath" "js/vendor/finkregh/ical/script.js"
-    }}
-    {{- with . | js.Build $opts }}
-      {{- if hugo.IsDevelopment }}
-        <!-- block from {{ templates.Current.Filename }} -->
-        <script src="{{ .RelPermalink }}" defer></script>
-      {{- else }}
-        {{- with . | fingerprint }}
-          <script src="{{ .RelPermalink }}" integrity="{{ .Data.Integrity }}" crossorigin="anonymous" defer></script>
-        {{- end }}
-      {{- end }}
-    {{- end }}
-  {{- end }}
+{{- if hugo.IsDevelopment }}<!-- block from {{ templates.Current.Filename }} -->{{- end }}
+  
+{{- $isProd := hugo.IsProduction -}}
+{{/*- if $isProd */}}
+{{- $defines := dict "process.env.NODE_ENV" "production" }}
+{{/*- else }}
+{{- $defines := dict "process.env.NODE_ENV" "development" }}
+{{- end */}}
+{{- $options := dict "targetPath" "js/vendor/finkregh/ical/minified.js" "defines" $defines }}
+<!-- js/vendor/finkregh/ical/script.js -->
+{{- $js := resources.Get "calendar.js" | js.Build $options | resources.Minify | resources.Fingerprint "sha512" }}
+<script type="module" src="{{ $js.Permalink }}" {{ if $isProd }}integrity="{{ $js.Data.Integrity }}"{{ end }} defer></script>
+{{- if not $isProd }}<!-- END block from {{ templates.Current.Filename }} -->{{- end }}
