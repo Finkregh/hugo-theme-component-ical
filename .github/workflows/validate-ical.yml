@@ -62,7 +62,7 @@ jobs:
             PR_NUMBER: ${{ github.event.number }}
         run: |
           # replace 'version = "main"' in .github/exampleSite/hugo.toml with the current branch name
-          echo sed -i "s/version = \".*\"/version = \"${GITHUB_HEAD_REF}\"/" .github/exampleSite/hugo.toml
+          echo sed -i "s/version = \".*\"/version = \"${GITHUB_HEAD_REF//\//\\\/}\"/" .github/exampleSite/hugo.toml
           sed -i "s/version = \".*\"/version = \"${GITHUB_HEAD_REF}\"/" .github/exampleSite/hugo.toml
           echo "Set theme version to ${GITHUB_HEAD_REF} in .github/exampleSite/hugo.toml"
           just test_debug
