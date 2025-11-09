@@ -1,0 +1,127 @@
+BEGIN:VCALENDAR
+
+
+
+
+
+VERSION:2.0
+PRODID:-//Hugo Calendar Templates//Event Template//EN
+CALSCALE:GREGORIAN
+METHOD:PUBLISH
+
+UID:28b9dfcee7e53e33224a9ea9e5e6bd31
+
+URL:https://finkregh.github.io/hugo-theme-component-ical/pr-preview/pr-23/articles/
+REFRESH-INTERVAL;VALUE=DURATION:P1W
+SOURCE;VALUE=URI:https://finkregh.github.io/hugo-theme-component-ical/pr-preview/pr-23/articles/calendar.ics
+COLOR:crimson
+NAME;LANGUAGE=de-CH:Example Events
+DESCRIPTION;LANGUAGE=de-CH:Example Events Calendar
+
+
+X-WR-CALNAME:Example Events
+X-WR-CALDESC:Example Events Calendar
+
+
+
+
+BEGIN:VTIMEZONE
+
+TZID:Europe/Zurich
+TZURL:http://tzurl.org/zoneinfo-outlook/Europe/Zurich
+X-LIC-LOCATION:Europe/Zurich
+
+BEGIN:DAYLIGHT
+TZNAME:CEST
+TZOFFSETFROM:+0100
+TZOFFSETTO:+0200
+DTSTART:19700329T020000
+RRULE:FREQ=YEARLY;BYMONTH=3;BYDAY=-1SU
+END:DAYLIGHT
+
+BEGIN:STANDARD
+TZNAME:CET
+TZOFFSETFROM:+0200
+TZOFFSETTO:+0100
+DTSTART:19701025T030000
+RRULE:FREQ=YEARLY;BYMONTH=10;BYDAY=-1SU
+END:STANDARD
+
+END:VTIMEZONE
+
+
+
+
+
+
+
+BEGIN:VEVENT
+
+DTSTAMP:00010101T000000Z
+UID:3d5bc6395e44c668eac7bb823900f073
+DTSTART;VALUE=DATE-TIME;TZID=Europe/Zurich:00010101T000000
+CLASS:PUBLIC
+
+DESCRIPTION;LANGUAGE=de-CH:Yes\, srsly\, read the readme!
+
+
+LOCATION;LANGUAGE=de-CH:
+
+
+STATUS:CONFIRMED
+SUMMARY;LANGUAGE=de-CH:Read the docs
+TRANSP:OPAQUE
+URL:https://finkregh.github.io/hugo-theme-component-ical/pr-preview/pr-23/articles/article_1/
+
+DTEND;VALUE=DATE-TIME;TZID=Europe/Zurich:00010101T000000
+
+CONTACT;LANGUAGE=de-CH:%!s(<nil>): %!s(<nil>)
+COLOR:crimson
+
+
+
+
+
+END:VEVENT
+
+
+
+
+
+
+
+
+BEGIN:VEVENT
+
+DTSTAMP:00010101T000000Z
+UID:2c6b77ee1da47b5ca691a0ba8615b7ba
+DTSTART;VALUE=DATE-TIME;TZID=Europe/Zurich:00010101T000000
+CLASS:PUBLIC
+
+DESCRIPTION;LANGUAGE=de-CH:Study the templates\, especially comp_event.ics and cal_props.ics.
+
+
+LOCATION;LANGUAGE=de-CH:
+
+
+STATUS:CONFIRMED
+SUMMARY;LANGUAGE=de-CH:Study the templates
+TRANSP:OPAQUE
+URL:https://finkregh.github.io/hugo-theme-component-ical/pr-preview/pr-23/articles/article_2/
+
+DTEND;VALUE=DATE-TIME;TZID=Europe/Zurich:00010101T000000
+
+CONTACT;LANGUAGE=de-CH:%!s(<nil>): %!s(<nil>)
+COLOR:crimson
+
+
+
+
+
+END:VEVENT
+
+
+
+
+
+END:VCALENDAR
