@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Startseite on Hugo-Entwicklungs-Theme</title>
+    <link>https://finkregh.github.io/hugo-theme-component-ical/pr-preview/pr-27/de/</link>
+    <description>Recent content in Startseite on Hugo-Entwicklungs-Theme</description>
+    <generator>Hugo</generator>
+    <language>de</language>
+    <lastBuildDate>Wed, 27 Aug 2025 10:00:00 +0000</lastBuildDate>
+    <atom:link href="https://finkregh.github.io/hugo-theme-component-ical/pr-preview/pr-27/de/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Beitrag 1</title>
+      <link>https://finkregh.github.io/hugo-theme-component-ical/pr-preview/pr-27/de/posts/post-1/</link>
+      <pubDate>Wed, 27 Aug 2025 10:00:00 +0000</pubDate>
+      <guid>https://finkregh.github.io/hugo-theme-component-ical/pr-preview/pr-27/de/posts/post-1/</guid>
+      <description>&lt;p&gt;Post 1-Inhalt. Ich :heart: Hugo! Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.&lt;/p&gt;</description>
+    </item>
+  </channel>
+</rss>

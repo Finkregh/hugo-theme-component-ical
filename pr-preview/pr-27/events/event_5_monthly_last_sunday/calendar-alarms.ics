@@ -1,0 +1,89 @@
+BEGIN:VCALENDAR
+
+
+
+
+
+VERSION:2.0
+PRODID:-//Hugo Calendar Templates//Event Template//EN
+CALSCALE:GREGORIAN
+METHOD:PUBLISH
+
+UID:fe961c623ce3524a6ba06229f9d5160c
+
+URL:https://finkregh.github.io/hugo-theme-component-ical/pr-preview/pr-27/events/event_5_monthly_last_sunday/
+REFRESH-INTERVAL;VALUE=DURATION:P1W
+SOURCE;VALUE=URI:https://finkregh.github.io/hugo-theme-component-ical/pr-preview/pr-27/events/event_5_monthly_last_sunday/calendar.ics
+COLOR:crimson
+NAME;LANGUAGE=de-CH:Example Events
+DESCRIPTION;LANGUAGE=de-CH:Example Events Calendar
+
+
+X-WR-CALNAME:Example Events
+X-WR-CALDESC:Example Events Calendar
+
+
+
+
+BEGIN:VTIMEZONE
+
+TZID:Europe/Zurich
+TZURL:http://tzurl.org/zoneinfo-outlook/Europe/Zurich
+X-LIC-LOCATION:Europe/Zurich
+
+BEGIN:DAYLIGHT
+TZNAME:CEST
+TZOFFSETFROM:+0100
+TZOFFSETTO:+0200
+DTSTART:19700329T020000
+RRULE:FREQ=YEARLY;BYMONTH=3;BYDAY=-1SU
+END:DAYLIGHT
+
+BEGIN:STANDARD
+TZNAME:CET
+TZOFFSETFROM:+0200
+TZOFFSETTO:+0100
+DTSTART:19701025T030000
+RRULE:FREQ=YEARLY;BYMONTH=10;BYDAY=-1SU
+END:STANDARD
+
+END:VTIMEZONE
+
+
+
+
+
+
+BEGIN:VEVENT
+
+DTSTAMP:00010101T000000Z
+UID:fe961c623ce3524a6ba06229f9d5160c
+DTSTART;VALUE=DATE-TIME;TZID=Europe/Zurich:20240128T150000
+CLASS:PUBLIC
+
+DESCRIPTION;LANGUAGE=de-CH:Quarterly team review meetings held on the last Sunday of every third month. We discuss progress\, challenges\, and plan for the upcoming quarter.\nFront matter:\ntitle: Quarterly Team Review startDate: 2024-01-28T15:00:00+01:00 #endDate: 2024-01-28T17:00:00+01:00 where: "Conference Room A\, Headquarters" orga: "Team Lead" orgaEmail: "teamlead@example.org" # Every last Sunday of every 3 months recurrenceRule: freq: "MONTHLY" interval: 3 byDay: "SU" bySetPos: -1
+
+
+LOCATION;LANGUAGE=de-CH:
+
+
+STATUS:CONFIRMED
+SUMMARY;LANGUAGE=de-CH:Quarterly Team Review
+TRANSP:OPAQUE
+URL:https://finkregh.github.io/hugo-theme-component-ical/pr-preview/pr-27/events/event_5_monthly_last_sunday/
+RRULE:FREQ=MONTHLY;INTERVAL=3;BYDAY=SU;BYSETPOS=-1
+DTEND;VALUE=DATE-TIME;TZID=Europe/Zurich:00010101T000000
+
+CONTACT;LANGUAGE=de-CH:Team Lead: teamlead@example.org
+COLOR:crimson
+
+
+
+
+
+END:VEVENT
+
+
+
+
+END:VCALENDAR
