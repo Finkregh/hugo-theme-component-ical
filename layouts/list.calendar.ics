@@ -4,7 +4,9 @@ BEGIN:VCALENDAR
 {{ . }}
 {{- end }}
 
-{{ partial "events/timezone.ics" . }}
+{{- with partial "events/timezone.ics" . }}
+{{ . }}
+{{ end }}
 
 {{ range .Pages }}
 {{ partial "events/event.ics" . }}
