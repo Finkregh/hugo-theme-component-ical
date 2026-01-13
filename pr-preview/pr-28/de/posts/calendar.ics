@@ -1,8 +1,5 @@
 BEGIN:VCALENDAR
 
-
-
-
 VERSION:2.0
 PRODID:-//Hugo Calendar Templates//Event Template//EN
 CALSCALE:GREGORIAN
@@ -20,8 +17,6 @@ DESCRIPTION;LANGUAGE=de-CH:Example Events Calendar
 
 X-WR-CALNAME:Example Events
 X-WR-CALDESC:Example Events Calendar
-
-
 
 
 BEGIN:VTIMEZONE
@@ -47,9 +42,6 @@ RRULE:FREQ=YEARLY;BYMONTH=10;BYDAY=-1SU
 END:STANDARD
 
 END:VTIMEZONE
-
-
-
 
 
 
@@ -84,7 +76,5 @@ COLOR:crimson
 END:VEVENT
 
 
-
-
-
 END:VCALENDAR
+
