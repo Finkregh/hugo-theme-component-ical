@@ -144,7 +144,7 @@ BEGIN:VEVENT
 {{- partial "ical/prop_last_modified.ics" . }}
 {{- end -}}
 {{- with .location }}
-{{ partial "ical/prop_location.ics" . }}
+{{- partial "ical/prop_location.ics" . }}
 {{- end -}}
 {{- with .organizer }}
 {{- partial "ical/prop_organizer.ics" . }}

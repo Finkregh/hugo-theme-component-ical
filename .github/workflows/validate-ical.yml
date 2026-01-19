@@ -42,50 +42,50 @@ jobs:
         with:
           ref: ${{ github.head_ref }}
           # Value already defaults to true, but `persist-credentials` is required to push new commits to the repository.
-          persist-credentials: true
-          #token: ${{ secrets.WORKFLOW_TOKEN }}
+      #     persist-credentials: true
+      #     #token: ${{ secrets.WORKFLOW_TOKEN }}
         
-      - name: install stylelint
-        run: npm install stylelint stylelint-config-standard prettier
+      # - name: install stylelint
+      #   run: npm install stylelint stylelint-config-standard prettier
  
-      - name: stylelint
-        uses: reviewdog/action-stylelint@dd2b435cc6a7c82705307a9dee740c9bbaa10411 # v1.30.2
-        with:
-          reporter: github-pr-review # Change reporter.
-          stylelint_input: '**/*.css'
-          stylelint_config: '.github/stylelint.config.mjs'
+      # - name: stylelint
+      #   uses: reviewdog/action-stylelint@dd2b435cc6a7c82705307a9dee740c9bbaa10411 # v1.30.2
+      #   with:
+      #     reporter: github-pr-review # Change reporter.
+      #     stylelint_input: '**/*.css'
+      #     stylelint_config: '.github/stylelint.config.mjs'
 
 
-      - name: Prettier
-        #uses: https://github.com/creyD/prettier_action@v4.6
-        uses: creyD/prettier_action@dev
-        continue-on-error: true
-        with:
-          # prettier_plugins: "prettier-plugin-toml prettier-plugin-hugo-post"
-          allow_other_plugins: true
-          no_commit: true
-          add_options: "--update"
-          prettier_options: "--log-level log --write ."
+      # - name: Prettier
+      #   #uses: https://github.com/creyD/prettier_action@v4.6
+      #   uses: creyD/prettier_action@dev
+      #   continue-on-error: true
+      #   with:
+      #     # prettier_plugins: "prettier-plugin-toml prettier-plugin-hugo-post"
+      #     allow_other_plugins: true
+      #     no_commit: true
+      #     add_options: "--update"
+      #     prettier_options: "--log-level log --write ."
 
-      - name: debug
-        run: git diff; git status
+      # - name: debug
+      #   run: git diff; git status
         
  
-      - name: Commit and push linting fixes
-        # Run only on:
-        # - Pull requests
-        # - Not on the default branch
-        if: >
-          github.event_name == 'pull_request' &&
-          github.ref_name != github.event.repository.default_branch
-        uses: stefanzweifel/git-auto-commit-action@v6.0.1
-        with:
-          commit_message: "chore: changes from ci"
-          commit_user_name: ci-linting
-          add_options: "--update"
-          # file_pattern: "*"
-          # skip_dirty_check: true
-          status_options: "--untracked-files=no"
+      # - name: Commit and push linting fixes
+      #   # Run only on:
+      #   # - Pull requests
+      #   # - Not on the default branch
+      #   if: >
+      #     github.event_name == 'pull_request' &&
+      #     github.ref_name != github.event.repository.default_branch
+      #   uses: stefanzweifel/git-auto-commit-action@v6.0.1
+      #   with:
+      #     commit_message: "chore: changes from ci"
+      #     commit_user_name: ci-linting
+      #     add_options: "--update"
+      #     # file_pattern: "*"
+      #     # skip_dirty_check: true
+      #     status_options: "--untracked-files=no"
 
       - name: Set up Python
         uses: actions/setup-python@v6

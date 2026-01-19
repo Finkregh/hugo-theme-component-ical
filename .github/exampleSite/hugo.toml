@@ -1,6 +1,7 @@
 baseURL = 'https://finkregh.github.io/hugo-theme-component-ical/'
 languageCode = 'en-us'
 title = 'Demo of hugo-theme-component-ical'
+enableGitInfo = true
 
 [module]
 # replacement pointing to local folder, ONLY use locally!
