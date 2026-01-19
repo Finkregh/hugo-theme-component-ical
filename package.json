@@ -17,7 +17,7 @@
       "@fullcalendar/icalendar": "project",
       "@fullcalendar/list": "project",
       "@fullcalendar/timegrid": "project",
-      "ical.js": "project"
+      "@fullcalendar/rrule": "project"
     },
     "devDependencies": {}
   },
@@ -27,7 +27,7 @@
     "@fullcalendar/icalendar": "^6.1.20",
     "@fullcalendar/list": "^6.1.20",
     "@fullcalendar/timegrid": "^6.1.20",
-    "ical.js": "^1.4.0"
+    "@fullcalendar/rrule": "6.1.20"
   },
   "devDependencies": {
     "stylelint": "^17.0.0",

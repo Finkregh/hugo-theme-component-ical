@@ -5,6 +5,7 @@ import timeGridPlugin from "@fullcalendar/timegrid";
 import listPlugin from "@fullcalendar/list";
 import iCalendarPlugin from "@fullcalendar/icalendar";
 import allLocales from "@fullcalendar/core/locales-all";
+import rrulePlugin from '@fullcalendar/rrule';
 
 document.addEventListener("DOMContentLoaded", function () {
   // Detect browser language and fallback to 'en' if not supported
@@ -15,7 +16,7 @@ document.addEventListener("DOMContentLoaded", function () {
   var localeSelectorEl = document.getElementById("locale-selector");
   var calendarEl = document.getElementById("calendar");
   var calendar = new Calendar(calendarEl, {
-    plugins: [dayGridPlugin, timeGridPlugin, listPlugin, iCalendarPlugin],
+    plugins: [rrulePlugin, dayGridPlugin, timeGridPlugin, listPlugin, iCalendarPlugin],
     headerToolbar: {
       left: "prev,next today",
       center: "title",
