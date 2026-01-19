@@ -7,6 +7,10 @@ import iCalendarPlugin from "@fullcalendar/icalendar";
 import allLocales from "@fullcalendar/core/locales-all";
 
 document.addEventListener("DOMContentLoaded", function () {
+  // Detect browser language and fallback to 'en' if not supported
+  var browserLocale = navigator.language || navigator.userLanguage || "en";
+  var initialLocaleCode = browserLocale.toLowerCase();
+
   var initialLocaleCode = "de";
   var localeSelectorEl = document.getElementById("locale-selector");
   var calendarEl = document.getElementById("calendar");
@@ -29,7 +33,6 @@ document.addEventListener("DOMContentLoaded", function () {
       format: "ics", // important!
     },
   });
-  calendar.setOption("locale", "de-de");
 
   calendar.render();
 
