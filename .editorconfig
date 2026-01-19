@@ -16,7 +16,7 @@ insert_final_newline = false
 [layouts/_partials/ical/prop_*.ics]
 insert_final_newline = true
 
-[layouts/_partials/ical/prop_{summary,description,classification,time_transparency}.ics]
+[layouts/_partials/ical/prop_{summary,classification,time_transparency}.ics]
 insert_final_newline = false
 
 [*.py]
