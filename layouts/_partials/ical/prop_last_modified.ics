@@ -14,4 +14,4 @@
       - . : A value suitable for the 'dateFormat' function.
 */ -}}
 
-LAST-MODIFIED:{{- partial "ical/dt_date_time.ics" (dict "dateTime" . "isUTC" true) -}}
+LAST-MODIFIED:{{ partial "ical/dt_date_time.ics" (dict "dateTime" . "isUTC" true) }}
