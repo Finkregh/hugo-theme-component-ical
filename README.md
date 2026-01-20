@@ -16,6 +16,7 @@ This project provides a complete set of templates for [Hugo](https://gohugo.io/)
 **✅ Successfully migrated to Hugo v0.146.0+ compatibility** - All templates have been modernized and are fully compatible with current Hugo versions.
 
 ### Key Achievements
+
 - ✅ **Full Hugo v0.146.0+ Compatibility**: All templates working with modern Hugo versions
 - ✅ **Zero Build Errors**: Clean builds consistently achieved (Exit Code 0)
 - ✅ **Internationalization**: Complete German and English translation support
@@ -25,6 +26,7 @@ This project provides a complete set of templates for [Hugo](https://gohugo.io/)
 - ✅ **Comprehensive Documentation**: Complete migration and usage documentation
 
 ### Demo & Resources
+
 - [**Live Demo**](https://finkregh.github.io/hugo-theme-component-ical/)
 - [Demo Source Code](https://github.com/Finkregh/hugo-theme-component-ical/tree/main/.github/exampleSite)
 - [CI Validation Workflow](https://github.com/Finkregh/hugo-theme-component-ical/blob/main/.github/workflows/validate-ical.yml)
@@ -33,6 +35,7 @@ This project provides a complete set of templates for [Hugo](https://gohugo.io/)
 ## Features
 
 ### 🗓️ Core iCalendar Features
+
 - **RFC 5545 Compliant**: Full adherence to iCalendar specification
 - **Event Management**: Complete VEVENT component support
 - **Timezone Support**: Comprehensive VTIMEZONE definitions
@@ -41,12 +44,14 @@ This project provides a complete set of templates for [Hugo](https://gohugo.io/)
 - **Status Management**: Event status handling (CONFIRMED, TENTATIVE, CANCELLED)
 
 ### 🌍 Internationalization
+
 - **Multi-language Support**: German (DE) and English (EN) translations
 - **Localized Templates**: Language-specific formatting and terminology
 - **Extensible i18n System**: Easy addition of new languages
 - **Template Translation**: Over 240 translation keys for comprehensive localization
 
 ### 🏗️ Modern Template Architecture
+
 - **Hugo v0.146.0+ Compatible**: Fully updated for modern Hugo versions
 - **Root Layout Structure**: Templates organized in standard [`layouts/`](layouts/) directory
 - **Dynamic Partial Resolution**: Smart fallback system for section-specific templates
@@ -54,6 +59,7 @@ This project provides a complete set of templates for [Hugo](https://gohugo.io/)
 - **Graceful Error Handling**: Robust fallback logic with informative debugging
 
 ### 📱 Web Integration
+
 - **JavaScript Calendar Display**: Optional FullCalendar.js integration
 - **Responsive Design**: Mobile-friendly calendar views
 - **Download Links**: Direct iCal file download functionality
@@ -63,7 +69,7 @@ This project provides a complete set of templates for [Hugo](https://gohugo.io/)
 
 The project uses a modern template structure compatible with Hugo v0.146.0+:
 
-```
+```text
 layouts/
 ├── list.calendar.ics                   # List template for calendar format
 ├── list.calendarwithalarms.ics         # List template with VALARM support
@@ -194,16 +200,20 @@ Include the JavaScript in your templates:
 {{ partial "calendar_js_conditional.html" . }}
 ```
 
+**Note**: The calendar uses a unified ES6 module ([`assets/calendar.js`](assets/calendar.js)) that automatically detects page type (single event vs. list) and applies appropriate configuration. The module is scoped and does not expose `FullCalendar` globally. See [`AGENTS.md`](AGENTS.md) for implementation details.
+
 #### Pre-built Partials
 
 Use the provided partials in your [`layouts/events/`](layouts/events/) templates:
 
 **[`single.html`](layouts/events/single.html):**
+
 ```html
 {{ partial "calendar_single.html" . }}
 ```
 
 **[`list.html`](layouts/events/list.html):**
+
 ```html
 {{ partial "calendar_list.html" . }}
 ```
@@ -211,11 +221,13 @@ Use the provided partials in your [`layouts/events/`](layouts/events/) templates
 ## Build Requirements
 
 ### Hugo Version Compatibility
+
 - **Minimum Hugo Version**: v0.146.0
 - **Recommended**: v0.150.0+ (as specified in [`hugo.toml`](hugo.toml))
 - **Tested With**: v0.154.4+extended+withdeploy
 
 ### Build Process
+
 The project requires the [`.github/exampleSite/`](.github/exampleSite/) directory for proper build validation:
 
 ```shell
@@ -227,7 +239,9 @@ hugo
 ```
 
 ### Build Verification
+
 Successful builds should show:
+
 - **Exit Code**: 0 (no errors)
 - **Template Resolution**: All templates resolving correctly
 - **iCal Validation**: RFC 5545 compliant output
@@ -238,10 +252,12 @@ Successful builds should show:
 The project includes comprehensive internationalization support with over 240 translation keys:
 
 ### Supported Languages
+
 - **English (EN)**: [`i18n/en.toml`](i18n/en.toml)
 - **German (DE)**: [`i18n/de.toml`](i18n/de.toml)
 
 ### Translation Categories
+
 - **Event Metadata**: Event details, date/time, location, organizer
 - **Recurrence Patterns**: Human-readable recurrence descriptions
 - **Calendar Interface**: Download links, calendar views, navigation
@@ -249,6 +265,7 @@ The project includes comprehensive internationalization support with over 240 tr
 - **Template Elements**: Form labels, buttons, technical details
 
 ### Usage in Templates
+
 ```html
 {{ i18n "ical_event_details" }}
 {{ i18n "ical_download_ics" (dict "title" .Title) }}
@@ -256,6 +273,7 @@ The project includes comprehensive internationalization support with over 240 tr
 ```
 
 ### Adding New Languages
+
 1. Create new translation file: [`i18n/[lang].toml`](i18n/)
 2. Copy structure from [`i18n/en.toml`](i18n/en.toml)
 3. Translate all keys maintaining parameter placeholders
@@ -266,6 +284,7 @@ The project includes comprehensive internationalization support with over 240 tr
 Events are specified in the front matter with comprehensive support for iCalendar properties:
 
 ### Basic Event
+
 ```yaml
 ---
 title: Important Meeting
@@ -280,6 +299,7 @@ orgaEmail: "scrummaster@example.org"
 ### Advanced Recurrence Patterns
 
 #### Every Monday
+
 ```yaml
 recurrenceRule:
   freq: "WEEKLY"
@@ -287,6 +307,7 @@ recurrenceRule:
 ```
 
 #### Third Sunday of April (yearly)
+
 ```yaml
 recurrenceRule:
   freq: "YEARLY"
@@ -296,6 +317,7 @@ recurrenceRule:
 ```
 
 #### First and Second Monday of October (yearly)
+
 ```yaml
 recurrenceRule:
   freq: "YEARLY"
@@ -305,6 +327,7 @@ recurrenceRule:
 ```
 
 #### Every Last Sunday of Every 3 Months
+
 ```yaml
 recurrenceRule:
   freq: "MONTHLY"
@@ -316,6 +339,7 @@ recurrenceRule:
 ### Alarm Configuration
 
 #### Display Alarm (Popup Reminder)
+
 ```yaml
 alarms:
   - action: "DISPLAY"
@@ -327,6 +351,7 @@ alarms:
 ```
 
 #### Email Alarm with Multiple Recipients
+
 ```yaml
 alarms:
   - action: "EMAIL"
@@ -346,6 +371,7 @@ alarms:
 ```
 
 #### Duration Format Reference
+
 - `PT15M` = 15 minutes
 - `PT1H` = 1 hour
 - `P1D` = 1 day
@@ -370,13 +396,17 @@ hugo --source .github/exampleSite
 ### Template Development Guidelines
 
 #### 1. Context Management
+
 Always pass complete context to partials:
+
 ```go
 {{- partial "component.ics" (dict "Page" . "Site" $.Site "Params" .Params) -}}
 ```
 
 #### 2. Error Handling
+
 Include comprehensive error checking:
+
 ```go
 {{- if not .Page -}}
     {{- errorf "Page context required for %s" .Name -}}
@@ -384,7 +414,9 @@ Include comprehensive error checking:
 ```
 
 #### 3. Fallback Logic
+
 Implement graceful fallbacks for missing components:
+
 ```go
 {{- $sectionSpecific := printf "_partials/component.%s.ics" .Section -}}
 {{- if templates.Exists $sectionSpecific -}}
@@ -398,6 +430,7 @@ Implement graceful fallbacks for missing components:
 ### Testing and Validation
 
 #### Build Testing
+
 ```shell
 # Test build with example site
 hugo --source .github/exampleSite
@@ -407,12 +440,15 @@ echo $?
 ```
 
 #### iCal Validation
+
 - Use [iCalendar Validator](https://icalendar.org/validator.html)
 - Test with multiple calendar applications
 - Verify RFC 5545 compliance
 
 #### Template Debugging
+
 The system includes comprehensive debugging output:
+
 ```go
 {{- warnf "Template used: %s" .Name -}}
 {{- warnf "Partial resolution: %s" $partialPath -}}
@@ -423,6 +459,7 @@ The system includes comprehensive debugging output:
 PRs, issues, comments, and suggestions are welcome!
 
 #### Development Workflow
+
 1. Fork the repository
 2. Create a feature branch
 3. Make changes with proper testing
@@ -431,6 +468,7 @@ PRs, issues, comments, and suggestions are welcome!
 6. Submit pull request
 
 #### Testing Requirements
+
 - All templates must build without errors
 - iCal output must validate against RFC 5545
 - Changes must maintain backward compatibility
@@ -448,22 +486,26 @@ For detailed information about the Hugo v0.146.0+ migration, see [`MIGRATION_DOC
 ## Known Issues
 
 ### No Folding of Long Lines
+
 Due to template limitations, long lines are not folded. This is acceptable as RFC 5545 specifies *SHOULD* rather than *MUST*:
 
 > Lines of text SHOULD NOT be longer than 75 octets, excluding the line break.
 
 ### No `CRLF` Line Termination
+
 We use standard line breaks instead of CRLF sequences. While not strictly RFC compliant, this is a minor issue with modern calendar software.
 
 ## Specification Compliance
 
 This implementation follows:
+
 - [RFC 5545: Internet Calendaring and Scheduling Core Object Specification (iCalendar)](https://tools.ietf.org/html/rfc5545)
 - [RFC 7986: New Properties for iCalendar](https://tools.ietf.org/html/rfc7986)
 
 ### Implementation Status
 
 #### Supported Components
+
 - ✅ Event Component (VEVENT)
 - ✅ Alarm Component (VALARM)
 - ✅ Time Zone Component (VTIMEZONE)
@@ -472,6 +514,7 @@ This implementation follows:
 - ❌ Free/Busy Component (VFREEBUSY)
 
 #### Supported Properties
+
 - ✅ **Descriptive**: Classification, Comment, Description, Location, Status, Summary
 - ✅ **Date/Time**: Date-Time End, Date-Time Start, Duration, Time Transparency
 - ✅ **Relationship**: Contact, Organizer, Recurrence ID, URL, Unique Identifier

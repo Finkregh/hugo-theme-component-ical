@@ -1,43 +1,92 @@
-// Let the magic begin
+// FullCalendar ES6 Module - Unified Calendar Initialization
+// Handles both event list pages and single event pages
 import { Calendar } from "@fullcalendar/core";
 import dayGridPlugin from "@fullcalendar/daygrid";
 import timeGridPlugin from "@fullcalendar/timegrid";
 import listPlugin from "@fullcalendar/list";
 import iCalendarPlugin from "@fullcalendar/icalendar";
 import allLocales from "@fullcalendar/core/locales-all";
-import rrulePlugin from '@fullcalendar/rrule';
+import rrulePlugin from "@fullcalendar/rrule";
 
 document.addEventListener("DOMContentLoaded", function () {
-  // Detect browser language and fallback to 'en' if not supported
+  var calendarEl = document.getElementById("calendar");
+
+  if (!calendarEl) {
+    return; // No calendar element found, exit early
+  }
+
+  // Detect if this is a single event page by checking for the specific class
+  var isSingleEvent = calendarEl.classList.contains("single-event-calendar");
+
+  // Detect browser locale with fallback
   var browserLocale = navigator.language || navigator.userLanguage || "en";
   var initialLocaleCode = browserLocale.toLowerCase();
 
-  var initialLocaleCode = "de";
+  // Override with default locale if needed (optional)
+  // var initialLocaleCode = "de";
+
   var localeSelectorEl = document.getElementById("locale-selector");
-  var calendarEl = document.getElementById("calendar");
-  var calendar = new Calendar(calendarEl, {
-    plugins: [rrulePlugin, dayGridPlugin, timeGridPlugin, listPlugin, iCalendarPlugin],
-    headerToolbar: {
-      left: "prev,next today",
-      center: "title",
-      right: "dayGridMonth,timeGridWeek,timeGridDay,listMonth",
-    },
+
+  // Configure calendar based on page type
+  var calendarConfig = {
+    plugins: [
+      rrulePlugin,
+      dayGridPlugin,
+      timeGridPlugin,
+      listPlugin,
+      iCalendarPlugin,
+    ],
     locales: allLocales,
     locale: initialLocaleCode,
-    buttonIcons: false, // show the prev/next text
-    weekNumbers: true,
-    navLinks: true, // can click day/week names to navigate views
-    editable: true,
-    dayMaxEvents: true, // allow "more" link when too many events
+    buttonIcons: false,
     events: {
-      url: window.location.pathname + "/calendar.ics", // This will be the iCal feed URL
-      format: "ics", // important!
+      url: window.location.pathname + "/calendar.ics",
+      format: "ics",
     },
-  });
+  };
 
+  // Single event page configuration
+  if (isSingleEvent) {
+    Object.assign(calendarConfig, {
+      initialView: "listMonth",
+      headerToolbar: {
+        left: "prev,next",
+        center: "title",
+        right: "dayGridMonth,listMonth",
+      },
+      height: "auto",
+      weekNumbers: false,
+      navLinks: false,
+      editable: false,
+      dayMaxEvents: true,
+      eventDisplay: "block",
+      eventDidMount: function (info) {
+        // Highlight the current event with theme colors
+        info.el.style.backgroundColor = "var(--calendar-accent-color-light)";
+        info.el.style.borderColor = "var(--calendar-accent-color)";
+      },
+    });
+  }
+  // Event list page configuration
+  else {
+    Object.assign(calendarConfig, {
+      headerToolbar: {
+        left: "prev,next today",
+        center: "title",
+        right: "dayGridMonth,timeGridWeek,timeGridDay,listMonth",
+      },
+      weekNumbers: true,
+      navLinks: true,
+      editable: true,
+      dayMaxEvents: true,
+    });
+  }
+
+  // Initialize calendar
+  var calendar = new Calendar(calendarEl, calendarConfig);
   calendar.render();
 
-  // build the locale selector's options
+  // Build locale selector if present
   if (localeSelectorEl) {
     calendar.getAvailableLocaleCodes().forEach(function (localeCode) {
       var optionEl = document.createElement("option");
@@ -47,7 +96,7 @@ document.addEventListener("DOMContentLoaded", function () {
       localeSelectorEl.appendChild(optionEl);
     });
 
-    // when the selected option changes, dynamically change the calendar option
+    // Handle locale changes
     localeSelectorEl.addEventListener("change", function () {
       if (this.value) {
         calendar.setOption("locale", this.value);
