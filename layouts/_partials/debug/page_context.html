@@ -1,0 +1,66 @@
+{{- /*
+  Page Context Debug Partial
+  
+  Extracts and formats page context information for enhanced error reporting.
+  Shows where the user's content file is located.
+  
+  Input: dict "page" $pageObject (optional)
+  Output: Formatted string with content file information
+  
+  Usage in error messages:
+    {{- $pageInfo := partial "debug/page_context.html" (dict "page" .) -}}
+    {{- errorf "Error message\n%s" $pageInfo -}}
+  
+  Output Format:
+    Content file: FILEPATH
+    Page kind: page/section/home
+    Page type: events
+  
+  Handles cases where:
+  - Page context is not provided
+  - Page.File is not available (e.g., for generated pages)
+  - Page is nil
+*/ -}}
+
+{{- $output := "" -}}
+{{- $page := .page -}}
+
+{{- if $page -}}
+  {{- /* Check if page has File information */ -}}
+  {{- with $page.File -}}
+    {{- $filePath := .Path -}}
+    {{- if $filePath -}}
+      {{- /* Get absolute path for VSCode link */ -}}
+      {{- $absPath := printf "%s/content/%s" site.BaseURL $filePath -}}
+      {{- /* Try to get the actual filesystem path if available */ -}}
+      {{- with .Filename -}}
+        {{- $absPath = . -}}
+      {{- end -}}
+      {{- $output = printf "\n\nContent file: %s" $absPath -}}
+    {{- else -}}
+      {{- $output = "\n\nContent file: (path unavailable)" -}}
+    {{- end -}}
+  {{- else -}}
+    {{- $output = "\n\nContent file: (no file context - possibly generated page)" -}}
+  {{- end -}}
+  
+  {{- /* Add page kind and type for additional context */ -}}
+  {{- with $page.Kind -}}
+    {{- $output = printf "%s\nPage kind: %s" $output . -}}
+  {{- end -}}
+  
+  {{- with $page.Type -}}
+    {{- $output = printf "%s\nPage type: %s" $output . -}}
+  {{- end -}}
+  
+  {{- /* Add page title for easier identification */ -}}
+  {{- with $page.Title -}}
+    {{- $output = printf "%s\nPage title: %s" $output . -}}
+  {{- end -}}
+  
+{{- else -}}
+  {{- $output = "\n\nContent file: (page context not provided)" -}}
+{{- end -}}
+
+{{- return $output -}}
+

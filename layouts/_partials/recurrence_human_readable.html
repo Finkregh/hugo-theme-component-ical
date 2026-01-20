@@ -48,7 +48,7 @@
   {{- $result = partial "recurrence/monthly_frequency.html" (dict "rule" $rule) -}}
 
 {{- else if eq $freq "yearly" -}}
-  {{- $result = partial "recurrence/yearly_frequency.html" (dict "rule" $rule) -}}
+  {{- $result = partial "recurrence/yearly_frequency.html" (dict "rule" $rule "page" .) -}}
 
 {{- else -}}
   {{- /* Fallback for unsupported frequencies */ -}}

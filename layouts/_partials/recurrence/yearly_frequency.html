@@ -7,7 +7,7 @@
   This is the second frequency handler in Phase 2 of the Hugo template refactoring project.
   Updated to support embedded ordinal BYDAY format from Phase 1.
   
-  Input: dict "rule" $rule
+  Input: dict "rule" $rule "page" $page (optional)
   Where $rule contains the recurrence rule data with properties:
     - freq: "YEARLY" (required)
     - interval: integer (default: 1) - how many years between occurrences
@@ -44,10 +44,11 @@
 
 {{- /* Input validation - ensure rule parameter is provided */ -}}
 {{- if not .rule -}}
-  {{- errorf "yearly_frequency.html: missing required parameter 'rule'. Usage: {{ partial \"recurrence/yearly_frequency.html\" (dict \"rule\" $rule) }}" -}}
+  {{- errorf "yearly_frequency.html: missing required parameter 'rule'. Usage: {{ partial \"recurrence/yearly_frequency.html\" (dict \"rule\" $rule \"page\" .) }}" -}}
 {{- end -}}
 
 {{- $rule := .rule -}}
+{{- $page := .page -}}
 
 {{- /* Validate that rule is a dictionary/map */ -}}
 {{- if not (reflect.IsMap $rule) -}}
@@ -220,7 +221,10 @@
     
   {{- else -}}
     {{- /* byMonth + byDay without ordinals or bySetPos - warn about ambiguity */ -}}
-    {{- errorf "Configuration error in yearly recurrence rule: 'byDay' is specified without position information. To fix this, either:\n  1. Use ordinal format in byDay (e.g., byDay: \"3TH\" for third Thursday, or byDay: \"-1FR\" for last Friday)\n  2. Add bySetPos to specify which occurrence (e.g., bySetPos: 3 for third occurrence)\n\nCurrent rule: %v\n\nFor more information, see the recurrence documentation." $rule -}}
+    {{- /* Enhanced error reporting with debug context */ -}}
+    {{- $pageInfo := partial "debug/page_context.html" (dict "page" $page) -}}
+    {{- $traceInfo := partial "debug/template_trace.html" . -}}
+    {{- errorf "Configuration error in yearly recurrence rule: 'byDay' is specified without position information. To fix this, either:\n  1. Use ordinal format in byDay (e.g., byDay: \"3TH\" for third Thursday, or byDay: \"-1FR\" for last Friday)\n  2. Add bySetPos to specify which occurrence (e.g., bySetPos: 3 for third occurrence)\n\nCurrent rule: %v\n\nFor more information, see the recurrence documentation.%s%s" $rule $pageInfo $traceInfo -}}
     {{- $dayName := partial "recurrence/day_names_resolver.html" (dict "days" $byDay) -}}
     
     {{- /* Convert month number to localized month name */ -}}
@@ -314,7 +318,10 @@
 */ -}}
 
 {{- if and $bySetPos (not $byDay) -}}
-  {{- errorf "Configuration error in yearly recurrence rule: 'bySetPos' is specified without 'byDay'. The bySetPos parameter requires byDay to specify which day of the week to select.\n\nExample: To specify the third Thursday, use:\n  byDay: \"TH\"\n  bySetPos: 3\n\nOr use the ordinal format:\n  byDay: \"3TH\"\n\nCurrent rule: %v\n\nFor more information, see the recurrence documentation." $rule -}}
+  {{- /* Enhanced error reporting with debug context */ -}}
+  {{- $pageInfo := partial "debug/page_context.html" (dict "page" $page) -}}
+  {{- $traceInfo := partial "debug/template_trace.html" . -}}
+  {{- errorf "Configuration error in yearly recurrence rule: 'bySetPos' is specified without 'byDay'. The bySetPos parameter requires byDay to specify which day of the week to select.\n\nExample: To specify the third Thursday, use:\n  byDay: \"TH\"\n  bySetPos: 3\n\nOr use the ordinal format:\n  byDay: \"3TH\"\n\nCurrent rule: %v\n\nFor more information, see the recurrence documentation.%s%s" $rule $pageInfo $traceInfo -}}
 {{- end -}}
 
 {{- /* Return the formatted result */ -}}
