@@ -1,4 +1,4 @@
-{{- warnf "Template used: %s" templates.Current.Name -}}
+{{- if or (eq hugo.Environment "development") (eq hugo.Environment "debug") }}{{ warnidf "debug-template-used" "Template used: %s" templates.Current.Name }}{{ end -}}
 {{- /* Check if any pages have valid event metadata before generating calendar */ -}}
 {{- $hasValidEvents := false -}}
 {{- range .Pages -}}

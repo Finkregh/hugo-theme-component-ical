@@ -1,4 +1,4 @@
-{{- warnf "Partial used: %s" templates.Current.Name -}}
+{{- if or (eq hugo.Environment "development") (eq hugo.Environment "debug") }}{{ warnidf "debug-partial-used" "Partial used: %s" templates.Current.Name }}{{ end -}}
 BEGIN:VTIMEZONE
 TZID:Europe/Zurich
 TZURL:http://tzurl.org/zoneinfo-outlook/Europe/Zurich

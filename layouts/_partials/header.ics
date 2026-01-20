@@ -1,6 +1,6 @@
 {{/* Adapt the dict here to fit your data model. See 'cal_props.ics' for available keys. */}}
 {{/* Multiline hack from: https://github.com/gohugoio/hugoDocs/issues/764#issuecomment-625711237 */}}
-{{- warnf "Partial used: %s" templates.Current.Name -}}
+{{- if or (eq hugo.Environment "development") (eq hugo.Environment "debug") }}{{ warnidf "debug-partial-used" "Partial used: %s" templates.Current.Name }}{{ end -}}
 {{ with dict `` `
   ` "name"         (dict "text" "Example Events" "lang" "de-CH") `` `
   ` "description"  (dict "text" "Example Events Calendar" "lang" "de-CH") `` `

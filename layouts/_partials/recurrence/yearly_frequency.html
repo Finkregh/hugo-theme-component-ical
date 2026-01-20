@@ -220,7 +220,7 @@
     
   {{- else -}}
     {{- /* byMonth + byDay without ordinals or bySetPos - warn about ambiguity */ -}}
-    {{- warnf "yearly_frequency.html: byDay specified without ordinals or bySetPos in yearly rule. This may produce ambiguous results. Rule: %v" $rule -}}
+    {{- errorf "Configuration error in yearly recurrence rule: 'byDay' is specified without position information. To fix this, either:\n  1. Use ordinal format in byDay (e.g., byDay: \"3TH\" for third Thursday, or byDay: \"-1FR\" for last Friday)\n  2. Add bySetPos to specify which occurrence (e.g., bySetPos: 3 for third occurrence)\n\nCurrent rule: %v\n\nFor more information, see the recurrence documentation." $rule -}}
     {{- $dayName := partial "recurrence/day_names_resolver.html" (dict "days" $byDay) -}}
     
     {{- /* Convert month number to localized month name */ -}}
@@ -314,7 +314,7 @@
 */ -}}
 
 {{- if and $bySetPos (not $byDay) -}}
-  {{- warnf "yearly_frequency.html: bySetPos specified without byDay in yearly rule. This may produce ambiguous results. Rule: %v" $rule -}}
+  {{- errorf "Configuration error in yearly recurrence rule: 'bySetPos' is specified without 'byDay'. The bySetPos parameter requires byDay to specify which day of the week to select.\n\nExample: To specify the third Thursday, use:\n  byDay: \"TH\"\n  bySetPos: 3\n\nOr use the ordinal format:\n  byDay: \"3TH\"\n\nCurrent rule: %v\n\nFor more information, see the recurrence documentation." $rule -}}
 {{- end -}}
 
 {{- /* Return the formatted result */ -}}

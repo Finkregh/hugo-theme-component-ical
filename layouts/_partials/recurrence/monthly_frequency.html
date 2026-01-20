@@ -171,7 +171,7 @@
     
   {{- else -}}
     {{- /* byDay without ordinals or bySetPos - warn about ambiguity */ -}}
-    {{- warnf "monthly_frequency.html: byDay specified without ordinals or bySetPos in monthly rule. This may produce ambiguous results. Rule: %v" $rule -}}
+    {{- errorf "Configuration error in monthly recurrence rule: 'byDay' is specified without position information. To fix this, either:\n  1. Use ordinal format in byDay (e.g., byDay: \"3TH\" for third Thursday, or byDay: \"-1FR\" for last Friday)\n  2. Add bySetPos to specify which occurrence (e.g., bySetPos: 3 for third occurrence)\n  3. Use byMonthDay instead if you want a specific day of the month (e.g., byMonthDay: 15 for the 15th)\n\nCurrent rule: %v\n\nFor more information, see the recurrence documentation." $rule -}}
     {{- $dayName := partial "recurrence/day_names_resolver.html" (dict "days" $byDay) -}}
     {{- if eq $intervalInt 1 -}}
       {{- $result = T "ical_recurrence_every_month_on_day" (dict "day" $dayName) -}}
