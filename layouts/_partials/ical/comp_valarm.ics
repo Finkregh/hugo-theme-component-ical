@@ -126,7 +126,7 @@ TRIGGER;VALUE=DATE-TIME:{{ dateFormat "20060102T150405Z" .dateTime }}
 {{- end -}}
 {{- end -}}
 {{- /* Properties specific to EMAIL alarms */ -}}
-{{- if eq .action "EMAIL" }}
+{{- if eq .action "EMAIL" -}}
 {{- with .description }}
 {{ partial "ical/prop_description.ics" . }}
 {{- end }}

@@ -141,7 +141,7 @@ BEGIN:VEVENT
 {{- partial "ical/prop_geographic_position.ics" . }}
 {{- end -}}
 {{- with .lastmod }}
-{{- partial "ical/prop_last_modified.ics" . }}
+{{ partial "ical/prop_last_modified.ics" . }}
 {{- end -}}
 {{- with .location }}
 {{- partial "ical/prop_location.ics" . }}
