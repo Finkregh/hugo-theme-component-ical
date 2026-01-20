@@ -75,6 +75,9 @@
   "SA" (time.Format "Monday" "2021-11-06")
 -}}
 
+{{- /* Initialize result variable - will be set based on logic below */ -}}
+{{- $result := "" -}}
+
 {{- /* Handle single day code (string input) */ -}}
 {{- if not (reflect.IsSlice $days) -}}
   {{- /* Parse the single day input for ordinal information */ -}}
@@ -115,19 +118,16 @@
   {{- /* Get the localized day name */ -}}
   {{- $dayName := index $dayNames $dayCode -}}
   
-  {{- /* Return based on extractOrdinals flag */ -}}
+  {{- /* Set result based on extractOrdinals flag */ -}}
   {{- if $extractOrdinals -}}
     {{- /* Return structured data */ -}}
-    {{- $ordinals := slice -}}
+    {{- $ordinals := cond $hasOrdinal (slice $ordinal) (slice) -}}
     {{- $dayCodes := slice $dayCode -}}
     {{- $dayNamesList := slice $dayName -}}
-    {{- if $hasOrdinal -}}
-      {{- $ordinals = slice $ordinal -}}
-    {{- end -}}
-    {{- dict "ordinals" $ordinals "days" $dayCodes "dayNames" $dayNamesList -}}
+    {{- $result = dict "ordinals" $ordinals "days" $dayCodes "dayNames" $dayNamesList -}}
   {{- else -}}
     {{- /* Return just the day name for backward compatibility */ -}}
-    {{- $dayName -}}
+    {{- $result = $dayName -}}
   {{- end -}}
 
 {{- else -}}
@@ -192,23 +192,26 @@
     {{- end -}}
   {{- end -}}
   
-  {{- /* Return based on extractOrdinals flag */ -}}
+  {{- /* Set result based on extractOrdinals flag */ -}}
   {{- if $extractOrdinals -}}
     {{- /* Return structured data */ -}}
-    {{- dict "ordinals" $ordinalsList "days" $dayCodesList "dayNames" $dayNamesList -}}
+    {{- $result = dict "ordinals" $ordinalsList "days" $dayCodesList "dayNames" $dayNamesList -}}
   {{- else -}}
     {{- /* Join day names with proper conjunction for backward compatibility */ -}}
     {{- if eq (len $dayList) 1 -}}
       {{- /* Single item - should not happen in slice context, but handle gracefully */ -}}
-      {{- index $dayList 0 -}}
+      {{- $result = index $dayList 0 -}}
     {{- else if eq (len $dayList) 2 -}}
       {{- /* Two items: "Monday and Friday" */ -}}
-      {{- printf "%s and %s" (index $dayList 0) (index $dayList 1) -}}
+      {{- $result = printf "%s and %s" (index $dayList 0) (index $dayList 1) -}}
     {{- else -}}
       {{- /* Multiple items: "Monday, Wednesday and Friday" */ -}}
       {{- $lastDay := index $dayList (sub (len $dayList) 1) -}}
       {{- $otherDays := first (sub (len $dayList) 1) $dayList -}}
-      {{- printf "%s and %s" (delimit $otherDays ", ") $lastDay -}}
+      {{- $result = printf "%s and %s" (delimit $otherDays ", ") $lastDay -}}
     {{- end -}}
   {{- end -}}
 {{- end -}}
+
+{{- /* Single return statement at the end with the computed result */ -}}
+{{- return $result -}}

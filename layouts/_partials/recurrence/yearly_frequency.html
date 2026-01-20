@@ -123,8 +123,11 @@
   {{- /* Check if byDay contains embedded ordinals using the enhanced day_names_resolver */ -}}
   {{- $parsedDays := partial "recurrence/day_names_resolver.html" (dict "days" $byDay "extractOrdinals" true) -}}
   {{- $hasEmbeddedOrdinals := false -}}
-  {{- if reflect.IsMap $parsedDays -}}
-    {{- $hasEmbeddedOrdinals = gt (len $parsedDays.ordinals) 0 -}}
+  {{- /* Try to access ordinals field - if it exists and has length > 0, we have embedded ordinals */ -}}
+  {{- with $parsedDays.ordinals -}}
+    {{- if gt (len .) 0 -}}
+      {{- $hasEmbeddedOrdinals = true -}}
+    {{- end -}}
   {{- end -}}
   
   {{- if $hasEmbeddedOrdinals -}}
