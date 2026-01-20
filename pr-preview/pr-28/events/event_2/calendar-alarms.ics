@@ -4,7 +4,7 @@ PRODID:-//Hugo Calendar Templates//Event Template//EN
 CALSCALE:GREGORIAN
 METHOD:PUBLISH
 UID:88aa212e637e8196af91540dce2cb49e
-LAST-MODIFIED:20260119T222458Z
+LAST-MODIFIED:20260120T092922Z
 URL:https://finkregh.github.io/hugo-theme-component-ical/pr-preview/pr-28/events/event_2/
 REFRESH-INTERVAL;VALUE=DURATION:P1W
 SOURCE;VALUE=URI:https://finkregh.github.io/hugo-theme-component-ical/pr-preview/pr-28/events/event_2/calendar.ics
@@ -37,7 +37,8 @@ DTSTAMP:00010101T000000Z
 UID:88aa212e637e8196af91540dce2cb49e
 DTSTART;VALUE=DATE-TIME;TZID=Europe/Zurich:20200930T140000
 CLASS:PUBLIC
-DESCRIPTION;LANGUAGE=de-CH:Our first monthly developer meeting.\nFront matter:\ntitle: Developer meeting 1 startDate: 2020-09-30T14:00:00+02:00 endDate: 2020-09-30T17:00:00+02:00 where: "Meeting room 1\, Headquarters" orga: "F. Nord" orgaEmail: "me@example.org" cancelled: trueLAST-MODIFIED:20260119T222458Z
+DESCRIPTION;LANGUAGE=de-CH:Our first monthly developer meeting.\nFront matter:\ntitle: Developer meeting 1 startDate: 2020-09-30T14:00:00+02:00 endDate: 2020-09-30T17:00:00+02:00 where: "Meeting room 1\, Headquarters" orga: "F. Nord" orgaEmail: "me@example.org" cancelled: true
+LAST-MODIFIED:20260120T092922Z
 LOCATION;LANGUAGE=de-CH:
 STATUS:CANCELLED
 SUMMARY;LANGUAGE=de-CH:Developer meeting 1

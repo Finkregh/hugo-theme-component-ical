@@ -4,7 +4,7 @@ PRODID:-//Hugo Calendar Templates//Event Template//EN
 CALSCALE:GREGORIAN
 METHOD:PUBLISH
 UID:6bce8620f70cd0e758cc921428b8ed5c
-LAST-MODIFIED:20260119T222458Z
+LAST-MODIFIED:20260120T092922Z
 URL:https://finkregh.github.io/hugo-theme-component-ical/pr-preview/pr-28/events/test_array_ordinal/
 REFRESH-INTERVAL;VALUE=DURATION:P1W
 SOURCE;VALUE=URI:https://finkregh.github.io/hugo-theme-component-ical/pr-preview/pr-28/events/test_array_ordinal/calendar.ics
@@ -37,7 +37,8 @@ DTSTAMP:00010101T000000Z
 UID:6bce8620f70cd0e758cc921428b8ed5c
 DTSTART;VALUE=DATE-TIME;TZID=Europe/Zurich:20240205T100000
 CLASS:PUBLIC
-DESCRIPTION;LANGUAGE=de-CH:This is a test event to verify the new array ordinal BYDAY format works correctly. It should occur on the first and third Monday of each month using the new byDay: ["1MO"\, "3MO"] format.LAST-MODIFIED:20260119T222458Z
+DESCRIPTION;LANGUAGE=de-CH:This is a test event to verify the new array ordinal BYDAY format works correctly. It should occur on the first and third Monday of each month using the new byDay: ["1MO"\, "3MO"] format.
+LAST-MODIFIED:20260120T092922Z
 LOCATION;LANGUAGE=de-CH:
 STATUS:CONFIRMED
 SUMMARY;LANGUAGE=de-CH:Test Array Ordinal Format
