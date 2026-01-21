@@ -39,6 +39,8 @@ document.addEventListener("DOMContentLoaded", function () {
     locales: allLocales,
     locale: initialLocaleCode,
     buttonIcons: false,
+    weekNumbers: true,
+    height: "auto",
     events: {
       url: window.location.pathname + "/calendar.ics",
       format: "ics",
