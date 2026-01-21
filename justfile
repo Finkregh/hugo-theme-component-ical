@@ -19,9 +19,10 @@ test_python_showlog:  hugo_go_modules build_hugo run_ics_validation_python_showl
 test_js_showlog:  hugo_go_modules build_hugo run_ics_validation_js_showlog
     @echo "Running tests with JavaScript validation only (with logs)..."
 
-localserve_build:  hugo_go_modules build_hugo_localhost
-    @echo "Starting local server at https://localhost:4443"
-    python3 server.py
+[working-directory: '.github/exampleSite']
+localserve:  hugo_go_modules
+    @echo "Starting Hugo local server with TLS..."
+    hugo server --source . --noHTTPCache --disableFastRender --gc --tlsAuto -D -e development
 
 [working-directory: '.github/exampleSite']
 hugo_go_modules:
