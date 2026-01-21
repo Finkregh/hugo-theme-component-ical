@@ -26,7 +26,7 @@
                         / "WKST" )
                         "=" recur-rule-value
 
-    This implementation focuses on FREQ, INTERVAL, BYMONTH, BYDAY, and BYSETPOS.
+    This implementation focuses on FREQ, INTERVAL, BYDAY, BYMONTH, and BYSETPOS.
 
     Hugo Context Parameters:
 
@@ -52,11 +52,6 @@
   {{- $interval = . | int -}}
 {{- end -}}
 {{- $parts = $parts | append (printf "INTERVAL=%d" $interval) -}}
-
-{{- /* BYMONTH */ -}}
-{{- with .byMonth -}}
-  {{- $parts = $parts | append (printf "BYMONTH=%s" (partial "ical/dt_month.ics" .)) -}}
-{{- end -}}
 
 {{- /* Handle BYDAY and BYSETPOS - convert BYDAY+BYSETPOS to ordinal BYDAY format for RFC 5545 compliance */ -}}
 {{- $skipBySetPos := false -}}
@@ -89,6 +84,11 @@
 {{- else if .byDay -}}
   {{- /* Only BYDAY without BYSETPOS */ -}}
   {{- $parts = $parts | append (printf "BYDAY=%s" (partial "ical/dt_weekday.ics" .byDay)) -}}
+{{- end -}}
+
+{{- /* BYMONTH */ -}}
+{{- with .byMonth -}}
+  {{- $parts = $parts | append (printf "BYMONTH=%s" (partial "ical/dt_month.ics" .)) -}}
 {{- end -}}
 
 {{- /* BYSETPOS - only include if not converted to ordinal BYDAY */ -}}

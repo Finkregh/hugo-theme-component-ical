@@ -1,8 +1,23 @@
-test:  hugo_go_modules build_hugo run_ics_validation
-    @echo "Running all tests..."
+test:  hugo_go_modules build_hugo run_ics_validation_dual
+    @echo "Running all tests with dual validation..."
 
-test_debug:  hugo_go_modules build_hugo_debug run_ics_validation
-    @echo "Running debug..."
+test_debug:  hugo_go_modules build_hugo_debug run_ics_validation_dual
+    @echo "Running debug with dual validation..."
+
+test_python:  hugo_go_modules build_hugo run_ics_validation_python
+    @echo "Running tests with Python validation only..."
+
+test_js:  hugo_go_modules build_hugo run_ics_validation_js
+    @echo "Running tests with JavaScript validation only..."
+
+test_showlog:  hugo_go_modules build_hugo run_ics_validation_dual_showlog
+    @echo "Running all tests with dual validation (with logs)..."
+
+test_python_showlog:  hugo_go_modules build_hugo run_ics_validation_python_showlog
+    @echo "Running tests with Python validation only (with logs)..."
+
+test_js_showlog:  hugo_go_modules build_hugo run_ics_validation_js_showlog
+    @echo "Running tests with JavaScript validation only (with logs)..."
 
 localserve_build:  hugo_go_modules build_hugo_localhost
     @echo "Starting local server at https://localhost:4443"
@@ -34,7 +49,37 @@ build_hugo_localhost:
     hugo build --cleanDestinationDir --printPathWarnings --printUnusedTemplates --printI18nWarnings --logLevel debug --buildDrafts --templateMetrics --templateMetricsHints --environment development --baseURL https://localhost:4443/
 
 [working-directory: '.github']
-run_ics_validation: build_hugo
-    # source .venv/bin/activate
+run_ics_validation_python:
+    @echo "Running Python iCal validation..."
     uv pip install -r scripts/requirements.txt
     python3 scripts/validate_ics.py
+
+[working-directory: '.github']
+run_ics_validation_python_showlog:
+    @echo "Running Python iCal validation (with logs)..."
+    uv pip install -r scripts/requirements.txt
+    python3 scripts/validate_ics.py --showlog
+
+[working-directory: '.github']
+run_ics_validation_js:
+    @echo "Running JavaScript iCal validation..."
+    npm i --include=dev
+    node scripts/validate_ics.mjs
+
+[working-directory: '.github']
+run_ics_validation_js_showlog:
+    @echo "Running JavaScript iCal validation (with logs)..."
+    npm i --include=dev
+    node scripts/validate_ics.mjs --showlog
+
+[working-directory: '.github']
+run_ics_validation_dual: run_ics_validation_python run_ics_validation_js
+    @echo "Running dual validation (Python + JavaScript)..."
+
+[working-directory: '.github']
+run_ics_validation_dual_showlog: run_ics_validation_python_showlog run_ics_validation_js_showlog
+    @echo "Running dual validation (Python + JavaScript) with logs..."
+
+# Legacy alias for backward compatibility
+[working-directory: '.github']
+run_ics_validation: run_ics_validation_dual

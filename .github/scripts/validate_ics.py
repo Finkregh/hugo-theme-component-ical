@@ -26,6 +26,8 @@ from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any
 
+import logging
+
 import structlog
 import yaml
 from dateutil.rrule import rrulestr
@@ -1197,8 +1199,19 @@ def main() -> None:
         default="exampleSite",
         help="Base path to Hugo site (default: exampleSite)",
     )
+    parser.add_argument(
+        "--showlog",
+        action="store_true",
+        help="Show detailed log messages (default: only errors)",
+    )
 
     args = parser.parse_args()
+
+    # Configure logging level based on --showlog flag
+    if args.showlog:
+        logging.basicConfig(level=logging.DEBUG)
+    else:
+        logging.basicConfig(level=logging.CRITICAL)
 
     print(f"Starting iCalendar validation for: {args.base_path}")
 

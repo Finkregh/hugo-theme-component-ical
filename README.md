@@ -439,11 +439,47 @@ hugo --source .github/exampleSite
 echo $?
 ```
 
+#### Dual Validation System
+
+The project uses both Python and JavaScript validation for comprehensive testing:
+
+**Python Validation** (Primary):
+```shell
+cd .github
+python3 scripts/validate_ics.py
+```
+
+**JavaScript Validation** (Complementary):
+```shell
+cd .github
+node scripts/validate_ics.js
+```
+
+**Both** (Recommended):
+```shell
+PR_NUMBER=0 just test
+```
+
+The dual validation approach ensures iCalendar files work correctly with different parser implementations, providing higher confidence in RFC 5545 compliance and real-world compatibility.
+
+**Individual Test Targets**:
+```shell
+# Python validation only
+PR_NUMBER=0 just test_python
+
+# JavaScript validation only
+PR_NUMBER=0 just test_js
+
+# Debug mode with dual validation
+PR_NUMBER=0 just test_debug
+```
+
 #### iCal Validation
 
 - Use [iCalendar Validator](https://icalendar.org/validator.html)
 - Test with multiple calendar applications
 - Verify RFC 5545 compliance
+- Both Python (`icalendar`) and JavaScript (`node-ical`) validators must pass
 
 #### Template Debugging
 
