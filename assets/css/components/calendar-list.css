@@ -1,0 +1,356 @@
+/*
+ * Events List Component Styles
+ * 
+ * Styles specific to the events listing page.
+ * Common styles are in shared/ directory.
+ */
+
+/* ========================================
+ * EVENTS LIST SPECIFIC OVERRIDES
+ * ======================================== */
+
+/* Section title variant for events list page */
+.events-section .section-title {
+  --section-title-margin-bottom: var(--calendar-space-6);
+  --section-title-padding-bottom: var(--calendar-space-2);
+  --section-title-border-width: 2px;
+  --section-title-font-size: var(--calendar-font-size-2xl);
+}
+
+/* Detail label/value size for event cards */
+.event-card-detail .detail-label {
+  --detail-label-font-size: var(--calendar-font-size-sm);
+}
+
+.event-card-detail .detail-value {
+  --detail-value-font-size: var(--calendar-font-size-sm);
+}
+
+/* Calendar widget height for list page */
+.calendar-widget-section .single-event-calendar {
+  --calendar-widget-height: 400px;
+}
+
+/* ========================================
+ * EVENTS LIST CONTAINER
+ * ======================================== */
+
+.events-list-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: var(--calendar-space-4);
+  font-family: var(--calendar-font-family-primary);
+}
+
+.events-list-header {
+  margin-bottom: var(--calendar-space-8);
+  text-align: center;
+}
+
+.events-list-title {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--calendar-space-2);
+  color: var(--calendar-primary-color);
+  font-size: var(--calendar-font-size-3xl);
+  font-weight: var(--calendar-font-weight-bold);
+  line-height: var(--calendar-line-height-tight);
+  margin: 0;
+}
+
+.events-list-title::before {
+  content: none;
+}
+
+/* ========================================
+ * EVENTS SECTIONS
+ * ======================================== */
+
+.events-section {
+  margin-bottom: var(--calendar-space-12);
+}
+
+.events-section:last-child {
+  margin-bottom: 0;
+}
+
+/* ========================================
+ * EVENTS GRID
+ * ======================================== */
+
+.events-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+  gap: var(--calendar-space-6);
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.events-grid-item {
+  display: contents;
+}
+
+/* ========================================
+ * EVENT CARD STYLES
+ * ======================================== */
+
+.event-card {
+  background-color: var(--calendar-card-bg);
+  border: 1px solid var(--calendar-card-border);
+  border-radius: var(--calendar-card-radius);
+  box-shadow: var(--calendar-card-shadow);
+  overflow: hidden;
+  transition: var(--calendar-card-transition);
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+.event-card:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--calendar-card-shadow-hover);
+  border-color: var(--calendar-card-border-hover);
+}
+
+.event-card.event-cancelled {
+  border-left: 4px solid var(--calendar-cancelled-border);
+  opacity: 0.8;
+}
+
+.event-card-header {
+  background-color: var(--calendar-header-bg);
+  padding: var(--calendar-space-4);
+  border-bottom: 1px solid var(--calendar-card-border);
+}
+
+.event-card-title {
+  margin: 0;
+  display: flex;
+  align-items: center;
+  gap: var(--calendar-space-2);
+  flex-wrap: wrap;
+  font-size: var(--calendar-font-size-lg);
+  font-weight: var(--calendar-font-weight-semibold);
+  line-height: var(--calendar-line-height-tight);
+}
+
+.event-card-title::before {
+  content: none;
+}
+
+.event-card-title a {
+  color: var(--calendar-primary-color);
+  text-decoration: none;
+  flex: 1;
+  transition: var(--calendar-transition-fast);
+}
+
+.event-card-title a:hover {
+  color: var(--calendar-text-link);
+}
+
+.event-card-content {
+  padding: var(--calendar-space-4);
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: var(--calendar-space-3);
+}
+
+.event-card-detail {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--calendar-space-2);
+}
+
+.event-card-detail:last-child {
+  margin-bottom: 0;
+}
+
+.event-card-location {
+  font-style: normal;
+  display: inline;
+}
+
+.event-card-summary {
+  margin-top: var(--calendar-space-4);
+  padding-top: var(--calendar-space-4);
+  border-top: 1px solid var(--calendar-border-color);
+  color: var(--calendar-text-secondary);
+  font-style: italic;
+  font-size: var(--calendar-font-size-sm);
+  line-height: var(--calendar-line-height-relaxed);
+}
+
+.event-card-footer {
+  background-color: var(--calendar-bg-secondary);
+  padding: var(--calendar-space-4);
+  border-top: 1px solid var(--calendar-card-border);
+  margin-top: auto;
+}
+
+/* ========================================
+ * NO EVENTS MESSAGE
+ * ======================================== */
+
+.no-events-message {
+  text-align: center;
+  padding: var(--calendar-space-12) var(--calendar-space-4);
+  color: var(--calendar-text-secondary);
+}
+
+.no-events-message p {
+  font-size: var(--calendar-font-size-lg);
+  font-weight: var(--calendar-font-weight-medium);
+  margin: 0;
+  line-height: var(--calendar-line-height-relaxed);
+}
+
+/* ========================================
+ * CALENDAR DOWNLOADS SECTION
+ * ======================================== */
+
+.calendar-downloads-section {
+  margin-bottom: var(--calendar-space-12);
+  background-color: var(--calendar-bg-secondary);
+  border-radius: var(--calendar-radius-lg);
+  padding: var(--calendar-space-6);
+  border: 1px solid var(--calendar-border-color);
+}
+
+.download-options {
+  display: grid;
+  gap: var(--calendar-space-4);
+  margin-bottom: var(--calendar-space-6);
+}
+
+.download-option {
+  background-color: var(--calendar-bg-primary);
+  padding: var(--calendar-space-4);
+  border-radius: var(--calendar-radius-md);
+  border: 1px solid var(--calendar-border-color);
+}
+
+.download-option p {
+  margin: 0;
+  color: var(--calendar-text-primary);
+  font-size: var(--calendar-font-size-base);
+  line-height: var(--calendar-line-height-normal);
+}
+
+.calendar-widget-section {
+  border-top: 1px solid var(--calendar-border-color);
+  padding-top: var(--calendar-space-6);
+}
+
+.widget-title {
+  color: var(--calendar-accent-color);
+  font-size: var(--calendar-font-size-lg);
+  font-weight: var(--calendar-font-weight-semibold);
+  margin: 0 0 var(--calendar-space-4) 0;
+  display: flex;
+  align-items: center;
+  gap: var(--calendar-space-2);
+}
+
+.widget-title::before {
+  content: none;
+}
+
+/* ========================================
+ * RESPONSIVE DESIGN
+ * ======================================== */
+
+@media (max-width: 768px) {
+  .events-grid {
+    grid-template-columns: 1fr;
+    gap: var(--calendar-space-4);
+  }
+  
+  .event-card-detail {
+    flex-direction: column;
+    gap: var(--calendar-space-1);
+  }
+  
+  .event-card-title {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: var(--calendar-space-2);
+  }
+  
+  .events-list-title {
+    font-size: var(--calendar-font-size-2xl);
+  }
+  
+  .events-section .section-title {
+    --section-title-font-size: var(--calendar-font-size-xl);
+  }
+  
+  .events-list-container {
+    padding: var(--calendar-space-3);
+  }
+  
+  .events-section {
+    margin-bottom: var(--calendar-space-8);
+  }
+  
+  .calendar-downloads-section {
+    padding: var(--calendar-space-4);
+    margin-bottom: var(--calendar-space-8);
+  }
+  
+  .download-options {
+    gap: var(--calendar-space-3);
+  }
+  
+  .download-option {
+    padding: var(--calendar-space-3);
+  }
+}
+
+@media (max-width: 480px) {
+  .events-list-container {
+    padding: var(--calendar-space-2);
+  }
+  
+  .event-card {
+    margin-left: calc(-1 * var(--calendar-space-2));
+    margin-right: calc(-1 * var(--calendar-space-2));
+    border-radius: 0;
+    border-left: none;
+    border-right: none;
+  }
+  
+  .event-card.event-cancelled {
+    border-left: 4px solid var(--calendar-cancelled-border);
+  }
+  
+  .events-list-title {
+    font-size: var(--calendar-font-size-xl);
+  }
+  
+  .events-section .section-title {
+    --section-title-font-size: var(--calendar-font-size-lg);
+  }
+  
+  .event-card-header,
+  .event-card-content,
+  .event-card-footer {
+    padding: var(--calendar-space-3);
+  }
+  
+  .no-events-message {
+    padding: var(--calendar-space-8) var(--calendar-space-2);
+  }
+  
+  .calendar-downloads-section {
+    margin-left: calc(-1 * var(--calendar-space-2));
+    margin-right: calc(-1 * var(--calendar-space-2));
+    border-radius: 0;
+    border-left: none;
+    border-right: none;
+    padding: var(--calendar-space-3);
+  }
+}

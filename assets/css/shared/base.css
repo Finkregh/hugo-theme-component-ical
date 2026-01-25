@@ -1,0 +1,171 @@
+/*
+ * Shared Base Styles
+ * 
+ * Common styles used across multiple calendar components.
+ * Includes section titles, detail items, and base utilities.
+ */
+
+/* ========================================
+ * SECTION TITLES
+ * ======================================== */
+
+.section-title {
+  display: flex;
+  align-items: center;
+  gap: var(--calendar-space-2);
+  color: var(--calendar-accent-color);
+  font-weight: var(--calendar-font-weight-semibold);
+  line-height: var(--calendar-line-height-tight);
+  margin: 0 0 var(--section-title-margin-bottom, var(--calendar-space-3)) 0;
+  padding-bottom: var(--section-title-padding-bottom, var(--calendar-space-1));
+  border-bottom: var(--section-title-border-width, 1px) solid var(--calendar-secondary-color);
+  font-size: var(--section-title-font-size, var(--calendar-font-size-lg));
+}
+
+.section-title::before {
+  content: none;
+}
+
+/* ========================================
+ * DETAIL ITEMS
+ * ======================================== */
+
+.detail-list {
+  display: grid;
+  gap: var(--calendar-space-2);
+  margin: 0;
+}
+
+.detail-item {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--calendar-space-2);
+  align-items: baseline;
+}
+
+.detail-label {
+  font-weight: var(--calendar-font-weight-semibold);
+  color: var(--calendar-primary-color);
+  min-width: 4rem;
+  margin: 0;
+  font-size: var(--detail-label-font-size, var(--calendar-font-size-base));
+}
+
+.detail-value {
+  color: var(--calendar-primary-color);
+  flex: 1;
+  margin: 0;
+  font-size: var(--detail-value-font-size, var(--calendar-font-size-base));
+  line-height: var(--calendar-line-height-normal);
+}
+
+.detail-value a {
+  color: var(--calendar-text-link);
+  transition: var(--calendar-transition-fast);
+}
+
+.detail-value a:hover {
+  color: var(--calendar-text-link-hover);
+}
+
+/* ========================================
+ * EVENT CANCELLED STYLES
+ * ======================================== */
+
+.event-cancelled {
+  background-color: var(--calendar-cancelled-bg);
+  border-left: 4px solid var(--calendar-cancelled-border);
+  padding-left: var(--calendar-space-4);
+  border-radius: var(--calendar-radius-lg);
+}
+
+.cancelled-notice {
+  color: var(--calendar-cancelled-color);
+  font-weight: var(--calendar-font-weight-semibold);
+  font-size: var(--calendar-font-size-base);
+}
+
+.cancelled-badge {
+  background-color: var(--calendar-cancelled-color);
+  color: var(--calendar-text-inverse);
+  padding: var(--calendar-space-1) var(--calendar-space-2);
+  border-radius: var(--calendar-radius-base);
+  font-size: var(--calendar-font-size-xs);
+  font-weight: var(--calendar-font-weight-bold);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+/* ========================================
+ * CALENDAR WIDGET
+ * ======================================== */
+
+.single-event-calendar {
+  background-color: var(--calendar-bg-primary);
+  border-radius: var(--calendar-radius-md);
+  border: 1px solid var(--calendar-border-color);
+  padding: var(--calendar-space-4);
+  max-width: 100%;
+  height: var(--calendar-widget-height, 400px);
+}
+
+.calendar-header {
+  background-color: var(--calendar-accent-color-light);
+  padding: var(--calendar-space-4) var(--calendar-space-6);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: var(--calendar-space-4);
+}
+
+.calendar-header h3 {
+  margin: 0;
+  color: var(--calendar-primary-color);
+  font-size: var(--calendar-font-size-lg);
+  font-weight: var(--calendar-font-weight-semibold);
+}
+
+.calendar-header h3::before {
+  content: none;
+}
+
+/* ========================================
+ * SEMANTIC ELEMENTS
+ * ======================================== */
+
+.event-location {
+  font-style: normal;
+  color: var(--calendar-primary-color);
+  line-height: var(--calendar-line-height-normal);
+}
+
+.event-organizer {
+  font-style: normal;
+}
+
+time {
+  color: var(--calendar-primary-color);
+}
+
+/* ========================================
+ * RESPONSIVE UTILITIES
+ * ======================================== */
+
+@media (max-width: 768px) {
+  .detail-item {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: var(--calendar-space-1);
+  }
+  
+  .detail-label {
+    min-width: auto;
+  }
+  
+  .calendar-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: var(--calendar-space-2);
+  }
+}
