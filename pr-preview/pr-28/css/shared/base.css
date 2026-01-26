@@ -106,7 +106,8 @@
   border: 1px solid var(--calendar-border-color);
   padding: var(--calendar-space-4);
   max-width: 100%;
-  height: var(--calendar-widget-height, 400px);
+  max-height: var(--calendar-widget-height-max);
+  min-height: var(--calendar-widget-height-min);
   margin: var(--calendar-space-2);
 }
 

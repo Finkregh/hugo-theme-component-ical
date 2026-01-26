@@ -19,7 +19,8 @@
 
 /* Calendar widget height for single event page */
 .event-calendar-widget .single-event-calendar {
-  --calendar-widget-height: 700px;
+  max-height: var(--calendar-widget-height-max);
+  min-height: var(--calendar-widget-height-min);
 }
 
 /* ========================================
