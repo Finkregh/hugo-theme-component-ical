@@ -5,9 +5,9 @@ CALSCALE:GREGORIAN
 METHOD:PUBLISH
 UID:19047b453eee8624a6270f68e3635f48
 LAST-MODIFIED:20260126T101719Z
-URL:https://finkregh.github.io/hugo-theme-component-ical/events/event_12_everythree_days/
+URL:https://finkregh.github.io/hugo-theme-component-ical/pr-preview/pr-28/events/event_12_everythree_days/
 REFRESH-INTERVAL;VALUE=DURATION:P1W
-SOURCE;VALUE=URI:https://finkregh.github.io/hugo-theme-component-ical/events/event_12_everythree_days/calendar.ics
+SOURCE;VALUE=URI:https://finkregh.github.io/hugo-theme-component-ical/pr-preview/pr-28/events/event_12_everythree_days/calendar.ics
 COLOR:crimson
 NAME;LANGUAGE=de-CH:Example Events
 DESCRIPTION;LANGUAGE=de-CH:Example Events Calendar
@@ -43,7 +43,7 @@ LOCATION;LANGUAGE=de-CH:
 STATUS:CONFIRMED
 SUMMARY;LANGUAGE=de-CH:Every Third Day
 TRANSP:OPAQUE
-URL:https://finkregh.github.io/hugo-theme-component-ical/events/event_12_everythree_days/
+URL:https://finkregh.github.io/hugo-theme-component-ical/pr-preview/pr-28/events/event_12_everythree_days/
 RRULE:FREQ=DAILY;INTERVAL=3
 DTEND;VALUE=DATE-TIME;TZID=Europe/Zurich:20240118T123000
 CONTACT;LANGUAGE=de-CH:Strategy Director: strategy@example.org

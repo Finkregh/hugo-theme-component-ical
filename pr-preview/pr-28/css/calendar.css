@@ -283,7 +283,7 @@ Import happens via calendar_css.html!
   --fc-page-bg-color: var(--calendar-bg-primary);
   --fc-border-color: var(--calendar-border-color);
   /*--fc-neutral-bg-color: var(--calendar-bg-tertiary);*/
-  --fc-list-event-hover-bg-color: ();
+  --fc-list-event-hover-bg-color: var(--calendar-bg-tertiary);
   --fc-neutral-text-color: var(--calendar-text-secondary);
 }
 
