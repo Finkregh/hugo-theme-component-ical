@@ -107,6 +107,7 @@
   padding: var(--calendar-space-4);
   max-width: 100%;
   height: var(--calendar-widget-height, 400px);
+  margin: var(--calendar-space-2);
 }
 
 .calendar-header {

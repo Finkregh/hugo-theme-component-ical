@@ -1,3 +1,5 @@
+base_url := if env_var("PR_NUMBER") == "" { "https://finkregh.github.io/hugo-theme-component-ical/" } else { "https://finkregh.github.io/hugo-theme-component-ical/pr-preview/pr-" + env_var("PR_NUMBER") }
+
 test:  hugo_go_modules build_hugo run_ics_validation_dual
     @echo "Running all tests with dual validation..."
 
@@ -35,15 +37,15 @@ hugo_go_modules:
 
 [working-directory: '.github/exampleSite']
 build_hugo:
-    hugo build --quiet --cleanDestinationDir --baseURL https://finkregh.github.io/hugo-theme-component-ical/pr-preview/pr-${PR_NUMBER}
+    hugo build --quiet --cleanDestinationDir --baseURL {{base_url}}
 
 [working-directory: '.github/exampleSite']
 build_hugo_debug:
-    hugo build --cleanDestinationDir --printPathWarnings --printI18nWarnings --logLevel debug --buildDrafts --environment development --baseURL https://finkregh.github.io/hugo-theme-component-ical/
+    hugo build --cleanDestinationDir --printPathWarnings --printI18nWarnings --logLevel debug --buildDrafts --environment development --baseURL {{base_url}}
 
 [working-directory: '.github/exampleSite']
 build_hugo_debug_verbose:
-    hugo build --cleanDestinationDir --printPathWarnings --printUnusedTemplates --printI18nWarnings --logLevel debug --buildDrafts --templateMetrics --templateMetricsHints --environment development --baseURL https://finkregh.github.io/hugo-theme-component-ical/
+    hugo build --cleanDestinationDir --printPathWarnings --printUnusedTemplates --printI18nWarnings --logLevel debug --buildDrafts --templateMetrics --templateMetricsHints --environment development --baseURL {{base_url}}
 
 [working-directory: '.github/exampleSite']
 build_hugo_localhost:

@@ -203,6 +203,7 @@
   box-shadow: var(--calendar-shadow-md);
   overflow: hidden;
   margin-top: var(--calendar-space-8);
+  font-family: var(--calendar-font-family-primary);
 }
 
 /* ========================================

@@ -38,9 +38,12 @@ document.addEventListener("DOMContentLoaded", function () {
     ],
     locales: allLocales,
     locale: initialLocaleCode,
-    buttonIcons: false,
-    weekNumbers: true,
+    buttonIcons: true,
+    dayMaxEvents: true,
+    editable: false,
     height: "auto",
+    navLinks: true,
+    weekNumbers: true,
     events: {
       url: window.location.pathname + "/calendar.ics",
       format: "ics",
@@ -52,21 +55,16 @@ document.addEventListener("DOMContentLoaded", function () {
     Object.assign(calendarConfig, {
       initialView: "listMonth",
       headerToolbar: {
-        left: "prev,next",
+        left: "prev,next today",
         center: "title",
-        right: "dayGridMonth,listMonth",
+        right: 'dayGridMonth,timeGridWeek,timeGridDay,listMonth',
       },
-      height: "auto",
-      weekNumbers: false,
-      navLinks: false,
-      editable: false,
-      dayMaxEvents: true,
-      eventDisplay: "block",
-      eventDidMount: function (info) {
-        // Highlight the current event with theme colors
-        info.el.style.backgroundColor = "var(--calendar-accent-color-light)";
-        info.el.style.borderColor = "var(--calendar-accent-color)";
-      },
+      //eventDisplay: "block",
+      //eventDidMount: function (info) {
+      //  // Highlight the current event with theme colors
+      //  info.el.style.backgroundColor = "var(--calendar-accent-color-light)";
+      //  info.el.style.borderColor = "var(--calendar-accent-color)";
+      //},
     });
   }
   // Event list page configuration

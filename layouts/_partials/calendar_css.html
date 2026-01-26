@@ -8,7 +8,7 @@
   "css/shared/responsive.css"
   "css/components/calendar-single.css"
   "css/components/calendar-list.css"
--}}
+-}}{{/* import component specifics last! */}}
 {{- if eq hugo.Environment "development" -}}
   {{- range $styles -}}
     {{- with resources.Get . -}}

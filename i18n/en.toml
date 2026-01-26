@@ -53,7 +53,7 @@ other = "Download {{ .title }}.ics"
 other = "Calendar View"
 
 [ical_language_label]
-other = "Language:"
+other = "Language selection"
 
 # Main orchestration patterns
 [ical_no_rule_found]
@@ -245,9 +245,6 @@ other = "Get the calendar file with all events (including alarms)"
 
 [templates_here_link]
 other = "here"
-
-[templates_locales]
-other = "Locales"
 
 # Calendar downloads section
 [ical_calendar_downloads]

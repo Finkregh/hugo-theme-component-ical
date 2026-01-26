@@ -10,7 +10,7 @@
  * Tier 4: Layout - Border radius, shadows, transitions, z-index scale
  */
 
-/* Shared styles - imported first */
+/* Shared styles - imported first
 @import './shared/base.css';
 @import './shared/icons.css';
 @import './shared/buttons.css';
@@ -18,9 +18,12 @@
 @import './shared/accessibility.css';
 @import './shared/responsive.css';
 
-/* Component-specific styles - imported last */
+/* Component-specific styles - imported last 
 @import './components/calendar-single.css';
 @import './components/calendar-list.css';
+
+Import happens via calendar_css.html!
+*/
 
 :root {
   /* Enable light-dark() function support */
@@ -43,6 +46,7 @@
   --calendar-accent-color: #3498db;
   --calendar-accent-color-light: #5dade2;
   --calendar-accent-color-dark: #2980b9;
+  --calendar-accent-color-light-dark: light-dark()
   
   /* Status Colors */
   --calendar-success-color: #27ae60;
@@ -77,7 +81,7 @@
   --calendar-bg-overlay: light-dark(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.7));
   
   /* Border Colors */
-  --calendar-border-color: light-dark(#dee2e6, #34495e);
+  --calendar-border-color: light-dark(#dee2e600, #34495e00);
   --calendar-border-color-light: light-dark(#f1f3f4, #2c3e50);
   --calendar-border-color-dark: light-dark(#adb5bd, #1a252f);
   
@@ -274,6 +278,18 @@
   --calendar-icon-size-base: 1.25rem;
   --calendar-icon-size-lg: 1.5rem;
   --calendar-icon-size-xl: 2rem;
+
+  /* Overrides */
+  --fc-page-bg-color: var(--calendar-bg-primary);
+  --fc-border-color: var(--calendar-border-color);
+  /*--fc-neutral-bg-color: var(--calendar-bg-tertiary);*/
+  --fc-list-event-hover-bg-color: var(--calendar-bg-tertiary);
+  --fc-neutral-text-color: var(--calendar-text-secondary);
+}
+
+.fc .fc-daygrid-week-number {
+  background-color: var(--calendar-bg-tertiary);
+  color: var(--calendar-text-primary);
 }
 
 /* ========================================
@@ -313,6 +329,11 @@
 }
 
 /* Overrides for fullcalendar.js */
+
+.fc .fc-list-sticky .fc-list-day > * {
+  /* Override FullCalendar background color for light/dark mode support */
+  --fc-page-bg-color: light-dark(#ffffff, #2c3e50);
+}
 
 .fc .fc-view-harness {
   overflow: scroll;
