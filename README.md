@@ -444,18 +444,21 @@ echo $?
 The project uses both Python and JavaScript validation for comprehensive testing:
 
 **Python Validation** (Primary):
+
 ```shell
 cd .github
 python3 scripts/validate_ics.py
 ```
 
 **JavaScript Validation** (Complementary):
+
 ```shell
 cd .github
 node scripts/validate_ics.js
 ```
 
 **Both** (Recommended):
+
 ```shell
 PR_NUMBER=0 just test
 ```
@@ -463,6 +466,7 @@ PR_NUMBER=0 just test
 The dual validation approach ensures iCalendar files work correctly with different parser implementations, providing higher confidence in RFC 5545 compliance and real-world compatibility.
 
 **Individual Test Targets**:
+
 ```shell
 # Python validation only
 PR_NUMBER=0 just test_python

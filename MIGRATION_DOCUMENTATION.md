@@ -9,6 +9,7 @@ This document provides comprehensive documentation of the Hugo iCal template mig
 ### Final Build Verification Results ✅
 
 #### Latest Build Test Results (January 13, 2026)
+
 - **Status**: ✅ **SUCCESSFUL - EXIT CODE 0**
 - **Hugo Version**: v0.154.4+extended+withdeploy darwin/arm64
 - **Build Time**: 538ms total
@@ -18,18 +19,21 @@ This document provides comprehensive documentation of the Hugo iCal template mig
 - **Template Resolution**: All templates resolving correctly with graceful fallbacks
 
 #### Dynamic Partial Resolution Status ✅
+
 - **Fallback Logic**: Working perfectly - graceful degradation to generic partials
 - **Debug Output**: Comprehensive WARN messages providing template tracing
 - **Section-Specific Logic**: Properly attempts section-specific partials first
 - **Error Handling**: No ERROR messages - only informational WARN messages
 
 #### Template System Verification ✅
+
 - **Template Resolution**: All templates resolving correctly from root layouts/
 - **Context Preservation**: Template context maintained across all partial calls
 - **Generic Partials**: Successfully transitioned from events/ specific to generic partials
 - **Build Stability**: Consistent successful builds across multiple test runs
 
 ### iCal Output Verification ✅
+
 - **Format Compliance**: RFC 5545 compliant iCalendar format
 - **Structure**: Proper VCALENDAR wrapper with VEVENT components
 - **Timezone Support**: Complete VTIMEZONE definitions for Europe/Zurich
@@ -40,6 +44,7 @@ This document provides comprehensive documentation of the Hugo iCal template mig
 ## Migration Overview
 
 ### Project Scope
+
 The migration addressed Hugo's template system changes introduced in v0.146.0, which deprecated the ability to use templates from theme component subdirectories like `.github/exampleSite/layouts`. The project required:
 
 1. **Template Relocation**: Moving all templates to the root `layouts/` directory
@@ -49,6 +54,7 @@ The migration addressed Hugo's template system changes introduced in v0.146.0, w
 5. **Debugging Enhancement**: Adding comprehensive debugging and tracing capabilities
 
 ### Key Achievements
+
 - ✅ Full Hugo v0.146.0+ compatibility
 - ✅ Preserved all existing functionality
 - ✅ Enhanced debugging capabilities
@@ -59,6 +65,7 @@ The migration addressed Hugo's template system changes introduced in v0.146.0, w
 ## New Template Structure
 
 ### Root Layout Directory Structure
+
 ```
 layouts/
 ├── baseof.ics                          # Base template for iCal output
@@ -86,7 +93,9 @@ layouts/
 ```
 
 ### Template Hierarchy Alignment
+
 The new structure aligns with Hugo's template lookup order:
+
 1. **Layout-specific templates**: `layouts/[SECTION]/[LAYOUT].[FORMAT].[SUFFIX]`
 2. **Section templates**: `layouts/[SECTION]/[TYPE].[FORMAT].[SUFFIX]`
 3. **Default templates**: `layouts/_default/[TYPE].[FORMAT].[SUFFIX]`
@@ -97,6 +106,7 @@ The new structure aligns with Hugo's template lookup order:
 ### Templates Moved from `.github/exampleSite/layouts/` to `layouts/`
 
 #### Main Templates
+
 | Original Location                                         | New Location                          | Purpose                |
 | --------------------------------------------------------- | ------------------------------------- | ---------------------- |
 | `.github/exampleSite/layouts/baseof.ics`                  | `layouts/baseof.ics`                  | Base iCal template     |
@@ -104,6 +114,7 @@ The new structure aligns with Hugo's template lookup order:
 | `.github/exampleSite/layouts/list.calendarwithalarms.ics` | `layouts/list.calendarwithalarms.ics` | Calendar with alarms   |
 
 #### Partials Migration
+
 | Original Location                                           | New Location                     | Changes Made                 |
 | ----------------------------------------------------------- | -------------------------------- | ---------------------------- |
 | `.github/exampleSite/layouts/_partials/events/header.ics`   | `layouts/_partials/header.ics`   | Generalized for all sections |
@@ -111,7 +122,9 @@ The new structure aligns with Hugo's template lookup order:
 | `.github/exampleSite/layouts/_partials/events/timezone.ics` | `layouts/_partials/timezone.ics` | Made section-agnostic        |
 
 #### New iCal Component Library
+
 Created comprehensive iCal component library in `layouts/_partials/ical/`:
+
 - **50+ specialized partials** for iCal components
 - **Data type formatters** (dt_*.ics)
 - **Parameter formatters** (param_*.ics)
@@ -119,6 +132,7 @@ Created comprehensive iCal component library in `layouts/_partials/ical/`:
 - **Component builders** (comp_*.ics)
 
 ### Files Preserved in Original Locations
+
 - `.github/exampleSite/layouts/_default/baseof.html` - HTML base template
 - `.github/exampleSite/layouts/events/list.html` - Events HTML list
 - `.github/exampleSite/layouts/events/single.html` - Events HTML single
@@ -128,6 +142,7 @@ Created comprehensive iCal component library in `layouts/_partials/ical/`:
 ### From Events-Specific to Generic Paths
 
 #### Partial References
+
 ```diff
 - {{ partial "events/header.ics" . }}
 + {{ partial "header.ics" . }}
@@ -140,18 +155,21 @@ Created comprehensive iCal component library in `layouts/_partials/ical/`:
 ```
 
 #### Template Inheritance
+
 ```diff
 - {{ define "main" }}{{ partial "events/header.ics" . }}
 + {{ define "main" }}{{ partial "header.ics" . }}
 ```
 
 #### Context Passing Improvements
+
 ```diff
 - {{ range .Pages }}{{ partial "event.ics" . }}{{ end }}
 + {{ range .Pages }}{{ partial "event.ics" (dict "Page" . "Site" $.Site) }}{{ end }}
 ```
 
 ### Dynamic Partial Resolution
+
 Implemented smart partial resolution that attempts section-specific partials first, then falls back to generic ones:
 
 ```go
@@ -168,11 +186,13 @@ Implemented smart partial resolution that attempts section-specific partials fir
 ### 🔧 All Issues Resolved During Migration
 
 #### 1. Initial Template Context Corruption in baseof.ics
+
 **Problem**: The base template was corrupting the template context, causing undefined variable errors throughout the template chain.
 
 **Root Cause**: Improper context passing between base template and partials.
 
 **Solution**: Implemented proper context passing using Hugo's `dict` function:
+
 ```go
 {{- partial "event.ics" (dict "Page" . "Site" $.Site "Section" .Section) -}}
 ```
@@ -180,11 +200,13 @@ Implemented smart partial resolution that attempts section-specific partials fir
 **Resolution Status**: ✅ **RESOLVED** - All context-related template errors eliminated.
 
 #### 2. iCal Structure Compliance Issues
+
 **Problem**: Generated iCal files had formatting issues and didn't fully comply with RFC 5545 specification.
 
 **Root Cause**: Incomplete implementation of iCal formatting rules and missing required components.
 
 **Solution**:
+
 - Implemented proper line folding and escaping
 - Added comprehensive property validation
 - Ensured proper VCALENDAR/VEVENT structure
@@ -193,11 +215,13 @@ Implemented smart partial resolution that attempts section-specific partials fir
 **Resolution Status**: ✅ **RESOLVED** - Generated iCal files now fully RFC 5545 compliant.
 
 #### 3. Dynamic Partial Resolution Build Failures
+
 **Problem**: Template build was failing with ERROR messages when trying to resolve section-specific partials that didn't exist.
 
 **Root Cause**: Missing graceful fallback logic for dynamic partial resolution.
 
 **Solution**: Implemented robust fallback logic with proper error handling:
+
 ```go
 {{- $sectionSpecific := printf "_partials/header.ics.%s.ics" .Section -}}
 {{- if templates.Exists $sectionSpecific -}}
@@ -211,11 +235,13 @@ Implemented smart partial resolution that attempts section-specific partials fir
 **Resolution Status**: ✅ **RESOLVED** - Build now completes with exit code 0, graceful fallbacks working.
 
 #### 4. Section-Specific Header Partial Missing Errors
+
 **Problem**: Build was failing when looking for section-specific header partials (e.g., `header.ics.events.ics`) that didn't exist.
 
 **Root Cause**: Template logic was expecting section-specific partials without proper fallback handling.
 
 **Solution**:
+
 - Added comprehensive fallback logic for all section-specific partials
 - Implemented informative WARN messages for debugging
 - Maintained backward compatibility with existing generic partials
@@ -223,11 +249,13 @@ Implemented smart partial resolution that attempts section-specific partials fir
 **Resolution Status**: ✅ **RESOLVED** - All sections now properly fall back to generic partials.
 
 #### 5. VALARM Component Implementation
+
 **Problem**: Alarm functionality was incomplete and not properly structured.
 
 **Root Cause**: Missing dedicated VALARM component implementation.
 
 **Solution**:
+
 - Created dedicated `comp_valarm.ics` partial
 - Implemented support for DISPLAY, EMAIL, and AUDIO alarms
 - Added proper trigger formatting and attendee handling
@@ -236,11 +264,13 @@ Implemented smart partial resolution that attempts section-specific partials fir
 **Resolution Status**: ✅ **RESOLVED** - Full alarm functionality now available.
 
 #### 6. Complex Recurrence Rule Processing
+
 **Problem**: Complex recurrence rules (BYSETPOS, multiple BYDAY values) were not properly formatted.
 
 **Root Cause**: Incomplete recurrence rule parser and formatter.
 
 **Solution**:
+
 - Enhanced `prop_recurrence_rule.ics` partial
 - Added support for array-based BYDAY values
 - Implemented proper BYSETPOS handling
@@ -249,11 +279,13 @@ Implemented smart partial resolution that attempts section-specific partials fir
 **Resolution Status**: ✅ **RESOLVED** - All recurrence patterns working correctly.
 
 #### 7. Template Debugging and Tracing
+
 **Problem**: Template errors were difficult to diagnose due to lack of debugging information.
 
 **Root Cause**: No systematic debugging or tracing system in place.
 
 **Solution**:
+
 - Added comprehensive `warnf` statements for template tracing
 - Implemented template execution flow debugging
 - Added context validation checks
@@ -277,19 +309,24 @@ Each iteration built upon the previous fixes, ensuring no regressions while addi
 ## Hugo v0.146.0 Compatibility Details
 
 ### Template Lookup Changes
+
 Hugo v0.146.0 introduced stricter template lookup rules:
+
 - Templates in theme component subdirectories are no longer automatically available
 - Template resolution follows a more predictable hierarchy
 - Partial templates must be in the root `layouts/_partials/` directory
 
 ### Migration Adaptations
+
 1. **Moved all templates to root layouts/** - Ensures templates are found by Hugo's lookup system
 2. **Updated partial references** - Removed section-specific paths that are no longer supported
 3. **Implemented fallback logic** - Added smart partial resolution for backward compatibility
 4. **Enhanced error handling** - Added debugging to catch template resolution issues
 
 ### Backward Compatibility
+
 The migration maintains backward compatibility by:
+
 - Preserving all existing functionality
 - Supporting both old and new partial naming conventions
 - Maintaining the same output format and structure
@@ -298,6 +335,7 @@ The migration maintains backward compatibility by:
 ## Debugging and Tracing Capabilities
 
 ### Template Execution Tracing
+
 The migration includes comprehensive debugging output:
 
 ```go
@@ -307,6 +345,7 @@ The migration includes comprehensive debugging output:
 ```
 
 ### Context Validation
+
 Added context validation to prevent undefined variable errors:
 
 ```go
@@ -316,6 +355,7 @@ Added context validation to prevent undefined variable errors:
 ```
 
 ### Partial Resolution Debugging
+
 Traces partial resolution attempts:
 
 ```go
@@ -325,7 +365,9 @@ Traces partial resolution attempts:
 ```
 
 ### Build Output Analysis
+
 The build process now provides detailed information:
+
 - Template execution times
 - Partial resolution paths
 - Context validation results
@@ -336,13 +378,17 @@ The build process now provides detailed information:
 ### Template Development Best Practices
 
 #### 1. Context Management
+
 Always pass complete context to partials:
+
 ```go
 {{- partial "component.ics" (dict "Page" . "Site" $.Site "Params" .Params) -}}
 ```
 
 #### 2. Error Handling
+
 Include comprehensive error checking:
+
 ```go
 {{- if not .Page -}}
     {{- errorf "Page context required for %s" .Name -}}
@@ -350,12 +396,14 @@ Include comprehensive error checking:
 ```
 
 #### 3. Template Organization
+
 - Keep templates in appropriate directories (`layouts/`, `layouts/_partials/`)
 - Use descriptive naming conventions
 - Group related partials in subdirectories
 - Document template dependencies
 
 #### 4. iCal Compliance
+
 - Always validate against RFC 5545
 - Test with multiple calendar applications
 - Use proper line folding for long lines
@@ -364,18 +412,21 @@ Include comprehensive error checking:
 ### Extending the Template System
 
 #### Adding New Output Formats
+
 1. Create format-specific templates in `layouts/`
 2. Add corresponding partials in `layouts/_partials/`
 3. Update `hugo.toml` output format configuration
 4. Test with representative content
 
 #### Adding New iCal Components
+
 1. Create component partial in `layouts/_partials/ical/`
 2. Follow naming convention: `comp_[component].ics`
 3. Include proper validation and error handling
 4. Add documentation and examples
 
 #### Customizing for Different Sections
+
 1. Create section-specific partials: `layouts/_partials/[partial].[section].ics`
 2. Update fallback logic in main templates
 3. Test with multiple content sections
@@ -384,18 +435,21 @@ Include comprehensive error checking:
 ### Maintenance Recommendations
 
 #### Regular Testing
+
 - Test with latest Hugo versions
 - Validate iCal output with multiple calendar applications
 - Run build tests with different content configurations
 - Monitor for template deprecation warnings
 
 #### Performance Optimization
+
 - Profile template execution times
 - Optimize complex partial chains
 - Cache expensive computations
 - Monitor build performance
 
 #### Documentation Updates
+
 - Keep template documentation current
 - Document any customizations
 - Maintain examples and use cases
@@ -404,24 +458,28 @@ Include comprehensive error checking:
 ### Troubleshooting Common Issues
 
 #### Template Not Found Errors
+
 1. Verify template is in correct `layouts/` directory
 2. Check template naming conventions
 3. Ensure proper file extensions
 4. Review Hugo's template lookup order
 
 #### Context Errors
+
 1. Verify context is properly passed to partials
 2. Check for undefined variables
 3. Use debugging output to trace context flow
 4. Validate required context fields
 
 #### iCal Format Issues
+
 1. Validate against RFC 5545 specification
 2. Test with multiple calendar applications
 3. Check line folding and character escaping
 4. Verify component structure and properties
 
 #### Build Performance Issues
+
 1. Profile template execution
 2. Identify slow partials or complex logic
 3. Optimize template chains
@@ -434,6 +492,7 @@ Include comprehensive error checking:
 The **Hugo iCal Template Migration Project** has been **SUCCESSFULLY COMPLETED** on January 13, 2026. All objectives have been achieved with zero outstanding issues.
 
 #### 🏆 Key Achievements
+
 - ✅ **100% Hugo v0.146.0+ Compatibility**: All templates now work with modern Hugo versions
 - ✅ **Zero Build Errors**: Clean builds with exit code 0 consistently achieved
 - ✅ **Robust Error Handling**: Graceful fallbacks implemented for all edge cases
@@ -442,6 +501,7 @@ The **Hugo iCal Template Migration Project** has been **SUCCESSFULLY COMPLETED**
 - ✅ **Backward Compatibility**: All existing functionality preserved and enhanced
 
 #### 📊 Final Project Metrics
+
 - **Templates Migrated**: 15+ core templates successfully relocated
 - **Partials Created**: 50+ specialized iCal component partials
 - **Build Performance**: 538ms total build time for 75 pages
@@ -450,6 +510,7 @@ The **Hugo iCal Template Migration Project** has been **SUCCESSFULLY COMPLETED**
 - **Documentation**: Comprehensive migration documentation completed
 
 #### 🔧 Technical Accomplishments
+
 1. **Template System Modernization**: Successfully migrated from legacy `.github/exampleSite/layouts` to modern root `layouts/` structure
 2. **Dynamic Partial Resolution**: Implemented intelligent fallback system for section-specific partials
 3. **Context Preservation**: Resolved all template context corruption issues
@@ -462,12 +523,14 @@ The **Hugo iCal Template Migration Project** has been **SUCCESSFULLY COMPLETED**
 #### 🔄 Regular Maintenance Tasks
 
 ##### Monthly Maintenance
+
 - **Hugo Version Testing**: Test with latest Hugo releases to ensure continued compatibility
 - **Build Verification**: Run full build tests with example site content
 - **iCal Validation**: Verify output with multiple calendar applications (Outlook, Google Calendar, Apple Calendar)
 - **Performance Monitoring**: Check build times and optimize if degradation occurs
 
 ##### Quarterly Reviews
+
 - **Template Optimization**: Review template performance and optimize slow partials
 - **Documentation Updates**: Keep migration documentation current with any changes
 - **Security Audit**: Review for any potential security issues in template logic
@@ -476,6 +539,7 @@ The **Hugo iCal Template Migration Project** has been **SUCCESSFULLY COMPLETED**
 #### 🛠️ Development Guidelines for Future Enhancements
 
 ##### Adding New Features
+
 1. **Follow Established Patterns**: Use existing partial structure and naming conventions
 2. **Implement Graceful Fallbacks**: Always provide fallback logic for missing components
 3. **Add Comprehensive Debugging**: Include warnf/errorf statements for tracing
@@ -483,6 +547,7 @@ The **Hugo iCal Template Migration Project** has been **SUCCESSFULLY COMPLETED**
 5. **Document Changes**: Update migration documentation with any modifications
 
 ##### Template Development Best Practices
+
 ```go
 // Always pass complete context
 {{- partial "component.ics" (dict "Page" . "Site" $.Site "Params" .Params) -}}
@@ -505,12 +570,14 @@ The **Hugo iCal Template Migration Project** has been **SUCCESSFULLY COMPLETED**
 #### 📈 Recommended Enhancements
 
 ##### Short-term Improvements (Next 3 months)
+
 - **Performance Optimization**: Profile and optimize template execution times
 - **Additional Output Formats**: Consider JSON-LD structured data for events
 - **Enhanced Validation**: Add more comprehensive iCal property validation
 - **Automated Testing**: Implement automated build and validation tests
 
 ##### Long-term Enhancements (Next 6-12 months)
+
 - **Multi-language iCal Support**: Extend internationalization for iCal properties
 - **Advanced Recurrence Patterns**: Support for more complex RRULE patterns
 - **Calendar Subscription Features**: Add support for calendar subscription metadata
@@ -519,12 +586,14 @@ The **Hugo iCal Template Migration Project** has been **SUCCESSFULLY COMPLETED**
 #### 🚨 Critical Monitoring Points
 
 ##### Build Health Indicators
+
 - **Exit Code**: Must remain 0 for successful builds
 - **Error Messages**: Any ERROR messages indicate regression - investigate immediately
 - **Build Time**: Significant increases may indicate performance issues
 - **Output Validation**: Regular RFC 5545 compliance checks
 
 ##### Template System Health
+
 - **Partial Resolution**: Monitor WARN messages for fallback usage patterns
 - **Context Errors**: Watch for any context-related issues in logs
 - **Template Lookup**: Ensure all templates resolve correctly
@@ -533,12 +602,14 @@ The **Hugo iCal Template Migration Project** has been **SUCCESSFULLY COMPLETED**
 #### 📚 Knowledge Transfer
 
 ##### Key Technical Contacts
+
 - **Migration Lead**: Documented in this migration documentation
 - **Template Architecture**: Comprehensive structure documented in this file
 - **Debugging System**: Full tracing system documented with examples
 - **Build Process**: Complete build verification procedures documented
 
 ##### Critical Files to Monitor
+
 - [`layouts/baseof.ics`](layouts/baseof.ics) - Base template for all iCal output
 - [`layouts/_partials/header.ics`](layouts/_partials/header.ics) - Core header partial with fallback logic
 - [`layouts/list.calendar.ics`](layouts/list.calendar.ics) - Main list template
@@ -562,6 +633,7 @@ The template system is now **production-ready** and will continue to function re
 ---
 
 **🏁 Project Completion Details**
+
 - **Completion Date**: January 13, 2026
 - **Hugo Version Compatibility**: v0.146.0+ (tested with v0.154.4+extended+withdeploy)
 - **Final Build Status**: ✅ SUCCESS (Exit Code 0)

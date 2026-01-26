@@ -1,4 +1,4 @@
-base_url := if env_var("PR_NUMBER") == "" { "https://finkregh.github.io/hugo-theme-component-ical/" } else { "https://finkregh.github.io/hugo-theme-component-ical/pr-preview/pr-" + env_var("PR_NUMBER") }
+base_url := if env("PR_NUMBER", "") == "" { "https://finkregh.github.io/hugo-theme-component-ical/" } else { "https://finkregh.github.io/hugo-theme-component-ical/pr-preview/pr-" + env("PR_NUMBER") + "/" }
 
 test:  hugo_go_modules build_hugo run_ics_validation_dual
     @echo "Running all tests with dual validation..."
