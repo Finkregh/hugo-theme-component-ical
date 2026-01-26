@@ -1,0 +1,26 @@
+/*
+ * Shared Responsive Styles
+ * 
+ * Common responsive adjustments used across calendar components.
+ */
+
+/* ========================================
+ * TABLET BREAKPOINT (768px)
+ * ======================================== */
+
+@media (max-width: 768px) {
+  .single-event-calendar {
+    height: 300px;
+  }
+}
+
+/* ========================================
+ * MOBILE BREAKPOINT (480px)
+ * ======================================== */
+
+@media (max-width: 480px) {
+  .single-event-calendar {
+    height: 250px;
+    padding: var(--calendar-space-2);
+  }
+}

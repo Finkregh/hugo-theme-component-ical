@@ -4,7 +4,7 @@ PRODID:-//Hugo Calendar Templates//Event Template//EN
 CALSCALE:GREGORIAN
 METHOD:PUBLISH
 UID:87733ef228483aa5559cca05826901d4
-LAST-MODIFIED:20260121T172647Z
+LAST-MODIFIED:20260126T101719Z
 URL:https://finkregh.github.io/hugo-theme-component-ical/events/test_last_friday/
 REFRESH-INTERVAL;VALUE=DURATION:P1W
 SOURCE;VALUE=URI:https://finkregh.github.io/hugo-theme-component-ical/events/test_last_friday/calendar.ics
@@ -38,7 +38,7 @@ UID:87733ef228483aa5559cca05826901d4
 DTSTART;VALUE=DATE-TIME;TZID=Europe/Zurich:20240223T160000
 CLASS:PUBLIC
 DESCRIPTION;LANGUAGE=de-CH:This is a test event to verify the new negative ordinal BYDAY format works correctly. It should occur on the last Friday of each month using the new byDay: "-1FR" format.
-LAST-MODIFIED:20260121T172647Z
+LAST-MODIFIED:20260126T101719Z
 LOCATION;LANGUAGE=de-CH:
 STATUS:CONFIRMED
 SUMMARY;LANGUAGE=de-CH:Test Last Friday Format

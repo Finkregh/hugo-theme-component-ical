@@ -1,9 +1,26 @@
 /*
  * Calendar Single Event Component Styles
  * 
- * Styles for the single event detail view using the CSS variables system.
- * This replaces the inline styles from calendar_single.html template.
+ * Styles specific to the single event detail view.
+ * Common styles are in shared/ directory.
  */
+
+/* ========================================
+ * SINGLE EVENT SPECIFIC OVERRIDES
+ * ======================================== */
+
+/* Section title variant for single event page */
+.event-section .section-title {
+  --section-title-margin-bottom: var(--calendar-space-3);
+  --section-title-padding-bottom: var(--calendar-space-1);
+  --section-title-border-width: 1px;
+  --section-title-font-size: var(--calendar-font-size-lg);
+}
+
+/* Calendar widget height for single event page */
+.event-calendar-widget .single-event-calendar {
+  --calendar-widget-height: 700px;
+}
 
 /* ========================================
  * EVENT METADATA CARD
@@ -55,99 +72,12 @@
   margin-bottom: 0;
 }
 
-.section-title {
-  margin: 0 0 var(--calendar-space-3) 0;
-  color: var(--calendar-accent-color);
-  font-size: var(--calendar-font-size-lg);
-  font-weight: var(--calendar-font-weight-semibold);
-  line-height: var(--calendar-line-height-tight);
-  display: flex;
-  align-items: center;
-  gap: var(--calendar-space-2);
-  border-bottom: 1px solid var(--calendar-secondary-color);
-  padding-bottom: var(--calendar-space-1);
-}
-
-.section-title::before {
-  content: none;
-}
-
-/* ========================================
- * DETAIL LISTS AND ITEMS
- * ======================================== */
-
-.detail-list {
-  display: grid;
-  gap: var(--calendar-space-2);
-  margin: 0;
-}
-
-.detail-item {
-  display: flex;
-  flex-wrap: wrap;
-  gap: var(--calendar-space-2);
-  align-items: baseline;
-}
-
-.detail-label {
-  font-weight: var(--calendar-font-weight-semibold);
-  color: var(--calendar-primary-color);
-  min-width: 4rem;
-  margin: 0;
-}
-
-.detail-value {
-  color: var(--calendar-primary-color);
-  flex: 1;
-  margin: 0;
-}
-
-.detail-value a {
-  color: var(--calendar-text-link);
-  transition: var(--calendar-transition-fast);
-}
-
-.detail-value a:hover {
-  color: var(--calendar-text-link-hover);
-}
-
-/* ========================================
- * SEMANTIC ELEMENTS
- * ======================================== */
-
-.event-location {
-  font-style: normal;
-  color: var(--calendar-primary-color);
-  line-height: var(--calendar-line-height-normal);
-}
-
-.event-organizer {
-  font-style: normal;
-}
-
-time {
-  color: var(--calendar-primary-color);
-}
-
 /* ========================================
  * STATUS STYLES
  * ======================================== */
 
-.event-cancelled {
-  background-color: var(--calendar-cancelled-bg);
-  border-left: 4px solid var(--calendar-cancelled-border);
-  padding-left: var(--calendar-space-4);
-  border-radius: var(--calendar-radius-lg);
-}
-
 .status-notice {
   padding: var(--calendar-space-2) 0;
-}
-
-.cancelled-notice {
-  color: var(--calendar-cancelled-color);
-  font-weight: var(--calendar-font-weight-semibold);
-  font-size: var(--calendar-font-size-base);
 }
 
 /* ========================================
@@ -199,12 +129,6 @@ time {
 
 .technical-summary:hover {
   color: var(--calendar-text-link-hover);
-}
-
-/* Focus management */
-.technical-summary:focus-visible {
-  outline: 2px solid var(--calendar-accent-color);
-  outline-offset: 2px;
 }
 
 .technical-details[open] .technical-summary {
@@ -269,33 +193,6 @@ time {
   border-top: 1px solid var(--calendar-secondary-color-dark);
 }
 
-.download-btn {
-  display: inline-flex;
-  align-items: center;
-  gap: var(--calendar-space-2);
-  background-color: var(--calendar-btn-primary-bg);
-  color: var(--calendar-btn-primary-text) !important;
-  padding: var(--calendar-btn-padding);
-  border-radius: var(--calendar-btn-radius);
-  text-decoration: none;
-  border: none;
-  font-weight: var(--calendar-btn-font-weight);
-  font-size: var(--calendar-font-size-base);
-  transition: var(--calendar-btn-transition);
-  cursor: pointer;
-}
-
-.download-btn:hover {
-  background-color: var(--calendar-btn-primary-bg-hover);
-  transform: translateY(-1px);
-  box-shadow: var(--calendar-shadow-md);
-}
-
-.download-btn:focus-visible {
-  outline: 2px solid var(--calendar-accent-color);
-  outline-offset: 2px;
-}
-
 /* ========================================
  * CALENDAR WIDGET STYLES
  * ======================================== */
@@ -306,78 +203,7 @@ time {
   box-shadow: var(--calendar-shadow-md);
   overflow: hidden;
   margin-top: var(--calendar-space-8);
-}
-
-.calendar-header {
-  background-color: var(--calendar-accent-color-light);
-  padding: var(--calendar-space-4) var(--calendar-space-6);
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  flex-wrap: wrap;
-  gap: var(--calendar-space-4);
-}
-
-.calendar-header h3 {
-  margin: 0;
-  color: var(--calendar-primary-color);
-  font-size: var(--calendar-font-size-lg);
-  font-weight: var(--calendar-font-weight-semibold);
-}
-
-.calendar-header h3::before {
-  content: none;
-}
-
-.calendar-controls {
-  display: flex;
-  align-items: center;
-  gap: var(--calendar-space-2);
-}
-
-.calendar-controls label {
-  color: var(--calendar-primary-color);
-  font-size: var(--calendar-font-size-sm);
-  font-weight: var(--calendar-font-weight-medium);
-}
-
-.locale-selector {
-  background-color: var(--calendar-input-bg);
-  color: var(--calendar-input-text);
-  border: 1px solid var(--calendar-input-border);
-  border-radius: var(--calendar-input-radius);
-  padding: var(--calendar-input-padding);
-  font-size: var(--calendar-font-size-sm);
-  transition: var(--calendar-transition-fast);
-}
-
-.locale-selector:focus {
-  outline: none;
-  border-color: var(--calendar-input-border-focus);
-  box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.1);
-}
-
-.single-event-calendar {
-  padding: var(--calendar-space-4);
-  max-width: 100%;
-  height: 400px;
-}
-
-/* ========================================
- * ICON STYLES
- * ======================================== */
-
-.icon {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  flex-shrink: 0;
-}
-
-.icon svg {
-  width: var(--calendar-icon-size-base);
-  height: var(--calendar-icon-size-base);
-  fill: currentColor;
+  font-family: var(--calendar-font-family-primary);
 }
 
 /* ========================================
@@ -391,26 +217,6 @@ time {
     padding: var(--calendar-space-4);
   }
   
-  .calendar-header {
-    flex-direction: column;
-    align-items: flex-start;
-    gap: var(--calendar-space-2);
-  }
-  
-  .detail-item {
-    flex-direction: column;
-    align-items: flex-start;
-    gap: var(--calendar-space-1);
-  }
-  
-  .detail-label {
-    min-width: auto;
-  }
-  
-  .single-event-calendar {
-    height: 300px;
-  }
-  
   .alarm-item {
     flex-direction: column;
     align-items: flex-start;
@@ -420,8 +226,8 @@ time {
     font-size: var(--calendar-font-size-lg);
   }
   
-  .section-title {
-    font-size: var(--calendar-font-size-base);
+  .event-section .section-title {
+    --section-title-font-size: var(--calendar-font-size-base);
   }
 }
 
@@ -433,11 +239,6 @@ time {
     border-radius: 0;
   }
   
-  .single-event-calendar {
-    height: 250px;
-    padding: var(--calendar-space-2);
-  }
-  
   .event-header,
   .event-details,
   .event-actions {
@@ -446,39 +247,5 @@ time {
   
   .calendar-header {
     padding: var(--calendar-space-3);
-  }
-}
-
-/* ========================================
- * ACCESSIBILITY ENHANCEMENTS
- * ======================================== */
-
-/* High contrast mode support */
-@media (prefers-contrast: more) {
-  .event-metadata-card,
-  .event-calendar-widget {
-    border: 2px solid var(--calendar-border-color-dark);
-  }
-  
-  .section-title {
-    border-bottom-width: 2px;
-  }
-  
-  .event-cancelled {
-    border-left-width: 6px;
-  }
-}
-
-/* Reduced motion support */
-@media (prefers-reduced-motion: reduce) {
-  .download-btn,
-  .technical-summary,
-  .locale-selector,
-  .technical-summary::before {
-    transition: none;
-  }
-  
-  .download-btn:hover {
-    transform: none;
   }
 }
