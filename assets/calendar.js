@@ -41,7 +41,7 @@ document.addEventListener("DOMContentLoaded", function () {
     buttonIcons: true,
     dayMaxEvents: true,
     editable: false,
-    height: "auto",
+    // height removed - now controlled by CSS for better responsiveness
     navLinks: true,
     weekNumbers: true,
     events: {
