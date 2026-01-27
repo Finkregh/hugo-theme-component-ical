@@ -5,6 +5,6 @@
 {{ .Content }}
 
 {{ partial "calendar_single.html" . }}
-{{ partial "calendar_js.html" . }}
+{{ if or .Params.calendar_inline_javascript site.Params.calendar_inline_javascript }}{{ partial "calendar_js.html" . }}{{ end }}
 
 {{ end }}

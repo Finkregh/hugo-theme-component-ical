@@ -80,7 +80,7 @@
   </div>
   {{- end -}}
 </main>
-{{ partial "calendar_js.html" . }}
+{{ if or .Params.calendar_inline_javascript site.Params.calendar_inline_javascript }}{{ partial "calendar_js.html" . }}{{ end }}
 {{- else -}}
 {{- errorf "Partial '%s' is used, but there is no 'Calendar' in .Params.outputs: '%s'" templates.Current.Name .Params.outputs -}}
 {{- end -}}
