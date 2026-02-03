@@ -2,13 +2,13 @@
 {{- /* Multiline hack from: https://github.com/gohugoio/hugoDocs/issues/764#issuecomment-625711237 */ -}}
 {{- if or (eq hugo.Environment "development") (eq hugo.Environment "debug") }}{{ warnidf "debug-partial-used" "Partial used: %s" templates.Current.Name }}{{ end -}}
 {{- with dict `` `
-  ` "description"  (dict "text" .Plain "lang" "de-CH") `` `
-  ` "summary"      (dict "text" .Title "lang" "de-CH") `` `
+  ` "description"  (dict "text" .Plain "lang" .Site.Language.LanguageCode) `` `
+  ` "summary"      (dict "text" .Title "lang" .Site.Language.LanguageCode) `` `
   ` "eventStart"   (dict "dateTime" .Params.startDate "timeZoneID" "Europe/Zurich") `` `
   ` "eventEnd"     (dict "dateTime" .Params.endDate "timeZoneID" "Europe/Zurich") `` `
-  ` "location"     (dict "text" .Params.location "lang" "de-CH") `` `
+  ` "location"     (dict "text" .Params.location "lang" .Site.Language.LanguageCode) `` `
   ` "url"          (.OutputFormats.Get "HTML").Permalink `` `
-  ` "contact"      (dict "text" (printf "%s: %s" .Params.orga .Params.orgaEmail) "lang" "de-CH") `` `
+  ` "contact"      (cond (and .Params.orga .Params.orgaEmail) (dict "text" (printf "%s: %s" .Params.orga .Params.orgaEmail) "lang" .Site.Language.LanguageCode) nil) `` `
   ` "color"        "crimson" `` `
   ` "status"       (cond (.Params.cancelled | default false) "CANCELLED" "CONFIRMED") `` `
   ` "uid"          .File.UniqueID `` `

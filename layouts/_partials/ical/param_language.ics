@@ -14,4 +14,14 @@
       - . : A string representing a valid language tag.
 */ -}}
 
-LANGUAGE={{- . -}}
+{{- /* Convert language code to BCP 47 format (RFC 5646) */ -}}
+{{- $langCode := . -}}
+{{- $parts := split $langCode "-" -}}
+{{- if eq (len $parts) 2 -}}
+  {{- /* Format as language-REGION (e.g., en-us -> en-US) */ -}}
+  {{- $langCode = printf "%s-%s" (index $parts 0 | lower) (index $parts 1 | upper) -}}
+{{- else if eq (len $parts) 1 -}}
+  {{- /* Single language code, ensure lowercase (e.g., EN -> en) */ -}}
+  {{- $langCode = $langCode | lower -}}
+{{- end -}}
+LANGUAGE={{- $langCode -}}
