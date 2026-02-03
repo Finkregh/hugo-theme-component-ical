@@ -16,11 +16,10 @@
   {{- $now := now -}}
   {{- $upcomingEvents := slice -}}
   {{- $pastEvents := slice -}}
-  
+
   {{- range .Pages -}}
     {{- if .Params.startDate -}}
       {{- $isPast := partial "events/event_is_past.html" . -}}
-      
       {{- if eq $isPast "true" -}}
         {{- $pastEvents = $pastEvents | append . -}}
       {{- else -}}
