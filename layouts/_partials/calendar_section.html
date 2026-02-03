@@ -19,12 +19,12 @@
   
   {{- range .Pages -}}
     {{- if .Params.startDate -}}
-      {{- /* Convert string date to time.Time for proper comparison */ -}}
-      {{- $eventDate := time.AsTime .Params.startDate -}}
-      {{- if gt $eventDate $now -}}
-        {{- $upcomingEvents = $upcomingEvents | append . -}}
-      {{- else -}}
+      {{- $isPast := partial "events/event_is_past.html" . -}}
+      
+      {{- if eq $isPast "true" -}}
         {{- $pastEvents = $pastEvents | append . -}}
+      {{- else -}}
+        {{- $upcomingEvents = $upcomingEvents | append . -}}
       {{- end -}}
     {{- end -}}
   {{- end -}}

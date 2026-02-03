@@ -207,6 +207,12 @@ other = "Details anzeigen"
 [ical_events_list_when]
 other = "Wann"
 
+[ical_events_list_first_recurrence]
+other = "Erste Wiederholung"
+
+[ical_events_list_last_recurrence]
+other = "Letzte Wiederholung"
+
 [ical_events_list_where]
 other = "Wo"
 
