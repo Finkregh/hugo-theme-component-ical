@@ -18,6 +18,8 @@ For demo site: demo
 # ruff: noqa: T201, ANN401, E501
 
 import argparse
+from collections.abc import Generator
+import logging
 import re
 import sys
 import time
@@ -25,8 +27,6 @@ from contextlib import contextmanager
 from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any
-
-import logging
 
 import structlog
 import yaml
@@ -60,7 +60,7 @@ CALENDAR_FILENAME = "calendar.ics"
 
 
 @contextmanager
-def performance_timer(operation_name: str):
+def performance_timer(operation_name: str) -> Generator[None, Any, None]:
     """Context manager for timing operations."""
     start_time = time.time()
     try:
@@ -339,6 +339,120 @@ class ICalValidator:
                 ics_file=ics_file,
                 expected=expected_interval,
                 actual=actual_interval,
+            )
+
+    def _validate_count(
+        self,
+        rrule: Component,
+        expected_rule: dict[str, Any],
+        ics_file: str,
+    ) -> None:
+        """Validate COUNT parameter."""
+        if "count" in expected_rule:
+            expected_count = [expected_rule["count"]]
+            actual_count = rrule.get("COUNT")
+            if actual_count != expected_count:
+                self.log_error(
+                    "COUNT mismatch",
+                    ics_file=ics_file,
+                    expected=expected_count,
+                    actual=actual_count,
+                )
+            else:
+                # Informational output
+                print(
+                    f"ℹ️  Event will occur {expected_rule['count']} times (COUNT={expected_rule['count']})",
+                )
+
+    def _validate_until(
+        self,
+        rrule: Component,
+        expected_rule: dict[str, Any],
+        ics_file: str,
+    ) -> None:
+        """Validate UNTIL parameter."""
+        if "until" in expected_rule:
+            actual_until = rrule.get("UNTIL")
+            if actual_until is None:
+                self.log_error(
+                    "UNTIL missing",
+                    ics_file=ics_file,
+                    expected=expected_rule["until"],
+                    actual=None,
+                )
+            else:
+                # Parse expected UNTIL date from frontmatter
+                expected_until_str = expected_rule["until"]
+
+                # Get actual UNTIL value - it's a list with one datetime
+                actual_until_dt = (
+                    actual_until[0] if isinstance(actual_until, list) else actual_until
+                )
+
+                # Convert to string for comparison (YYYYMMDD format or YYYYMMDDTHHMMSSZ)
+                if hasattr(actual_until_dt, "strftime"):
+                    # Format as iCalendar date/datetime
+                    if hasattr(actual_until_dt, "hour"):
+                        actual_until_str = actual_until_dt.strftime("%Y%m%dT%H%M%SZ")
+                    else:
+                        actual_until_str = actual_until_dt.strftime("%Y%m%d")
+                else:
+                    actual_until_str = str(actual_until_dt)
+
+                # Compare - expected format from frontmatter should match
+                # Normalize both for comparison (remove hyphens/colons)
+                expected_normalized = (
+                    expected_until_str.replace("-", "")
+                    .replace(":", "")
+                    .replace("T", "T")
+                    .replace("Z", "Z")
+                )
+                actual_normalized = actual_until_str.replace("-", "").replace(":", "")
+
+                if expected_normalized != actual_normalized:
+                    self.log_error(
+                        "UNTIL mismatch",
+                        ics_file=ics_file,
+                        expected=expected_until_str,
+                        actual=actual_until_str,
+                    )
+                # Informational output - show human-readable date
+                elif hasattr(actual_until_dt, "strftime"):
+                    readable_date = actual_until_dt.strftime("%Y-%m-%d")
+                    print(
+                        f"ℹ️  Event will occur until {readable_date} (UNTIL={expected_until_str})",
+                    )
+                else:
+                    print(
+                        f"ℹ️  Event will occur until {expected_until_str} (UNTIL={expected_until_str})",
+                    )
+
+    def _validate_count_until_mutual_exclusivity(
+        self,
+        rrule: Component,
+        expected_rule: dict[str, Any],
+        ics_file: str,
+    ) -> None:
+        """Validate that COUNT and UNTIL are mutually exclusive (RFC 5545 requirement)."""
+        has_count = "count" in expected_rule
+        has_until = "until" in expected_rule
+
+        if has_count and has_until:
+            self.log_warning(
+                "COUNT and UNTIL both present in frontmatter (RFC 5545 violation - they are mutually exclusive)",
+                ics_file=ics_file,
+            )
+
+        # Check actual RRULE
+        actual_count = rrule.get("COUNT")
+        actual_until = rrule.get("UNTIL")
+
+        if actual_count is not None and actual_until is not None:
+            self.log_error(
+                "COUNT and UNTIL both present in RRULE (RFC 5545 violation - they are mutually exclusive)",
+                ics_file=ics_file,
+                count=actual_count,
+                until=actual_until,
             )
 
     def validate_rrule_component_order(self, rrule_str: str, ics_file: str) -> None:
@@ -644,6 +758,11 @@ class ICalValidator:
         self._validate_byday(rrule, expected_rule, ics_file)
         self._validate_bysetpos(rrule, expected_rule, ics_file)
         self._validate_interval(rrule, expected_rule, ics_file)
+
+        # Validate COUNT and UNTIL parameters
+        self._validate_count(rrule, expected_rule, ics_file)
+        self._validate_until(rrule, expected_rule, ics_file)
+        self._validate_count_until_mutual_exclusivity(rrule, expected_rule, ics_file)
 
         # Enhanced validations for Phase 4
         # Validate RFC 5545 component ordering
@@ -954,7 +1073,7 @@ class ICalValidator:
                 ics_file=ics_file,
                 error=str(e),
             )
-            #raise
+            # raise
             return False
 
         # Validate whitespace compliance (Phase 5 enhancement)

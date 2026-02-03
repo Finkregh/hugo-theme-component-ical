@@ -298,6 +298,117 @@ class ICalValidatorJS {
   }
 
   /**
+   * Validate COUNT parameter
+   */
+  validateCount(rruleOpts, expectedRule, icsPath) {
+    if (expectedRule.count !== undefined) {
+      const expectedCount = expectedRule.count;
+      const actualCount = rruleOpts.count;
+
+      if (actualCount !== expectedCount) {
+        this.logError('COUNT mismatch', icsPath, {
+          expected: expectedCount,
+          actual: actualCount
+        });
+      } else {
+        // Informational output
+        console.log(`ℹ️  Event will occur ${expectedCount} times (COUNT=${expectedCount})`);
+      }
+    }
+  }
+
+  /**
+   * Validate UNTIL parameter
+   */
+  validateUntil(rruleOpts, expectedRule, icsPath) {
+    if (expectedRule.until !== undefined) {
+      const actualUntil = rruleOpts.until;
+
+      if (!actualUntil) {
+        this.logError('UNTIL missing', icsPath, {
+          expected: expectedRule.until,
+          actual: null
+        });
+      } else {
+        // Parse expected UNTIL from frontmatter
+        const expectedUntilStr = expectedRule.until;
+
+        // Convert actual UNTIL (Date object) to string for comparison
+        let actualUntilStr;
+        if (actualUntil instanceof Date) {
+          // Format as YYYYMMDDTHHMMSSZ or YYYYMMDD
+          const year = actualUntil.getUTCFullYear();
+          const month = String(actualUntil.getUTCMonth() + 1).padStart(2, '0');
+          const day = String(actualUntil.getUTCDate()).padStart(2, '0');
+          const hour = actualUntil.getUTCHours();
+          const minute = actualUntil.getUTCMinutes();
+          const second = actualUntil.getUTCSeconds();
+
+          if (hour === 0 && minute === 0 && second === 0) {
+            actualUntilStr = `${year}${month}${day}`;
+          } else {
+            const hourStr = String(hour).padStart(2, '0');
+            const minuteStr = String(minute).padStart(2, '0');
+            const secondStr = String(second).padStart(2, '0');
+            actualUntilStr = `${year}${month}${day}T${hourStr}${minuteStr}${secondStr}Z`;
+          }
+        } else {
+          actualUntilStr = String(actualUntil);
+        }
+
+        // Normalize both for comparison (remove hyphens/colons)
+        const expectedNormalized = expectedUntilStr.replace(/-/g, '').replace(/:/g, '');
+        const actualNormalized = actualUntilStr.replace(/-/g, '').replace(/:/g, '');
+
+        if (expectedNormalized !== actualNormalized) {
+          this.logError('UNTIL mismatch', icsPath, {
+            expected: expectedUntilStr,
+            actual: actualUntilStr
+          });
+        } else {
+          // Informational output - show human-readable date
+          if (actualUntil instanceof Date) {
+            const readableDate = actualUntil.toISOString().split('T')[0];
+            console.log(`ℹ️  Event will occur until ${readableDate} (UNTIL=${expectedUntilStr})`);
+          } else {
+            console.log(`ℹ️  Event will occur until ${expectedUntilStr} (UNTIL=${expectedUntilStr})`);
+          }
+        }
+      }
+    }
+  }
+
+  /**
+   * Validate COUNT and UNTIL mutual exclusivity
+   */
+  validateCountUntilMutualExclusivity(rruleOpts, expectedRule, icsPath) {
+    const hasCount = expectedRule.count !== undefined;
+    const hasUntil = expectedRule.until !== undefined;
+
+    if (hasCount && hasUntil) {
+      this.logWarning(
+        'COUNT and UNTIL both present in frontmatter (RFC 5545 violation - they are mutually exclusive)',
+        icsPath
+      );
+    }
+
+    // Check actual RRULE
+    const actualCount = rruleOpts.count;
+    const actualUntil = rruleOpts.until;
+
+    if (actualCount !== undefined && actualUntil !== undefined) {
+      this.logError(
+        'COUNT and UNTIL both present in RRULE (RFC 5545 violation - they are mutually exclusive)',
+        icsPath,
+        {
+          count: actualCount,
+          until: actualUntil
+        }
+      );
+    }
+  }
+
+  /**
    * Validate recurrence rule against frontmatter
    */
   validateRecurrenceRule(event, frontmatter, icsPath) {
@@ -342,6 +453,11 @@ class ICalValidatorJS {
         actual: actualInterval
       });
     }
+
+    // Validate COUNT and UNTIL parameters
+    this.validateCount(rruleOpts, expectedRule, icsPath);
+    this.validateUntil(rruleOpts, expectedRule, icsPath);
+    this.validateCountUntilMutualExclusivity(rruleOpts, expectedRule, icsPath);
 
     // Validate BYMONTH
     if (expectedRule.byMonth) {

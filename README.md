@@ -78,10 +78,9 @@ layouts/
 ├── _default/
 │   └── baseof.html                     # HTML base template
 ├── _partials/
-│   ├── calendar_css.html               # Calendar CSS styles
 │   ├── calendar_js.html                # Calendar JavaScript
-│   ├── calendar_list.html              # Calendar list display
 │   ├── calendar_single.html            # Single event display
+│   ├── calendar_section.html           # Calendar section display
 │   ├── header.ics                      # Generic iCal header partial
 │   ├── event.ics                       # Generic event partial
 │   ├── event-with-alarms.ics           # Event with alarm support
@@ -196,7 +195,7 @@ Include the JavaScript in your templates:
 <!-- Separate .js file -->
 {{ partial "calendar_js.html" . }}
 
-<!-- Inline JavaScript -->
+<!-- Conditional JavaScript loader -->
 {{ partial "calendar_js_conditional.html" . }}
 ```
 
@@ -215,7 +214,7 @@ Use the provided partials in your [`layouts/events/`](layouts/events/) templates
 **[`list.html`](layouts/events/list.html):**
 
 ```html
-{{ partial "calendar_list.html" . }}
+{{ partial "calendar_section.html" . }}
 ```
 
 ## Build Requirements

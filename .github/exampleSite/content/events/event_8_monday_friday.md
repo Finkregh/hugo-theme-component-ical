@@ -1,8 +1,9 @@
 ---
-title: Every Monday and Friday
+title: Every Monday and Friday -- future
 
-startDate: 2024-01-08T16:00:00+01:00
-endDate:   2024-01-08T16:15:00+01:00
+#date: 2040-01-08T16:00:00+01:00
+startDate: 2040-01-08T16:00:00+01:00
+endDate:   2040-01-08T16:15:00+01:00
 where: "Virtual Meeting Room"
 orga: "Project Manager"
 orgaEmail: "pm@example.org"
@@ -19,8 +20,9 @@ Front matter:
 ```yaml
 title: Every Monday and Friday
 
-startDate: 2024-01-08T16:00:00+01:00
-endDate:   2024-01-08T16:15:00+01:00
+#date: 2040-01-08T16:00:00+01:00
+startDate: 2040-01-08T16:00:00+01:00
+endDate:   2040-01-08T16:15:00+01:00
 where: "Virtual Meeting Room"
 orga: "Project Manager"
 orgaEmail: "pm@example.org"
