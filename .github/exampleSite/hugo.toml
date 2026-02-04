@@ -2,6 +2,7 @@ baseURL = 'https://finkregh.github.io/hugo-theme-component-ical/'
 languageCode = 'en-us'
 title = 'Demo of hugo-theme-component-ical'
 enableGitInfo = true
+timeZone = 'Europe/Zurich'
 
 [module]
 # replacement pointing to local folder, ONLY use locally!
@@ -20,6 +21,9 @@ path = 'golang.foundata.com/hugo-theme-dev'
 [params]
 [params.feature]
 debug = true # default: false
+
+[params.ical]
+timezone = "Europe/Zurich"
 
 # Define calendar output via cascading front matter for event pages only
 [outputs]
