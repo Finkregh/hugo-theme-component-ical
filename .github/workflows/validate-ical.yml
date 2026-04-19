@@ -46,7 +46,7 @@ jobs:
           enable-cache: true
 
       - name: Install Just
-        uses: extractions/setup-just@v3
+        uses: extractions/setup-just@v4
 
       - name: Install Hugo
         uses: peaceiris/actions-hugo@v3
