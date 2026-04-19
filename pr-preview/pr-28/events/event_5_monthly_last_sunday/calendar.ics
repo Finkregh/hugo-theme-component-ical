@@ -4,7 +4,7 @@ PRODID:-//Hugo Calendar Templates//Event Template//EN
 CALSCALE:GREGORIAN
 METHOD:PUBLISH
 UID:fe961c623ce3524a6ba06229f9d5160c
-LAST-MODIFIED:20260419T174804Z
+LAST-MODIFIED:20260419T223040Z
 URL:https://finkregh.github.io/hugo-theme-component-ical/pr-preview/pr-28/events/event_5_monthly_last_sunday/
 REFRESH-INTERVAL;VALUE=DURATION:P1W
 SOURCE;VALUE=URI:https://finkregh.github.io/hugo-theme-component-ical/pr-preview/pr-28/events/event_5_monthly_last_sunday/calendar.ics
@@ -19,7 +19,7 @@ UID:fe961c623ce3524a6ba06229f9d5160c
 DTSTART;VALUE=DATE-TIME:20240128T140000Z
 CLASS:PUBLIC
 DESCRIPTION;LANGUAGE=en-US:Quarterly team review meetings held on the last Sunday of every third month. We discuss progress\, challenges\, and plan for the upcoming quarter.\nFront matter:\ntitle: Quarterly Team Review startDate: 2024-01-28T15:00:00+01:00 #endDate: 2024-01-28T17:00:00+01:00 where: "Conference Room A\, Headquarters" orga: "Team Lead" orgaEmail: "teamlead@example.org" # Every last Sunday of every 3 months recurrenceRule: freq: "MONTHLY" interval: 3 byDay: "SU" bySetPos: -1
-LAST-MODIFIED:20260419T174804Z
+LAST-MODIFIED:20260419T223040Z
 LOCATION;LANGUAGE=en-US:
 STATUS:CONFIRMED
 SUMMARY;LANGUAGE=en-US:Quarterly Team Review

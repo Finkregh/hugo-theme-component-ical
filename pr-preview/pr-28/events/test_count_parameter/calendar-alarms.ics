@@ -4,7 +4,7 @@ PRODID:-//Hugo Calendar Templates//Event Template//EN
 CALSCALE:GREGORIAN
 METHOD:PUBLISH
 UID:da2ab7190ae3db74d83da83cd8bef4b4
-LAST-MODIFIED:20260419T174804Z
+LAST-MODIFIED:20260419T223040Z
 URL:https://finkregh.github.io/hugo-theme-component-ical/pr-preview/pr-28/events/test_count_parameter/
 REFRESH-INTERVAL;VALUE=DURATION:P1W
 SOURCE;VALUE=URI:https://finkregh.github.io/hugo-theme-component-ical/pr-preview/pr-28/events/test_count_parameter/calendar.ics
@@ -19,7 +19,7 @@ UID:da2ab7190ae3db74d83da83cd8bef4b4
 DTSTART;VALUE=DATE-TIME:20260301T100000Z
 CLASS:PUBLIC
 DESCRIPTION;LANGUAGE=en-US:Test event to verify COUNT parameter is correctly included in RRULE.\nThis event should recur every Wednesday for exactly 10 occurrences.\nExpected RRULE: RRULE:FREQ=WEEKLY\;INTERVAL=1\;COUNT=10\;BYDAY=WE
-LAST-MODIFIED:20260419T174804Z
+LAST-MODIFIED:20260419T223040Z
 LOCATION;LANGUAGE=en-US:
 STATUS:CONFIRMED
 SUMMARY;LANGUAGE=en-US:Test COUNT Parameter
