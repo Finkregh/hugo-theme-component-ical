@@ -4,7 +4,7 @@
       dir="ltr"
       class="no-js">
 <head>
-	<meta name="generator" content="Hugo 0.154.5">
+	<meta name="generator" content="Hugo 0.160.1">
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
@@ -74,7 +74,7 @@
         </li>
       
         <li>
-          <a href="/hugo-theme-component-ical/pr-preview/pr-28/events/event_8_monday_friday/">Every Monday and Friday</a>
+          <a href="/hugo-theme-component-ical/pr-preview/pr-28/events/event_8_monday_friday/">Every Monday and Friday &ndash; future</a>
         </li>
       
         <li>
@@ -94,11 +94,11 @@
         </li>
       
         <li>
-          <a href="/hugo-theme-component-ical/pr-preview/pr-28/meetings/event_7_every_monday/">Meeting Every Monday</a>
+          <a href="/hugo-theme-component-ical/pr-preview/pr-28/meetings/meeting_7_every_monday/">Meeting Every Monday</a>
         </li>
       
         <li>
-          <a href="/hugo-theme-component-ical/pr-preview/pr-28/meetings/event_8_monday_friday/">Meeting Every Monday and Friday</a>
+          <a href="/hugo-theme-component-ical/pr-preview/pr-28/meetings/meeting_8_monday_friday/">Meeting Every Monday and Friday</a>
         </li>
       
         <li>
@@ -130,6 +130,14 @@
         </li>
       
         <li>
+          <a href="/hugo-theme-component-ical/pr-preview/pr-28/events/test_count_until_conflict/">Test COUNT and UNTIL Conflict</a>
+        </li>
+      
+        <li>
+          <a href="/hugo-theme-component-ical/pr-preview/pr-28/events/test_count_parameter/">Test COUNT Parameter</a>
+        </li>
+      
+        <li>
           <a href="/hugo-theme-component-ical/pr-preview/pr-28/events/test_second_month_third_thursday/">Test Every Second Month Third Thursday</a>
         </li>
       
@@ -143,6 +151,38 @@
       
         <li>
           <a href="/hugo-theme-component-ical/pr-preview/pr-28/events/test_new_ordinal_format/">Test New Ordinal BYDAY Format</a>
+        </li>
+      
+        <li>
+          <a href="/hugo-theme-component-ical/pr-preview/pr-28/events/test_until_parameter/">Test UNTIL Parameter</a>
+        </li>
+      
+        <li>
+          <a href="/hugo-theme-component-ical/pr-preview/pr-28/events/test_cancelled_future/calendar.ics">Test: Cancelled Future Event</a>
+        </li>
+      
+        <li>
+          <a href="/hugo-theme-component-ical/pr-preview/pr-28/events/test_recurring_count_active/calendar.ics">Test: Recurring COUNT Active</a>
+        </li>
+      
+        <li>
+          <a href="/hugo-theme-component-ical/pr-preview/pr-28/events/test_recurring_count_exhausted/calendar.ics">Test: Recurring COUNT Exhausted</a>
+        </li>
+      
+        <li>
+          <a href="/hugo-theme-component-ical/pr-preview/pr-28/events/test_recurring_infinite/calendar.ics">Test: Recurring Infinite</a>
+        </li>
+      
+        <li>
+          <a href="/hugo-theme-component-ical/pr-preview/pr-28/events/test_recurring_until_future/calendar.ics">Test: Recurring UNTIL Future</a>
+        </li>
+      
+        <li>
+          <a href="/hugo-theme-component-ical/pr-preview/pr-28/events/test_recurring_until_past/calendar.ics">Test: Recurring UNTIL Past</a>
+        </li>
+      
+        <li>
+          <a href="/hugo-theme-component-ical/pr-preview/pr-28/events/test_timezone_override/calendar.ics">Test: Timezone Override (Pacific/Auckland)</a>
         </li>
       
       </ul>
@@ -171,7 +211,7 @@
 <p>This demo site shows regular pages (Articles) as well as pages with ical data (Events).</p>
 <p>It uses <a href="https://github.com/foundata/hugo-theme-dev">hugo-theme-dev</a> in combination with the ical component.</p>
 <p>The only change required was to copy the <code>baseof.html</code> <a href="https://github.com/foundata/hugo-theme-dev/blob/v1.0.0/layouts/baseof.html">from the theme</a> into <a href="https://github.com/Finkregh/hugo-theme-component-ical/blob/main/.github/exampleSite/layouts/_default/baseof.html">this site</a> and add the javascript part to show the ical files on the site:</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-html" data-lang="html"><span style="display:flex;"><span>  <span style="color:#75715e">&lt;!-- Start calendar javascript --&gt;</span>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-html" data-lang="html"><span style="display:flex;"><span>  <span style="color:#75715e">&lt;!-- Start calendar javascript --&gt;</span>
 </span></span><span style="display:flex;"><span>    {{ if and (.OutputFormats.Get &#34;Calendar&#34;) (eq .Type &#34;events&#34;) }}
 </span></span><span style="display:flex;"><span>    &lt;<span style="color:#f92672">meta</span> <span style="color:#a6e22e">http-equiv</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;Content-Security-Policy&#34;</span> <span style="color:#a6e22e">content</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;font-src data:&#34;</span> /&gt;
 </span></span><span style="display:flex;"><span>    {{ partial &#34;events/javascript.html&#34; . }}
@@ -193,10 +233,10 @@
       Debug dump of <code>.Page</code> (page object in the template context):
       <pre>{
   &#34;Date&#34;: &#34;0001-01-01T00:00:00Z&#34;,
-  &#34;Lastmod&#34;: &#34;2026-01-27T19:38:26&#43;01:00&#34;,
+  &#34;Lastmod&#34;: &#34;2026-04-19T15:44:47&#43;02:00&#34;,
   &#34;PublishDate&#34;: &#34;0001-01-01T00:00:00Z&#34;,
   &#34;ExpiryDate&#34;: &#34;0001-01-01T00:00:00Z&#34;,
-  &#34;Aliases&#34;: null,
+  &#34;Aliases&#34;: [],
   &#34;BundleType&#34;: &#34;branch&#34;,
   &#34;Description&#34;: &#34;&#34;,
   &#34;Draft&#34;: false,
@@ -226,7 +266,7 @@
       <pre>{
   &#34;draft&#34;: false,
   &#34;iscjklanguage&#34;: false,
-  &#34;lastmod&#34;: &#34;2026-01-27T19:38:26&#43;01:00&#34;,
+  &#34;lastmod&#34;: &#34;2026-04-19T15:44:47&#43;02:00&#34;,
   &#34;title&#34;: &#34;Demo Page for ical events from hugo front matter&#34;
 }</pre>
 
@@ -237,6 +277,9 @@
     &#34;debug&#34;: true,
     &#34;langnav&#34;: true,
     &#34;pagesnav&#34;: true
+  },
+  &#34;ical&#34;: {
+    &#34;timezone&#34;: &#34;Europe/Zurich&#34;
   }
 }</pre>
     

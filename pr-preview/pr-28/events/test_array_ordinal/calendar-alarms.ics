@@ -4,49 +4,31 @@ PRODID:-//Hugo Calendar Templates//Event Template//EN
 CALSCALE:GREGORIAN
 METHOD:PUBLISH
 UID:6bce8620f70cd0e758cc921428b8ed5c
-LAST-MODIFIED:20260127T193826Z
+LAST-MODIFIED:20260419T154447Z
 URL:https://finkregh.github.io/hugo-theme-component-ical/pr-preview/pr-28/events/test_array_ordinal/
 REFRESH-INTERVAL;VALUE=DURATION:P1W
 SOURCE;VALUE=URI:https://finkregh.github.io/hugo-theme-component-ical/pr-preview/pr-28/events/test_array_ordinal/calendar.ics
 COLOR:crimson
-NAME;LANGUAGE=de-CH:Example Events
-DESCRIPTION;LANGUAGE=de-CH:Example Events Calendar
+NAME;LANGUAGE=en-US:Example Events
+DESCRIPTION;LANGUAGE=en-US:Example Events Calendar
 X-WR-CALNAME:Example Events
 X-WR-CALDESC:Example Events Calendar
-BEGIN:VTIMEZONE
-TZID:Europe/Zurich
-TZURL:http://tzurl.org/zoneinfo-outlook/Europe/Zurich
-X-LIC-LOCATION:Europe/Zurich
-BEGIN:DAYLIGHT
-TZNAME:CEST
-TZOFFSETFROM:+0100
-TZOFFSETTO:+0200
-DTSTART:19700329T020000
-RRULE:FREQ=YEARLY;INTERVAL=1;BYDAY=-1SU;BYMONTH=3
-END:DAYLIGHT
-BEGIN:STANDARD
-TZNAME:CET
-TZOFFSETFROM:+0200
-TZOFFSETTO:+0100
-DTSTART:19701025T030000
-RRULE:FREQ=YEARLY;INTERVAL=1;BYDAY=-1SU;BYMONTH=10
-END:STANDARD
-END:VTIMEZONE
 BEGIN:VEVENT
 DTSTAMP:00010101T000000Z
 UID:6bce8620f70cd0e758cc921428b8ed5c
-DTSTART;VALUE=DATE-TIME;TZID=Europe/Zurich:20240205T100000
+DTSTART;VALUE=DATE-TIME:20240205T100000Z
 CLASS:PUBLIC
-DESCRIPTION;LANGUAGE=de-CH:This is a test event to verify the new array ordinal BYDAY format works correctly. It should occur on the first and third Monday of each month using the new byDay: ["1MO"\, "3MO"] format.
-LAST-MODIFIED:20260127T193826Z
-LOCATION;LANGUAGE=de-CH:
+DESCRIPTION;LANGUAGE=en-US:This is a test event to verify the new array ordinal BYDAY format works correctly. It should occur on the first and third Monday of each month using the new byDay: ["1MO"\, "3MO"] format.
+LAST-MODIFIED:20260419T154447Z
+LOCATION;LANGUAGE=en-US:
 STATUS:CONFIRMED
-SUMMARY;LANGUAGE=de-CH:Test Array Ordinal Format
+SUMMARY;LANGUAGE=en-US:Test Array Ordinal Format
 TRANSP:OPAQUE
 URL:https://finkregh.github.io/hugo-theme-component-ical/pr-preview/pr-28/events/test_array_ordinal/
+
 RRULE:FREQ=MONTHLY;INTERVAL=1;BYDAY=1MO,3MO
-DTEND;VALUE=DATE-TIME;TZID=Europe/Zurich:20240205T110000
-CONTACT;LANGUAGE=de-CH:Test Organizer: test@example.org
+DTEND;VALUE=DATE-TIME:20240205T110000Z
+CONTACT;LANGUAGE=en-US:Test Organizer: test@example.org
 COLOR:crimson
 END:VEVENT
 END:VCALENDAR

@@ -56,7 +56,7 @@
   flex: 1;
   margin: 0;
   font-size: var(--detail-value-font-size, var(--calendar-font-size-base));
-  line-height: var(--calendar-line-height-normal);
+  /*line-height: var(--calendar-line-height-normal);*/
 }
 
 .detail-value a {
