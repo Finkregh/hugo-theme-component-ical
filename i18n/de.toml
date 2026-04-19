@@ -243,11 +243,14 @@ other = "Kalender-Datei für dieses Event:"
 [templates_recurrence_rules]
 other = "Wiederholungsregeln:"
 
-[templates_get_calendar_file_no_alarms]
-other = "Kalender-Datei mit allen Veranstaltungen (ohne Alarmierung)"
+[templates_get_calendar_file]
+other = "Kalender-Datei mit allen Veranstaltungen"
 
-[templates_get_calendar_file_with_alarms]
-other = "Kalender-Datei mit allen Veranstaltungen (mit Alarmierung)"
+[templates_without_alarms]
+other = "ohne Alarmierung"
+
+[templates_with_alarms]
+other = "mit Alarmierung"
 
 [templates_here_link]
 other = "hier"

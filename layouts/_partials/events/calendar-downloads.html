@@ -8,32 +8,24 @@
   </h2>
   
   <div class="download-options">
-    {{- /* Download all events without alarms */ -}}
     {{ with .OutputFormats.Get "Calendar" }}
     <div class="download-option">
       <p>
-        {{ T "templates_get_calendar_file_no_alarms" | default "Get calendar file without alarms" }}
+        {{ T "templates_get_calendar_file" | default "Calendar file with all events" }}
         <a href="{{ .RelPermalink }}" type="text/calendar" class="download-btn">
+          {{ T "templates_without_alarms" | default "without alarms" }}
           <span class="icon">
             {{ partial "calendar_icon.html" "download" }}
           </span>
-          {{ T "templates_here_link" | default "here" }}
-        </a>.
-      </p>
-    </div>
-    {{ end }}
-
-    {{- /* Download all events with alarms */ -}}
-    {{ with .OutputFormats.Get "CalendarWithAlarms" }}
-    <div class="download-option">
-      <p>
-        {{ T "templates_get_calendar_file_with_alarms" | default "Get calendar file with alarms" }}
+        </a>
+        {{- with $.OutputFormats.Get "CalendarWithAlarms" }}
         <a href="{{ .RelPermalink }}" type="text/calendar" class="download-btn">
+          {{ T "templates_with_alarms" | default "with alarms" }}
           <span class="icon">
             {{ partial "calendar_icon.html" "download" }}
           </span>
-          {{ T "templates_here_link" | default "here" }}
-        </a>.
+        </a>
+        {{- end }}
       </p>
     </div>
     {{ end }}
