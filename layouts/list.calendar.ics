@@ -10,7 +10,6 @@
 {{- if $hasValidEvents -}}
 BEGIN:VCALENDAR
 {{- partial "header.ics" . -}}
-{{- partial "timezone.ics" . }}
 {{- range .Pages -}}
   {{- if .Params.startDate -}}
 {{ partial "event.ics" . }}

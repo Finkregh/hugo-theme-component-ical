@@ -72,7 +72,7 @@
 {{- /* UNTIL: End date/time for recurrence */ -}}
 {{- with .until -}}
   {{- with dict `` `
-    ` "dateTime" . `` `
+    ` "dateTime" (. | time.AsTime).UTC `` `
     ` "isUTC" true `` `
     ` -}}
     {{- $parts = $parts | append (printf "UNTIL=%s" (partial "ical/dt_date_time.ics" .)) -}}

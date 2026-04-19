@@ -3,7 +3,6 @@
 {{- if .Params.startDate -}}
 BEGIN:VCALENDAR
 {{- partial "header.ics" . -}}
-{{- partial "timezone.ics" . }}
 {{- partial "event-with-alarms.ics" . -}}
 END:VCALENDAR
 {{- end -}}

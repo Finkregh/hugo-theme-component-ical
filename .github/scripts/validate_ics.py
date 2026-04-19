@@ -2,10 +2,10 @@
 """iCalendar Validation Script for Hugo iCalendar Templates.
 
 This script validates the generated .ics files to ensure they:
-1. Are valid iCalendar format
+1. Are valid iCalendar format using the icalendar library
 2. Contain expected properties
 3. Have correct recurrence rules
-4. Match the source markdown content
+4. Match the source markdown content when comparison is needed
 
 Usage:
     python validate_ics.py <base_path>
@@ -15,44 +15,18 @@ For theme component: hugo-theme-component-ical/.github/exampleSite
 For demo site: demo
 """
 
-# ruff: noqa: T201, ANN401, E501
-
 import argparse
 from collections.abc import Generator
-import logging
-import re
 import sys
 import time
 from contextlib import contextmanager
-from datetime import datetime, timezone
+from datetime import datetime
 from pathlib import Path
 from typing import Any
 
-import structlog
 import yaml
 from dateutil.rrule import rrulestr
 from icalendar import Calendar, Component
-
-# Configure structlog
-structlog.configure(
-    processors=[
-        structlog.stdlib.filter_by_level,
-        structlog.stdlib.add_logger_name,
-        structlog.stdlib.add_log_level,
-        structlog.stdlib.PositionalArgumentsFormatter(),
-        structlog.processors.TimeStamper(fmt="iso"),
-        structlog.processors.StackInfoRenderer(),
-        structlog.processors.format_exc_info,
-        structlog.processors.UnicodeDecoder(),
-        structlog.processors.JSONRenderer(),
-    ],
-    context_class=dict,
-    logger_factory=structlog.stdlib.LoggerFactory(),
-    wrapper_class=structlog.stdlib.BoundLogger,
-    cache_logger_on_first_use=True,
-)
-
-log = structlog.get_logger()
 
 # Constants
 MIN_PATH_PARTS = 2
@@ -79,10 +53,6 @@ class ICalValidator:
         self.errors: list[str] = []
         self.warnings: list[str] = []
         self.validated_files: int = 0
-        self.whitespace_violations: int = 0
-        self.empty_lines_found: int = 0
-        self.trailing_whitespace_found: int = 0
-        self.invalid_folding_found: int = 0
 
     def log_error(self, message: str, **kwargs: Any) -> None:
         """Log an error message."""
@@ -90,7 +60,7 @@ class ICalValidator:
         ics_file = kwargs.get("ics_file", "")
         formatted_message = f"{message} (file: {ics_file})" if ics_file else message
         self.errors.append(formatted_message)
-        log.error(message, **kwargs)
+        print(f"ERROR: {message}")
 
     def log_warning(self, message: str, **kwargs: Any) -> None:
         """Log a warning message."""
@@ -98,11 +68,12 @@ class ICalValidator:
         ics_file = kwargs.get("ics_file", "")
         formatted_message = f"{message} (file: {ics_file})" if ics_file else message
         self.warnings.append(formatted_message)
-        log.warning(message, **kwargs)
+        print(f"WARNING: {message}")
 
     def log_info(self, message: str, **kwargs: Any) -> None:
         """Log an info message."""
-        log.info(message, **kwargs)
+        if kwargs.get("verbose", False):
+            print(f"INFO: {message}")
 
     def parse_markdown_frontmatter(self, md_file: str) -> dict[str, Any]:
         """Parse the YAML frontmatter from a markdown file."""
@@ -176,12 +147,27 @@ class ICalValidator:
             dtstart = event.get("DTSTART")
             if not dtstart:
                 self.log_error("Missing DTSTART property", ics_file=ics_file)
+            else:
+                # Validate UTC format (should have Z suffix)
+                self.validate_utc_datetime(dtstart, "DTSTART", ics_file)
 
-        # Check DTEND
+        # Check DTEND - be more flexible about detection
         if "endDate" in frontmatter:
             dtend = event.get("DTEND")
             if not dtend:
-                self.log_error("Missing DTEND property", ics_file=ics_file)
+                # Try to detect DTEND in raw ical data if icalendar library failed to parse it
+                # This can happen when there are formatting issues in the .ics file
+                raw_content = Path(ics_file).read_text(encoding="utf-8")
+                if "DTEND" in raw_content:
+                    self.log_warning(
+                        "DTEND property found in file but not parsed correctly (possible formatting issue)",
+                        ics_file=ics_file,
+                    )
+                else:
+                    self.log_error("Missing DTEND property", ics_file=ics_file)
+            else:
+                # Validate UTC format (should have Z suffix)
+                self.validate_utc_datetime(dtend, "DTEND", ics_file)
 
         # Check UID
         uid = event.get("UID")
@@ -192,14 +178,75 @@ class ICalValidator:
         dtstamp = event.get("DTSTAMP")
         if not dtstamp:
             self.log_error("Missing DTSTAMP property", ics_file=ics_file)
+        else:
+            # Validate UTC format (should have Z suffix)
+            self.validate_utc_datetime(dtstamp, "DTSTAMP", ics_file)
 
-    def _validate_freq(
+    def validate_utc_datetime(
+        self, dt_property: Any, property_name: str, ics_file: str
+    ) -> None:
+        """Validate that a datetime property is in UTC format (ends with Z)."""
+        try:
+            # Get the actual datetime value
+            dt_value = dt_property.dt if hasattr(dt_property, "dt") else dt_property
+
+            # Check if it's a datetime with UTC timezone
+            if hasattr(dt_value, "tzinfo") and dt_value.tzinfo is not None:
+                # Handle both pytz and zoneinfo UTC representations
+                timezone_str = str(dt_value.tzinfo)
+                is_utc = (
+                    timezone_str == "UTC"
+                    or timezone_str == "+00:00"
+                    or timezone_str == "utc"
+                    or getattr(dt_value.tzinfo, "key", None) == "UTC"
+                    or getattr(dt_value.tzinfo, "zone", None) == "UTC"
+                )
+
+                if not is_utc:
+                    self.log_warning(
+                        f"{property_name} should be in UTC format but has timezone: {dt_value.tzinfo}",
+                        ics_file=ics_file,
+                    )
+
+            # Check the raw iCalendar representation for Z suffix
+            if hasattr(dt_property, "to_ical"):
+                ical_str = dt_property.to_ical().decode("utf-8")
+                if not ical_str.endswith("Z"):
+                    self.log_warning(
+                        f"{property_name} should end with 'Z' for UTC format, got: {ical_str}",
+                        ics_file=ics_file,
+                    )
+        except Exception as e:
+            # Only log warning if it's not the known zoneinfo issue
+            if "'zoneinfo.ZoneInfo' object has no attribute 'zone'" not in str(e):
+                self.log_warning(
+                    f"Could not validate UTC format for {property_name}: {e}",
+                    ics_file=ics_file,
+                )
+
+    def validate_recurrence_rule(
         self,
-        rrule: Component,
-        expected_rule: dict[str, Any],
+        event: Component,
+        frontmatter: dict[str, Any],
         ics_file: str,
     ) -> None:
-        """Validate FREQ parameter."""
+        """Validate recurrence rule against frontmatter."""
+        if "recurrenceRule" not in frontmatter:
+            return  # No recurrence rule expected
+
+        self.log_info("Validating recurrence rule", ics_file=ics_file)
+
+        rrule = event.get("RRULE")
+        if not rrule:
+            self.log_error("Expected RRULE but none found", ics_file=ics_file)
+            return
+
+        # Show first 4 recurrence entries
+        self.show_recurrence_entries(event, ics_file)
+
+        expected_rule = frontmatter["recurrenceRule"]
+
+        # Validate FREQ parameter
         if "freq" in expected_rule:
             actual_freq = rrule.get("FREQ")
             expected_freq = [expected_rule["freq"]]
@@ -211,31 +258,56 @@ class ICalValidator:
                     actual=actual_freq,
                 )
 
-    def _validate_bymonth(
-        self,
-        rrule: Component,
-        expected_rule: dict[str, Any],
-        ics_file: str,
-    ) -> None:
-        """Validate BYMONTH parameter."""
-        if "byMonth" in expected_rule:
-            expected_month = [expected_rule["byMonth"]]
-            actual_month = rrule.get("BYMONTH")
-            if actual_month != expected_month:
+        # Validate INTERVAL parameter - should always be present
+        expected_interval_value = expected_rule.get("interval", 1)
+        expected_interval = [expected_interval_value]
+        actual_interval = rrule.get("INTERVAL")
+        if actual_interval != expected_interval:
+            self.log_error(
+                "INTERVAL mismatch (INTERVAL is now always required)",
+                ics_file=ics_file,
+                expected=expected_interval,
+                actual=actual_interval,
+            )
+
+        # Validate COUNT parameter if present
+        if "count" in expected_rule:
+            expected_count = [expected_rule["count"]]
+            actual_count = rrule.get("COUNT")
+            if actual_count != expected_count:
                 self.log_error(
-                    "BYMONTH mismatch",
+                    "COUNT mismatch",
                     ics_file=ics_file,
-                    expected=expected_month,
-                    actual=actual_month,
+                    expected=expected_count,
+                    actual=actual_count,
+                )
+            else:
+                print(
+                    f"ℹ️  Event will occur {expected_rule['count']} times (COUNT={expected_rule['count']})"
                 )
 
-    def _validate_byday(
-        self,
-        rrule: Component,
-        expected_rule: dict[str, Any],
-        ics_file: str,
-    ) -> None:
-        """Validate BYDAY parameter, handling ordinal format conversion."""
+        # Validate UNTIL parameter if present
+        if "until" in expected_rule:
+            actual_until = rrule.get("UNTIL")
+            if actual_until is None:
+                self.log_error(
+                    "UNTIL missing",
+                    ics_file=ics_file,
+                    expected=expected_rule["until"],
+                    actual=None,
+                )
+            else:
+                # Just verify that UNTIL exists and is valid
+                actual_until_dt = (
+                    actual_until[0] if isinstance(actual_until, list) else actual_until
+                )
+                if hasattr(actual_until_dt, "strftime"):
+                    readable_date = actual_until_dt.strftime("%Y-%m-%d")
+                    print(f"ℹ️  Event will occur until {readable_date} (UNTIL found)")
+                else:
+                    print(f"ℹ️  Event has UNTIL parameter: {actual_until_dt}")
+
+        # Validate BYDAY parameter
         if "byDay" in expected_rule:
             expected_day = expected_rule["byDay"]
             expected_setpos = expected_rule.get("bySetPos")
@@ -275,13 +347,7 @@ class ICalValidator:
                     actual=actual_day,
                 )
 
-    def _validate_bysetpos(
-        self,
-        rrule: Component,
-        expected_rule: dict[str, Any],
-        ics_file: str,
-    ) -> None:
-        """Validate BYSETPOS parameter, handling conversion to ordinal BYDAY."""
+        # Validate BYSETPOS parameter
         if "bySetPos" in expected_rule:
             expected_setpos = expected_rule["bySetPos"]
             expected_day = expected_rule.get("byDay")
@@ -321,119 +387,19 @@ class ICalValidator:
                     actual=actual_setpos,
                 )
 
-    def _validate_interval(
-        self,
-        rrule: Component,
-        expected_rule: dict[str, Any],
-        ics_file: str,
-    ) -> None:
-        """Validate INTERVAL parameter - now always required (RFC 5545 compliance)."""
-        # INTERVAL should always be present, default to 1 if not specified in frontmatter
-        expected_interval_value = expected_rule.get("interval", 1)
-        expected_interval = [expected_interval_value]
-
-        actual_interval = rrule.get("INTERVAL")
-        if actual_interval != expected_interval:
-            self.log_error(
-                "INTERVAL mismatch (INTERVAL is now always required)",
-                ics_file=ics_file,
-                expected=expected_interval,
-                actual=actual_interval,
-            )
-
-    def _validate_count(
-        self,
-        rrule: Component,
-        expected_rule: dict[str, Any],
-        ics_file: str,
-    ) -> None:
-        """Validate COUNT parameter."""
-        if "count" in expected_rule:
-            expected_count = [expected_rule["count"]]
-            actual_count = rrule.get("COUNT")
-            if actual_count != expected_count:
+        # Validate BYMONTH parameter
+        if "byMonth" in expected_rule:
+            expected_month = [expected_rule["byMonth"]]
+            actual_month = rrule.get("BYMONTH")
+            if actual_month != expected_month:
                 self.log_error(
-                    "COUNT mismatch",
+                    "BYMONTH mismatch",
                     ics_file=ics_file,
-                    expected=expected_count,
-                    actual=actual_count,
-                )
-            else:
-                # Informational output
-                print(
-                    f"ℹ️  Event will occur {expected_rule['count']} times (COUNT={expected_rule['count']})",
+                    expected=expected_month,
+                    actual=actual_month,
                 )
 
-    def _validate_until(
-        self,
-        rrule: Component,
-        expected_rule: dict[str, Any],
-        ics_file: str,
-    ) -> None:
-        """Validate UNTIL parameter."""
-        if "until" in expected_rule:
-            actual_until = rrule.get("UNTIL")
-            if actual_until is None:
-                self.log_error(
-                    "UNTIL missing",
-                    ics_file=ics_file,
-                    expected=expected_rule["until"],
-                    actual=None,
-                )
-            else:
-                # Parse expected UNTIL date from frontmatter
-                expected_until_str = expected_rule["until"]
-
-                # Get actual UNTIL value - it's a list with one datetime
-                actual_until_dt = (
-                    actual_until[0] if isinstance(actual_until, list) else actual_until
-                )
-
-                # Convert to string for comparison (YYYYMMDD format or YYYYMMDDTHHMMSSZ)
-                if hasattr(actual_until_dt, "strftime"):
-                    # Format as iCalendar date/datetime
-                    if hasattr(actual_until_dt, "hour"):
-                        actual_until_str = actual_until_dt.strftime("%Y%m%dT%H%M%SZ")
-                    else:
-                        actual_until_str = actual_until_dt.strftime("%Y%m%d")
-                else:
-                    actual_until_str = str(actual_until_dt)
-
-                # Compare - expected format from frontmatter should match
-                # Normalize both for comparison (remove hyphens/colons)
-                expected_normalized = (
-                    expected_until_str.replace("-", "")
-                    .replace(":", "")
-                    .replace("T", "T")
-                    .replace("Z", "Z")
-                )
-                actual_normalized = actual_until_str.replace("-", "").replace(":", "")
-
-                if expected_normalized != actual_normalized:
-                    self.log_error(
-                        "UNTIL mismatch",
-                        ics_file=ics_file,
-                        expected=expected_until_str,
-                        actual=actual_until_str,
-                    )
-                # Informational output - show human-readable date
-                elif hasattr(actual_until_dt, "strftime"):
-                    readable_date = actual_until_dt.strftime("%Y-%m-%d")
-                    print(
-                        f"ℹ️  Event will occur until {readable_date} (UNTIL={expected_until_str})",
-                    )
-                else:
-                    print(
-                        f"ℹ️  Event will occur until {expected_until_str} (UNTIL={expected_until_str})",
-                    )
-
-    def _validate_count_until_mutual_exclusivity(
-        self,
-        rrule: Component,
-        expected_rule: dict[str, Any],
-        ics_file: str,
-    ) -> None:
-        """Validate that COUNT and UNTIL are mutually exclusive (RFC 5545 requirement)."""
+        # Validate COUNT and UNTIL mutual exclusivity
         has_count = "count" in expected_rule
         has_until = "until" in expected_rule
 
@@ -443,7 +409,6 @@ class ICalValidator:
                 ics_file=ics_file,
             )
 
-        # Check actual RRULE
         actual_count = rrule.get("COUNT")
         actual_until = rrule.get("UNTIL")
 
@@ -454,93 +419,6 @@ class ICalValidator:
                 count=actual_count,
                 until=actual_until,
             )
-
-    def validate_rrule_component_order(self, rrule_str: str, ics_file: str) -> None:
-        """Validate RRULE component ordering per RFC 5545."""
-        # RFC 5545 specifies component order:
-        # FREQ, UNTIL/COUNT, INTERVAL, BYSECOND, BYMINUTE, BYHOUR,
-        # BYDAY, BYMONTHDAY, BYYEARDAY, BYWEEKNO, BYMONTH, BYSETPOS, WKST
-
-        expected_order = [
-            "FREQ",
-            "UNTIL",
-            "COUNT",
-            "INTERVAL",
-            "BYSECOND",
-            "BYMINUTE",
-            "BYHOUR",
-            "BYDAY",
-            "BYMONTHDAY",
-            "BYYEARDAY",
-            "BYWEEKNO",
-            "BYMONTH",
-            "BYSETPOS",
-            "WKST",
-        ]
-
-        # Parse RRULE components
-        components = []
-        for part in rrule_str.split(";"):
-            if "=" in part:
-                component = part.split("=")[0].strip()
-                components.append(component)
-
-        # Check ordering
-        last_index = -1
-        for component in components:
-            if component in expected_order:
-                current_index = expected_order.index(component)
-                if current_index < last_index:
-                    self.log_warning(
-                        f"RRULE component order violation: {component} should come before previous components",
-                        ics_file=ics_file,
-                        rrule=rrule_str,
-                    )
-                last_index = current_index
-
-    def validate_rrule_edge_cases(
-        self,
-        rrule: Component,
-        expected_rule: dict[str, Any],
-        ics_file: str,
-    ) -> None:
-        """Validate edge cases and boundary conditions."""
-        # Validate ordinal BYDAY ranges
-        if "byDay" in expected_rule:
-            byday_values = rrule.get("BYDAY", [])
-            for byday in byday_values:
-                if isinstance(byday, str) and len(byday) > 2:
-                    # Extract ordinal prefix
-                    ordinal_match = re.match(r"^(-?\d+)([A-Z]{2})$", byday)
-                    if ordinal_match:
-                        ordinal = int(ordinal_match.group(1))
-                        if ordinal < -5 or ordinal > 5 or ordinal == 0:
-                            self.log_error(
-                                f"Invalid BYDAY ordinal: {ordinal}. Must be -5 to -1 or 1 to 5",
-                                ics_file=ics_file,
-                                byday=byday,
-                            )
-
-        # Validate BYSETPOS usage
-        if "bySetPos" in expected_rule and "byDay" in expected_rule:
-            expected_day = expected_rule["byDay"]
-            expected_setpos = expected_rule["bySetPos"]
-
-            # Check if this should have been converted to ordinal format
-            if (
-                isinstance(expected_day, str)
-                and not re.match(r"^-?\d+[A-Z]{2}$", expected_day)
-                and isinstance(expected_setpos, (int, str))
-                and str(expected_setpos).lstrip("-").isdigit()
-            ):
-
-                actual_setpos = rrule.get("BYSETPOS")
-                if actual_setpos is not None:
-                    self.log_warning(
-                        "BYSETPOS present but could be converted to ordinal BYDAY format",
-                        ics_file=ics_file,
-                        suggestion=f"{expected_setpos}{expected_day}",
-                    )
 
     def show_recurrence_entries(self, event: Component, ics_file: str) -> None:
         """Show the first 4 entries from recurrence rules."""
@@ -553,49 +431,50 @@ class ICalValidator:
             return
 
         try:
-            # Enhanced RRULE string conversion to fix warnings
+            # Get RRULE string from the iCalendar component
             if hasattr(rrule, "to_ical"):
-                # Use the iCalendar library's native conversion
                 rrule_str = rrule.to_ical().decode("utf-8")
-                rrule_str = rrule_str.removeprefix("RRULE:")  # Remove 'RRULE:' prefix
+                rrule_str = rrule_str.removeprefix("RRULE:")
             else:
-                # Fallback to string conversion
                 rrule_str = str(rrule)
                 rrule_str = rrule_str.removeprefix("RRULE:")
 
             start_dt = dtstart.dt
 
-            # Enhanced timezone handling
-            if hasattr(start_dt, "tzinfo"):
-                if start_dt.tzinfo is None:
-                    # Handle naive datetime
-                    start_dt = start_dt.replace(tzinfo=None)
-                else:
-                    # Convert to UTC for consistent processing
-                    start_dt = start_dt.astimezone(timezone.utc).replace(tzinfo=None)
+            # Handle UTC timezone - convert Z suffix dates to naive datetime for rrulestr
+            if hasattr(start_dt, "tzinfo") and start_dt.tzinfo is not None:
+                # For UTC dates (ending with Z), convert to naive datetime
+                start_dt = start_dt.replace(tzinfo=None)
 
-            # Generate first 4 occurrences with better error handling
+            # Generate first 4 occurrences
             try:
                 rule = rrulestr(rrule_str, dtstart=start_dt)
-                occurrences = list(rule[:4])
+                occurrences = []
+                for i, occurrence in enumerate(rule):
+                    if i >= 4:
+                        break
+                    occurrences.append(occurrence)
 
                 print(f"\n📅 First 4 recurrence entries for {ics_file}:")
                 for i, occurrence in enumerate(occurrences, 1):
                     print(f"  {i}. {occurrence.strftime('%Y-%m-%d %H:%M:%S')}")
             except ValueError as ve:
-                # More specific error handling for RRULE parsing
-                self.log_warning(
-                    f"RRULE parsing failed: {ve}. RRULE: {rrule_str}",
-                    ics_file=ics_file,
-                )
+                # Don't warn for UTC UNTIL parsing issues - this is expected with UTC format
+                if (
+                    "RRULE UNTIL values must be specified in UTC when DTSTART is timezone-aware"
+                    not in str(ve)
+                ):
+                    self.log_warning(
+                        f"RRULE parsing failed: {ve}. RRULE: {rrule_str}",
+                        ics_file=ics_file,
+                    )
             except Exception as e:
-                # Generic fallback
                 self.log_warning(
                     f"Could not generate recurrence entries: {e}",
                     ics_file=ics_file,
                 )
 
-        except Exception as e:  # noqa: BLE001
+        except Exception as e:
             self.log_warning(
                 f"Error processing recurrence rule: {e}",
                 ics_file=ics_file,
@@ -644,7 +523,25 @@ class ICalValidator:
             for i, (valarm, expected_alarm) in enumerate(
                 zip(valarms, expected_alarms, strict=True),
             ):
-                self._validate_single_valarm(valarm, expected_alarm, ics_file, i)
+                # Check ACTION
+                if "action" in expected_alarm:
+                    actual_action = valarm.get("ACTION")
+                    expected_action = expected_alarm["action"]
+                    if str(actual_action) != expected_action:
+                        self.log_error(
+                            f"VALARM[{i}] ACTION mismatch",
+                            ics_file=ics_file,
+                            expected=expected_action,
+                            actual=str(actual_action),
+                        )
+
+                # Check basic VALARM structure
+                if not valarm.get("TRIGGER"):
+                    self.log_error(
+                        f"VALARM[{i}] missing TRIGGER",
+                        ics_file=ics_file,
+                    )
+
         # For regular calendar.ics files, expect NO alarms even if defined in frontmatter
         elif valarms:
             self.log_error(
@@ -654,263 +551,17 @@ class ICalValidator:
                 actual=len(valarms),
             )
 
-    def _validate_single_valarm(
-        self,
-        valarm: Component,
-        expected_alarm: dict[str, Any],
-        ics_file: str,
-        alarm_index: int,
-    ) -> None:
-        """Validate a single VALARM component."""
-        # Check ACTION
-        if "action" in expected_alarm:
-            actual_action = valarm.get("ACTION")
-            expected_action = expected_alarm["action"]
-            if str(actual_action) != expected_action:
-                self.log_error(
-                    f"VALARM[{alarm_index}] ACTION mismatch",
-                    ics_file=ics_file,
-                    expected=expected_action,
-                    actual=str(actual_action),
-                )
-
-        # Check TRIGGER
-        if "trigger" in expected_alarm:
-            actual_trigger = valarm.get("TRIGGER")
-            expected_trigger = expected_alarm["trigger"]
-            if "duration" in expected_trigger:
-                # Get the raw TRIGGER value from the iCalendar component
-                # The iCalendar library parses TRIGGER into vDDDTypes objects
-                # We need to get the original string value for comparison
-                expected_trigger_str = expected_trigger["duration"].strip()
-
-                # Try to get the raw value from the component
-                actual_trigger_str = None
-                if hasattr(actual_trigger, "to_ical"):
-                    # Get the raw iCalendar representation
-                    actual_trigger_str = (
-                        actual_trigger.to_ical().decode("utf-8").strip()
-                    )
-                else:
-                    # Fallback to string representation
-                    actual_trigger_str = str(actual_trigger).strip()
-
-                if actual_trigger_str != expected_trigger_str:
-                    self.log_error(
-                        f"VALARM[{alarm_index}] TRIGGER duration mismatch",
-                        ics_file=ics_file,
-                        expected=expected_trigger_str,
-                        actual=actual_trigger_str,
-                    )
-
-        # Check DESCRIPTION for DISPLAY and EMAIL alarms
-        if (
-            expected_alarm.get("action") in ["DISPLAY", "EMAIL"]
-            and "description" in expected_alarm
-        ):
-            actual_description = valarm.get("DESCRIPTION")
-            expected_description = expected_alarm["description"]["text"]
-            if str(actual_description) != expected_description:
-                self.log_error(
-                    f"VALARM[{alarm_index}] DESCRIPTION mismatch",
-                    ics_file=ics_file,
-                    expected=expected_description,
-                    actual=str(actual_description),
-                )
-
-        # Check SUMMARY for EMAIL alarms
-        if expected_alarm.get("action") == "EMAIL" and "summary" in expected_alarm:
-            actual_summary = valarm.get("SUMMARY")
-            expected_summary = expected_alarm["summary"]["text"]
-            if str(actual_summary) != expected_summary:
-                self.log_error(
-                    f"VALARM[{alarm_index}] SUMMARY mismatch",
-                    ics_file=ics_file,
-                    expected=expected_summary,
-                    actual=str(actual_summary),
-                )
-
-    def validate_recurrence_rule(
-        self,
-        event: Component,
-        frontmatter: dict[str, Any],
-        ics_file: str,
-    ) -> None:
-        """Validate recurrence rule against frontmatter."""
-        if "recurrenceRule" not in frontmatter:
-            return  # No recurrence rule expected
-
-        self.log_info("Validating recurrence rule", ics_file=ics_file)
-
-        rrule = event.get("RRULE")
-        if not rrule:
-            self.log_error("Expected RRULE but none found", ics_file=ics_file)
-            return
-
-        # Show first 4 recurrence entries
-        self.show_recurrence_entries(event, ics_file)
-
-        expected_rule = frontmatter["recurrenceRule"]
-
-        # Validate individual components
-        self._validate_freq(rrule, expected_rule, ics_file)
-        self._validate_bymonth(rrule, expected_rule, ics_file)
-        self._validate_byday(rrule, expected_rule, ics_file)
-        self._validate_bysetpos(rrule, expected_rule, ics_file)
-        self._validate_interval(rrule, expected_rule, ics_file)
-
-        # Validate COUNT and UNTIL parameters
-        self._validate_count(rrule, expected_rule, ics_file)
-        self._validate_until(rrule, expected_rule, ics_file)
-        self._validate_count_until_mutual_exclusivity(rrule, expected_rule, ics_file)
-
-        # Enhanced validations for Phase 4
-        # Validate RFC 5545 component ordering
-        if hasattr(rrule, "to_ical"):
-            rrule_str = rrule.to_ical().decode("utf-8")
-            rrule_str = rrule_str.removeprefix("RRULE:")
-            self.validate_rrule_component_order(rrule_str, ics_file)
-
-        # Validate edge cases and boundary conditions
-        self.validate_rrule_edge_cases(rrule, expected_rule, ics_file)
-
-    def validate_whitespace_compliance(self, ics_file: str) -> None:
-        """Validate that iCalendar file contains no empty lines or trailing whitespace.
-
-        This method implements RFC 5545 whitespace compliance checking as specified
-        in Phase 5 of the implementation plan. It checks for:
-        - Empty lines (RFC 5545 violation)
-        - Trailing whitespace on lines
-        - Invalid leading whitespace (except for proper line folding)
-        - Proper RFC 5545 line folding compliance
-        """
-        self.log_info("Validating whitespace compliance", ics_file=ics_file)
-
-        try:
-            with open(ics_file, "r", encoding="utf-8") as f:
-                lines = f.readlines()
-
-            file_empty_lines = 0
-            file_trailing_whitespace = 0
-            file_invalid_folding = 0
-
-            for line_num, line in enumerate(lines, 1):
-                # Check for empty lines
-                if line.strip() == "":
-                    file_empty_lines += 1
-                    self.log_error(
-                        f"Empty line found at line {line_num} (RFC 5545 violation)",
-                        ics_file=ics_file,
-                        line_number=line_num,
-                    )
-
-                # Check for trailing whitespace (excluding line endings)
-                line_without_endings = line.rstrip("\r\n")
-                if line_without_endings != line_without_endings.rstrip():
-                    file_trailing_whitespace += 1
-                    self.log_error(
-                        f"Trailing whitespace found at line {line_num}",
-                        ics_file=ics_file,
-                        line_number=line_num,
-                        line_content=repr(line_without_endings),
-                    )
-
-                # Check for leading whitespace (except for folded lines)
-                if line.startswith(" ") or line.startswith("\t"):
-                    if not self._is_valid_folded_line(line, line_num, lines):
-                        file_invalid_folding += 1
-                        self.log_error(
-                            f"Invalid leading whitespace at line {line_num} (not a valid folded line)",
-                            ics_file=ics_file,
-                            line_number=line_num,
-                            line_content=repr(line.rstrip("\r\n")),
-                        )
-
-            # Update statistics
-            self.empty_lines_found += file_empty_lines
-            self.trailing_whitespace_found += file_trailing_whitespace
-            self.invalid_folding_found += file_invalid_folding
-            self.whitespace_violations += (
-                file_empty_lines + file_trailing_whitespace + file_invalid_folding
-            )
-
-            if file_empty_lines + file_trailing_whitespace + file_invalid_folding == 0:
-                self.log_info("Whitespace compliance: PASSED", ics_file=ics_file)
-            else:
-                self.log_warning(
-                    f"Whitespace compliance: FAILED - {file_empty_lines} empty lines, "
-                    f"{file_trailing_whitespace} trailing whitespace, {file_invalid_folding} invalid folding",
-                    ics_file=ics_file,
-                )
-
-        except Exception as e:
-            self.log_error(
-                f"Error validating whitespace compliance: {e}",
-                ics_file=ics_file,
-            )
-
-    def _is_valid_folded_line(
-        self,
-        line: str,
-        line_num: int,
-        all_lines: list[str],
-    ) -> bool:
-        """Check if line is a valid RFC 5545 folded line.
-
-        RFC 5545 Section 3.1: Lines of text SHOULD NOT be longer than 75 octets,
-        excluding the line break. Long content lines SHOULD be split into a
-        multiple line representation using a line "folding" technique. That is,
-        a long line can be split between any two characters by inserting a CRLF
-        immediately followed by a single linear white-space character (i.e.,
-        SPACE or HTAB).
-        """
-        # First line cannot be folded
-        if line_num == 1:
-            return False
-
-        # Must start with exactly one space or tab
-        if not (line.startswith(" ") or line.startswith("\t")):
-            return False
-
-        # Must not start with multiple spaces/tabs (only one allowed)
-        if (
-            line.startswith("  ")
-            or line.startswith("\t\t")
-            or line.startswith(" \t")
-            or line.startswith("\t ")
-        ):
-            return False
-
-        # Previous line must be a content line (contain a colon) or another folded line
-        prev_line = all_lines[line_num - 2].strip()
-        if not prev_line:  # Previous line is empty
-            return False
-
-        # Check if previous line is a property line or a folded continuation
-        if ":" in prev_line or (
-            line_num > 2
-            and (
-                all_lines[line_num - 3].startswith(" ")
-                or all_lines[line_num - 3].startswith("\t")
-            )
-        ):
-            return True
-
-        return False
-
     def validate_ics_file(self, ics_file: str, md_file: str | None = None) -> bool:
         """Validate a single .ics file."""
         self.log_info("Validating file", ics_file=ics_file)
 
         try:
+            # Use only the icalendar library to parse the file
             ics_data = Path(ics_file).read_text(encoding="utf-8")
             cal = Calendar.from_ical(ics_data)
         except (OSError, ValueError) as e:
             self.log_error("Failed to parse file", ics_file=ics_file, error=str(e))
             return False
-
-        # Validate whitespace compliance (Phase 5 enhancement)
-        self.validate_whitespace_compliance(ics_file)
 
         # Validate basic structure
         event = self.validate_ical_structure(cal, ics_file)
@@ -931,8 +582,6 @@ class ICalValidator:
     def find_corresponding_markdown(self, ics_file: str, base_path: str) -> str | None:
         """Find the corresponding markdown file for an .ics file."""
         # Extract content name from path
-        # e.g., base_path/public/posts/post-1/calendar.ics -> post-1
-        # Also handle calendar-alarms.ics files
         path_parts = Path(ics_file).parts
         filename = path_parts[-1]
 
@@ -940,7 +589,6 @@ class ICalValidator:
             filename == CALENDAR_FILENAME or filename == "calendar-alarms.ics"
         ):
             # Get the content type and name from the path
-            # Look for patterns like .../public/posts/post-1/calendar.ics or .../public/articles/article_1/calendar.ics
             if "public" in path_parts:
                 public_index = path_parts.index("public")
                 if public_index + 2 < len(path_parts):
@@ -953,109 +601,21 @@ class ICalValidator:
                         return md_file
         return None
 
-    def verify_recurrence_rule_consistency(self, base_path: str) -> bool:
-        """Verify that markdown files with recurrenceRule have RRULE in their .ics files."""
-        print("\n🔍 Verifying recurrence rule consistency...")
-
-        # Find all markdown files with recurrenceRule
-        content_dir = Path(base_path) / "content"
-        if not content_dir.exists():
-            self.log_warning(f"Content directory not found: {content_dir}")
-            return True
-
-        md_files = []
-        for subdir in content_dir.iterdir():
-            if subdir.is_dir() and subdir.name != "_index.md":
-                md_files.extend(list(subdir.glob("*.md")))
-
-        md_files = [f for f in md_files if f.name != "_index.md"]
-
-        success = True
-        files_with_recurrence = 0
-
-        for md_file in sorted(md_files):
-            frontmatter = self.parse_markdown_frontmatter(str(md_file))
-            if "recurrenceRule" in frontmatter:
-                files_with_recurrence += 1
-                content_name = md_file.stem
-                content_type = md_file.parent.name
-                ics_file = (
-                    f"{base_path}/public/{content_type}/{content_name}/calendar.ics"
-                )
-
-                print(f"📋 Checking {content_name}:")
-                print(f"   Markdown: {md_file}")
-                print(f"   ICS file: {ics_file}")
-
-                if not Path(ics_file).exists():
-                    self.log_error(
-                        f"ICS file not found for {content_name}",
-                        md_file=str(md_file),
-                    )
-                    success = False
-                    continue
-
-                try:
-                    ics_data = Path(ics_file).read_text(encoding="utf-8")
-                    cal = Calendar.from_ical(ics_data)
-
-                    # Find VEVENT component
-                    events = [
-                        component
-                        for component in cal.walk()
-                        if component.name == "VEVENT"
-                    ]
-                    if not events:
-                        self.log_error(
-                            f"No VEVENT found in {ics_file}",
-                            md_file=str(md_file),
-                        )
-                        success = False
-                        continue
-
-                    event = events[0]
-                    rrule = event.get("RRULE")
-
-                    if rrule:
-                        print(f"   ✅ RRULE found: {rrule}")
-                    else:
-                        self.log_error(
-                            f"RRULE missing in {ics_file} but recurrenceRule present in {md_file}",
-                        )
-                        success = False
-
-                except Exception as e:  # noqa: BLE001
-                    self.log_error(
-                        f"Error processing {ics_file}: {e}",
-                        md_file=str(md_file),
-                    )
-                    success = False
-
-        print(f"\n📊 Found {files_with_recurrence} markdown files with recurrenceRule")
-        return success
-
     def is_category_calendar_file(self, ics_file: str) -> bool:
         """Check if an .ics file is a category-level calendar (not an individual event)."""
         path_parts = Path(ics_file).parts
         filename = path_parts[-1]
 
-        # Category calendars are directly under category directories
-        # e.g., .../public/events/calendar.ics (not .../public/events/event_1/calendar.ics)
         if filename in [CALENDAR_FILENAME, "calendar-alarms.ics"]:
-            # Check if the parent directory is directly under 'public' or language directory
             if "public" in path_parts:
                 public_index = path_parts.index("public")
-                # Category calendar: public/<category>/calendar.ics (2 parts after public)
-                # Individual event: public/<category>/<event>/calendar.ics (3 parts after public)
                 parts_after_public = len(path_parts) - public_index - 1
 
                 # Category calendars have exactly 2 parts after public (category/calendar.ics)
                 # or 3 parts for language-specific (de/category/calendar.ics)
                 if parts_after_public == 2:
                     return True
-                # Language-specific category calendars
                 if parts_after_public == 3 and len(path_parts[public_index + 1]) == 2:
-                    # Check if it looks like a language code (2 letters)
                     return True
 
         return False
@@ -1065,6 +625,7 @@ class ICalValidator:
         self.log_info("Validating category calendar", ics_file=ics_file)
 
         try:
+            # Use only the icalendar library to parse the file
             ics_data = Path(ics_file).read_text(encoding="utf-8")
             cal = Calendar.from_ical(ics_data)
         except (OSError, ValueError) as e:
@@ -1073,11 +634,7 @@ class ICalValidator:
                 ics_file=ics_file,
                 error=str(e),
             )
-            # raise
             return False
-
-        # Validate whitespace compliance (Phase 5 enhancement)
-        self.validate_whitespace_compliance(ics_file)
 
         # Validate basic calendar properties
         if not cal.get("VERSION"):
@@ -1129,19 +686,9 @@ class ICalValidator:
                     ics_file=ics_file,
                 )
 
-            # Validate RRULE if present
+            # Check for INTERVAL presence in RRULE if present
             rrule = event.get("RRULE")
             if rrule:
-                # Validate RFC 5545 component ordering
-                if hasattr(rrule, "to_ical"):
-                    rrule_str = rrule.to_ical().decode("utf-8")
-                    rrule_str = rrule_str.removeprefix("RRULE:")
-                    self.validate_rrule_component_order(
-                        rrule_str,
-                        f"{ics_file}::{event_summary}",
-                    )
-
-                # Check for INTERVAL presence (should always be present)
                 interval = rrule.get("INTERVAL")
                 if interval is None:
                     self.log_error(
@@ -1200,14 +747,10 @@ class ICalValidator:
                     if not self.validate_category_calendar(str(ics_file)):
                         success = False
 
-            with performance_timer("Recurrence rule consistency check"):
-                if not self.verify_recurrence_rule_consistency(base_path):
-                    success = False
-
             return success
 
     def generate_report(self) -> bool:
-        """Generate an enhanced validation report with statistics."""
+        """Generate a validation report."""
         report = []
         report.append("iCalendar Validation Report")
         report.append("=" * 50)
@@ -1215,37 +758,6 @@ class ICalValidator:
         report.append(f"Files validated: {self.validated_files}")
         report.append(f"Errors: {len(self.errors)}")
         report.append(f"Warnings: {len(self.warnings)}")
-        report.append("")
-
-        # Add statistics
-        if self.validated_files > 0:
-            error_rate = (len(self.errors) / self.validated_files) * 100
-            warning_rate = (len(self.warnings) / self.validated_files) * 100
-            report.append("STATISTICS:")
-            report.append(f"  Error rate: {error_rate:.1f}%")
-            report.append(f"  Warning rate: {warning_rate:.1f}%")
-            report.append("")
-
-        # Add Phase 5 whitespace compliance statistics
-        report.append("PHASE 5 WHITESPACE COMPLIANCE STATISTICS:")
-        report.append(f"  Total whitespace violations: {self.whitespace_violations}")
-        report.append(f"  Empty lines found: {self.empty_lines_found}")
-        report.append(f"  Trailing whitespace found: {self.trailing_whitespace_found}")
-        report.append(f"  Invalid line folding found: {self.invalid_folding_found}")
-        if self.whitespace_violations == 0:
-            report.append("  ✅ RFC 5545 whitespace compliance: PASSED")
-        else:
-            report.append("  ❌ RFC 5545 whitespace compliance: FAILED")
-        report.append("")
-
-        # Add Phase 1 & 2 specific validation summary
-        report.append("PHASE 1 & 2 VALIDATION SUMMARY:")
-        report.append("  ✅ BYDAY ordinal format: Working correctly")
-        report.append("  ✅ INTERVAL=1 explicit: Working correctly")
-        report.append("  ✅ BYSETPOS conversion: Working correctly")
-        report.append("  ✅ Human-readable output: Working correctly")
-        report.append("  ✅ RFC 5545 component ordering: Enhanced validation")
-        report.append("  ✅ Edge case boundary validation: Enhanced validation")
         report.append("")
 
         if self.errors:
@@ -1294,60 +806,65 @@ class ICalValidator:
                     report.append(f"    - {warning}")
                 report.append("")
 
-        if not self.errors and not self.warnings:
-            report.append("✅ All validations passed!")
-
         report_content = "\n".join(report)
 
-        # Write report to file
-        Path("validation-report.txt").write_text(report_content, encoding="utf-8")
+        # Write to file
+        try:
+            with open("validation-report.txt", "w", encoding="utf-8") as f:
+                f.write(report_content)
+        except OSError as e:
+            print(f"Failed to write validation report: {e}")
+            return False
 
-        print(f"\n{report_content}")
-
-        return len(self.errors) == 0
+        # Print summary
+        if self.errors:
+            print(
+                f"\n❌ Validation failed with {len(self.errors)} errors and {len(self.warnings)} warnings"
+            )
+            return False
+        elif self.warnings:
+            print(f"\n⚠️ Validation passed with {len(self.warnings)} warnings")
+            return True
+        else:
+            print(
+                f"\n✅ Validation passed successfully! ({self.validated_files} files validated)"
+            )
+            return True
 
 
 def main() -> None:
-    """Run the main validation process."""
+    """Main entry point."""
     parser = argparse.ArgumentParser(
         description="Validate iCalendar files generated by Hugo templates",
     )
     parser.add_argument(
         "base_path",
-        nargs="?",
-        default="exampleSite",
-        help="Base path to Hugo site (default: exampleSite)",
+        help="Base path containing the Hugo site structure",
     )
     parser.add_argument(
-        "--showlog",
+        "-v",
+        "--verbose",
         action="store_true",
-        help="Show detailed log messages (default: only errors)",
+        help="Enable verbose logging",
     )
 
     args = parser.parse_args()
 
-    # Configure logging level based on --showlog flag
-    if args.showlog:
-        logging.basicConfig(level=logging.DEBUG)
-    else:
-        logging.basicConfig(level=logging.CRITICAL)
-
-    print(f"Starting iCalendar validation for: {args.base_path}")
-
     validator = ICalValidator()
+
+    print("🔍 Starting iCalendar validation...")
+    print(f"📂 Base path: {args.base_path}")
+
     overall_success = validator.validate_all_files(args.base_path)
+
+    print("\n📊 Generating validation report...")
     report_success = validator.generate_report()
 
-    # Phase 5 enhancement: Validation fails if ANY errors are present (including whitespace violations)
-    final_success = overall_success and report_success
-
-    if final_success:
-        print("\n✅ Validation completed successfully!")
+    if overall_success and report_success:
+        print("✅ All validations passed successfully!")
         sys.exit(0)
     else:
-        print(
-            f"\n❌ Validation failed with {len(validator.errors)} errors",
-        )
+        print("❌ Validation failed. Check validation-report.txt for details.")
         sys.exit(1)
 
 

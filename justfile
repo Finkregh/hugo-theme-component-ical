@@ -55,13 +55,13 @@ build_hugo_localhost:
 run_ics_validation_python:
     @echo "Running Python iCal validation..."
     uv pip install -r scripts/requirements.txt
-    python3 scripts/validate_ics.py
+    python3 scripts/validate_ics.py exampleSite
 
 [working-directory: '.github']
 run_ics_validation_python_showlog:
     @echo "Running Python iCal validation (with logs)..."
     uv pip install -r scripts/requirements.txt
-    python3 scripts/validate_ics.py --showlog
+    python3 scripts/validate_ics.py exampleSite --verbose
 
 [working-directory: '.github']
 run_ics_validation_js:

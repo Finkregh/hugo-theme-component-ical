@@ -31,6 +31,7 @@
   },
   "devDependencies": {
     "chalk": "^5.6.2",
+    "gray-matter": "^4.0.3",
     "loglevel": "^1.9.2",
     "loglevel-plugin-prefix": "^0.8.4",
     "node-ical": "^0.23.1",

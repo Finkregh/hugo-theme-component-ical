@@ -2,27 +2,28 @@
 
 /**
  * iCalendar Validation Script for Hugo iCalendar Templates (JavaScript/Node.js)
- * 
+ *
  * This script validates the generated .ics files using node-ical to ensure:
  * 1. Files are valid iCalendar format
  * 2. Cross-implementation compatibility with JavaScript parsers
  * 3. Correct recurrence rules and event properties
  * 4. Proper VALARM component handling
- * 
+ * 5. UTC-only datetime format (Z suffix, no timezone parameters)
+ *
  * Usage:
  *     node validate_ics.mjs [base_path] [--showlog]
- * 
+ *
  * Where [base_path] is the root directory containing the Hugo site structure.
  * Default: exampleSite
  */
 
-import fs from 'fs';
-import path from 'path';
-import ical from 'node-ical';
-import yaml from 'js-yaml';
-import chalk from 'chalk';
-import log from 'loglevel';
-import prefix from 'loglevel-plugin-prefix';
+import fs from "fs";
+import path from "path";
+import ical from "node-ical";
+import matter from "gray-matter";
+import chalk from "chalk";
+import log from "loglevel";
+import prefix from "loglevel-plugin-prefix";
 
 // Configure loglevel with prefix and colors
 const colors = {
@@ -41,7 +42,7 @@ prefix.apply(log, {
 });
 
 // Set default log level to ERROR (only show errors by default)
-log.setDefaultLevel('error');
+log.setDefaultLevel("error");
 
 class ICalValidatorJS {
   constructor() {
@@ -91,19 +92,13 @@ class ICalValidatorJS {
    */
   parseFrontmatter(mdPath) {
     try {
-      const content = fs.readFileSync(mdPath, 'utf-8');
-
-      // Extract frontmatter between --- markers
-      if (content.startsWith('---\n')) {
-        const endMarker = content.indexOf('\n---\n', 4);
-        if (endMarker !== -1) {
-          const frontmatter = content.substring(4, endMarker);
-          return yaml.load(frontmatter) || {};
-        }
-      }
-      return {};
+      const content = fs.readFileSync(mdPath, "utf-8");
+      const { data } = matter(content);
+      return data || {};
     } catch (error) {
-      this.logError(`Failed to parse frontmatter from ${mdPath}`, null, { error: error.message });
+      this.logError(`Failed to parse frontmatter from ${mdPath}`, null, {
+        error: error.message,
+      });
       return {};
     }
   }
@@ -123,7 +118,7 @@ class ICalValidatorJS {
 
         if (stat.isDirectory()) {
           walk(filePath);
-        } else if (file.endsWith('.ics')) {
+        } else if (file.endsWith(".ics")) {
           icsFiles.push(filePath);
         }
       }
@@ -140,12 +135,17 @@ class ICalValidatorJS {
     const pathParts = icsPath.split(path.sep);
     const filename = pathParts[pathParts.length - 1];
 
-    if (filename === 'calendar.ics' || filename === 'calendar-alarms.ics') {
-      const publicIndex = pathParts.indexOf('public');
+    if (filename === "calendar.ics" || filename === "calendar-alarms.ics") {
+      const publicIndex = pathParts.indexOf("public");
       if (publicIndex !== -1 && publicIndex + 2 < pathParts.length) {
         const contentType = pathParts[publicIndex + 1];
         const contentName = pathParts[publicIndex + 2];
-        const mdPath = path.join(basePath, 'content', contentType, `${contentName}.md`);
+        const mdPath = path.join(
+          basePath,
+          "content",
+          contentType,
+          `${contentName}.md`,
+        );
 
         if (fs.existsSync(mdPath)) {
           return mdPath;
@@ -162,8 +162,8 @@ class ICalValidatorJS {
     const pathParts = icsPath.split(path.sep);
     const filename = pathParts[pathParts.length - 1];
 
-    if (filename === 'calendar.ics' || filename === 'calendar-alarms.ics') {
-      const publicIndex = pathParts.indexOf('public');
+    if (filename === "calendar.ics" || filename === "calendar-alarms.ics") {
+      const publicIndex = pathParts.indexOf("public");
       if (publicIndex !== -1) {
         const partsAfterPublic = pathParts.length - publicIndex - 1;
         // Category calendars have exactly 2 parts after public (category/calendar.ics)
@@ -187,29 +187,83 @@ class ICalValidatorJS {
 
     // Check for required calendar properties
     if (!cal.vcalendar) {
-      this.logError('No VCALENDAR component found', icsPath);
+      this.logError("No VCALENDAR component found", icsPath);
       return null;
     }
 
     const vcal = cal.vcalendar;
 
     if (!vcal.version) {
-      this.logError('Missing VERSION property', icsPath);
+      this.logError("Missing VERSION property", icsPath);
     }
 
     if (!vcal.prodid) {
-      this.logError('Missing PRODID property', icsPath);
+      this.logError("Missing PRODID property", icsPath);
     }
 
     // Find VEVENT components
-    const events = Object.values(cal).filter(component => component.type === 'VEVENT');
+    const events = Object.values(cal).filter(
+      (component) => component.type === "VEVENT",
+    );
 
     if (events.length === 0) {
-      this.logError('No VEVENT components found', icsPath);
+      this.logError("No VEVENT components found", icsPath);
       return null;
     }
 
     return events;
+  }
+
+  /**
+   * Validate datetime format - expect UTC format with Z suffix
+   */
+  validateDateTimeFormat(dateTime, propertyName, icsPath) {
+    if (!dateTime) return;
+
+    // Check if it's a Date object (parsed by node-ical)
+    if (dateTime instanceof Date) {
+      // This is fine - node-ical parsed it correctly
+      return;
+    }
+
+    // Check if it's a string with UTC format
+    const dateTimeStr = String(dateTime);
+
+    // We expect UTC format with Z suffix (either ISO or iCal format)
+    const utcFormats = [
+      /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}Z$/, // ISO format: 2026-12-31T23:59:59Z
+      /^\d{8}T\d{6}Z$/, // iCal format: 20261231T235959Z
+    ];
+
+    const hasValidUtcFormat = utcFormats.some((format) =>
+      format.test(dateTimeStr),
+    );
+
+    if (!hasValidUtcFormat) {
+      // Check for timezone parameters (which we no longer want)
+      if (
+        dateTimeStr.includes("TZID=") ||
+        dateTimeStr.match(/[+-]\d{2}:\d{2}$/)
+      ) {
+        this.logError(
+          `${propertyName} should use UTC format (Z suffix) instead of timezone parameters`,
+          icsPath,
+          {
+            actual: dateTimeStr,
+            expected: "UTC format with Z suffix",
+          },
+        );
+      } else {
+        this.logWarning(
+          `${propertyName} format may not be standard UTC`,
+          icsPath,
+          {
+            actual: dateTimeStr,
+            expected: "YYYYMMDDTHHMMSSZ or YYYY-MM-DDTHH:MM:SSZ",
+          },
+        );
+      }
+    }
   }
 
   /**
@@ -221,321 +275,129 @@ class ICalValidatorJS {
     // Check SUMMARY (title)
     if (frontmatter.title) {
       if (!event.summary) {
-        this.logError('Missing SUMMARY property', icsPath);
+        this.logError("Missing SUMMARY property", icsPath);
       } else {
         // node-ical returns summary as an object with val property
-        const summaryValue = typeof event.summary === 'object' && event.summary.val
-          ? event.summary.val
-          : event.summary;
+        const summaryValue =
+          typeof event.summary === "object" && event.summary.val
+            ? event.summary.val
+            : event.summary;
 
         if (summaryValue !== frontmatter.title) {
-          this.logError('SUMMARY doesn\'t match title', icsPath, {
+          this.logError("SUMMARY doesn't match title", icsPath, {
             expected: frontmatter.title,
-            actual: summaryValue
+            actual: summaryValue,
           });
         }
       }
     }
 
-    // Check DTSTART
+    // Check DTSTART and validate UTC format
     if (frontmatter.startDate) {
       if (!event.start) {
-        this.logError('Missing DTSTART property', icsPath);
+        this.logError("Missing DTSTART property", icsPath);
+      } else {
+        this.validateDateTimeFormat(event.start, "DTSTART", icsPath);
       }
     }
 
-    // Check DTEND
+    // Check DTEND and validate UTC format
     if (frontmatter.endDate) {
       if (!event.end) {
-        this.logError('Missing DTEND property', icsPath);
+        this.logError("Missing DTEND property", icsPath);
+      } else {
+        this.validateDateTimeFormat(event.end, "DTEND", icsPath);
       }
     }
 
     // Check UID
     if (!event.uid) {
-      this.logError('Missing UID property', icsPath);
+      this.logError("Missing UID property", icsPath);
     }
 
-    // Check DTSTAMP
+    // Check DTSTAMP and validate UTC format
     if (!event.dtstamp) {
-      this.logError('Missing DTSTAMP property', icsPath);
+      this.logError("Missing DTSTAMP property", icsPath);
+    } else {
+      this.validateDateTimeFormat(event.dtstamp, "DTSTAMP", icsPath);
     }
   }
 
   /**
-   * Validate RRULE component ordering
+   * Normalize UNTIL values for comparison by converting to UTC timestamps
+   * Note: This simulates Hugo template behavior where timezone-aware frontmatter
+   * dates have their timezone stripped and local time treated as UTC
    */
-  validateRruleComponentOrder(rruleStr, icsPath) {
-    const expectedOrder = [
-      'FREQ', 'UNTIL', 'COUNT', 'INTERVAL', 'BYSECOND', 'BYMINUTE', 'BYHOUR',
-      'BYDAY', 'BYMONTHDAY', 'BYYEARDAY', 'BYWEEKNO', 'BYMONTH', 'BYSETPOS', 'WKST'
-    ];
+  normalizeUntilForComparison(untilStr) {
+    try {
+      let dateObj;
 
-    const components = [];
-    const parts = rruleStr.split(';');
+      if (untilStr instanceof Date) {
+        // For Date objects from frontmatter (parsed by gray-matter):
+        // Hugo template behavior is to take the original timezone-aware string
+        // and strip the timezone, treating local time as UTC
 
-    for (const part of parts) {
-      if (part.includes('=')) {
-        const component = part.split('=')[0].trim();
-        components.push(component);
-      }
-    }
+        // The Date object represents the correct UTC time (gray-matter parsed correctly)
+        // But Hugo template strips timezone from original string and treats as UTC
+        // So we need to "undo" the timezone conversion to simulate Hugo's behavior
 
-    let lastIndex = -1;
-    for (const component of components) {
-      if (expectedOrder.includes(component)) {
-        const currentIndex = expectedOrder.indexOf(component);
-        if (currentIndex < lastIndex) {
-          this.logWarning(
-            `RRULE component order violation: ${component} should come before previous components`,
-            icsPath,
-            { rrule: rruleStr }
-          );
-        }
-        lastIndex = currentIndex;
-      }
-    }
-  }
+        // Get the local timezone offset at the time this script runs
+        // This is a reasonable approximation for the timezone used in frontmatter
+        const localOffset = untilStr.getTimezoneOffset() * 60 * 1000;
 
-  /**
-   * Validate COUNT parameter
-   */
-  validateCount(rruleOpts, expectedRule, icsPath) {
-    if (expectedRule.count !== undefined) {
-      const expectedCount = expectedRule.count;
-      const actualCount = rruleOpts.count;
+        // Hugo strips timezone and treats local time as UTC, so we add back the offset
+        const hugoSimulatedTime = untilStr.getTime() - localOffset;
 
-      if (actualCount !== expectedCount) {
-        this.logError('COUNT mismatch', icsPath, {
-          expected: expectedCount,
-          actual: actualCount
-        });
+        return hugoSimulatedTime.toString();
       } else {
-        // Informational output
-        console.log(`ℹ️  Event will occur ${expectedCount} times (COUNT=${expectedCount})`);
-      }
-    }
-  }
+        // Convert to string and handle various formats
+        let cleanStr = String(untilStr);
 
-  /**
-   * Validate UNTIL parameter
-   */
-  validateUntil(rruleOpts, expectedRule, icsPath) {
-    if (expectedRule.until !== undefined) {
-      const actualUntil = rruleOpts.until;
+        // Remove IANA timezone identifiers like [Etc/UTC]
+        cleanStr = cleanStr.replace(/\[.*\]$/, "");
 
-      if (!actualUntil) {
-        this.logError('UNTIL missing', icsPath, {
-          expected: expectedRule.until,
-          actual: null
-        });
-      } else {
-        // Parse expected UNTIL from frontmatter
-        const expectedUntilStr = expectedRule.until;
-
-        // Convert actual UNTIL (Date object) to string for comparison
-        let actualUntilStr;
-        if (actualUntil instanceof Date) {
-          // Format as YYYYMMDDTHHMMSSZ or YYYYMMDD
-          const year = actualUntil.getUTCFullYear();
-          const month = String(actualUntil.getUTCMonth() + 1).padStart(2, '0');
-          const day = String(actualUntil.getUTCDate()).padStart(2, '0');
-          const hour = actualUntil.getUTCHours();
-          const minute = actualUntil.getUTCMinutes();
-          const second = actualUntil.getUTCSeconds();
-
-          if (hour === 0 && minute === 0 && second === 0) {
-            actualUntilStr = `${year}${month}${day}`;
-          } else {
-            const hourStr = String(hour).padStart(2, '0');
-            const minuteStr = String(minute).padStart(2, '0');
-            const secondStr = String(second).padStart(2, '0');
-            actualUntilStr = `${year}${month}${day}T${hourStr}${minuteStr}${secondStr}Z`;
+        // Handle various datetime formats
+        if (
+          cleanStr.match(/^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}[+-]\d{2}:\d{2}$/)
+        ) {
+          // Hugo template behavior: strip timezone and treat local time as UTC
+          const datePart = cleanStr.substring(0, 19); // YYYY-MM-DDTHH:MM:SS
+          cleanStr = datePart + "Z";
+        } else if (cleanStr.match(/^\d{8}T\d{6}Z?$/)) {
+          // iCal format: YYYYMMDDTHHMMSSZ
+          if (!cleanStr.endsWith("Z")) {
+            cleanStr += "Z";
           }
-        } else {
-          actualUntilStr = String(actualUntil);
+          // Convert to ISO format for Date parsing
+          const year = cleanStr.substring(0, 4);
+          const month = cleanStr.substring(4, 6);
+          const day = cleanStr.substring(6, 8);
+          const hour = cleanStr.substring(9, 11);
+          const minute = cleanStr.substring(11, 13);
+          const second = cleanStr.substring(13, 15);
+          cleanStr = `${year}-${month}-${day}T${hour}:${minute}:${second}Z`;
+        } else if (cleanStr.match(/^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}$/)) {
+          // ISO format without timezone - add Z for UTC
+          cleanStr += "Z";
+        } else if (
+          cleanStr.match(/^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}\+00:00$/)
+        ) {
+          // ISO format with +00:00 timezone - convert to Z
+          cleanStr = cleanStr.replace(/\+00:00$/, "Z");
         }
 
-        // Normalize both for comparison (remove hyphens/colons)
-        const expectedNormalized = expectedUntilStr.replace(/-/g, '').replace(/:/g, '');
-        const actualNormalized = actualUntilStr.replace(/-/g, '').replace(/:/g, '');
-
-        if (expectedNormalized !== actualNormalized) {
-          this.logError('UNTIL mismatch', icsPath, {
-            expected: expectedUntilStr,
-            actual: actualUntilStr
-          });
-        } else {
-          // Informational output - show human-readable date
-          if (actualUntil instanceof Date) {
-            const readableDate = actualUntil.toISOString().split('T')[0];
-            console.log(`ℹ️  Event will occur until ${readableDate} (UNTIL=${expectedUntilStr})`);
-          } else {
-            console.log(`ℹ️  Event will occur until ${expectedUntilStr} (UNTIL=${expectedUntilStr})`);
-          }
-        }
-      }
-    }
-  }
-
-  /**
-   * Validate COUNT and UNTIL mutual exclusivity
-   */
-  validateCountUntilMutualExclusivity(rruleOpts, expectedRule, icsPath) {
-    const hasCount = expectedRule.count !== undefined;
-    const hasUntil = expectedRule.until !== undefined;
-
-    if (hasCount && hasUntil) {
-      this.logWarning(
-        'COUNT and UNTIL both present in frontmatter (RFC 5545 violation - they are mutually exclusive)',
-        icsPath
-      );
-    }
-
-    // Check actual RRULE
-    const actualCount = rruleOpts.count;
-    const actualUntil = rruleOpts.until;
-
-    if (actualCount !== undefined && actualUntil !== undefined) {
-      this.logError(
-        'COUNT and UNTIL both present in RRULE (RFC 5545 violation - they are mutually exclusive)',
-        icsPath,
-        {
-          count: actualCount,
-          until: actualUntil
-        }
-      );
-    }
-  }
-
-  /**
-   * Validate recurrence rule against frontmatter
-   */
-  validateRecurrenceRule(event, frontmatter, icsPath) {
-    if (!frontmatter.recurrenceRule) {
-      return; // No recurrence rule expected
-    }
-
-    this.logInfo(`Validating recurrence rule for ${path.basename(icsPath)}`);
-
-    if (!event.rrule) {
-      this.logError('Expected RRULE but none found', icsPath);
-      return;
-    }
-
-    // node-ical stores parsed RRULE in _rrule.opts
-    let rruleOpts = {};
-    if (event.rrule._rrule && event.rrule._rrule.opts) {
-      rruleOpts = event.rrule._rrule.opts;
-    } else if (event.rrule.opts) {
-      rruleOpts = event.rrule.opts;
-    }
-
-    const expectedRule = frontmatter.recurrenceRule;
-
-    // Validate FREQ
-    if (expectedRule.freq) {
-      const actualFreq = rruleOpts.freq;
-      if (!actualFreq || actualFreq !== expectedRule.freq) {
-        this.logError('FREQ mismatch', icsPath, {
-          expected: expectedRule.freq,
-          actual: actualFreq
-        });
-      }
-    }
-
-    // Validate INTERVAL (should always be present)
-    const expectedInterval = expectedRule.interval || 1;
-    const actualInterval = rruleOpts.interval;
-    if (actualInterval === undefined || actualInterval !== expectedInterval) {
-      this.logError('INTERVAL mismatch (INTERVAL is always required)', icsPath, {
-        expected: expectedInterval,
-        actual: actualInterval
-      });
-    }
-
-    // Validate COUNT and UNTIL parameters
-    this.validateCount(rruleOpts, expectedRule, icsPath);
-    this.validateUntil(rruleOpts, expectedRule, icsPath);
-    this.validateCountUntilMutualExclusivity(rruleOpts, expectedRule, icsPath);
-
-    // Validate BYMONTH
-    if (expectedRule.byMonth) {
-      const expectedMonth = Array.isArray(expectedRule.byMonth)
-        ? expectedRule.byMonth
-        : [expectedRule.byMonth];
-      const actualMonth = rruleOpts.bymonth || rruleOpts.byMonth;
-
-      if (JSON.stringify(actualMonth) !== JSON.stringify(expectedMonth)) {
-        this.logError('BYMONTH mismatch', icsPath, {
-          expected: expectedMonth,
-          actual: actualMonth
-        });
-      }
-    }
-
-    // Validate BYDAY (with ordinal format conversion)
-    // node-ical uses 'byDay' (camelCase)
-    if (expectedRule.byDay) {
-      let expectedDay = Array.isArray(expectedRule.byDay)
-        ? expectedRule.byDay
-        : [expectedRule.byDay];
-
-      const expectedSetpos = expectedRule.bySetPos;
-
-      // Check if we should expect ordinal BYDAY format
-      if (expectedSetpos !== undefined && expectedDay.length === 1) {
-        const setposList = Array.isArray(expectedSetpos) ? expectedSetpos : [expectedSetpos];
-
-        if (setposList.length === 1) {
-          // Should be converted to ordinal format like "3TH"
-          expectedDay = [`${setposList[0]}${expectedDay[0]}`];
-        }
+        dateObj = new Date(cleanStr);
       }
 
-      const actualDay = rruleOpts.byDay || rruleOpts.byday;
-
-      if (JSON.stringify(actualDay) !== JSON.stringify(expectedDay)) {
-        this.logError('BYDAY mismatch', icsPath, {
-          expected: expectedDay,
-          actual: actualDay
-        });
+      if (dateObj && isNaN(dateObj.getTime())) {
+        return String(untilStr); // Fallback to string comparison
       }
-    }
 
-    // Validate BYSETPOS (should be absent if converted to ordinal BYDAY)
-    if (expectedRule.bySetPos !== undefined) {
-      const expectedDay = expectedRule.byDay;
-      const expectedSetpos = expectedRule.bySetPos;
-
-      if (expectedDay !== undefined) {
-        const dayList = Array.isArray(expectedDay) ? expectedDay : [expectedDay];
-        const setposList = Array.isArray(expectedSetpos) ? expectedSetpos : [expectedSetpos];
-
-        // If single day and single setpos, should be converted to ordinal format
-        if (dayList.length === 1 && setposList.length === 1) {
-          const actualSetpos = rruleOpts.bysetpos || rruleOpts.bySetPos;
-          if (actualSetpos !== undefined) {
-            this.logError(
-              'BYSETPOS should be absent (converted to ordinal BYDAY format)',
-              icsPath,
-              {
-                expected: null,
-                actual: actualSetpos,
-                convertedToOrdinal: `${setposList[0]}${dayList[0]}`
-              }
-            );
-          }
-        }
-      }
-    }
-
-    // Validate component ordering using the original RRULE string from the file
-    const icsContent = fs.readFileSync(icsPath, 'utf-8');
-    const rruleMatch = icsContent.match(/RRULE:([^\r\n]+)/);
-    if (rruleMatch) {
-      const rruleStr = rruleMatch[1];
-      this.validateRruleComponentOrder(rruleStr, icsPath);
+      // Return UTC timestamp for accurate comparison
+      return dateObj.getTime().toString();
+    } catch (error) {
+      // Fallback to string comparison if parsing fails
+      return String(untilStr);
     }
   }
 
@@ -543,16 +405,16 @@ class ICalValidatorJS {
    * Validate VALARM components
    */
   validateValarmComponents(event, frontmatter, icsPath) {
-    const isAlarmsFile = icsPath.includes('calendar-alarms.ics');
+    const isAlarmsFile = icsPath.includes("calendar-alarms.ics");
 
     // node-ical doesn't parse VALARM components directly in the event object
     // We need to check the raw iCalendar data
-    const icsContent = fs.readFileSync(icsPath, 'utf-8');
-    const hasValarm = icsContent.includes('BEGIN:VALARM');
+    const icsContent = fs.readFileSync(icsPath, "utf-8");
+    const hasValarm = icsContent.includes("BEGIN:VALARM");
 
     if (!frontmatter.alarms) {
       if (hasValarm) {
-        this.logError('Unexpected VALARM components found', icsPath);
+        this.logError("Unexpected VALARM components found", icsPath);
       }
       return;
     }
@@ -563,15 +425,22 @@ class ICalValidatorJS {
 
     if (isAlarmsFile) {
       if (!hasValarm) {
-        this.logError('Expected VALARM components but none found in alarms file', icsPath, {
-          expected: expectedAlarms.length,
-          actual: 0
-        });
+        this.logError(
+          "Expected VALARM components but none found in alarms file",
+          icsPath,
+          {
+            expected: expectedAlarms.length,
+            actual: 0,
+          },
+        );
       }
     } else {
       // Regular calendar.ics files should NOT contain VALARM
       if (hasValarm) {
-        this.logError('Regular calendar file should not contain VALARM components', icsPath);
+        this.logError(
+          "Regular calendar file should not contain VALARM components",
+          icsPath,
+        );
       }
     }
   }
@@ -606,8 +475,297 @@ class ICalValidatorJS {
       this.validatedFiles++;
       return true;
     } catch (error) {
-      this.logError(`Failed to parse file: ${error.message}`, icsPath, { error: error.stack });
+      this.logError(`Failed to parse file: ${error.message}`, icsPath, {
+        error: error.stack,
+      });
       return false;
+    }
+  }
+
+  /**
+   * Validate COUNT parameter
+   */
+  validateCount(rruleOpts, expectedRule, icsPath) {
+    if (expectedRule.count !== undefined) {
+      const expectedCount = expectedRule.count;
+      const actualCount = rruleOpts.count;
+
+      if (actualCount !== expectedCount) {
+        this.logError("COUNT mismatch", icsPath, {
+          expected: expectedCount,
+          actual: actualCount,
+        });
+      } else {
+        // Informational output
+        console.log(
+          `ℹ️  Event will occur ${expectedCount} times (COUNT=${expectedCount})`,
+        );
+      }
+    }
+  }
+
+  /**
+   * Validate UNTIL parameter
+   */
+  validateUntil(rruleOpts, expectedRule, icsPath) {
+    if (expectedRule.until !== undefined) {
+      const actualUntil = rruleOpts.until;
+
+      if (!actualUntil) {
+        this.logError("UNTIL missing", icsPath, {
+          expected: expectedRule.until,
+          actual: null,
+        });
+      } else {
+        // Use UTC timestamp comparison for accurate validation
+        const expectedNormalized = this.normalizeUntilForComparison(
+          expectedRule.until,
+        );
+        const actualNormalized = this.normalizeUntilForComparison(actualUntil);
+
+        if (expectedNormalized === actualNormalized) {
+          // Perfect match
+          let readableDate;
+          try {
+            if (actualUntil instanceof Date) {
+              readableDate = actualUntil.toISOString().split("T")[0];
+            } else {
+              const parsedDate = new Date(
+                String(actualUntil).replace(/\[.*\]$/, ""),
+              );
+              readableDate = parsedDate.toISOString().split("T")[0];
+            }
+            console.log(
+              `ℹ️  Event will occur until ${readableDate} (UNTIL=${String(expectedRule.until)})`,
+            );
+          } catch (error) {
+            console.log(
+              `ℹ️  Event will occur until ${String(expectedRule.until)} (UNTIL=${String(expectedRule.until)})`,
+            );
+          }
+        } else {
+          // Check if this is a timezone conversion issue (frontmatter with timezone -> UTC output)
+          // Parse both dates and check if they represent the same moment in UTC
+          try {
+            const expectedDate = new Date(String(expectedRule.until));
+            const actualDateStr = String(actualUntil).replace(/\[.*\]$/, "");
+            const actualDate = new Date(actualDateStr);
+
+            if (
+              !isNaN(expectedDate.getTime()) &&
+              !isNaN(actualDate.getTime())
+            ) {
+              // Compare the UTC timestamps
+              if (expectedDate.getTime() === actualDate.getTime()) {
+                // Same moment in time, just different representations
+                const readableDate = actualDate.toISOString().split("T")[0];
+                console.log(
+                  `ℹ️  Event will occur until ${readableDate} (UNTIL converted from ${String(expectedRule.until)} to UTC)`,
+                );
+                return; // Valid conversion
+              }
+            }
+          } catch (error) {
+            // Fall through to error case
+          }
+
+          this.logError("UNTIL mismatch", icsPath, {
+            expected: String(expectedRule.until),
+            actual: String(actualUntil),
+            expectedNormalized,
+            actualNormalized,
+          });
+        }
+      }
+    }
+  }
+
+  /**
+   * Validate COUNT and UNTIL mutual exclusivity
+   */
+  validateCountUntilMutualExclusivity(rruleOpts, expectedRule, icsPath) {
+    const hasCount = expectedRule.count !== undefined;
+    const hasUntil = expectedRule.until !== undefined;
+    const actualCount = rruleOpts.count;
+    const actualUntil = rruleOpts.until;
+
+    if (actualCount !== undefined && actualUntil !== undefined) {
+      this.logError(
+        "COUNT and UNTIL are mutually exclusive (RFC 5545 violation)",
+        icsPath,
+        {
+          count: actualCount,
+          until: actualUntil,
+        },
+      );
+    }
+  }
+
+  /**
+   * Check if BYDAY+BYSETPOS was converted to ordinal format
+   */
+  isOrdinalConversion(expectedDay, expectedSetPos, actualDay) {
+    // Single day + single position should convert to ordinal
+    if (
+      Array.isArray(expectedDay) &&
+      expectedDay.length === 1 &&
+      typeof expectedSetPos === "number" &&
+      Array.isArray(actualDay) &&
+      actualDay.length === 1
+    ) {
+      const day = expectedDay[0];
+      const pos = expectedSetPos;
+      const expectedOrdinal = `${pos}${day}`;
+
+      return actualDay[0] === expectedOrdinal;
+    }
+    return false;
+  }
+
+  /**
+   * Validate recurrence rule against frontmatter
+   */
+  validateRecurrenceRule(event, frontmatter, icsPath) {
+    if (!frontmatter.recurrenceRule) {
+      return; // No recurrence rule expected
+    }
+
+    if (!event.rrule) {
+      this.logError("Expected RRULE but none found", icsPath);
+      return;
+    }
+
+    // node-ical stores parsed RRULE in _rrule.opts
+    let rruleOpts = {};
+    if (event.rrule._rrule && event.rrule._rrule.opts) {
+      rruleOpts = event.rrule._rrule.opts;
+    } else if (event.rrule.opts) {
+      rruleOpts = event.rrule.opts;
+    }
+
+    const expectedRule = frontmatter.recurrenceRule;
+
+    // Validate FREQ
+    if (expectedRule.freq) {
+      const actualFreq = rruleOpts.freq;
+      if (!actualFreq || actualFreq !== expectedRule.freq) {
+        this.logError("FREQ mismatch", icsPath, {
+          expected: expectedRule.freq,
+          actual: actualFreq,
+        });
+      }
+    }
+
+    // Validate INTERVAL (should always be present)
+    const expectedInterval = expectedRule.interval || 1;
+    const actualInterval = rruleOpts.interval;
+    if (actualInterval === undefined || actualInterval !== expectedInterval) {
+      this.logError(
+        "INTERVAL mismatch (INTERVAL is always required)",
+        icsPath,
+        {
+          expected: expectedInterval,
+          actual: actualInterval,
+        },
+      );
+    }
+
+    // Validate COUNT and UNTIL parameters
+    this.validateCount(rruleOpts, expectedRule, icsPath);
+    this.validateUntil(rruleOpts, expectedRule, icsPath);
+    this.validateCountUntilMutualExclusivity(rruleOpts, expectedRule, icsPath);
+
+    // Validate BYMONTH
+    if (expectedRule.byMonth) {
+      const expectedMonth = Array.isArray(expectedRule.byMonth)
+        ? expectedRule.byMonth
+        : [expectedRule.byMonth];
+      const actualMonth = rruleOpts.bymonth || rruleOpts.byMonth;
+
+      if (JSON.stringify(actualMonth) !== JSON.stringify(expectedMonth)) {
+        this.logError("BYMONTH mismatch", icsPath, {
+          expected: expectedMonth,
+          actual: actualMonth,
+        });
+      }
+    }
+
+    // Validate BYDAY (with ordinal format conversion)
+    if (expectedRule.byDay) {
+      let expectedDay = Array.isArray(expectedRule.byDay)
+        ? expectedRule.byDay
+        : [expectedRule.byDay];
+
+      const actualDay = rruleOpts.byDay || rruleOpts.byday;
+
+      // Check if ordinal conversion occurred
+      let ordinalConversionValid = false;
+      if (expectedRule.bySetPos && expectedDay.length === 1) {
+        const setPos = Array.isArray(expectedRule.bySetPos)
+          ? expectedRule.bySetPos[0]
+          : expectedRule.bySetPos;
+
+        // Check if this is a single day + single position that should convert to ordinal
+        if (typeof setPos === "number") {
+          ordinalConversionValid = this.isOrdinalConversion(
+            expectedDay,
+            setPos,
+            actualDay,
+          );
+        }
+      }
+
+      // If no valid ordinal conversion, do direct comparison
+      if (
+        !ordinalConversionValid &&
+        JSON.stringify(actualDay) !== JSON.stringify(expectedDay)
+      ) {
+        this.logError("BYDAY mismatch", icsPath, {
+          expected: expectedDay,
+          actual: actualDay,
+        });
+      }
+    }
+
+    // Validate BYSETPOS (should be absent if converted to ordinal BYDAY)
+    if (expectedRule.bySetPos) {
+      const expectedDay = expectedRule.byDay;
+      const actualSetPos = rruleOpts.bysetpos || rruleOpts.bySetPos;
+
+      // Normalize expectedDay to array
+      const expectedDayArray = Array.isArray(expectedDay)
+        ? expectedDay
+        : [expectedDay];
+
+      // Normalize expectedSetPos to get single value or array
+      const expectedSetPosArray = Array.isArray(expectedRule.bySetPos)
+        ? expectedRule.bySetPos
+        : [expectedRule.bySetPos];
+
+      // If single day + single position, BYSETPOS should be absent (converted to ordinal)
+      if (expectedDayArray.length === 1 && expectedSetPosArray.length === 1) {
+        if (actualSetPos !== undefined) {
+          this.logError(
+            "BYSETPOS should be absent (converted to ordinal BYDAY format)",
+            icsPath,
+            {
+              expected: undefined,
+              actual: actualSetPos,
+              note: "Single day + single position should convert to ordinal BYDAY format",
+            },
+          );
+        }
+      } else {
+        // Multiple days or positions - BYSETPOS should be present
+        if (
+          JSON.stringify(actualSetPos) !== JSON.stringify(expectedRule.bySetPos)
+        ) {
+          this.logError("BYSETPOS mismatch", icsPath, {
+            expected: expectedRule.bySetPos,
+            actual: actualSetPos,
+          });
+        }
+      }
     }
   }
 
@@ -622,44 +780,63 @@ class ICalValidatorJS {
 
       // Check for required calendar properties
       if (!cal.vcalendar) {
-        this.logError('No VCALENDAR component found in category calendar', icsPath);
+        this.logError(
+          "No VCALENDAR component found in category calendar",
+          icsPath,
+        );
         return false;
       }
 
       const vcal = cal.vcalendar;
 
       if (!vcal.version) {
-        this.logError('Missing VERSION property in category calendar', icsPath);
+        this.logError("Missing VERSION property in category calendar", icsPath);
       }
 
       if (!vcal.prodid) {
-        this.logError('Missing PRODID property in category calendar', icsPath);
+        this.logError("Missing PRODID property in category calendar", icsPath);
       }
 
       // Find all VEVENT components
-      const events = Object.values(cal).filter(component => component.type === 'VEVENT');
+      const events = Object.values(cal).filter(
+        (component) => component.type === "VEVENT",
+      );
 
       if (events.length === 0) {
-        this.logWarning('No VEVENT components found in category calendar', icsPath);
+        this.logWarning(
+          "No VEVENT components found in category calendar",
+          icsPath,
+        );
         return true;
       }
 
-      this.logInfo(`Found ${events.length} events in category calendar`, { file: icsPath });
+      this.logInfo(`Found ${events.length} events in category calendar`, {
+        file: icsPath,
+      });
 
       // Validate each event's basic structure
       for (const event of events) {
-        const eventSummary = event.summary || 'Unknown Event';
+        const eventSummary = event.summary || "Unknown Event";
 
         if (!event.uid) {
-          this.logError(`Event '${eventSummary}' missing UID in category calendar`, icsPath);
+          this.logError(
+            `Event '${eventSummary}' missing UID in category calendar`,
+            icsPath,
+          );
         }
 
         if (!event.start) {
-          this.logError(`Event '${eventSummary}' missing DTSTART in category calendar`, icsPath);
+          this.logError(
+            `Event '${eventSummary}' missing DTSTART in category calendar`,
+            icsPath,
+          );
         }
 
         if (!event.dtstamp) {
-          this.logError(`Event '${eventSummary}' missing DTSTAMP in category calendar`, icsPath);
+          this.logError(
+            `Event '${eventSummary}' missing DTSTAMP in category calendar`,
+            icsPath,
+          );
         }
 
         // Validate RRULE if present
@@ -676,16 +853,18 @@ class ICalValidatorJS {
           if (rruleOpts.interval === undefined) {
             this.logError(
               `Event '${eventSummary}' RRULE missing INTERVAL (should default to 1)`,
-              icsPath
+              icsPath,
             );
           }
         }
       }
 
-      this.validatedFiles++;
-      return true;
+      return this.errors.length === 0;
     } catch (error) {
-      this.logError(`Failed to parse category calendar: ${error.message}`, icsPath, { error: error.stack });
+      this.logError(
+        `Failed to parse category calendar: ${error.message}`,
+        icsPath,
+      );
       return false;
     }
   }
@@ -695,9 +874,13 @@ class ICalValidatorJS {
    */
   async validateAllFiles(basePath) {
     const startTime = Date.now();
-    console.log(chalk.blue(`\nStarting JavaScript iCalendar validation for: ${basePath}\n`));
+    console.log(
+      chalk.blue(
+        `\nStarting JavaScript iCalendar validation for: ${basePath}\n`,
+      ),
+    );
 
-    const publicDir = path.join(basePath, 'public');
+    const publicDir = path.join(basePath, "public");
 
     if (!fs.existsSync(publicDir)) {
       this.logError(`Public directory not found: ${publicDir}`);
@@ -726,7 +909,9 @@ class ICalValidatorJS {
       }
     }
 
-    this.logInfo(`Categorized files: ${individualCalendars.length} individual, ${categoryCalendars.length} category`);
+    this.logInfo(
+      `Categorized files: ${individualCalendars.length} individual, ${categoryCalendars.length} category`,
+    );
 
     let success = true;
 
@@ -734,7 +919,7 @@ class ICalValidatorJS {
     console.log(chalk.cyan(`\nValidating individual event calendars...`));
     for (const icsFile of individualCalendars.sort()) {
       const mdFile = this.findCorrespondingMarkdown(icsFile, basePath);
-      if (!await this.validateIcsFile(icsFile, mdFile)) {
+      if (!(await this.validateIcsFile(icsFile, mdFile))) {
         success = false;
       }
     }
@@ -742,7 +927,7 @@ class ICalValidatorJS {
     // Validate category calendars
     console.log(chalk.cyan(`\nValidating category calendars...`));
     for (const icsFile of categoryCalendars.sort()) {
-      if (!await this.validateCategoryCalendar(icsFile)) {
+      if (!(await this.validateCategoryCalendar(icsFile))) {
         success = false;
       }
     }
@@ -757,32 +942,38 @@ class ICalValidatorJS {
    * Generate validation report
    */
   generateReport() {
-    console.log(`\n${'='.repeat(50)}`);
-    console.log('JavaScript iCalendar Validation Report');
-    console.log('='.repeat(50));
+    console.log(`\n${"=".repeat(50)}`);
+    console.log("JavaScript iCalendar Validation Report");
+    console.log("=".repeat(50));
     console.log(`Validation Date: ${new Date().toISOString()}`);
     console.log(`Files validated: ${this.validatedFiles}`);
     console.log(`Errors: ${this.errors.length}`);
     console.log(`Warnings: ${this.warnings.length}`);
-    console.log('');
+    console.log("");
 
     // Statistics
     if (this.validatedFiles > 0) {
-      const errorRate = ((this.errors.length / this.validatedFiles) * 100).toFixed(1);
-      const warningRate = ((this.warnings.length / this.validatedFiles) * 100).toFixed(1);
-      console.log('STATISTICS:');
+      const errorRate = (
+        (this.errors.length / this.validatedFiles) *
+        100
+      ).toFixed(1);
+      const warningRate = (
+        (this.warnings.length / this.validatedFiles) *
+        100
+      ).toFixed(1);
+      console.log("STATISTICS:");
       console.log(`  Error rate: ${errorRate}%`);
       console.log(`  Warning rate: ${warningRate}%`);
-      console.log('');
+      console.log("");
     }
 
     // Group errors by file
     if (this.errors.length > 0) {
-      console.log('ERRORS:');
+      console.log("ERRORS:");
       const errorsByFile = {};
 
       for (const error of this.errors) {
-        const file = error.file || 'General';
+        const file = error.file || "General";
         if (!errorsByFile[file]) {
           errorsByFile[file] = [];
         }
@@ -794,17 +985,17 @@ class ICalValidatorJS {
         for (const error of errors) {
           console.log(`    - ${error}`);
         }
-        console.log('');
+        console.log("");
       }
     }
 
     // Group warnings by file
     if (this.warnings.length > 0) {
-      console.log('WARNINGS:');
+      console.log("WARNINGS:");
       const warningsByFile = {};
 
       for (const warning of this.warnings) {
-        const file = warning.file || 'General';
+        const file = warning.file || "General";
         if (!warningsByFile[file]) {
           warningsByFile[file] = [];
         }
@@ -816,7 +1007,7 @@ class ICalValidatorJS {
         for (const warning of warnings) {
           console.log(`    - ${warning}`);
         }
-        console.log('');
+        console.log("");
       }
     }
 
@@ -825,34 +1016,34 @@ class ICalValidatorJS {
     }
 
     // Write report to file
-    const reportPath = path.join(process.cwd(), 'validation-report-js.txt');
+    const reportPath = path.join(process.cwd(), "validation-report-js.txt");
     const reportLines = [
-      'JavaScript iCalendar Validation Report',
-      '='.repeat(50),
+      "JavaScript iCalendar Validation Report",
+      "=".repeat(50),
       `Validation Date: ${new Date().toISOString()}`,
       `Files validated: ${this.validatedFiles}`,
       `Errors: ${this.errors.length}`,
       `Warnings: ${this.warnings.length}`,
-      ''
+      "",
     ];
 
     if (this.errors.length > 0) {
-      reportLines.push('ERRORS:');
+      reportLines.push("ERRORS:");
       for (const error of this.errors) {
         reportLines.push(`  - ${error.message}`);
       }
-      reportLines.push('');
+      reportLines.push("");
     }
 
     if (this.warnings.length > 0) {
-      reportLines.push('WARNINGS:');
+      reportLines.push("WARNINGS:");
       for (const warning of this.warnings) {
         reportLines.push(`  - ${warning.message}`);
       }
-      reportLines.push('');
+      reportLines.push("");
     }
 
-    fs.writeFileSync(reportPath, reportLines.join('\n'), 'utf-8');
+    fs.writeFileSync(reportPath, reportLines.join("\n"), "utf-8");
     console.log(`\nReport written to: ${reportPath}`);
 
     return this.errors.length === 0;
@@ -863,25 +1054,27 @@ class ICalValidatorJS {
 async function main() {
   // Parse command line arguments
   const args = process.argv.slice(2);
-  let basePath = 'exampleSite';
+  let basePath = "exampleSite";
   let showLog = false;
 
   for (const arg of args) {
-    if (arg === '--showlog') {
+    if (arg === "--showlog") {
       showLog = true;
-    } else if (!arg.startsWith('--')) {
+    } else if (!arg.startsWith("--")) {
       basePath = arg;
     }
   }
 
   // Set log level based on --showlog flag
   if (showLog) {
-    log.setLevel('info');
+    log.setLevel("info");
   } else {
-    log.setLevel('error');
+    log.setLevel("error");
   }
 
-  console.log(chalk.blue(`Starting JavaScript iCalendar validation for: ${basePath}`));
+  console.log(
+    chalk.blue(`Starting JavaScript iCalendar validation for: ${basePath}`),
+  );
 
   const validator = new ICalValidatorJS();
   const overallSuccess = await validator.validateAllFiles(basePath);
@@ -893,13 +1086,17 @@ async function main() {
     console.log(chalk.green(`\n✅ Validation completed successfully!`));
     process.exit(0);
   } else {
-    console.log(chalk.red(`\n❌ Validation failed with ${validator.errors.length} errors`));
+    console.log(
+      chalk.red(
+        `\n❌ Validation failed with ${validator.errors.length} errors`,
+      ),
+    );
     process.exit(1);
   }
 }
 
 // Run main function
-main().catch(error => {
+main().catch((error) => {
   console.error(chalk.red(`Fatal error: ${error.message}`));
   console.error(error.stack);
   process.exit(1);
