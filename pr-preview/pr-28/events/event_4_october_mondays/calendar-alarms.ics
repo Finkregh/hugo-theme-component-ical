@@ -4,7 +4,7 @@ PRODID:-//Hugo Calendar Templates//Event Template//EN
 CALSCALE:GREGORIAN
 METHOD:PUBLISH
 UID:b7dfa98c93aa357a06dbd2088bb3a273
-LAST-MODIFIED:20260419T163813Z
+LAST-MODIFIED:20260419T174804Z
 URL:https://finkregh.github.io/hugo-theme-component-ical/pr-preview/pr-28/events/event_4_october_mondays/
 REFRESH-INTERVAL;VALUE=DURATION:P1W
 SOURCE;VALUE=URI:https://finkregh.github.io/hugo-theme-component-ical/pr-preview/pr-28/events/event_4_october_mondays/calendar.ics
@@ -19,7 +19,7 @@ UID:b7dfa98c93aa357a06dbd2088bb3a273
 DTSTART;VALUE=DATE-TIME:20241007T100000Z
 CLASS:PUBLIC
 DESCRIPTION;LANGUAGE=en-US:Special training sessions held on the first and second Monday of October each year. These intensive workshops cover advanced topics and best practices.\nFront matter:\ntitle: October Training Sessions startDate: 2024-10-07T10:00:00+02:00 endDate: 2024-10-07T12:00:00+02:00 where: "Training Room B\, Office Building" orga: "Training Department" orgaEmail: "training@example.org" # First and second Monday of October every year recurrenceRule: freq: "YEARLY" byMonth: 10 byDay: "MO" bySetPos: [1\, 2]
-LAST-MODIFIED:20260419T163813Z
+LAST-MODIFIED:20260419T174804Z
 LOCATION;LANGUAGE=en-US:
 STATUS:CONFIRMED
 SUMMARY;LANGUAGE=en-US:October Training Sessions

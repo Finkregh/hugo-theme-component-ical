@@ -339,5 +339,11 @@ Import happens via calendar_css.html!
 }
 
 .fc .fc-view-harness {
-  overflow: scroll;
+  overflow: visible;
+}
+
+/* Reset table display for FullCalendar - Blowfish theme sets global `table { display: block }`
+   which breaks FullCalendar's grid layout that relies on native table rendering */
+.fc table {
+  display: table;
 }

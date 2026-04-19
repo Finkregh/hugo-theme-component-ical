@@ -239,6 +239,10 @@
   color: var(--calendar-text-primary);
   font-size: var(--calendar-font-size-base);
   line-height: var(--calendar-line-height-normal);
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: var(--calendar-space-2);
 }
 
 .calendar-widget-section {
