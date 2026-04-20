@@ -4,7 +4,7 @@ PRODID:-//Hugo Calendar Templates//Event Template//EN
 CALSCALE:GREGORIAN
 METHOD:PUBLISH
 UID:bf5df994f9574976a920cf05140f65c2
-LAST-MODIFIED:20260419T223040Z
+LAST-MODIFIED:20260420T035559Z
 URL:https://finkregh.github.io/hugo-theme-component-ical/pr-preview/pr-28/events/event_11_with_alarm/
 REFRESH-INTERVAL;VALUE=DURATION:P1W
 SOURCE;VALUE=URI:https://finkregh.github.io/hugo-theme-component-ical/pr-preview/pr-28/events/event_11_with_alarm/calendar.ics
@@ -19,7 +19,7 @@ UID:bf5df994f9574976a920cf05140f65c2
 DTSTART;VALUE=DATE-TIME:20250115T130000Z
 CLASS:PUBLIC
 DESCRIPTION;LANGUAGE=en-US:This is a meeting that demonstrates VALARM functionality with multiple types of alarms:\nDisplay Alarm: Shows a popup 15 minutes before the meeting Email Alarm: Sends email reminders 1 hour before to attendees Audio Alarm: Plays a sound 5 minutes before the meeting The alarms are configured in the front matter and will be included in the generated iCalendar file.\nFront matter:\ntitle: "Meeting with Alarm Reminders" startDate: "2025-01-15T14:00:00" endDate: "2025-01-15T15:30:00" location: "Conference Room A" orga: "John Doe" orgaEmail: "john.doe@example.com" alarms: - action: "DISPLAY" trigger: duration: "-PT15M" description: text: "Meeting starts in 15 minutes" lang: "en" - action: "EMAIL" trigger: duration: "-PT1H" description: text: "Don't forget about the meeting in 1 hour" lang: "en" summary: text: "Meeting Reminder" lang: "en" attendee: - email: "john.doe@example.com" commonName: "John Doe" - email: "jane.smith@example.com" commonName: "Jane Smith" - action: "AUDIO" trigger: duration: "-PT5M" attach: uri: "file:///System/Library/Sounds/Glass.aiff" mediaType: "audio/aiff"
-LAST-MODIFIED:20260419T223040Z
+LAST-MODIFIED:20260420T035559Z
 LOCATION;LANGUAGE=en-US:Conference Room A
 STATUS:CONFIRMED
 SUMMARY;LANGUAGE=en-US:Meeting with Alarm Reminders
