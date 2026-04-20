@@ -79,6 +79,7 @@ document.addEventListener("DOMContentLoaded", function () {
       navLinks: true,
       editable: true,
       dayMaxEvents: true,
+      height: "auto",
     });
   }
 
