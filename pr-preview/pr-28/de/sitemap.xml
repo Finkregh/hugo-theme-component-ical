@@ -53,6 +53,58 @@
                 href="https://finkregh.github.io/hugo-theme-component-ical/pr-preview/pr-28/de/categories/"
                 />
   </url><url>
+    <loc>https://finkregh.github.io/hugo-theme-component-ical/pr-preview/pr-28/de/events/event_1/</loc>
+    <lastmod>2026-04-20T16:33:15+02:00</lastmod>
+    <xhtml:link
+                rel="alternate"
+                hreflang="en-us"
+                href="https://finkregh.github.io/hugo-theme-component-ical/pr-preview/pr-28/events/event_1/"
+                />
+    <xhtml:link
+                rel="alternate"
+                hreflang="de"
+                href="https://finkregh.github.io/hugo-theme-component-ical/pr-preview/pr-28/de/events/event_1/"
+                />
+  </url><url>
+    <loc>https://finkregh.github.io/hugo-theme-component-ical/pr-preview/pr-28/de/events/event_3_yearly_april/</loc>
+    <lastmod>2026-04-20T16:33:15+02:00</lastmod>
+    <xhtml:link
+                rel="alternate"
+                hreflang="en-us"
+                href="https://finkregh.github.io/hugo-theme-component-ical/pr-preview/pr-28/events/event_3_yearly_april/"
+                />
+    <xhtml:link
+                rel="alternate"
+                hreflang="de"
+                href="https://finkregh.github.io/hugo-theme-component-ical/pr-preview/pr-28/de/events/event_3_yearly_april/"
+                />
+  </url><url>
+    <loc>https://finkregh.github.io/hugo-theme-component-ical/pr-preview/pr-28/de/events/event_10_third_thursday/</loc>
+    <lastmod>2026-04-20T16:33:15+02:00</lastmod>
+    <xhtml:link
+                rel="alternate"
+                hreflang="en-us"
+                href="https://finkregh.github.io/hugo-theme-component-ical/pr-preview/pr-28/events/event_10_third_thursday/"
+                />
+    <xhtml:link
+                rel="alternate"
+                hreflang="de"
+                href="https://finkregh.github.io/hugo-theme-component-ical/pr-preview/pr-28/de/events/event_10_third_thursday/"
+                />
+  </url><url>
+    <loc>https://finkregh.github.io/hugo-theme-component-ical/pr-preview/pr-28/de/events/event_7_every_monday/</loc>
+    <lastmod>2026-04-20T16:33:15+02:00</lastmod>
+    <xhtml:link
+                rel="alternate"
+                hreflang="en-us"
+                href="https://finkregh.github.io/hugo-theme-component-ical/pr-preview/pr-28/events/event_7_every_monday/"
+                />
+    <xhtml:link
+                rel="alternate"
+                hreflang="de"
+                href="https://finkregh.github.io/hugo-theme-component-ical/pr-preview/pr-28/de/events/event_7_every_monday/"
+                />
+  </url><url>
     <loc>https://finkregh.github.io/hugo-theme-component-ical/pr-preview/pr-28/de/tags/</loc>
     <xhtml:link
                 rel="alternate"
@@ -63,6 +115,19 @@
                 rel="alternate"
                 hreflang="de"
                 href="https://finkregh.github.io/hugo-theme-component-ical/pr-preview/pr-28/de/tags/"
+                />
+  </url><url>
+    <loc>https://finkregh.github.io/hugo-theme-component-ical/pr-preview/pr-28/de/events/</loc>
+    <lastmod>2026-04-20T16:33:15+02:00</lastmod>
+    <xhtml:link
+                rel="alternate"
+                hreflang="en-us"
+                href="https://finkregh.github.io/hugo-theme-component-ical/pr-preview/pr-28/events/"
+                />
+    <xhtml:link
+                rel="alternate"
+                hreflang="de"
+                href="https://finkregh.github.io/hugo-theme-component-ical/pr-preview/pr-28/de/events/"
                 />
   </url>
 </urlset>

@@ -1,0 +1,32 @@
+BEGIN:VCALENDAR
+VERSION:2.0
+PRODID:-//Hugo Calendar Templates//Event Template//EN
+CALSCALE:GREGORIAN
+METHOD:PUBLISH
+UID:909e51d15b9104e7be547513581e8ef3
+LAST-MODIFIED:20260420T163315Z
+URL:https://finkregh.github.io/hugo-theme-component-ical/pr-preview/pr-28/de/events/event_1/
+REFRESH-INTERVAL;VALUE=DURATION:P1W
+SOURCE;VALUE=URI:https://finkregh.github.io/hugo-theme-component-ical/pr-preview/pr-28/de/events/event_1/calendar.ics
+COLOR:crimson
+NAME;LANGUAGE=de:Example Events
+DESCRIPTION;LANGUAGE=de:Example Events Calendar
+X-WR-CALNAME:Example Events
+X-WR-CALDESC:Example Events Calendar
+BEGIN:VEVENT
+DTSTAMP:00010101T000000Z
+UID:909e51d15b9104e7be547513581e8ef3
+DTSTART;VALUE=DATE-TIME:20200826T180000Z
+CLASS:PUBLIC
+DESCRIPTION;LANGUAGE=de:Bei dieser Veranstaltung stellen wir das Projekt zum ersten Mal vor.\nFront matter:\nstartDate: 2020-08-26T20:00:00+02:00 endDate: 2020-08-26T22:00:00+02:00 where: "Irgendwo im Internet" orga: "F. Nord" orgaEmail: "me@example.org"
+LAST-MODIFIED:20260420T163315Z
+LOCATION;LANGUAGE=de:
+STATUS:CONFIRMED
+SUMMARY;LANGUAGE=de:Erstvorstellung
+TRANSP:OPAQUE
+URL:https://finkregh.github.io/hugo-theme-component-ical/pr-preview/pr-28/de/events/event_1/
+DTEND;VALUE=DATE-TIME:20200826T200000Z
+CONTACT;LANGUAGE=de:F. Nord: me@example.org
+COLOR:crimson
+END:VEVENT
+END:VCALENDAR

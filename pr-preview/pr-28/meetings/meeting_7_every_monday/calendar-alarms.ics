@@ -4,7 +4,7 @@ PRODID:-//Hugo Calendar Templates//Event Template//EN
 CALSCALE:GREGORIAN
 METHOD:PUBLISH
 UID:31c771c4049911507f800303987880bd
-LAST-MODIFIED:20260420T035559Z
+LAST-MODIFIED:20260420T163315Z
 URL:https://finkregh.github.io/hugo-theme-component-ical/pr-preview/pr-28/meetings/meeting_7_every_monday/
 REFRESH-INTERVAL;VALUE=DURATION:P1W
 SOURCE;VALUE=URI:https://finkregh.github.io/hugo-theme-component-ical/pr-preview/pr-28/meetings/meeting_7_every_monday/calendar.ics
@@ -19,7 +19,7 @@ UID:31c771c4049911507f800303987880bd
 DTSTART;VALUE=DATE-TIME:20240108T090000Z
 CLASS:PUBLIC
 DESCRIPTION;LANGUAGE=en-US:Weekly team standup meeting every Monday morning. Team members share updates on their current work\, discuss blockers\, and plan for the week ahead.\nFront matter:\ntitle: Every Monday startDate: 2024-01-08T09:00:00+01:00 endDate: 2024-01-08T09:30:00+01:00 where: "Meeting Room 1\, Main Office" orga: "Scrum Master" orgaEmail: "scrummaster@example.org" # Every Monday recurrenceRule: freq: "WEEKLY" byDay: "MO"
-LAST-MODIFIED:20260420T035559Z
+LAST-MODIFIED:20260420T163315Z
 LOCATION;LANGUAGE=en-US:
 STATUS:CONFIRMED
 SUMMARY;LANGUAGE=en-US:Meeting Every Monday
