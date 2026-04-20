@@ -23766,7 +23766,8 @@
         weekNumbers: true,
         navLinks: true,
         editable: true,
-        dayMaxEvents: true
+        dayMaxEvents: true,
+        height: "auto"
       });
     }
     var calendar = new Calendar(calendarEl, calendarConfig);
