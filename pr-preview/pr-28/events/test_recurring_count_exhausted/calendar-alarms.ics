@@ -4,7 +4,7 @@ PRODID:-//Hugo Calendar Templates//Event Template//EN
 CALSCALE:GREGORIAN
 METHOD:PUBLISH
 UID:45610ba5a793b385c3edafabbaf2e939
-LAST-MODIFIED:20260420T220318Z
+LAST-MODIFIED:20260420T222350Z
 REFRESH-INTERVAL;VALUE=DURATION:P1W
 SOURCE;VALUE=URI:https://finkregh.github.io/hugo-theme-component-ical/pr-preview/pr-28/events/test_recurring_count_exhausted/calendar.ics
 COLOR:crimson
@@ -18,7 +18,7 @@ UID:45610ba5a793b385c3edafabbaf2e939
 DTSTART;VALUE=DATE-TIME:20250101T140000Z
 CLASS:PUBLIC
 DESCRIPTION;LANGUAGE=en-US:10-week series that started January 1\, 2025. Last occurrence was March 5\, 2025 (10 weeks later). Should appear in “Past Events” section.
-LAST-MODIFIED:20260420T220318Z
+LAST-MODIFIED:20260420T222350Z
 LOCATION;LANGUAGE=en-US:
 STATUS:CONFIRMED
 SUMMARY;LANGUAGE=en-US:Test: Recurring COUNT Exhausted

@@ -4,7 +4,7 @@ PRODID:-//Hugo Calendar Templates//Event Template//EN
 CALSCALE:GREGORIAN
 METHOD:PUBLISH
 UID:3336043e425e22477708f374e90083c1
-LAST-MODIFIED:20260420T220318Z
+LAST-MODIFIED:20260420T222350Z
 URL:https://finkregh.github.io/hugo-theme-component-ical/pr-preview/pr-28/de/events/event_10_third_thursday/
 REFRESH-INTERVAL;VALUE=DURATION:P1W
 SOURCE;VALUE=URI:https://finkregh.github.io/hugo-theme-component-ical/pr-preview/pr-28/de/events/event_10_third_thursday/calendar.ics
@@ -19,7 +19,7 @@ UID:3336043e425e22477708f374e90083c1
 DTSTART;VALUE=DATE-TIME:20240118T100000Z
 CLASS:PUBLIC
 DESCRIPTION;LANGUAGE=de:Monatliche Strategiebesprechung am dritten Donnerstag jedes Monats. Die Geschäftsleitung bespricht strategische Initiativen\, bewertet die Marktlage und passt die langfristige Planung anhand aktueller Leistungskennzahlen an.\nFront matter:\ntitle: Jeden dritten Donnerstag im Monat startDate: 2024-01-18T11:00:00+01:00 endDate: 2024-01-18T12:30:00+01:00 where: "Vorstandszimmer\, Obergeschoss" orga: "Strategiedirektor" orgaEmail: "strategy@example.org" # Jeden dritten Donnerstag im Monat recurrenceRule: freq: "MONTHLY" byDay: "TH" bySetPos: 3
-LAST-MODIFIED:20260420T220318Z
+LAST-MODIFIED:20260420T222350Z
 LOCATION;LANGUAGE=de:
 STATUS:CONFIRMED
 SUMMARY;LANGUAGE=de:Jeden dritten Donnerstag im Monat

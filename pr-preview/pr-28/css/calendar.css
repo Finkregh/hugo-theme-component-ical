@@ -342,6 +342,10 @@ Import happens via calendar_css.html!
   overflow: visible;
 }
 
+.fc .fc-view-harness:has(.fc-dayGridMonth-view) {
+  min-height: 480px;
+}
+
 /* Reset table display for FullCalendar - Blowfish theme sets global `table { display: block }`
    which breaks FullCalendar's grid layout that relies on native table rendering */
 .fc table {
