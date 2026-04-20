@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>Startseite on Hugo-Entwicklungs-Theme</title>
+    <title>Startseite on Demo of hugo-theme-component-ical</title>
     <link>https://finkregh.github.io/hugo-theme-component-ical/pr-preview/pr-28/de/</link>
-    <description>Recent content in Startseite on Hugo-Entwicklungs-Theme</description>
+    <description>Recent content in Startseite on Demo of hugo-theme-component-ical</description>
     <generator>Hugo</generator>
     <language>de</language>
-    <lastBuildDate>Mon, 20 Apr 2026 16:33:15 +0200</lastBuildDate>
+    <lastBuildDate>Mon, 20 Apr 2026 22:03:18 +0200</lastBuildDate>
     <atom:link href="https://finkregh.github.io/hugo-theme-component-ical/pr-preview/pr-28/de/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>Beitrag 1</title>

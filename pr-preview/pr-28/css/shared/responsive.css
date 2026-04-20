@@ -12,6 +12,16 @@
   .single-event-calendar {
     max-height: 300px;
   }
+
+  /* Toolbar: allow chunks to wrap so buttons don't overflow */
+  .fc .fc-toolbar.fc-header-toolbar {
+    flex-wrap: wrap;
+    gap: 0.5em 0.75em;
+  }
+
+  .fc .fc-toolbar-title {
+    font-size: 1.3em;
+  }
 }
 
 /* ========================================
@@ -22,5 +32,22 @@
   .single-event-calendar {
     max-height: 250px;
     padding: var(--calendar-space-2);
+  }
+
+  .fc .fc-toolbar.fc-header-toolbar {
+    flex-wrap: wrap;
+    gap: 0.5em;
+    justify-content: center;
+  }
+
+  .fc .fc-toolbar-title {
+    font-size: 1.1em;
+    width: 100%;
+    text-align: center;
+  }
+
+  .fc .fc-button {
+    padding: 0.3em 0.5em;
+    font-size: 0.85em;
   }
 }

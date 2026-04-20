@@ -4,7 +4,7 @@ PRODID:-//Hugo Calendar Templates//Event Template//EN
 CALSCALE:GREGORIAN
 METHOD:PUBLISH
 UID:19047b453eee8624a6270f68e3635f48
-LAST-MODIFIED:20260420T163315Z
+LAST-MODIFIED:20260420T220318Z
 URL:https://finkregh.github.io/hugo-theme-component-ical/pr-preview/pr-28/events/event_12_everythree_days/
 REFRESH-INTERVAL;VALUE=DURATION:P1W
 SOURCE;VALUE=URI:https://finkregh.github.io/hugo-theme-component-ical/pr-preview/pr-28/events/event_12_everythree_days/calendar.ics
@@ -19,7 +19,7 @@ UID:19047b453eee8624a6270f68e3635f48
 DTSTART;VALUE=DATE-TIME:20240118T100000Z
 CLASS:PUBLIC
 DESCRIPTION;LANGUAGE=en-US:Every third day.\nFront matter:\nstartDate: 2024-01-18T11:00:00+01:00 endDate: 2024-01-18T12:30:00+01:00 where: "Executive Boardroom\, Top Floor" orga: "Strategy Director" orgaEmail: "strategy@example.org" # Every third Thursday of the month recurrenceRule: freq: "DAILY" interval: 3
-LAST-MODIFIED:20260420T163315Z
+LAST-MODIFIED:20260420T220318Z
 LOCATION;LANGUAGE=en-US:
 STATUS:CONFIRMED
 SUMMARY;LANGUAGE=en-US:Every Third Day
