@@ -78,6 +78,25 @@ other = "Every year"
 [ical_recurrence_every_interval]
 other = "Every {{ .count }} {{ .unit }}"
 
+# Ordinal positions (positive ordinals)
+[ical_ordinal_first]
+other = "first"
+
+[ical_ordinal_second]
+other = "second"
+
+[ical_ordinal_third]
+other = "third"
+
+[ical_ordinal_fourth]
+other = "fourth"
+
+[ical_ordinal_fifth]
+other = "fifth"
+
+[ical_ordinal_nth]
+other = "{{ .number }}th"
+
 # Ordinal positions (negative ordinals)
 [ical_ordinal_last]
 other = "last"

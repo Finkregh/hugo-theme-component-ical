@@ -73,14 +73,23 @@
     {{- else if lt $posInt -5 -}}
       {{- /* For positions beyond -5, use numeric format */ -}}
       {{- $ordinalText = T "ical_ordinal_nth_to_last" (dict "number" (humanize (mul $posInt -1 | string))) -}}
-    {{- else if gt $posInt 0 -}}
-      {{- /* Handle positive positions using Hugo's humanize function */ -}}
-      {{- $ordinalText = humanize $posStr -}}
+    {{- else if eq $posStr "1" -}}
+      {{- $ordinalText = T "ical_ordinal_first" -}}
+    {{- else if eq $posStr "2" -}}
+      {{- $ordinalText = T "ical_ordinal_second" -}}
+    {{- else if eq $posStr "3" -}}
+      {{- $ordinalText = T "ical_ordinal_third" -}}
+    {{- else if eq $posStr "4" -}}
+      {{- $ordinalText = T "ical_ordinal_fourth" -}}
+    {{- else if eq $posStr "5" -}}
+      {{- $ordinalText = T "ical_ordinal_fifth" -}}
+    {{- else if gt $posInt 5 -}}
+      {{- $ordinalText = T "ical_ordinal_nth" (dict "number" $posInt) -}}
     {{- else -}}
       {{- /* Invalid position (0 or other edge cases) */ -}}
       {{- errorf "ordinal_position.html: invalid position value '%s'. Position must be a non-zero integer." $posStr -}}
     {{- end -}}
-    
+
     {{- $ordinalList = $ordinalList | append $ordinalText -}}
   {{- end -}}
   
@@ -126,9 +135,18 @@
   {{- else if lt $posInt -5 -}}
     {{- /* For positions beyond -5, use numeric format */ -}}
     {{- $result = T "ical_ordinal_nth_to_last" (dict "number" (humanize (mul $posInt -1 | string))) -}}
-  {{- else if gt $posInt 0 -}}
-    {{- /* Handle positive positions using Hugo's humanize function */ -}}
-    {{- $result = humanize $posStr -}}
+  {{- else if eq $posStr "1" -}}
+    {{- $result = T "ical_ordinal_first" -}}
+  {{- else if eq $posStr "2" -}}
+    {{- $result = T "ical_ordinal_second" -}}
+  {{- else if eq $posStr "3" -}}
+    {{- $result = T "ical_ordinal_third" -}}
+  {{- else if eq $posStr "4" -}}
+    {{- $result = T "ical_ordinal_fourth" -}}
+  {{- else if eq $posStr "5" -}}
+    {{- $result = T "ical_ordinal_fifth" -}}
+  {{- else if gt $posInt 5 -}}
+    {{- $result = T "ical_ordinal_nth" (dict "number" $posInt) -}}
   {{- else -}}
     {{- /* Invalid position (0 or other edge cases) */ -}}
     {{- errorf "ordinal_position.html: invalid position value '%s'. Position must be a non-zero integer." $posStr -}}
