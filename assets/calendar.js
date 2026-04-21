@@ -40,8 +40,8 @@ document.addEventListener("DOMContentLoaded", function () {
     locale: initialLocaleCode,
     buttonIcons: true,
     dayMaxEvents: true,
+    contentHeight: "auto", // let view rows size to content instead of using aspectRatio
     editable: false,
-    // height removed - now controlled by CSS for better responsiveness
     navLinks: true,
     weekNumbers: true,
     events: {
@@ -79,7 +79,6 @@ document.addEventListener("DOMContentLoaded", function () {
       navLinks: true,
       editable: true,
       dayMaxEvents: true,
-      height: "auto",
     });
   }
 

@@ -9,10 +9,6 @@
  * ======================================== */
 
 @media (max-width: 768px) {
-  .single-event-calendar {
-    max-height: 300px;
-  }
-
   /* Toolbar: allow chunks to wrap so buttons don't overflow */
   .fc .fc-toolbar.fc-header-toolbar {
     flex-wrap: wrap;
@@ -30,7 +26,6 @@
 
 @media (max-width: 480px) {
   .single-event-calendar {
-    max-height: 250px;
     padding: var(--calendar-space-2);
   }
 

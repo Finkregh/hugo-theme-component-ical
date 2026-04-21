@@ -28,7 +28,6 @@
 
 /* Calendar widget height for list page */
 .calendar-widget-section .single-event-calendar {
-  max-height: var(--calendar-widget-height-max);
   min-height: var(--calendar-widget-height-min);
 }
 
