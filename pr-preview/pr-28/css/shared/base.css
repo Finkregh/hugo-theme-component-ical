@@ -107,23 +107,6 @@
   padding: var(--calendar-space-4);
   max-width: 100%;
   margin: var(--calendar-space-2);
-  
-  /* Responsive height with fallbacks */
-  height: 700px; /* Fallback for older browsers */
-  height: clamp(
-    var(--calendar-widget-height-min),
-    60vh,
-    var(--calendar-widget-height-max)
-  );
-}
-
-/* Ensure FullCalendar fills container */
-.single-event-calendar .fc {
-  height: 100%;
-}
-
-.single-event-calendar .fc-view-harness {
-  height: 100% !important;
   min-height: var(--calendar-widget-height-min);
 }
 

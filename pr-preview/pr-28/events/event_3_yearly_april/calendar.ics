@@ -4,7 +4,7 @@ PRODID:-//Hugo Calendar Templates//Event Template//EN
 CALSCALE:GREGORIAN
 METHOD:PUBLISH
 UID:4b5ffd65e5b69ecb6e84d982f5c2a3d1
-LAST-MODIFIED:20260420T222350Z
+LAST-MODIFIED:20260421T162559Z
 URL:https://finkregh.github.io/hugo-theme-component-ical/pr-preview/pr-28/events/event_3_yearly_april/
 REFRESH-INTERVAL;VALUE=DURATION:P1W
 SOURCE;VALUE=URI:https://finkregh.github.io/hugo-theme-component-ical/pr-preview/pr-28/events/event_3_yearly_april/calendar.ics
@@ -19,7 +19,7 @@ UID:4b5ffd65e5b69ecb6e84d982f5c2a3d1
 DTSTART;VALUE=DATE-TIME:20240421T070000Z
 CLASS:PUBLIC
 DESCRIPTION;LANGUAGE=en-US:Our annual spring conference takes place on the third Sunday of April each year. Join us for a day of presentations\, networking\, and innovation.\nFront matter:\ntitle: Annual Spring Conference startDate: 2024-04-21T09:00:00+02:00 endDate: 2024-04-21T17:00:00+02:00 where: "Convention Center\, Main Hall" orga: "Conference Committee" orgaEmail: "committee@example.org" # Third Sunday of April every year recurrenceRule: freq: "YEARLY" byMonth: 4 byDay: "SU" bySetPos: 3
-LAST-MODIFIED:20260420T222350Z
+LAST-MODIFIED:20260421T162559Z
 LOCATION;LANGUAGE=en-US:
 STATUS:CONFIRMED
 SUMMARY;LANGUAGE=en-US:Annual Spring Conference

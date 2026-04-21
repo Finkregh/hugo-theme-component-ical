@@ -4,7 +4,7 @@ PRODID:-//Hugo Calendar Templates//Event Template//EN
 CALSCALE:GREGORIAN
 METHOD:PUBLISH
 UID:888c8a5674c475cb05ac6067be93cf40
-LAST-MODIFIED:20260420T222350Z
+LAST-MODIFIED:20260421T162559Z
 URL:https://finkregh.github.io/hugo-theme-component-ical/pr-preview/pr-28/events/test_new_ordinal_format/
 REFRESH-INTERVAL;VALUE=DURATION:P1W
 SOURCE;VALUE=URI:https://finkregh.github.io/hugo-theme-component-ical/pr-preview/pr-28/events/test_new_ordinal_format/calendar.ics
@@ -19,7 +19,7 @@ UID:888c8a5674c475cb05ac6067be93cf40
 DTSTART;VALUE=DATE-TIME:20240215T140000Z
 CLASS:PUBLIC
 DESCRIPTION;LANGUAGE=en-US:This is a test event to verify the new ordinal BYDAY format works correctly. It should occur on the third Thursday of each month using the new byDay: "3TH" format instead of the old byDay: "TH" + bySetPos: 3 format.
-LAST-MODIFIED:20260420T222350Z
+LAST-MODIFIED:20260421T162559Z
 LOCATION;LANGUAGE=en-US:
 STATUS:CONFIRMED
 SUMMARY;LANGUAGE=en-US:Test New Ordinal BYDAY Format
