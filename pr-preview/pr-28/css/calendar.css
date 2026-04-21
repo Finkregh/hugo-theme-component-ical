@@ -161,7 +161,7 @@ Import happens via calendar_css.html!
   --calendar-margin-element: var(--calendar-space-4);
   --calendar-margin-detail: var(--calendar-space-3);
   
-  --calendar-widget-height-min: 200px;
+  --calendar-widget-height-min: 500px;
 
   /* ========================================
    * TIER 4: LAYOUT SYSTEM
