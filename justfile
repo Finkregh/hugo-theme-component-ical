@@ -66,13 +66,13 @@ run_ics_validation_python_showlog:
 [working-directory: '.github']
 run_ics_validation_js:
     @echo "Running JavaScript iCal validation..."
-    npm i --include=dev
+    npm install
     node scripts/validate_ics.mjs
 
 [working-directory: '.github']
 run_ics_validation_js_showlog:
     @echo "Running JavaScript iCal validation (with logs)..."
-    npm i --include=dev
+    npm install
     node scripts/validate_ics.mjs --showlog
 
 [working-directory: '.github']
