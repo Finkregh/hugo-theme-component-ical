@@ -4,7 +4,7 @@ PRODID:-//Hugo Calendar Templates//Event Template//EN
 CALSCALE:GREGORIAN
 METHOD:PUBLISH
 UID:b8c55cc000317e28edf47c981880fe05
-LAST-MODIFIED:20260423T220004Z
+LAST-MODIFIED:20260423T220136Z
 REFRESH-INTERVAL;VALUE=DURATION:P1W
 SOURCE;VALUE=URI:https://finkregh.github.io/hugo-theme-component-ical/events/test_timezone_override/calendar.ics
 COLOR:crimson
@@ -18,7 +18,7 @@ UID:b8c55cc000317e28edf47c981880fe05
 DTSTART;VALUE=DATE-TIME:20260315T010000Z
 CLASS:PUBLIC
 DESCRIPTION;LANGUAGE=en-US:This event uses a page-level timezone override to Pacific/Auckland. The site default is Europe/Zurich\, but this event should use Pacific/Auckland timezone information.
-LAST-MODIFIED:20260423T220004Z
+LAST-MODIFIED:20260423T220136Z
 LOCATION;LANGUAGE=en-US:Auckland\, New Zealand
 STATUS:CONFIRMED
 SUMMARY;LANGUAGE=en-US:Test: Timezone Override (Pacific/Auckland)
