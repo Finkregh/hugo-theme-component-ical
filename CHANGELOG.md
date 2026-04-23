@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file. See [conventional commits](https://www.conventionalcommits.org/) for commit guidelines.
 
 - - -
+## [v0.11.1](https://github.com/finkregh/hugo-theme-component-ical@/compare/685570086e1b4efc91cf9adc2cc942e89164a93c..v0.11.1) - 2026-04-23
+#### Continuous Integration
+- fix tag prefix - ([6855700](https://github.com/finkregh/hugo-theme-component-ical@/commit/685570086e1b4efc91cf9adc2cc942e89164a93c)) - Oluf Lorenzen
+
+- - -
+
 ## [v0.11.0](https://github.com/finkregh/hugo-theme-component-ical@/compare/b843b06d3bb72bc9b3ad845046ce9bd5e2b7b4d7..v0.11.0) - 2026-04-23
 #### Bug Fixes
 - **(deps)** update dependency ical.js to v2 - ([6d88767](https://github.com/finkregh/hugo-theme-component-ical@/commit/6d887670e7f2d623ef38bad0bee6ec8eec1eb78f)) - renovate[bot]
