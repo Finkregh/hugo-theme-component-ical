@@ -3,6 +3,46 @@
 All notable changes to this project will be documented in this file. See [conventional commits](https://www.conventionalcommits.org/) for commit guidelines.
 
 - - -
+## [v0.11.0](https://github.com/finkregh/hugo-theme-component-ical@/compare/b843b06d3bb72bc9b3ad845046ce9bd5e2b7b4d7..v0.11.0) - 2026-04-23
+#### Features
+- (**js**) get language from browser - ([73912af](https://github.com/finkregh/hugo-theme-component-ical@/commit/73912af520b46ce4efef8fd67ac70d7cab5a442e)) - Oluf Lorenzen
+- ![BREAKING](https://img.shields.io/badge/BREAKING-red) Merge pull request #28 from Finkregh/refactor - ([cffc6a2](https://github.com/finkregh/hugo-theme-component-ical@/commit/cffc6a2cb6bbea405a0b8eeb8c8fd1aac452e1bb)) - Oluf Lorenzen
+- show current date in calendar widget - ([2b7f764](https://github.com/finkregh/hugo-theme-component-ical@/commit/2b7f7641eebff29cced13d7038ff1aafe1e5f285)) - Oluf Lorenzen
+- add german translation to demo site - ([1a07ffe](https://github.com/finkregh/hugo-theme-component-ical@/commit/1a07ffe42bb0859bdacb4db8203ee78e08be40b0)) - Oluf Lorenzen
+- german translation - ([6253ec4](https://github.com/finkregh/hugo-theme-component-ical@/commit/6253ec42d3a5b3dd5ccecc6cf3db20ab2521163d)) - Oluf Lorenzen
+#### Bug Fixes
+- (**deps**) update dependency ical.js to v2 - ([6d88767](https://github.com/finkregh/hugo-theme-component-ical@/commit/6d887670e7f2d623ef38bad0bee6ec8eec1eb78f)) - renovate[bot]
+- (**templates**) move from vendor dir - ([abd9797](https://github.com/finkregh/hugo-theme-component-ical@/commit/abd9797958a4ba878f60c62c2ca907020ff03cfe)) - Oluf Lorenzen
+- allow timestamps with and w/o explicit timezone (Z...) - ([af7268d](https://github.com/finkregh/hugo-theme-component-ical@/commit/af7268df7cbfab78b3aba6e325bba9d4ffbb804a)) - Oluf Lorenzen
+- ordinals not translated - ([14a56e8](https://github.com/finkregh/hugo-theme-component-ical@/commit/14a56e8e4e6df9cfe206cf349f42539c525facb8)) - Oluf Lorenzen
+- js minify issue - ([168a287](https://github.com/finkregh/hugo-theme-component-ical@/commit/168a287b4b6b17b3c13f3e8372b3aa38e8190a24)) - Oluf Lorenzen
+#### Continuous Integration
+- upstream cog - ([13437ba](https://github.com/finkregh/hugo-theme-component-ical@/commit/13437baec9a424e5744fddc712e99164db60b496)) - Oluf Lorenzen
+- unfuck cog config - ([6b3b3d6](https://github.com/finkregh/hugo-theme-component-ical@/commit/6b3b3d6281a364b6aed11d4137bf8e0d6877dab6)) - Oluf Lorenzen
+- fix tag prefix - ([6855700](https://github.com/finkregh/hugo-theme-component-ical@/commit/685570086e1b4efc91cf9adc2cc942e89164a93c)) - Oluf Lorenzen
+- run scripts from uv - ([9f6fbc6](https://github.com/finkregh/hugo-theme-component-ical@/commit/9f6fbc6c2f2f90c7fd3d147da00a71b9d8ef2b94)) - Oluf Lorenzen
+- fix replacement - ([b9de3d3](https://github.com/finkregh/hugo-theme-component-ical@/commit/b9de3d3cc80987ed074b73277c3946f7292d2e79)) - Oluf Lorenzen
+- build main and pr properly - ([b6fe60c](https://github.com/finkregh/hugo-theme-component-ical@/commit/b6fe60ce5238732369755a8cb7732171fa6ed420)) - Oluf Lorenzen
+- deploy preview - ([9309f0b](https://github.com/finkregh/hugo-theme-component-ical@/commit/9309f0be850580454ec5740934e5062460447b6e)) - Oluf Lorenzen
+- remove overriding templates - ([2a9c73f](https://github.com/finkregh/hugo-theme-component-ical@/commit/2a9c73f3831e1eb1196555300f0bcee694b9d614)) - Oluf Lorenzen
+- dont include partial from theme - ([4b58727](https://github.com/finkregh/hugo-theme-component-ical@/commit/4b587272ea34e0a995c9e2d80d1043874d25130b)) - Oluf Lorenzen
+- use current branch as source - ([ab5be4e](https://github.com/finkregh/hugo-theme-component-ical@/commit/ab5be4ed67a4add4f53756a1071482d93e52ed65)) - Oluf Lorenzen
+#### Refactoring
+- switch iCal output to UTC-only datetimes, extract timezone partial - ([f72b8a4](https://github.com/finkregh/hugo-theme-component-ical@/commit/f72b8a41a6aba7b149583821ed47a9fb90332894)) - Oluf Lorenzen
+#### Miscellaneous Chores
+- (**deps**) update actions/upload-artifact action to v6 - ([1dc3420](https://github.com/finkregh/hugo-theme-component-ical@/commit/1dc3420b2092dd5760f85b079df792bfffc5bc93)) - renovate[bot]
+- (**deps**) update softprops/action-gh-release action to v2.5.0 - ([740db60](https://github.com/finkregh/hugo-theme-component-ical@/commit/740db6078d27815fbd6db314699b83aafe7c82a2)) - renovate[bot]
+- (**deps**) update actions/checkout action to v6 - ([62e17d5](https://github.com/finkregh/hugo-theme-component-ical@/commit/62e17d52dc4b1194bc97c82da95d210dd2e5f104)) - renovate[bot]
+- (**deps**) update softprops/action-gh-release action to v2.4.2 - ([e14ad47](https://github.com/finkregh/hugo-theme-component-ical@/commit/e14ad470218bb82120dedf1bf1d2e535c62688ad)) - renovate[bot]
+- (**deps**) update actions/upload-artifact action to v5 - ([533c6aa](https://github.com/finkregh/hugo-theme-component-ical@/commit/533c6aa837485659c43e0aa499d9522e0b6cac22)) - renovate[bot]
+- (**deps**) update dependency python to 3.14 - ([b843b06](https://github.com/finkregh/hugo-theme-component-ical@/commit/b843b06d3bb72bc9b3ad845046ce9bd5e2b7b4d7)) - renovate[bot]
+- (**version**) 0.1.0 [skip ci] - ([ce84c34](https://github.com/finkregh/hugo-theme-component-ical@/commit/ce84c34ff121616ca1ab76bb4b554803fed1ff42)) - cog-bot
+- (**version**) v0.11.1 [skip ci] - ([ed48dd9](https://github.com/finkregh/hugo-theme-component-ical@/commit/ed48dd922b270c9607c424369769705ffdd0e20c)) - cog-bot
+- (**version**) v0.11.0 [skip ci] - ([9fb2bbc](https://github.com/finkregh/hugo-theme-component-ical@/commit/9fb2bbce9aafc52012f163fb9199c4d8c60172bf)) - cog-bot
+- add package.json - ([c3a51a8](https://github.com/finkregh/hugo-theme-component-ical@/commit/c3a51a8c9b0e13b81e39650df9a87988086e0b76)) - Oluf Lorenzen
+
+- - -
+
 
 
 ## v0.10.0
