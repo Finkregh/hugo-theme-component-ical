@@ -13,14 +13,18 @@ jobs:
           fetch-depth: 0
       - name: Semver release
         id: cog
-        uses: finkregh/cocogitto-action@output-version-changelog
+        uses: cocogitto/cocogitto-action@v4
         with:
-          release: true
-          check: false
-          additional-args-bump: '--skip-ci'
-          tag-prefix: 'v'
+          command: bump
+          args: --auto --skip-ci
+      - name: Generate changelog
+        id: changelog
+        uses: cocogitto/cocogitto-action@v4
+        with:
+          command: changelog
+          args: --at ${{ steps.cog.outputs.version }}
       - name: Release
         uses: softprops/action-gh-release@v3.0.0
         with:
-          body: ${{ steps.cog.outputs.changelog }}
+          body: ${{ steps.changelog.outputs.stdout }}
           tag_name: ${{ steps.cog.outputs.version }}
