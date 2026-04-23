@@ -4,7 +4,7 @@ PRODID:-//Hugo Calendar Templates//Event Template//EN
 CALSCALE:GREGORIAN
 METHOD:PUBLISH
 UID:3e1352e0a51966fbf081454631ef0389
-LAST-MODIFIED:20260421T162559Z
+LAST-MODIFIED:20260423T140152Z
 URL:https://finkregh.github.io/hugo-theme-component-ical/pr-preview/pr-28/events/test_until_parameter/
 REFRESH-INTERVAL;VALUE=DURATION:P1W
 SOURCE;VALUE=URI:https://finkregh.github.io/hugo-theme-component-ical/pr-preview/pr-28/events/test_until_parameter/calendar.ics
@@ -19,7 +19,7 @@ UID:3e1352e0a51966fbf081454631ef0389
 DTSTART;VALUE=DATE-TIME:20260301T130000Z
 CLASS:PUBLIC
 DESCRIPTION;LANGUAGE=en-US:Test event to verify UNTIL parameter is correctly included in RRULE.\nThis event should recur every Thursday until December 31\, 2026.\nExpected RRULE: RRULE:FREQ=WEEKLY\;INTERVAL=1\;UNTIL=20261231T225959Z\;BYDAY=TH
-LAST-MODIFIED:20260421T162559Z
+LAST-MODIFIED:20260423T140152Z
 LOCATION;LANGUAGE=en-US:
 STATUS:CONFIRMED
 SUMMARY;LANGUAGE=en-US:Test UNTIL Parameter
