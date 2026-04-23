@@ -4,7 +4,7 @@ PRODID:-//Hugo Calendar Templates//Event Template//EN
 CALSCALE:GREGORIAN
 METHOD:PUBLISH
 UID:909e51d15b9104e7be547513581e8ef3
-LAST-MODIFIED:20260423T192849Z
+LAST-MODIFIED:20260423T202654Z
 URL:https://finkregh.github.io/hugo-theme-component-ical/de/events/event_1/
 REFRESH-INTERVAL;VALUE=DURATION:P1W
 SOURCE;VALUE=URI:https://finkregh.github.io/hugo-theme-component-ical/de/events/event_1/calendar.ics
@@ -19,7 +19,7 @@ UID:909e51d15b9104e7be547513581e8ef3
 DTSTART;VALUE=DATE-TIME:20200826T180000Z
 CLASS:PUBLIC
 DESCRIPTION;LANGUAGE=de:Bei dieser Veranstaltung stellen wir das Projekt zum ersten Mal vor.\nFront matter:\nstartDate: 2020-08-26T20:00:00+02:00 endDate: 2020-08-26T22:00:00+02:00 where: "Irgendwo im Internet" orga: "F. Nord" orgaEmail: "me@example.org"
-LAST-MODIFIED:20260423T192849Z
+LAST-MODIFIED:20260423T202654Z
 LOCATION;LANGUAGE=de:
 STATUS:CONFIRMED
 SUMMARY;LANGUAGE=de:Erstvorstellung
