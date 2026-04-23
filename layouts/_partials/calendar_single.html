@@ -1,4 +1,10 @@
 <!-- Event Metadata Card -->
+{{- $timezone := partial "ical/get_timezone.ics" . -}}
+{{- $startTime := time.AsTime .Params.startDate $timezone -}}
+{{- $endTime := "" -}}
+{{- with .Params.endDate -}}
+  {{- $endTime = time.AsTime . $timezone -}}
+{{- end -}}
 <article class="event-metadata-card">
   <header class="event-header">
     <h2 class="event-title">
@@ -8,7 +14,7 @@
       {{ T "ical_event_details" }}
     </h2>
   </header>
-  
+
   <div class="event-details">
     <!-- Date and Time Section -->
     <section class="event-section" aria-labelledby="datetime-heading">
@@ -22,17 +28,17 @@
         <div class="detail-item">
           <dt class="detail-label">{{ T "ical_start" }}:</dt>
           <dd class="detail-value">
-            <time datetime="{{ .Params.startDate | dateFormat "2006-01-02T15:04:05Z07:00" }}">
-              {{ time.Format ":date_long" .Params.startDate }}, {{ time.Format ":time_long" .Params.startDate }}
+            <time datetime="{{ $startTime | dateFormat "2006-01-02T15:04:05Z07:00" }}">
+              {{ time.Format ":date_long" $startTime }}, {{ time.Format ":time_long" $startTime }}
             </time>
           </dd>
         </div>
-        {{ if .Params.endDate }}
+        {{ with $endTime }}
         <div class="detail-item">
           <dt class="detail-label">{{ T "ical_end" }}:</dt>
           <dd class="detail-value">
-            <time datetime="{{ .Params.endDate | dateFormat "2006-01-02T15:04:05Z07:00" }}">
-              {{ time.Format ":date_long" .Params.endDate }}, {{ time.Format ":time_long" .Params.endDate }}
+            <time datetime="{{ . | dateFormat "2006-01-02T15:04:05Z07:00" }}">
+              {{ time.Format ":date_long" . }}, {{ time.Format ":time_long" . }}
             </time>
           </dd>
         </div>

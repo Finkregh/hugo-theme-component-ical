@@ -8,6 +8,12 @@
   Output: HTML event card with proper styling and translations
 */ -}}
 
+{{- $timezone := partial "ical/get_timezone.ics" . -}}
+{{- $startTime := time.AsTime .Params.startDate $timezone -}}
+{{- $endTime := "" -}}
+{{- with .Params.endDate -}}
+  {{- $endTime = time.AsTime . $timezone -}}
+{{- end -}}
 <article class="event-card {{ if .Params.cancelled }}event-cancelled{{ end }}">
   <header class="event-card-header">
     <h3 class="event-card-title">
@@ -17,68 +23,67 @@
       {{- end -}}
     </h3>
   </header>
-  
+
   <div class="event-card-content">
     {{- if .Params.startDate -}}
     <div class="event-card-detail">
       <span class="detail-icon">
         {{ partial "calendar_icon.html" "time" }}
       </span>
-      
+
       {{- /* Determine label and date to display */ -}}
       {{- $labelKey := "ical_events_list_when" -}}
-      {{- $displayDate := .Params.startDate -}}
+      {{- $displayDate := $startTime -}}
       {{- $showBothDates := false -}}
       {{- $lastDate := "" -}}
-      
+
       {{- if .Params.recurrenceRule -}}
         {{- $rrule := .Params.recurrenceRule -}}
-        
+
         {{- /* Limited recurrence: show both first and last occurrence */ -}}
         {{- if or $rrule.until $rrule.count -}}
           {{- $labelKey = "ical_events_list_first_recurrence" -}}
           {{- $showBothDates = true -}}
-          
+
           {{- if $rrule.until -}}
-            {{- $lastDate = $rrule.until -}}
+            {{- $lastDate = time.AsTime $rrule.until $timezone -}}
           {{- else if $rrule.count -}}
             {{- /* Calculate lastDate from COUNT */ -}}
-            {{- $startDate := time.AsTime .Params.startDate -}}
             {{- $count := $rrule.count | int -}}
             {{- $interval := 1 -}}
             {{- with $rrule.interval -}}
               {{- $interval = . | int -}}
             {{- end -}}
             {{- $freq := $rrule.freq | upper -}}
-            
+
             {{- if eq $freq "DAILY" -}}
               {{- $daysToAdd := mul (sub $count 1) $interval -}}
-              {{- $lastDate = $startDate.AddDate 0 0 $daysToAdd -}}
+              {{- $lastDate = $startTime.AddDate 0 0 $daysToAdd -}}
             {{- else if eq $freq "WEEKLY" -}}
               {{- $daysToAdd := mul (mul (sub $count 1) $interval) 7 -}}
-              {{- $lastDate = $startDate.AddDate 0 0 $daysToAdd -}}
+              {{- $lastDate = $startTime.AddDate 0 0 $daysToAdd -}}
             {{- else if eq $freq "MONTHLY" -}}
               {{- $monthsToAdd := mul (sub $count 1) $interval -}}
-              {{- $lastDate = $startDate.AddDate 0 $monthsToAdd 0 -}}
+              {{- $lastDate = $startTime.AddDate 0 $monthsToAdd 0 -}}
             {{- else if eq $freq "YEARLY" -}}
               {{- $yearsToAdd := mul (sub $count 1) $interval -}}
-              {{- $lastDate = $startDate.AddDate $yearsToAdd 0 0 -}}
+              {{- $lastDate = $startTime.AddDate $yearsToAdd 0 0 -}}
             {{- end -}}
           {{- end -}}
-        
+
         {{- /* Infinite recurrence: show first occurrence */ -}}
         {{- else -}}
           {{- $labelKey = "ical_events_list_first_recurrence" -}}
         {{- end -}}
       {{- end -}}
-      
+
       <span class="detail-label">{{ T $labelKey }}:</span>
       <span class="detail-value">
         <time datetime="{{ $displayDate | dateFormat "2006-01-02T15:04:05Z07:00" }}">
           {{ time.Format ":date_long" $displayDate }}
-          {{- if and (not .Params.recurrenceRule) .Params.endDate -}}
-            {{- if ne (time.Format "2006-01-02" .Params.startDate) (time.Format "2006-01-02" .Params.endDate) -}}
-              - <time datetime="{{ .Params.endDate | dateFormat "2006-01-02T15:04:05Z07:00" }}">{{ time.Format ":date_long" .Params.endDate }}</time>
+          {{- if and (not .Params.recurrenceRule) $endTime -}}
+            {{- if ne (time.Format "2006-01-02" $startTime) (time.Format "2006-01-02" $endTime) -}}
+              - <time datetime="{{ $endTime | dateFormat "2006-01-02T15:04:05Z07:00" }}">{{ time.Format ":date_long" $endTime }}</time>
             {{- end -}}
           {{- end -}}
         </time>

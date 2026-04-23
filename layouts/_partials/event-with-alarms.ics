@@ -1,11 +1,12 @@
 {{- /* Adapt the dict here to fit your data model. See 'comp_event.ics' for available keys. */ -}}
 {{- /* Multiline hack from: https://github.com/gohugoio/hugoDocs/issues/764#issuecomment-625711237 */ -}}
 {{- if or (eq hugo.Environment "development") (eq hugo.Environment "debug") }}{{ warnidf "debug-partial-used" "Partial used: %s" templates.Current.Name }}{{ end -}}
+{{- $timezone := partial "ical/get_timezone.ics" . -}}
 {{- with dict `` `
   ` "description"  (dict "text" .Plain "lang" .Site.Language.LanguageCode) `` `
   ` "summary"      (dict "text" .Title "lang" .Site.Language.LanguageCode) `` `
-  ` "eventStart"   (dict "dateTime" .Params.startDate "isUTC" true) `` `
-  ` "eventEnd"     (dict "dateTime" .Params.endDate "isUTC" true) `` `
+  ` "eventStart"   (dict "dateTime" (time.AsTime .Params.startDate $timezone).UTC "isUTC" true) `` `
+  ` "eventEnd"     (dict "dateTime" (time.AsTime .Params.endDate $timezone).UTC "isUTC" true) `` `
   ` "location"     (dict "text" .Params.location "lang" .Site.Language.LanguageCode) `` `
   ` "url"          (.OutputFormats.Get "HTML").Permalink `` `
   ` "contact"      (dict "text" (printf "%s: %s" .Params.orga .Params.orgaEmail) "lang" .Site.Language.LanguageCode) `` `
