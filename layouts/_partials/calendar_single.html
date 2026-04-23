@@ -179,7 +179,7 @@
       <select id="locale-selector" class="locale-selector"></select>
     </div>
   </header>
-  <div id="calendar" class="single-event-calendar" role="application" aria-label="{{ T "ical_calendar_view" }}"></div>
+  <div id="calendar" class="single-event-calendar" role="application" aria-label="{{ T "ical_calendar_view" }}" data-initial-date="{{ $.Params.startDate | dateFormat "2006-01-02" }}"></div>
 </section>
 {{ end }}
 

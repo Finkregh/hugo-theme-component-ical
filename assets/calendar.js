@@ -52,7 +52,9 @@ document.addEventListener("DOMContentLoaded", function () {
 
   // Single event page configuration
   if (isSingleEvent) {
+    var initialDate = calendarEl.dataset.initialDate;
     Object.assign(calendarConfig, {
+      initialDate: initialDate || undefined,
       initialView: "listMonth",
       headerToolbar: {
         left: "prev,next today",
