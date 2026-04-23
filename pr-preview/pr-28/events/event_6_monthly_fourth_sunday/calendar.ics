@@ -4,7 +4,7 @@ PRODID:-//Hugo Calendar Templates//Event Template//EN
 CALSCALE:GREGORIAN
 METHOD:PUBLISH
 UID:8ffb88ac9255557e957b453b68e1844e
-LAST-MODIFIED:20260423T140152Z
+LAST-MODIFIED:20260423T181051Z
 URL:https://finkregh.github.io/hugo-theme-component-ical/pr-preview/pr-28/events/event_6_monthly_fourth_sunday/
 REFRESH-INTERVAL;VALUE=DURATION:P1W
 SOURCE;VALUE=URI:https://finkregh.github.io/hugo-theme-component-ical/pr-preview/pr-28/events/event_6_monthly_fourth_sunday/calendar.ics
@@ -19,7 +19,7 @@ UID:8ffb88ac9255557e957b453b68e1844e
 DTSTART;VALUE=DATE-TIME:20240128T130000Z
 CLASS:PUBLIC
 DESCRIPTION;LANGUAGE=en-US:Specialized workshop series held on the fourth Sunday of every third month. These hands-on sessions focus on practical skills and collaborative learning.\nFront matter:\ntitle: Monthly Workshop Series startDate: 2024-01-28T14:00:00+01:00 endDate: 2024-01-28T16:00:00+01:00 where: "Workshop Space\, Innovation Lab" orga: "Workshop Coordinator" orgaEmail: "workshops@example.org" # Every fourth Sunday of every 3 months recurrenceRule: freq: "MONTHLY" interval: 3 byDay: "SU" bySetPos: 4
-LAST-MODIFIED:20260423T140152Z
+LAST-MODIFIED:20260423T181051Z
 LOCATION;LANGUAGE=en-US:
 STATUS:CONFIRMED
 SUMMARY;LANGUAGE=en-US:Monthly Workshop Series
