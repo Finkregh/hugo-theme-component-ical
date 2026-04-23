@@ -12,7 +12,6 @@
      - Infinite → always upcoming
 */ -}}
 
-{{- $timezone := partial "ical/get_timezone.ics" . -}}
 {{- $now := now -}}
 {{- $isPast := "false" -}}
 
@@ -27,7 +26,7 @@
 
     {{- /* Step 3: Check UNTIL (takes precedence over COUNT) */ -}}
     {{- if $rrule.until -}}
-      {{- $untilDate := time.AsTime $rrule.until $timezone -}}
+      {{- $untilDate := time.AsTime $rrule.until -}}
       {{- if gt $untilDate $now -}}
         {{- $isPast = "false" -}}
       {{- else -}}
@@ -36,7 +35,7 @@
 
     {{- /* Step 4: Check COUNT */ -}}
     {{- else if $rrule.count -}}
-      {{- $startDate := time.AsTime .Params.startDate $timezone -}}
+      {{- $startDate := time.AsTime .Params.startDate -}}
       {{- $count := $rrule.count | int -}}
       {{- $interval := 1 -}}
       {{- with $rrule.interval -}}
@@ -83,7 +82,7 @@
 
   {{- /* Step 6: Simple event (no recurrenceRule) */ -}}
   {{- else -}}
-    {{- $startDate := time.AsTime .Params.startDate $timezone -}}
+    {{- $startDate := time.AsTime .Params.startDate -}}
     {{- if gt $startDate $now -}}
       {{- $isPast = "false" -}}
     {{- else -}}

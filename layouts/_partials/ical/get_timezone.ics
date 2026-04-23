@@ -1,16 +1,17 @@
 {{- if or (eq hugo.Environment "development") (eq hugo.Environment "debug") }}{{ warnidf "debug-partial-used" "Partial used: %s" templates.Current.Name }}{{ end -}}
 {{- /*
-  Determine timezone from configuration with priority order:
+  Determine timezone for ICS generation, with priority order:
   1. Page parameter: .Params.icaltimezone
   2. Site parameter: .Site.Params.ical.timezone
-  3. Language-specific timeZone: .Site.Language.Params.timezone
+  3. Language-specific param: .Site.Language.Params.timezone
   4. Global site parameter fallback: .Site.Params.timezone
-  
+
   Returns the timezone string (e.g., "Europe/Zurich", "America/New_York")
   Fails build if no timezone is configured.
-  
-  NOTE: Hugo's timeZone config setting is not directly accessible in templates.
-  Use site params instead: params.ical.timezone or params.timezone
+
+  NOTE: Hugo's built-in timeZone config (which controls front matter date
+  parsing) is not accessible in templates. This partial reads custom params
+  instead. Both must be configured — see README.md for details.
 */ -}}
 {{- $timezone := "" -}}
 {{- with .Site.Params.timezone -}}

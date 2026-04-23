@@ -565,117 +565,100 @@ For a complete implementation status, see the original README sections on specif
 
 ## Timezone Handling
 
-### UTC Conversion Strategy
+### Two Configuration Levels
 
-This project uses a **UTC-only approach** for maximum simplicity and compatibility:
+Timezone handling involves two separate concerns that require **two configuration settings**:
 
-- **All Times Converted to UTC**: Event datetimes in frontmatter are automatically converted to UTC format with Z suffix
-- **No VTIMEZONE Components**: Generated .ics files contain no timezone definitions  
-- **Universal Compatibility**: All calendar clients support UTC and convert to user's local timezone for display
-- **Smaller Files**: ~50% size reduction without VTIMEZONE components (50-100 lines saved per file)
-- **Zero Maintenance**: No timezone database to maintain, no DST rule updates needed
+1. **Hugo's `timeZone`** (top-level config) -- controls how front matter dates without timezone offsets are parsed. This is a built-in Hugo setting ([docs](https://gohugo.io/getting-started/configuration/#timezone)).
+2. **`params.ical.timezone`** -- tells the ICS templates which IANA timezone to use when generating `.ics` calendar files (for `time.AsTime` reparsing and VTIMEZONE output).
 
-### How It Works
+Both must be set. Hugo's `timeZone` is **not accessible in templates**, so the ICS templates rely on the param.
 
-**Input** (Hugo frontmatter):
-```yaml
----
-title: "Team Meeting"
-startDate: 2026-03-15T14:00:00+01:00  # CET timezone
-endDate: 2026-03-15T15:00:00+01:00
----
-```
-
-**Output** (Generated .ics):
-```ics
-BEGIN:VCALENDAR  
-VERSION:2.0
-PRODID:-//Hugo iCalendar Templates//EN
-BEGIN:VEVENT
-UID:event-123@example.com
-DTSTART:20260315T130000Z  # Converted to UTC (13:00 UTC = 14:00 CET)
-DTEND:20260315T140000Z    # Converted to UTC
-SUMMARY:Team Meeting
-END:VEVENT
-END:VCALENDAR
-```
-
-### Timezone Configuration Priority Order
-
-While the output is always UTC, Hugo's timezone configuration still affects the conversion process:
-
-1. **Page Level**: Event-specific timezone parameters (if implemented)
-2. **Site Parameters**: `site.Params.ical.timezone` 
-3. **Language Settings**: `site.Language.TimeZone`
-4. **Global Configuration**: `site.Config.TimeZone`
-
-### Setting Timezone Explicitly
-
-#### Site-wide Configuration
+### Required Configuration
 
 ```toml
-# hugo.toml
+# hugo.toml (or config/_default/hugo.toml)
+
+# Required: Hugo uses this to parse front matter dates without timezone offsets
 timeZone = "Europe/Berlin"
 
 [params.ical]
-timezone = "Europe/Berlin"  # Alternative location
+# Required: ICS templates use this for calendar file generation
+timezone = "Europe/Berlin"
 ```
 
-#### Per-Language Configuration
+Hugo also supports per-language `timeZone` for multilingual sites:
 
 ```toml
-# hugo.toml
 [languages.en]
 timeZone = "America/New_York"
 
-[languages.de] 
+[languages.de]
 timeZone = "Europe/Berlin"
 ```
 
-#### Individual Event Override
+### How Front Matter Dates Work
+
+Dates in front matter can be written **with or without** explicit timezone offsets:
+
+```yaml
+# Without offset -- Hugo interprets using the configured timeZone
+startDate: 2026-03-15T14:00:00
+
+# With explicit offset -- the offset takes precedence over any config
+startDate: 2026-03-15T14:00:00+01:00
+```
+
+Both formats work correctly. When no offset is present, Hugo's `timeZone` setting determines how the time is interpreted. When an offset is present, it is used as-is.
+
+### Per-Event Timezone Override (ICS only)
+
+Individual events can override the timezone for ICS generation using the `icaltimezone` front matter parameter:
 
 ```yaml
 ---
-title: "Special Event"
-startDate: 2026-03-15T14:00:00
-# Note: Individual event timezone override not currently implemented
-# All events use Hugo's configured timezone for conversion to UTC
+title: "Auckland Meetup"
+startDate: 2026-03-15T14:00:00+13:00
+icaltimezone: "Pacific/Auckland"
 ---
 ```
 
-### Benefits of UTC Approach
+The ICS template timezone resolution order is:
+1. Page parameter: `icaltimezone`
+2. Site parameter: `params.ical.timezone`
+3. Build fails if neither is set
 
-- **✅ Correctness**: UTC is unambiguous and always correct across all timezones
-- **✅ Simplicity**: No complex timezone logic, configuration, or VTIMEZONE maintenance
-- **✅ Performance**: Faster builds without timezone processing overhead
-- **✅ Reliability**: No timezone-related bugs, DST edge cases, or calendar parsing issues
-- **✅ Size**: Dramatically smaller .ics files (typical reduction from ~80 to ~35 lines)
-- **✅ Compatibility**: Universal support across all calendar applications
+### ICS Output: UTC Conversion
 
-### Calendar Client Behavior
+Generated `.ics` files convert all times to UTC for maximum compatibility:
 
-Modern calendar applications automatically:
-- Parse UTC times correctly (`20260315T130000Z` format)
-- Convert to user's local timezone for display (e.g., shows "14:00 CET" to Berlin users)  
-- Handle DST transitions automatically based on user's system timezone
-- Display correct times regardless of user location or calendar client
+**Input** (front matter):
+```yaml
+startDate: 2026-03-15T14:00:00  # Interpreted as 14:00 CET (Europe/Berlin)
+```
 
-### Migration Notes
+**Output** (`.ics` file):
+```ics
+DTSTART;VALUE=DATE-TIME:20260315T130000Z
+```
 
-When migrating from timezone-aware calendar systems:
-- Original timezone information is preserved in Hugo frontmatter for reference
-- Generated .ics files use UTC for universal compatibility  
-- Recurring events may not perfectly respect original timezone DST transitions (acceptable trade-off for simplicity)
-- All major calendar clients handle the conversion transparently
+This UTC-only approach means:
+- All calendar clients support UTC and convert to the user's local timezone for display
+- No VTIMEZONE components needed, resulting in smaller `.ics` files
+- No timezone database maintenance or DST rule updates needed
+- Follows RFC 5545 Section 3.3.5
 
-### Technical Implementation
+### HTML Output: Timezone Preserved
 
-The UTC conversion is handled by:
-- Event templates passing `isUTC: true` to datetime helpers
-- `layouts/_partials/ical/helper_date_time.ics` converting times and adding Z suffix
-- No VTIMEZONE partial inclusion in main calendar templates
+HTML event pages display times in the configured timezone:
 
-This approach follows RFC 5545 Section 3.3.5 which allows both timezone-aware and UTC datetime formats, with UTC being simpler and more universally supported.
+```html
+<time datetime="2026-03-15T14:00:00+01:00">
+  March 15, 2026, 2:00:00 pm CET
+</time>
+```
+
+This relies entirely on Hugo's built-in `timeZone` config for correct parsing and formatting.
 
 ---
 

@@ -1,10 +1,4 @@
 <!-- Event Metadata Card -->
-{{- $timezone := partial "ical/get_timezone.ics" . -}}
-{{- $startTime := time.AsTime .Params.startDate $timezone -}}
-{{- $endTime := "" -}}
-{{- with .Params.endDate -}}
-  {{- $endTime = time.AsTime . $timezone -}}
-{{- end -}}
 <article class="event-metadata-card">
   <header class="event-header">
     <h2 class="event-title">
@@ -28,12 +22,12 @@
         <div class="detail-item">
           <dt class="detail-label">{{ T "ical_start" }}:</dt>
           <dd class="detail-value">
-            <time datetime="{{ $startTime | dateFormat "2006-01-02T15:04:05Z07:00" }}">
-              {{ time.Format ":date_long" $startTime }}, {{ time.Format ":time_long" $startTime }}
+            <time datetime="{{ .Params.startDate | dateFormat "2006-01-02T15:04:05Z07:00" }}">
+              {{ time.Format ":date_long" .Params.startDate }}, {{ time.Format ":time_long" .Params.startDate }}
             </time>
           </dd>
         </div>
-        {{ with $endTime }}
+        {{ with .Params.endDate }}
         <div class="detail-item">
           <dt class="detail-label">{{ T "ical_end" }}:</dt>
           <dd class="detail-value">

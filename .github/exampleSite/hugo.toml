@@ -2,6 +2,7 @@ baseURL = 'https://finkregh.github.io/hugo-theme-component-ical/'
 languageCode = 'en-us'
 title = 'Demo of hugo-theme-component-ical'
 enableGitInfo = true
+# Required: Hugo uses this to parse front matter dates without timezone offsets
 timeZone = 'Europe/Zurich'
 defaultContentLanguage = 'en'
 
@@ -33,6 +34,8 @@ path = 'golang.foundata.com/hugo-theme-dev'
 debug = true # default: false
 
 [params.ical]
+# Required: ICS templates use this for calendar file generation
+# (Hugo's timeZone is not accessible in templates)
 timezone = "Europe/Zurich"
 
 # Define calendar output via cascading front matter for event pages only
