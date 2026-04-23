@@ -28,7 +28,7 @@ localserve:  hugo_go_modules
 
 [working-directory: '.github/exampleSite']
 hugo_go_modules:
-    hugo mod get -u ./...
+    hugo mod get #-u ./...
     hugo mod tidy
     rm -rf _vendor || true
     hugo mod vendor
@@ -54,14 +54,12 @@ build_hugo_localhost:
 [working-directory: '.github']
 run_ics_validation_python:
     @echo "Running Python iCal validation..."
-    uv pip install -r scripts/requirements.txt
-    python3 scripts/validate_ics.py exampleSite
+    uv run scripts/validate_ics.py exampleSite
 
 [working-directory: '.github']
 run_ics_validation_python_showlog:
     @echo "Running Python iCal validation (with logs)..."
-    uv pip install -r scripts/requirements.txt
-    python3 scripts/validate_ics.py exampleSite --verbose
+    uv run scripts/validate_ics.py exampleSite --verbose
 
 [working-directory: '.github']
 run_ics_validation_js:
