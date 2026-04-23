@@ -23743,7 +23743,9 @@
       }
     };
     if (isSingleEvent) {
+      var initialDate = calendarEl.dataset.initialDate;
       Object.assign(calendarConfig, {
+        initialDate: initialDate || void 0,
         initialView: "listMonth",
         headerToolbar: {
           left: "prev,next today",
