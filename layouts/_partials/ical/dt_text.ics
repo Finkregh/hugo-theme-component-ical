@@ -20,7 +20,6 @@
 
       - . : A text string.
 */ -}}
-
 {{- $text := . -}}
 {{- $text := htmlUnescape $text -}}
 {{- $text := trim $text " \n" -}}

@@ -1,0 +1,77 @@
+{{- /* 
+  Daily Frequency Handler
+  
+  Handles daily recurrence patterns by extracting and centralizing the daily frequency logic
+  that was previously embedded in the monolithic recurrence_human_readable.html template.
+  This is part of Phase 2 of the Hugo template refactoring project (RECUR-007).
+  
+  Input: dict "rule" $rule where $rule contains the recurrence rule data
+    - rule.freq: "DAILY" (case-insensitive)
+    - rule.interval: optional, defaults to 1
+  
+  Output: String with daily frequency description
+  
+  Pattern Priority (highest to lowest):
+    1. Simple daily: "Every day" (interval = 1)
+    2. Daily with interval: "Every N days" (interval > 1)
+  
+  Acceptance Criteria Examples:
+    - {freq: "DAILY"} → "Every day"
+    - {freq: "DAILY", interval: 1} → "Every day"
+    - {freq: "DAILY", interval: 3} → "Every 3 days"
+    - {freq: "DAILY", interval: 7} → "Every 7 days"
+  
+  Phase 1 Utility Integration:
+    - Uses interval_formatter.html for standardized interval formatting
+    - Note: day_names_resolver.html not needed for daily patterns
+  
+  Error Handling:
+    - Validates required 'rule' parameter is present
+    - Validates rule contains required frequency data
+    - Provides meaningful error messages for debugging
+    - Handles edge cases gracefully
+  
+  Implementation Notes:
+    - Daily patterns are simpler than weekly/monthly/yearly
+    - No byDay, bySetPos, or other complex parameters to handle
+    - Focus is on clean interval handling and validation
+*/ -}}
+
+{{- /* Input validation - ensure rule parameter is provided */ -}}
+{{- if not (isset . "rule") -}}
+  {{- errorf "daily_frequency.html: Missing required parameter 'rule'. Usage: {{ partial \"recurrence/daily_frequency.html\" (dict \"rule\" $rule) }}" -}}
+{{- end -}}
+
+{{- $rule := .rule -}}
+
+{{- /* Validate that rule parameter is not empty */ -}}
+{{- if not $rule -}}
+  {{- errorf "daily_frequency.html: Parameter 'rule' cannot be empty or nil" -}}
+{{- end -}}
+
+{{- /* Extract and validate frequency */ -}}
+{{- $freq := $rule.freq | lower -}}
+{{- if ne $freq "daily" -}}
+  {{- errorf "daily_frequency.html: Expected frequency 'daily', got '%s'. This handler only processes daily patterns." $freq -}}
+{{- end -}}
+
+{{- /* Extract rule parameters */ -}}
+{{- $interval := $rule.interval | default 1 -}}
+
+{{- /* Validate interval is positive */ -}}
+{{- if le $interval 0 -}}
+  {{- errorf "daily_frequency.html: Interval must be a positive integer, got: %v" $interval -}}
+{{- end -}}
+
+{{- /* 
+  Daily frequency pattern matching:
+  - Simple case: interval = 1 → "Every day"
+  - Interval case: interval > 1 → "Every N days"
+  
+  Use interval_formatter utility for consistent formatting across all frequency types
+*/ -}}
+
+{{- $result := partial "recurrence/interval_formatter.html" (dict "interval" $interval "unit" "day") -}}
+
+{{- /* Return the formatted result */ -}}
+{{- $result -}}

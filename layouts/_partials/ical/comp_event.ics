@@ -124,43 +124,75 @@
           .byDay           : A string or array of strings ("SU", "MO", "TU", "WE", "TH", "FR", "SA").
           .bySetPos        : An integer or array of integers (positive for nth occurrence, negative for last occurrences).
 */ -}}
-
 BEGIN:VEVENT
-
-{{ partial "ical/prop_date_time_stamp.ics" .timestamp }}
-{{ partial "ical/prop_uid.ics" .uid }}
-{{ with .eventStart }}{{ partial "ical/prop_date_time_start.ics" (merge . (dict "justDate" $.allDay)) }}{{ end }}
-{{ partial "ical/prop_classification.ics" .classification }}
-{{ with .created }}{{ partial "ical/prop_date_time_created.ics" . }}{{ end }}
-{{ with .description }}{{ partial "ical/prop_description.ics" . }}{{ end }}
-{{ with .geo }}{{ partial "ical/prop_geographic_position.ics" . }}{{ end }}
-{{ with .lastmod }}{{ partial "ical/prop_last_modified.ics" . }}{{ end }}
-{{ with .location }}{{ partial "ical/prop_location.ics" . }}{{ end }}
-{{ with .organizer }}{{ partial "ical/prop_organizer.ics" . }}{{ end }}
+{{ partial "ical/prop_date_time_stamp.ics" .timestamp -}}
+{{- partial "ical/prop_uid.ics" .uid }}
+{{- with .eventStart }}
+{{- partial "ical/prop_date_time_start.ics" (merge . (dict "justDate" $.allDay)) }}
+{{- end -}}
+{{- partial "ical/prop_classification.ics" .classification -}}
+{{- with .created }}
+{{- partial "ical/prop_date_time_created.ics" . -}}
+{{- end -}}
+{{- with .description }}
+{{ partial "ical/prop_description.ics" . }}
+{{- end -}}
+{{- with .geo }}
+{{- partial "ical/prop_geographic_position.ics" . }}
+{{- end -}}
+{{- with .lastmod }}
+{{ partial "ical/prop_last_modified.ics" . }}
+{{- end -}}
+{{- with .location }}
+{{- partial "ical/prop_location.ics" . }}
+{{- end -}}
+{{- with .organizer }}
+{{- partial "ical/prop_organizer.ics" . }}
+{{- end -}}
 {{/* priority */ -}}
-{{ with .sequence }}{{ partial "ical/prop_sequence.ics" . }}{{ end }}
-{{ with .status }}{{ partial "ical/prop_status.ics" . }}{{ end }}
-{{ with .summary }}{{ partial "ical/prop_summary.ics" . }}{{ end }}
+{{- with .sequence }}
+{{- partial "ical/prop_sequence.ics" . }}
+{{- end -}}
+{{- with .status }}
+{{- partial "ical/prop_status.ics" . }}
+{{- end -}}
+{{- with .summary }}
+{{- partial "ical/prop_summary.ics" . }}
+{{- end }}
 {{ partial "ical/prop_time_transparency.ics" }}
-{{ with .url }}{{ partial "ical/prop_url.ics" . }}{{ end }}
-{{/* recurid */ -}}
-{{ with .recurrenceRule }}{{ partial "ical/prop_recurrence_rule.ics" . }}{{ end }}
-{{ with .eventEnd }}{{ partial "ical/prop_date_time_end.ics" (merge . (dict "justDate" $.allDay)) }}{{ end }}
+{{- with .url }}
+{{ partial "ical/prop_url.ics" . }}
+{{- end }}
+{{- /* recurid */ -}}
+{{- with .recurrenceRule }}
+{{ partial "ical/prop_recurrence_rule.ics" . }}
+{{- end -}}
+{{- with .eventEnd }}
+{{- partial "ical/prop_date_time_end.ics" (merge . (dict "justDate" $.allDay)) }}
+{{- end -}}
 {{/* duration */ -}}
 {{/* attach */ -}}
 {{/* attendee */ -}}
 {{/* categories */ -}}
-{{ with .comment }}{{ partial "ical/prop_comment.ics" . }}{{ end }}
-{{ with .contact }}{{ partial "ical/prop_contact.ics" . }}{{ end }}
+{{- with .comment }}
+{{- partial "ical/prop_comment.ics" . }}
+{{- end -}}
+{{- with .contact }}
+{{- partial "ical/prop_contact.ics" . }}
+{{- end -}}
 {{/* exdate */ -}}
 {{/* rstatus */ -}}
 {{/* related */ -}}
 {{/* resources */ -}}
-{{ with .color }}{{ partial "ical/prop_color.ics" . }}{{ end }}
-{{/* conference */ -}}
-{{ with .image }}{{ partial "ical/prop_image.ics" . }}{{ end }}
-
-{{/* VALARM components */}}
-{{ range .alarms }}{{ partial "ical/comp_valarm.ics" . }}{{ end }}
-
+{{- with .color -}}
+{{- partial "ical/prop_color.ics" . -}}
+{{- end -}}
+{{- /* conference */ -}}
+{{- with .image }}
+{{- partial "ical/prop_image.ics" . }}
+{{- end -}}
+{{- /* VALARM components */ -}}
+{{- range .alarms }}
+{{- partial "ical/comp_valarm.ics" . }}
+{{- end -}}
 END:VEVENT

@@ -65,17 +65,32 @@ VERSION:2.0
 PRODID:-//Hugo Calendar Templates//Event Template//EN
 CALSCALE:GREGORIAN
 METHOD:PUBLISH
-
-{{ partial "ical/prop_uid.ics" .uid }}
-{{ with .lastmod }}{{ partial "ical/prop_last_modified.ics" . }}{{ end }}
-{{ with .url }}{{ partial "ical/prop_url.ics" . }}{{ end }}
-{{ partial "ical/prop_refresh_interval.ics" (.refreshInterval | default "P1W") }}
-{{ with .source }}{{ partial "ical/prop_source.ics" . }}{{ end }}
-{{ with .color }}{{ partial "ical/prop_color.ics" . }}{{ end }}
-{{ with .name }}{{ partial "ical/prop_name.ics" . }}{{ end }}
-{{ with .description }}{{ partial "ical/prop_description.ics" . }}{{ end }}
-{{/* categories */ -}}
-{{ with .image }}{{ partial "ical/prop_image.ics" . }}{{ end }}
-
-{{ with .name -}}X-WR-CALNAME:{{ partial "ical/dt_text.ics" .text }}{{ end }}
-{{ with .description -}}X-WR-CALDESC:{{ partial "ical/dt_text.ics" .text }}{{ end }}
+{{ partial "ical/prop_uid.ics" .uid -}}
+{{- with .lastmod -}}
+{{ partial "ical/prop_last_modified.ics" . -}}
+{{- end -}}
+{{- with .url -}}
+{{ partial "ical/prop_url.ics" . -}}
+{{- end -}}
+{{ partial "ical/prop_refresh_interval.ics" (.refreshInterval | default "P1W") -}}
+{{- with .source -}}
+{{ partial "ical/prop_source.ics" . -}}
+{{- end -}}
+{{- with .color -}}
+{{ partial "ical/prop_color.ics" . -}}
+{{- end -}}
+{{- with .name -}}
+{{ partial "ical/prop_name.ics" . -}}
+{{- end -}}
+{{- with .description -}}
+{{ partial "ical/prop_description.ics" . -}}
+{{- end -}}
+{{- with .image -}}
+{{ partial "ical/prop_image.ics" . -}}
+{{- end -}}
+{{- with .name }}
+X-WR-CALNAME:{{ partial "ical/dt_text.ics" .text }}
+{{ end -}}
+{{- with .description -}}
+X-WR-CALDESC:{{ partial "ical/dt_text.ics" .text }}
+{{ end -}}

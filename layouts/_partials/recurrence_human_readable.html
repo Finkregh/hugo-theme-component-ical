@@ -1,0 +1,69 @@
+{{- /* 
+  Recurrence Human Readable Template - Orchestration Layer
+  
+  REFACTORED: Phase 3 - RECUR-010 Implementation
+  Transformed from 209-line monolithic template to clean orchestration logic
+  
+  Input: .Params.recurrencerule (dict with freq, byDay, bySetPos, etc.)
+  Output: Human-readable string describing the recurrence pattern
+  
+  Architecture:
+  - Orchestration layer that routes to specialized frequency handlers
+  - Integrates Phase 1 utilities and Phase 2 frequency handlers
+  - Maintains 100% backward compatibility with existing interface
+  - Includes debug output integration for development
+  
+  Components Used:
+  - recurrence/daily_frequency.html
+  - recurrence/weekly_frequency.html  
+  - recurrence/monthly_frequency.html
+  - recurrence/yearly_frequency.html
+  - recurrence/debug_output.html
+*/ -}}
+
+{{- /* Debug output integration for development environments */ -}}
+{{- $rule := .Params.recurrencerule -}}
+{{- partial "recurrence/debug_output.html" (dict "context" . "rule" $rule) -}}
+
+{{- /* Input validation and error handling */ -}}
+{{- if not $rule -}}
+  {{- T "ical_no_rule_found" -}}
+{{- else -}}
+
+{{- /* Extract and normalize frequency for routing */ -}}
+{{- $freq := $rule.freq | lower -}}
+{{- $result := "" -}}
+
+{{- /* 
+  Orchestration Logic: Route to appropriate frequency handler
+  Each handler is responsible for its own pattern matching and formatting
+*/ -}}
+{{- if eq $freq "daily" -}}
+  {{- $result = partial "recurrence/daily_frequency.html" (dict "rule" $rule) -}}
+
+{{- else if eq $freq "weekly" -}}
+  {{- $result = partial "recurrence/weekly_frequency.html" (dict "rule" $rule) -}}
+
+{{- else if eq $freq "monthly" -}}
+  {{- $result = partial "recurrence/monthly_frequency.html" (dict "rule" $rule) -}}
+
+{{- else if eq $freq "yearly" -}}
+  {{- $result = partial "recurrence/yearly_frequency.html" (dict "rule" $rule "page" .) -}}
+
+{{- else -}}
+  {{- /* Fallback for unsupported frequencies */ -}}
+  {{- $result = T "ical_recurrence_every_frequency" (dict "frequency" $freq) -}}
+{{- end -}}
+
+{{- /* Post-processing: Add count and until constraints if present */ -}}
+{{- if $rule.count -}}
+  {{- $occurrences := T "ical_occurrence" $rule.count -}}
+  {{- $result = T "ical_recurrence_for_count" (dict "pattern" $result "count" $rule.count "occurrences" $occurrences) -}}
+{{- else if $rule.until -}}
+  {{- $result = T "ical_recurrence_until_date" (dict "pattern" $result "date" ($rule.until | dateFormat "January 2, 2006")) -}}
+{{- end -}}
+
+{{- /* Return the final result */ -}}
+{{- $result -}}
+
+{{- end -}}

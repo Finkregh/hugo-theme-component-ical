@@ -1,0 +1,14 @@
+{
+  "sum": "678a6e62baa22177",
+  "dependencySources": {
+    "dependencies": {
+      "@fullcalendar/core": "../../..",
+      "@fullcalendar/daygrid": "../../..",
+      "@fullcalendar/icalendar": "../../..",
+      "@fullcalendar/list": "../../..",
+      "@fullcalendar/rrule": "../../..",
+      "@fullcalendar/timegrid": "../../.."
+    },
+    "devDependencies": {}
+  }
+}

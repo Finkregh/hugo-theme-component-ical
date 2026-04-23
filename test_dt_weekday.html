@@ -1,0 +1,47 @@
+<!doctype html>
+<html>
+  <head>
+    <title>Test dt_weekday.ics Implementation</title>
+  </head>
+  <body>
+    <h1>Testing dt_weekday.ics Implementation</h1>
+
+    <h2>Test Cases</h2>
+
+    <!-- Test 1: Plain weekday (backward compatibility) -->
+    <h3>Test 1: Plain weekday "TH"</h3>
+    <pre>{{ partial "ical/dt_weekday.ics" "TH" }}</pre>
+
+    <!-- Test 2: Ordinal weekday -->
+    <h3>Test 2: Ordinal weekday "3TH"</h3>
+    <pre>{{ partial "ical/dt_weekday.ics" "3TH" }}</pre>
+
+    <!-- Test 3: Negative ordinal weekday -->
+    <h3>Test 3: Negative ordinal weekday "-1FR"</h3>
+    <pre>{{ partial "ical/dt_weekday.ics" "-1FR" }}</pre>
+
+    <!-- Test 4: Array of plain weekdays -->
+    <h3>Test 4: Array of plain weekdays ["MO", "FR"]</h3>
+    <pre>{{ partial "ical/dt_weekday.ics" (slice "MO" "FR") }}</pre>
+
+    <!-- Test 5: Array of ordinal weekdays -->
+    <h3>Test 5: Array of ordinal weekdays ["1MO", "3MO"]</h3>
+    <pre>{{ partial "ical/dt_weekday.ics" (slice "1MO" "3MO") }}</pre>
+
+    <!-- Test 6: Mixed array of plain and ordinal weekdays -->
+    <h3>Test 6: Mixed array ["MO", "3TH", "-1FR"]</h3>
+    <pre>{{ partial "ical/dt_weekday.ics" (slice "MO" "3TH" "-1FR") }}</pre>
+
+    <!-- Test 7: Case insensitive input -->
+    <h3>Test 7: Case insensitive "mo" and "3th"</h3>
+    <pre>{{ partial "ical/dt_weekday.ics" (slice "mo" "3th") }}</pre>
+
+    <!-- Test 8: Edge cases - maximum ordinal -->
+    <h3>Test 8: Maximum ordinal "53SU"</h3>
+    <pre>{{ partial "ical/dt_weekday.ics" "53SU" }}</pre>
+
+    <!-- Test 9: Edge cases - minimum ordinal -->
+    <h3>Test 9: Minimum ordinal "-53SA"</h3>
+    <pre>{{ partial "ical/dt_weekday.ics" "-53SA" }}</pre>
+  </body>
+</html>

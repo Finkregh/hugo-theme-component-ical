@@ -1,0 +1,27 @@
+{{- $styles := slice 
+  "css/calendar.css"
+  "css/shared/base.css"
+  "css/shared/icons.css"
+  "css/shared/buttons.css"
+  "css/shared/forms.css"
+  "css/shared/accessibility.css"
+  "css/shared/responsive.css"
+  "css/components/calendar-single.css"
+  "css/components/calendar-list.css"
+-}}{{/* import component specifics last! */}}
+{{- if eq hugo.Environment "development" -}}
+  {{- range $styles -}}
+    {{- with resources.Get . -}}
+      <link rel="stylesheet" href="{{ .RelPermalink }}">
+    {{- end -}}
+  {{- end -}}
+{{- else -}}
+  {{- $cssConcatenated := slice -}}
+  {{- range $styles -}}
+    {{- with resources.Get . -}}
+      {{- $cssConcatenated = $cssConcatenated | append . -}}
+    {{- end -}}
+  {{- end -}}
+  {{- $bundleCSS := $cssConcatenated | resources.Concat "css/calendar.bundle.css" | resources.Minify | resources.Fingerprint "sha512" -}}
+  <link type="text/css" rel="stylesheet" href="{{ $bundleCSS.RelPermalink }}" integrity="{{ $bundleCSS.Data.Integrity }}" />
+{{- end -}}

@@ -1,9 +1,8 @@
+{{- if or (eq hugo.Environment "development") (eq hugo.Environment "debug") }}{{ warnidf "debug-template-used" "Template used: %s" templates.Current.Name }}{{ end -}}
+{{- /* Check if current page has valid event metadata before generating calendar */ -}}
+{{- if .Params.startDate -}}
 BEGIN:VCALENDAR
-
-{{ partial "events/header.ics" . }}
-
-{{ partial "events/timezone.ics" . }}
-
-{{ partial "events/event-with-alarms.ics" . }}
-
+{{- partial "header.ics" . -}}
+{{- partial "event-with-alarms.ics" . -}}
 END:VCALENDAR
+{{- end -}}

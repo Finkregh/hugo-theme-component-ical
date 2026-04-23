@@ -13,11 +13,12 @@ on:
   workflow_dispatch:
 
 # Sets permissions of the GITHUB_TOKEN to allow deployment to GitHub Pages
-permissions:
-  contents: write
-  pages: write
-  id-token: write
-  pull-requests: write
+#permissions:
+  #contents: write
+  #pages: write
+  #id-token: write
+  #pull-requests: write
+permissions: write-all
  
 # Allow only one concurrent deployment, skipping runs queued between the run in-progress and latest queued.
 # However, do NOT cancel in-progress runs as we want to allow these production deployments to complete.
@@ -29,10 +30,60 @@ jobs:
   validate-ical:
     name: Built Site, validate iCal files, and Deploy to GitHub Pages (if on main branch)
     runs-on: ubuntu-latest
-
+    permissions: write-all
+    #permissions:
+      # Give the default GITHUB_TOKEN write permission to commit and push the
+      # added or changed files to the repository.
+      #contents: write
+      #statuses: write
     steps:
       - name: Checkout repository
         uses: actions/checkout@v6
+        with:
+          ref: ${{ github.head_ref }}
+          # Value already defaults to true, but `persist-credentials` is required to push new commits to the repository.
+      #     persist-credentials: true
+      #     #token: ${{ secrets.WORKFLOW_TOKEN }}
+
+      # - name: install stylelint
+      #   run: npm install stylelint stylelint-config-standard prettier
+
+      # - name: stylelint
+      #   uses: reviewdog/action-stylelint@dd2b435cc6a7c82705307a9dee740c9bbaa10411 # v1.30.2
+      #   with:
+      #     reporter: github-pr-review # Change reporter.
+      #     stylelint_input: '**/*.css'
+      #     stylelint_config: '.github/stylelint.config.mjs'
+
+      # - name: Prettier
+      #   #uses: https://github.com/creyD/prettier_action@v4.6
+      #   uses: creyD/prettier_action@dev
+      #   continue-on-error: true
+      #   with:
+      #     # prettier_plugins: "prettier-plugin-toml prettier-plugin-hugo-post"
+      #     allow_other_plugins: true
+      #     no_commit: true
+      #     add_options: "--update"
+      #     prettier_options: "--log-level log --write ."
+
+      # - name: debug
+      #   run: git diff; git status
+
+      # - name: Commit and push linting fixes
+      #   # Run only on:
+      #   # - Pull requests
+      #   # - Not on the default branch
+      #   if: >
+      #     github.event_name == 'pull_request' &&
+      #     github.ref_name != github.event.repository.default_branch
+      #   uses: stefanzweifel/git-auto-commit-action@v6.0.1
+      #   with:
+      #     commit_message: "chore: changes from ci"
+      #     commit_user_name: ci-linting
+      #     add_options: "--update"
+      #     # file_pattern: "*"
+      #     # skip_dirty_check: true
+      #     status_options: "--untracked-files=no"
 
       - name: Set up Python
         uses: actions/setup-python@v6
@@ -57,9 +108,9 @@ jobs:
       - name: Run tests with just
         if: github.ref != 'refs/heads/main' && github.server_url == 'https://github.com'
         env:
-            JUST_COLOR: always
-            GOPROXY: direct
-            PR_NUMBER: ${{ github.event.number }}
+          JUST_COLOR: always
+          GOPROXY: direct
+          PR_NUMBER: ${{ github.event.number }}
         run: |
           # replace 'version = "main"' in .github/exampleSite/hugo.toml with the current branch name
           echo sed -i "s/version = \".*\"/version = \"${GITHUB_HEAD_REF//\//\\\/}\"/" .github/exampleSite/hugo.toml
@@ -70,10 +121,10 @@ jobs:
       - name: build with just
         if: github.ref == 'refs/heads/main' && github.server_url == 'https://github.com'
         env:
-            JUST_COLOR: always
-            GOPROXY: direct
+          JUST_COLOR: always
+          GOPROXY: direct
         run: |
-          just test
+          just test_debug
 
       - name: List generated files
         run: |
@@ -88,6 +139,7 @@ jobs:
           path: |
             .github/exampleSite/public/
             validation-report.txt
+            validation-report-js.txt
           retention-days: 7
 
       - name: Deploy preview

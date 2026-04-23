@@ -32,4 +32,4 @@
       - .isUTC      : A flag specifying if time is in UTC.
 */ -}}
 
-DTSTART;{{- partial "ical/helper_date_time.ics" . -}}
+DTSTART;{{- partial "ical/helper_date_time.ics" . }}

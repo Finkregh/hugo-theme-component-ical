@@ -1,0 +1,158 @@
+{{- /* 
+  Debug Output Partial for Recurrence Template System
+  
+  Purpose: Separate debug concerns from production logic
+  Input: dict "context" . "rule" $rule
+  Output: HTML debug information (development only)
+  
+  Features:
+  - Environment detection (development/debug only)
+  - Comprehensive context inspection
+  - Recurrence rule analysis
+  - Parameter validation display
+  - Performance tracking
+  - Clean, structured output
+  
+  Usage:
+  {{- partial "recurrence/debug_output.html" (dict "context" . "rule" $rule) -}}
+*/ -}}
+
+{{- /* Environment Detection - Only show in development or debug environments */ -}}
+{{- if or (eq hugo.Environment "development") (eq hugo.Environment "debug") -}}
+
+{{- /* Extract parameters from input dictionary */ -}}
+{{- $context := .context -}}
+{{- $rule := .rule -}}
+{{- $startTime := now -}}
+
+<div style="border: 2px dotted #ff6b6b; padding: 15px; margin: 15px 0; background-color: #fff5f5; font-family: monospace; font-size: 12px; line-height: 1.4;">
+  <h4 style="margin: 0 0 10px 0; color: #d63031; font-size: 14px; font-weight: bold;">🐛 {{ T "ical_debug_recurrence_rule" }}</h4>
+  
+  {{- /* Context Information Section */ -}}
+  <div style="margin-bottom: 12px; padding: 8px; background-color: #f8f9fa; border-left: 3px solid #6c757d;">
+    <h5 style="margin: 0 0 6px 0; color: #495057; font-size: 12px;">📋 Context Information</h5>
+    <p style="margin: 2px 0;"><strong>Context Type:</strong> {{ printf "%T" $context }}</p>
+    <p style="margin: 2px 0;"><strong>Hugo Environment:</strong> {{ hugo.Environment }}</p>
+    <p style="margin: 2px 0;"><strong>Has .Params:</strong> {{ if $context.Params }}✅ YES{{ else }}❌ NO{{ end }}</p>
+    {{- if $context.Params -}}
+      <p style="margin: 2px 0;"><strong>Params Keys:</strong> 
+        {{- $paramKeys := slice -}}
+        {{- range $key, $value := $context.Params -}}
+          {{- $paramKeys = $paramKeys | append $key -}}
+        {{- end -}}
+        {{ delimit $paramKeys ", " }}
+      </p>
+      <p style="margin: 2px 0;"><strong>Has recurrenceRule:</strong> {{ if $context.Params.recurrenceRule }}✅ YES{{ else }}❌ NO{{ end }}</p>
+    {{- end -}}
+  </div>
+
+  {{- /* Recurrence Rule Analysis Section */ -}}
+  <div style="margin-bottom: 12px; padding: 8px; background-color: #e8f4fd; border-left: 3px solid #007bff;">
+    <h5 style="margin: 0 0 6px 0; color: #0056b3; font-size: 12px;">🔄 Recurrence Rule Analysis</h5>
+    {{- if $rule -}}
+      <p style="margin: 2px 0;"><strong>Rule Status:</strong> ✅ FOUND</p>
+      <p style="margin: 2px 0;"><strong>Rule Type:</strong> {{ printf "%T" $rule }}</p>
+      
+      {{- /* Core Rule Parameters */ -}}
+      <div style="margin: 6px 0; padding: 6px; background-color: #ffffff; border: 1px solid #dee2e6;">
+        <strong>Core Parameters:</strong><br>
+        {{- with $rule.freq -}}
+          • <strong>{{ T "ical_debug_frequency" }}:</strong> {{ . | upper }}<br>
+        {{- end -}}
+        {{- with $rule.interval -}}
+          • <strong>{{ T "ical_debug_interval" }}:</strong> {{ . }}<br>
+        {{- end -}}
+        {{- with or $rule.byDay $rule.byday -}}
+          • <strong>{{ T "ical_debug_by_day" }}:</strong> {{ . }} ({{ printf "%T" . }})<br>
+        {{- end -}}
+        {{- with or $rule.bySetPos $rule.bysetpos -}}
+          • <strong>{{ T "ical_debug_by_set_pos" }}:</strong> {{ . }} ({{ printf "%T" . }})<br>
+        {{- end -}}
+        {{- with or $rule.byMonth $rule.bymonth -}}
+          • <strong>byMonth:</strong> {{ . }} ({{ printf "%T" . }})<br>
+        {{- end -}}
+        {{- with or $rule.byMonthDay $rule.bymonthday -}}
+          • <strong>byMonthDay:</strong> {{ . }} ({{ printf "%T" . }})<br>
+        {{- end -}}
+        {{- with $rule.count -}}
+          • <strong>{{ T "ical_debug_count" }}:</strong> {{ . }}<br>
+        {{- end -}}
+        {{- with $rule.until -}}
+          • <strong>{{ T "ical_debug_until" }}:</strong> {{ . }}<br>
+        {{- end -}}
+      </div>
+
+      {{- /* Handler Routing Information */ -}}
+      {{- $freq := $rule.freq | lower -}}
+      <div style="margin: 6px 0; padding: 6px; background-color: #f0f8ff; border: 1px solid #b3d9ff;">
+        <strong>Handler Routing:</strong><br>
+        • <strong>Frequency (normalized):</strong> {{ $freq }}<br>
+        • <strong>Target Handler:</strong> 
+        {{- if eq $freq "daily" -}}
+          📅 recurrence/daily_frequency.html
+        {{- else if eq $freq "weekly" -}}
+          📅 recurrence/weekly_frequency.html
+        {{- else if eq $freq "monthly" -}}
+          📅 recurrence/monthly_frequency.html
+        {{- else if eq $freq "yearly" -}}
+          📅 recurrence/yearly_frequency.html
+        {{- else -}}
+          ⚠️ FALLBACK (unknown frequency)
+        {{- end -}}<br>
+      </div>
+
+      {{- /* Parameter Validation */ -}}
+      <div style="margin: 6px 0; padding: 6px; background-color: #f0fff0; border: 1px solid #90ee90;">
+        <strong>Parameter Validation:</strong><br>
+        {{- $validationIssues := slice -}}
+        {{- if not $rule.freq -}}
+          {{- $validationIssues = $validationIssues | append "Missing required 'freq' parameter" -}}
+        {{- end -}}
+        {{- if and (eq $freq "monthly") (and $rule.byDay $rule.bySetPos) (not (or $rule.byDay $rule.byday)) -}}
+          {{- $validationIssues = $validationIssues | append "Monthly frequency with bySetPos requires byDay" -}}
+        {{- end -}}
+        {{- if and (eq $freq "yearly") (and $rule.byMonth (and $rule.byDay $rule.bySetPos)) (not (or $rule.byDay $rule.byday)) -}}
+          {{- $validationIssues = $validationIssues | append "Yearly frequency with byMonth+bySetPos requires byDay" -}}
+        {{- end -}}
+        
+        {{- if $validationIssues -}}
+          {{- range $validationIssues -}}
+            • ⚠️ {{ . }}<br>
+          {{- end -}}
+        {{- else -}}
+          • ✅ All validations passed<br>
+        {{- end -}}
+      </div>
+
+    {{- else -}}
+      <p style="margin: 2px 0; color: #dc3545;"><strong>Rule Status:</strong> ❌ NOT FOUND</p>
+      <p style="margin: 2px 0; color: #dc3545;">No recurrence rule provided in context.Params.recurrenceRule</p>
+    {{- end -}}
+  </div>
+
+  {{- /* Day Names Reference Section */ -}}
+  <div style="margin-bottom: 12px; padding: 8px; background-color: #fff3cd; border-left: 3px solid #ffc107;">
+    <h5 style="margin: 0 0 6px 0; color: #856404; font-size: 12px;">📅 Day Names Reference</h5>
+    <div style="font-size: 11px; line-height: 1.2;">
+      <strong>Day Code Mapping:</strong><br>
+      SU={{ time.Format "Monday" "2021-11-07" }}, MO={{ time.Format "Monday" "2021-11-01" }}, TU={{ time.Format "Monday" "2021-11-02" }}, WE={{ time.Format "Monday" "2021-11-03" }}, TH={{ time.Format "Monday" "2021-11-04" }}, FR={{ time.Format "Monday" "2021-11-05" }}, SA={{ time.Format "Monday" "2021-11-06" }}
+    </div>
+  </div>
+
+  {{- /* Performance Metrics Section */ -}}
+  {{- $endTime := now -}}
+  {{- $processingTime := $endTime.Sub $startTime -}}
+  <div style="margin-bottom: 0; padding: 8px; background-color: #e2e3e5; border-left: 3px solid #6c757d;">
+    <h5 style="margin: 0 0 6px 0; color: #495057; font-size: 12px;">⚡ Performance Metrics</h5>
+    <p style="margin: 2px 0;"><strong>Debug Processing Time:</strong> {{ $processingTime }}</p>
+    <p style="margin: 2px 0;"><strong>Timestamp:</strong> {{ $endTime.Format "2006-01-02 15:04:05.000 MST" }}</p>
+    <p style="margin: 2px 0;"><strong>Hugo Version:</strong> {{ hugo.Version }}</p>
+  </div>
+
+  {{- /* Footer */ -}}
+  <div style="margin-top: 10px; padding-top: 8px; border-top: 1px solid #dee2e6; font-size: 10px; color: #6c757d; text-align: center;">
+    🔧 Debug output from layouts/_partials/recurrence/debug_output.html
+  </div>
+</div>
+
+{{- end -}}

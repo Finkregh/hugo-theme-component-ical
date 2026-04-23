@@ -1,0 +1,157 @@
+{{- /*
+  Ordinal Position Utility Partial
+  
+  Converts numeric positions to human-readable ordinal text.
+  This partial extracts and centralizes ordinal position handling logic
+  that was previously duplicated throughout the recurrence template.
+  
+  Input: dict "position" $position
+  Where $position can be:
+    - Single positive integer: 1 → "first", 2 → "second", 3 → "third", etc.
+    - Single negative integer: -1 → "last", -2 → "second-to-last", -3 → "third-to-last", etc.
+    - Slice of integers: [1, 3] → "first and third", [-1, -2] → "last and second-to-last"
+  
+  Output: String with human-readable ordinal text
+  
+  Examples:
+    {{ partial "recurrence/ordinal_position.html" (dict "position" 1) }}
+    → "first"
+    
+    {{ partial "recurrence/ordinal_position.html" (dict "position" -1) }}
+    → "last"
+    
+    {{ partial "recurrence/ordinal_position.html" (dict "position" (slice 1 3)) }}
+    → "first and third"
+    
+    {{ partial "recurrence/ordinal_position.html" (dict "position" (slice -1 -2)) }}
+    → "last and second-to-last"
+*/ -}}
+
+{{- /* Input validation */ -}}
+{{- if not .position -}}
+  {{- errorf "ordinal_position.html: missing required parameter 'position'" -}}
+{{- end -}}
+
+{{- $position := .position -}}
+{{- $result := "" -}}
+
+{{- /* Process input based on type */ -}}
+{{- if reflect.IsSlice $position -}}
+  {{- /* Handle slice of positions */ -}}
+  {{- if eq (len $position) 0 -}}
+    {{- errorf "ordinal_position.html: position slice cannot be empty" -}}
+  {{- end -}}
+  
+  {{- $ordinalList := slice -}}
+  {{- range $position -}}
+    {{- /* Validate each position in the slice - be flexible with numeric types */ -}}
+    {{- $posType := printf "%T" . -}}
+    {{- if not (or (eq $posType "int") (eq $posType "int64") (eq $posType "uint64") (eq $posType "float64") (and (eq $posType "string") (findRE "^-?[0-9]+$" .))) -}}
+      {{- errorf "ordinal_position.html: invalid position value '%v' in slice. All positions must be integers." . -}}
+    {{- end -}}
+    
+    {{- $posInt := . | int -}}
+    {{- if eq $posInt 0 -}}
+      {{- errorf "ordinal_position.html: invalid position value '0' in slice. Position must be a non-zero integer." -}}
+    {{- end -}}
+    
+    {{- /* Convert single position to ordinal text */ -}}
+    {{- $ordinalText := "" -}}
+    {{- $posStr := $posInt | string -}}
+    
+    {{- /* Handle negative positions (counting from end) */ -}}
+    {{- if eq $posStr "-1" -}}
+      {{- $ordinalText = T "ical_ordinal_last" -}}
+    {{- else if eq $posStr "-2" -}}
+      {{- $ordinalText = T "ical_ordinal_second_to_last" -}}
+    {{- else if eq $posStr "-3" -}}
+      {{- $ordinalText = T "ical_ordinal_third_to_last" -}}
+    {{- else if eq $posStr "-4" -}}
+      {{- $ordinalText = T "ical_ordinal_fourth_to_last" -}}
+    {{- else if eq $posStr "-5" -}}
+      {{- $ordinalText = T "ical_ordinal_fifth_to_last" -}}
+    {{- else if lt $posInt -5 -}}
+      {{- /* For positions beyond -5, use numeric format */ -}}
+      {{- $ordinalText = T "ical_ordinal_nth_to_last" (dict "number" (humanize (mul $posInt -1 | string))) -}}
+    {{- else if eq $posStr "1" -}}
+      {{- $ordinalText = T "ical_ordinal_first" -}}
+    {{- else if eq $posStr "2" -}}
+      {{- $ordinalText = T "ical_ordinal_second" -}}
+    {{- else if eq $posStr "3" -}}
+      {{- $ordinalText = T "ical_ordinal_third" -}}
+    {{- else if eq $posStr "4" -}}
+      {{- $ordinalText = T "ical_ordinal_fourth" -}}
+    {{- else if eq $posStr "5" -}}
+      {{- $ordinalText = T "ical_ordinal_fifth" -}}
+    {{- else if gt $posInt 5 -}}
+      {{- $ordinalText = T "ical_ordinal_nth" (dict "number" $posInt) -}}
+    {{- else -}}
+      {{- /* Invalid position (0 or other edge cases) */ -}}
+      {{- errorf "ordinal_position.html: invalid position value '%s'. Position must be a non-zero integer." $posStr -}}
+    {{- end -}}
+
+    {{- $ordinalList = $ordinalList | append $ordinalText -}}
+  {{- end -}}
+  
+  {{- /* Join multiple ordinals with "and" */ -}}
+  {{- if eq (len $ordinalList) 1 -}}
+    {{- $result = index $ordinalList 0 -}}
+  {{- else if eq (len $ordinalList) 2 -}}
+    {{- $result = printf "%s and %s" (index $ordinalList 0) (index $ordinalList 1) -}}
+  {{- else -}}
+    {{- /* For 3+ items, use comma separation with "and" before the last item */ -}}
+    {{- $lastIndex := sub (len $ordinalList) 1 -}}
+    {{- $allButLast := first $lastIndex $ordinalList -}}
+    {{- $last := index $ordinalList $lastIndex -}}
+    {{- $result = printf "%s, and %s" (delimit $allButLast ", ") $last -}}
+  {{- end -}}
+
+{{- else -}}
+  {{- /* Handle single position - be flexible with numeric types */ -}}
+  {{- $posType := printf "%T" $position -}}
+  {{- if not (or (eq $posType "int") (eq $posType "int64") (eq $posType "uint64") (eq $posType "float64") (and (eq $posType "string") (findRE "^-?[0-9]+$" $position))) -}}
+    {{- errorf "ordinal_position.html: invalid position value '%v'. Position must be an integer." $position -}}
+  {{- end -}}
+  
+  {{- $posInt := $position | int -}}
+  {{- if eq $posInt 0 -}}
+    {{- errorf "ordinal_position.html: invalid position value '0'. Position must be a non-zero integer." -}}
+  {{- end -}}
+  
+  {{- /* Convert single position to ordinal text */ -}}
+  {{- $posStr := $posInt | string -}}
+  
+  {{- /* Handle negative positions (counting from end) */ -}}
+  {{- if eq $posStr "-1" -}}
+    {{- $result = T "ical_ordinal_last" -}}
+  {{- else if eq $posStr "-2" -}}
+    {{- $result = T "ical_ordinal_second_to_last" -}}
+  {{- else if eq $posStr "-3" -}}
+    {{- $result = T "ical_ordinal_third_to_last" -}}
+  {{- else if eq $posStr "-4" -}}
+    {{- $result = T "ical_ordinal_fourth_to_last" -}}
+  {{- else if eq $posStr "-5" -}}
+    {{- $result = T "ical_ordinal_fifth_to_last" -}}
+  {{- else if lt $posInt -5 -}}
+    {{- /* For positions beyond -5, use numeric format */ -}}
+    {{- $result = T "ical_ordinal_nth_to_last" (dict "number" (humanize (mul $posInt -1 | string))) -}}
+  {{- else if eq $posStr "1" -}}
+    {{- $result = T "ical_ordinal_first" -}}
+  {{- else if eq $posStr "2" -}}
+    {{- $result = T "ical_ordinal_second" -}}
+  {{- else if eq $posStr "3" -}}
+    {{- $result = T "ical_ordinal_third" -}}
+  {{- else if eq $posStr "4" -}}
+    {{- $result = T "ical_ordinal_fourth" -}}
+  {{- else if eq $posStr "5" -}}
+    {{- $result = T "ical_ordinal_fifth" -}}
+  {{- else if gt $posInt 5 -}}
+    {{- $result = T "ical_ordinal_nth" (dict "number" $posInt) -}}
+  {{- else -}}
+    {{- /* Invalid position (0 or other edge cases) */ -}}
+    {{- errorf "ordinal_position.html: invalid position value '%s'. Position must be a non-zero integer." $posStr -}}
+  {{- end -}}
+{{- end -}}
+
+{{- /* Return the result */ -}}
+{{- $result -}}

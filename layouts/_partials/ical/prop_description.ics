@@ -27,7 +27,6 @@
       - .lang : A string representing a valid language tag.
       - .alt  : An uri value pointing to an alternative content representation.
 */ -}}
-
 DESCRIPTION
 {{- with .lang -}};{{- partial "ical/param_language.ics" . -}}{{- end -}}
 {{- with .alt -}};{{- partial "ical/param_altrep.ics" . -}}{{- end -}}

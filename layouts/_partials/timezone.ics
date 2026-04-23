@@ -1,0 +1,4 @@
+{{- if or (eq hugo.Environment "development") (eq hugo.Environment "debug") }}{{ warnidf "debug-partial-used" "Partial used: %s" templates.Current.Name }}{{ end -}}
+{{- $timezone := partial "ical/get_timezone.ics" . -}}
+{{- $tzfile := printf "zoneinfo-outlook/%s.ics" $timezone -}}
+{{- partial $tzfile . -}}

@@ -8,29 +8,101 @@
        ;Corresponding to SUNDAY, MONDAY, TUESDAY, WEDNESDAY, THURSDAY,
        ;FRIDAY, and SATURDAY days of the week.
 
+    Extended Specification (RFC 5545 Section 3.3.10):
+       
+       weekdaynum = [[plus / minus] ordwk] weekday
+       ordwk      = 1*2DIGIT       ;1 to 53
+       weekday    = "SU" / "MO" / "TU" / "WE" / "TH" / "FR" / "SA"
+       plus       = "+"
+       minus      = "-"
+
     Hugo Context Parameters:
 
       - . : A string value or array of string values representing weekdays
+            Can be plain weekdays (e.g., "MO", "TU") or ordinal weekdays (e.g., "1MO", "3TH", "-1FR")
 */ -}}
 
 {{- $validWeekdays := slice "SU" "MO" "TU" "WE" "TH" "FR" "SA" -}}
 {{- $result := slice -}}
 
+{{- /* Process weekday values - supports both plain and ordinal formats */ -}}
 {{- if reflect.IsSlice . -}}
   {{- range . -}}
-    {{- $weekday := . | upper -}}
-    {{- if in $validWeekdays $weekday -}}
-      {{- $result = $result | append $weekday -}}
+    {{- $input := . | upper | strings.TrimSpace -}}
+    
+    {{- /* Check if it's a plain weekday */ -}}
+    {{- if in $validWeekdays $input -}}
+      {{- $result = $result | append $input -}}
     {{- else -}}
-      {{- errorf "Invalid weekday value: %s. Must be one of SU, MO, TU, WE, TH, FR, SA" . -}}
+      {{- /* Check if it's an ordinal weekday (e.g., 1MO, 3TH, -1FR) */ -}}
+      {{- $ordinalPattern := `^([+-]?\d{1,2})(SU|MO|TU|WE|TH|FR|SA)$` -}}
+      {{- $matches := findRE $ordinalPattern $input -}}
+      {{- if $matches -}}
+        {{- /* Extract ordinal and weekday parts using string manipulation */ -}}
+        {{- $ordinalMatch := findRE `^[+-]?\d{1,2}` $input -}}
+        {{- $weekdayMatch := findRE `(SU|MO|TU|WE|TH|FR|SA)$` $input -}}
+        
+        {{- if and $ordinalMatch $weekdayMatch -}}
+          {{- $ordinal := index $ordinalMatch 0 -}}
+          {{- $weekday := index $weekdayMatch 0 -}}
+          
+          {{- /* Validate ordinal range (-53 to 53, excluding 0) */ -}}
+          {{- $ordinalNum := int $ordinal -}}
+          {{- if and (ne $ordinalNum 0) (ge $ordinalNum -53) (le $ordinalNum 53) -}}
+            {{- /* Validate weekday part */ -}}
+            {{- if in $validWeekdays $weekday -}}
+              {{- $result = $result | append (printf "%s%s" $ordinal $weekday) -}}
+            {{- else -}}
+              {{- errorf "Invalid weekday in ordinal format: %s. Weekday must be one of SU, MO, TU, WE, TH, FR, SA" $input -}}
+            {{- end -}}
+          {{- else -}}
+            {{- errorf "Invalid ordinal value in weekday: %s. Ordinal must be between -53 and 53 (excluding 0)" $input -}}
+          {{- end -}}
+        {{- else -}}
+          {{- errorf "Invalid ordinal weekday format: %s. Expected format: [+-]?[1-53][SU|MO|TU|WE|TH|FR|SA]" $input -}}
+        {{- end -}}
+      {{- else -}}
+        {{- errorf "Invalid weekday value: %s. Must be a plain weekday (SU, MO, TU, WE, TH, FR, SA) or ordinal weekday (e.g., 1MO, 3TH, -1FR)" $input -}}
+      {{- end -}}
     {{- end -}}
   {{- end -}}
 {{- else -}}
-  {{- $weekday := . | upper -}}
-  {{- if in $validWeekdays $weekday -}}
-    {{- $result = $result | append $weekday -}}
+  {{- $input := . | upper | strings.TrimSpace -}}
+  
+  {{- /* Check if it's a plain weekday */ -}}
+  {{- if in $validWeekdays $input -}}
+    {{- $result = $result | append $input -}}
   {{- else -}}
-    {{- errorf "Invalid weekday value: %s. Must be one of SU, MO, TU, WE, TH, FR, SA" . -}}
+    {{- /* Check if it's an ordinal weekday (e.g., 1MO, 3TH, -1FR) */ -}}
+    {{- $ordinalPattern := `^([+-]?\d{1,2})(SU|MO|TU|WE|TH|FR|SA)$` -}}
+    {{- $matches := findRE $ordinalPattern $input -}}
+    {{- if $matches -}}
+      {{- /* Extract ordinal and weekday parts using string manipulation */ -}}
+      {{- $ordinalMatch := findRE `^[+-]?\d{1,2}` $input -}}
+      {{- $weekdayMatch := findRE `(SU|MO|TU|WE|TH|FR|SA)$` $input -}}
+      
+      {{- if and $ordinalMatch $weekdayMatch -}}
+        {{- $ordinal := index $ordinalMatch 0 -}}
+        {{- $weekday := index $weekdayMatch 0 -}}
+        
+        {{- /* Validate ordinal range (-53 to 53, excluding 0) */ -}}
+        {{- $ordinalNum := int $ordinal -}}
+        {{- if and (ne $ordinalNum 0) (ge $ordinalNum -53) (le $ordinalNum 53) -}}
+          {{- /* Validate weekday part */ -}}
+          {{- if in $validWeekdays $weekday -}}
+            {{- $result = $result | append (printf "%s%s" $ordinal $weekday) -}}
+          {{- else -}}
+            {{- errorf "Invalid weekday in ordinal format: %s. Weekday must be one of SU, MO, TU, WE, TH, FR, SA" $input -}}
+          {{- end -}}
+        {{- else -}}
+          {{- errorf "Invalid ordinal value in weekday: %s. Ordinal must be between -53 and 53 (excluding 0)" $input -}}
+        {{- end -}}
+      {{- else -}}
+        {{- errorf "Invalid ordinal weekday format: %s. Expected format: [+-]?[1-53][SU|MO|TU|WE|TH|FR|SA]" $input -}}
+      {{- end -}}
+    {{- else -}}
+      {{- errorf "Invalid weekday value: %s. Must be a plain weekday (SU, MO, TU, WE, TH, FR, SA) or ordinal weekday (e.g., 1MO, 3TH, -1FR)" $input -}}
+    {{- end -}}
   {{- end -}}
 {{- end -}}
 

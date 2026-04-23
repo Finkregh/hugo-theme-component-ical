@@ -1,0 +1,45 @@
+{{- /* Calendar Download Links Section */ -}}
+<section class="calendar-downloads-section" aria-labelledby="downloads-heading">
+  <h2 id="downloads-heading" class="section-title">
+    <span class="icon">
+      {{ partial "calendar_icon.html" "download" }}
+    </span>
+    {{ T "ical_calendar_downloads" | default "Download Calendar" }}
+  </h2>
+  
+  <div class="download-options">
+    {{ with .OutputFormats.Get "Calendar" }}
+    <div class="download-option">
+      <p>
+        {{ T "templates_get_calendar_file" | default "Calendar file with all events" }}
+        <a href="{{ .RelPermalink }}" type="text/calendar" class="download-btn">
+          {{ T "templates_without_alarms" | default "without alarms" }}
+          <span class="icon">
+            {{ partial "calendar_icon.html" "download" }}
+          </span>
+        </a>
+        {{- with $.OutputFormats.Get "CalendarWithAlarms" }}
+        <a href="{{ .RelPermalink }}" type="text/calendar" class="download-btn">
+          {{ T "templates_with_alarms" | default "with alarms" }}
+          <span class="icon">
+            {{ partial "calendar_icon.html" "download" }}
+          </span>
+        </a>
+        {{- end }}
+      </p>
+    </div>
+    {{ end }}
+  </div>
+
+  {{- /* Interactive Calendar Widget */ -}}
+  {{ with .OutputFormats.Get "Calendar" }}
+  <div class="calendar-widget-section">
+    <h3 class="widget-title">{{ T "ical_interactive_calendar" | default "Interactive Calendar" }}</h3>
+    <div class="calendar-controls">
+      <label for="locale-selector">{{ T "ical_language_label" | default "Select language" }}:</label>
+      <select id="locale-selector" class="locale-selector"></select>
+    </div>
+    <div class="single-event-calendar" id="calendar"></div>
+  </div>
+  {{ end }}
+</section>

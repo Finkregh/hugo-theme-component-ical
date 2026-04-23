@@ -13,4 +13,4 @@
       - . : A value suitable for the 'dateFormat' function.
 */ -}}
 
-DTSTAMP:{{- partial "ical/dt_date_time.ics" (dict "dateTime" . "isUTC" true) -}}
+DTSTAMP:{{- partial "ical/dt_date_time.ics" (dict "dateTime" . "isUTC" true) }}

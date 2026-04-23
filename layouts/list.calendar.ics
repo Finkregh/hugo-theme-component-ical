@@ -1,11 +1,19 @@
+{{- if or (eq hugo.Environment "development") (eq hugo.Environment "debug") }}{{ warnidf "debug-template-used" "Template used: %s" templates.Current.Name }}{{ end -}}
+{{- /* Check if any pages have valid event metadata before generating calendar */ -}}
+{{- $hasValidEvents := false -}}
+{{- range .Pages -}}
+  {{- if .Params.startDate -}}
+    {{- $hasValidEvents = true -}}
+  {{- end -}}
+{{- end -}}
+{{- /* Only generate calendar if valid events exist */ -}}
+{{- if $hasValidEvents -}}
 BEGIN:VCALENDAR
-
-{{ partial "events/header.ics" . }}
-
-{{ partial "events/timezone.ics" . }}
-
-{{ range .Pages }}
-{{ partial "events/event.ics" . }}
-{{ end }}
-
+{{- partial "header.ics" . -}}
+{{- range .Pages -}}
+  {{- if .Params.startDate -}}
+{{ partial "event.ics" . }}
+  {{- end -}}
+{{- end -}}
 END:VCALENDAR
+{{- end -}}

@@ -1,0 +1,65 @@
+/*
+ * Shared Form Styles
+ * 
+ * Form controls and inputs used across calendar components.
+ */
+
+/* ========================================
+ * CALENDAR CONTROLS
+ * ======================================== */
+
+.calendar-controls {
+  display: flex;
+  align-items: center;
+  gap: var(--calendar-space-3);
+  margin-bottom: var(--calendar-space-4);
+  flex-wrap: wrap;
+}
+
+.calendar-controls label {
+  color: var(--calendar-text-primary);
+  font-size: var(--calendar-font-size-sm);
+  font-weight: var(--calendar-font-weight-medium);
+}
+
+/* ========================================
+ * LOCALE SELECTOR
+ * ======================================== */
+
+.locale-selector {
+  background-color: var(--calendar-bg-primary);
+  color: var(--calendar-text-primary);
+  border: 1px solid var(--calendar-border-color);
+  border-radius: var(--calendar-radius-md);
+  padding: var(--calendar-space-2) var(--calendar-space-3);
+  font-size: var(--calendar-font-size-sm);
+  transition: var(--calendar-transition-fast);
+}
+
+.locale-selector:focus {
+  outline: none;
+  border-color: var(--calendar-accent-color);
+  box-shadow: 0 0 0 3px var(--calendar-focus-shadow-color);
+}
+
+/* ========================================
+ * RESPONSIVE ADJUSTMENTS
+ * ======================================== */
+
+@media (max-width: 768px) {
+  .calendar-controls {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: var(--calendar-space-2);
+  }
+}
+
+/* ========================================
+ * REDUCED MOTION SUPPORT
+ * ======================================== */
+
+@media (prefers-reduced-motion: reduce) {
+  .locale-selector {
+    transition: none;
+  }
+}

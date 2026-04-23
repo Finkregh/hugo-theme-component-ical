@@ -1,0 +1,68 @@
+{{- /*
+  Template Trace Debug Partial
+  
+  Provides template call stack information for enhanced error reporting.
+  Uses Hugo's templates.Current to access template ancestry and base information.
+  
+  Input: None (uses templates.Current context)
+  Output: Formatted string with template file paths and VSCode links
+  
+  Usage in error messages:
+    {{- $trace := partial "debug/template_trace.html" . -}}
+    {{- errorf "Error message\n%s" $trace -}}
+  
+  Output Format:
+    Template trace:
+      - template name (FILEPATH)
+      - template name (FILEPATH)
+      ...
+*/ -}}
+
+{{- $output := "" -}}
+
+{{- with templates.Current -}}
+  {{- $output = "\n\nTemplate trace:" -}}
+  
+  {{- /* Get the current template name and filename */ -}}
+  {{- $currentName := .Name -}}
+  {{- $currentFilename := .Filename -}}
+  
+  {{- /* Add current template */ -}}
+  {{- if $currentFilename -}}
+    {{- $output = printf "%s\n  - %s (%s)" $output $currentName $currentFilename -}}
+  {{- else -}}
+    {{- $output = printf "%s\n  - %s (path unavailable)" $output $currentName -}}
+  {{- end -}}
+  
+  {{- /* Add ancestors if available */ -}}
+  {{- with .Ancestors -}}
+    {{- range . -}}
+      {{- $ancestorName := .Name -}}
+      {{- $ancestorFilename := .Filename -}}
+      {{- if $ancestorFilename -}}
+        {{- $output = printf "%s\n  - %s (%s)" $output $ancestorName $ancestorFilename -}}
+      {{- else -}}
+        {{- $output = printf "%s\n  - %s (path unavailable)" $output $ancestorName -}}
+      {{- end -}}
+    {{- end -}}
+  {{- end -}}
+  
+  {{- /* Add base template if available and different from current */ -}}
+  {{- with .Base -}}
+    {{- $baseName := .Name -}}
+    {{- $baseFilename := .Filename -}}
+    {{- if ne $baseName $currentName -}}
+      {{- if $baseFilename -}}
+        {{- $output = printf "%s\n  - %s - base (%s)" $output $baseName $baseFilename -}}
+      {{- else -}}
+        {{- $output = printf "%s\n  - %s (base, path unavailable)" $output $baseName -}}
+      {{- end -}}
+    {{- end -}}
+  {{- end -}}
+  
+{{- else -}}
+  {{- $output = "\n\nTemplate trace: (unavailable - templates.Current not accessible)" -}}
+{{- end -}}
+
+{{- return $output -}}
+

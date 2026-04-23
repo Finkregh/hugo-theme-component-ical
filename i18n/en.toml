@@ -1,0 +1,282 @@
+# Hugo i18n Translation Keys - English
+# Translation system for calendar templates with ical_ prefix
+# Supports parameter substitution and pluralization
+
+# Event metadata section headers
+[ical_event_details]
+other = "Event Details"
+
+[ical_date_time]
+other = "Date & Time"
+
+[ical_location]
+other = "Location"
+
+[ical_organizer]
+other = "Organizer"
+
+[ical_status]
+other = "Status"
+
+[ical_recurrence]
+other = "Recurrence"
+
+[ical_reminders]
+other = "Reminders"
+
+# Field labels
+[ical_start]
+other = "Start"
+
+[ical_end]
+other = "End"
+
+[ical_name]
+other = "Name"
+
+[ical_email]
+other = "Email"
+
+# Status messages
+[ical_event_cancelled_notice]
+other = "This event has been cancelled"
+
+# Technical details
+[ical_technical_details]
+other = "Technical Details"
+
+# Download and calendar interface
+[ical_download_ics]
+other = "Download {{ .title }}.ics"
+
+[ical_calendar_view]
+other = "Calendar View"
+
+[ical_language_label]
+other = "Language selection"
+
+# Main orchestration patterns
+[ical_no_rule_found]
+other = "NO RULE FOUND"
+
+[ical_recurrence_every_frequency]
+other = "Every {{ .frequency }}"
+
+# Interval formatter patterns
+[ical_recurrence_every_day]
+other = "Every day"
+
+[ical_recurrence_every_week]
+other = "Every week"
+
+[ical_recurrence_every_month]
+other = "Every month"
+
+[ical_recurrence_every_year]
+other = "Every year"
+
+[ical_recurrence_every_interval]
+other = "Every {{ .count }} {{ .unit }}"
+
+# Ordinal positions (positive ordinals)
+[ical_ordinal_first]
+other = "first"
+
+[ical_ordinal_second]
+other = "second"
+
+[ical_ordinal_third]
+other = "third"
+
+[ical_ordinal_fourth]
+other = "fourth"
+
+[ical_ordinal_fifth]
+other = "fifth"
+
+[ical_ordinal_nth]
+other = "{{ .number }}th"
+
+# Ordinal positions (negative ordinals)
+[ical_ordinal_last]
+other = "last"
+
+[ical_ordinal_second_to_last]
+other = "second-to-last"
+
+[ical_ordinal_third_to_last]
+other = "third-to-last"
+
+[ical_ordinal_fourth_to_last]
+other = "fourth-to-last"
+
+[ical_ordinal_fifth_to_last]
+other = "fifth-to-last"
+
+[ical_ordinal_nth_to_last]
+other = "{{ .number }}-to-last"
+
+# Weekly frequency patterns
+[ical_recurrence_every_interval_on_days]
+other = "Every {{ .interval }} on {{ .days }}"
+
+# Monthly frequency patterns
+[ical_recurrence_every_ordinal_day_of_month]
+other = "Every {{ .ordinal }} {{ .day }} of the month"
+
+[ical_recurrence_interval_on_ordinal_day]
+other = "{{ .interval }} on the {{ .ordinal }} {{ .day }}"
+
+[ical_recurrence_every_month_on_day]
+other = "Every month on day {{ .day }}"
+
+[ical_recurrence_interval_on_day]
+other = "{{ .interval }} on day {{ .day }}"
+
+# Yearly frequency patterns
+[ical_recurrence_every_year_on_ordinal_day_of_month]
+other = "Every year on the {{ .ordinal }} {{ .day }} of {{ .month }}"
+
+[ical_recurrence_interval_on_ordinal_day_of_month]
+other = "{{ .interval }} on the {{ .ordinal }} {{ .day }} of {{ .month }}"
+
+[ical_recurrence_every_year_on_day_in_month]
+other = "Every year on {{ .day }} in {{ .month }}"
+
+[ical_recurrence_interval_on_day_in_month]
+other = "{{ .interval }} on {{ .day }} in {{ .month }}"
+
+[ical_recurrence_every_year_in_month]
+other = "Every year in {{ .month }}"
+
+[ical_recurrence_interval_in_month]
+other = "{{ .interval }} in {{ .month }}"
+
+# Count and until post-processing
+[ical_recurrence_for_count]
+other = "{{ .pattern }} (for {{ .count }} {{ .occurrences }})"
+
+[ical_recurrence_until_date]
+other = "{{ .pattern }} (until {{ .date }})"
+
+# ===== PLURALIZATION SUPPORT =====
+
+# Occurrence pluralization
+[ical_occurrence]
+one = "occurrence"
+other = "occurrences"
+
+# Time unit pluralization
+[ical_day]
+one = "day"
+other = "days"
+
+[ical_week]
+one = "week"
+other = "weeks"
+
+[ical_month]
+one = "month"
+other = "months"
+
+[ical_year]
+one = "year"
+other = "years"
+
+# Debugging
+
+[ical_debug_recurrence_rule]
+other = "Recurrence Rule Debug"
+
+[ical_debug_frequency]
+other = "Frequency"
+
+[ical_debug_interval]
+other = "Interval"
+
+[ical_debug_by_day]
+other = "By Day"
+
+[ical_debug_by_set_pos]
+other = "By Set Position"
+
+[ical_debug_count]
+other = "Count"
+
+[ical_debug_until]
+other = "Until"
+
+# EVENTS LIST
+
+[ical_events_list_title]
+other = "Events"
+
+[ical_events_list_upcoming]
+other = "Upcoming Events"
+
+[ical_events_list_past]
+other = "Past Events"
+
+[ical_events_list_no_events]
+other = "No events found."
+
+[ical_events_list_view_details]
+other = "View Details"
+
+[ical_events_list_when]
+other = "When"
+
+[ical_events_list_first_recurrence]
+other = "First occurrence"
+
+[ical_events_list_last_recurrence]
+other = "Last occurrence"
+
+[ical_events_list_where]
+other = "Where"
+
+[ical_events_list_recurring]
+other = "Recurring"
+
+[ical_events_list_cancelled]
+other = "Cancelled"
+
+# TEMPLATES SECTION
+# Template-specific translations separate from ical_ prefixed keys
+
+[templates_calendar_subscribe_no_alarms]
+other = "Calendar file to subscribe (without alarms)"
+
+[templates_calendar_subscribe_with_alarms]
+other = "Calendar file to subscribe (with alarms)"
+
+[templates_language_selection]
+other = "Language selection:"
+
+[templates_event_metadata]
+other = "Event Metadata"
+
+[templates_calendar_file_for_event]
+other = "Calendar file for this event:"
+
+[templates_recurrence_rules]
+other = "Recurrence Rules:"
+
+[templates_get_calendar_file]
+other = "Calendar file with all events"
+
+[templates_without_alarms]
+other = "without alarms"
+
+[templates_with_alarms]
+other = "with alarms"
+
+[templates_here_link]
+other = "here"
+
+# Calendar downloads section
+[ical_calendar_downloads]
+other = "Download Calendar"
+
+[ical_interactive_calendar]
+other = "Interactive Calendar"

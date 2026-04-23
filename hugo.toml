@@ -7,6 +7,11 @@ home = ["HTML", "RSS"]
 page = ["HTML", "RSS", "Calendar", "CalendarWithAlarms"]
 section = ["HTML", "RSS", "Calendar", "CalendarWithAlarms"]
 
+[params]
+# enable this when you want to have the calendar <script>
+# not in the header, but where it is actually used
+calendar_inline_javascript = false
+
 [outputFormats.Calendar]
 baseName = "calendar"
 mediaType = "text/calendar"

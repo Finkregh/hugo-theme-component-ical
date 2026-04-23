@@ -1,0 +1,27 @@
+{
+  "comments": {
+    "dependencies": {
+      "@fullcalendar/core": "../../..",
+      "@fullcalendar/daygrid": "../../..",
+      "@fullcalendar/icalendar": "../../..",
+      "@fullcalendar/list": "../../..",
+      "@fullcalendar/rrule": "../../..",
+      "@fullcalendar/timegrid": "../../.."
+    },
+    "devDependencies": {}
+  },
+  "dependencies": {
+    "@fullcalendar/core": "^6.1.20",
+    "@fullcalendar/daygrid": "^6.1.20",
+    "@fullcalendar/icalendar": "^6.1.20",
+    "@fullcalendar/list": "^6.1.20",
+    "@fullcalendar/rrule": "^6.1.20",
+    "@fullcalendar/timegrid": "^6.1.20"
+  },
+  "devDependencies": {},
+  "name": "exampleSite",
+  "version": "0.1.0",
+  "workspaces": [
+    "packages/hugoautogen"
+  ]
+}

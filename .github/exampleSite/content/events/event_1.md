@@ -1,8 +1,8 @@
 ---
-title: Initial Presentation
+title: Initial Presentation, Summer
 
-startDate: 2020-08-26T20:00:00+02:00
-endDate:   2020-08-26T22:00:00+02:00
+startDate: 2026-08-26T20:00:00
+endDate:   2026-08-26T22:00:00
 where: "Somewhere on the internet"
 orga: "F. Nord"
 orgaEmail: "me@example.org"

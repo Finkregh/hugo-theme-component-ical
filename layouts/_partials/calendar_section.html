@@ -1,0 +1,86 @@
+{{- if in .Params.outputs "Calendar" -}}
+<main class="events-list-container">
+  <header class="events-list-header">
+    <h1 class="events-list-title">
+      <span class="icon">
+        {{ partial "calendar_icon.html" "calender" }}
+      </span>
+      {{ T "ical_events_list_title" }}
+    </h1>
+  </header>
+
+  {{- /* Include calendar download links */ -}}
+  {{ partial "events/calendar-downloads.html" . }}
+
+  {{- /* Separate events into upcoming and past */ -}}
+  {{- $now := now -}}
+  {{- $upcomingEvents := slice -}}
+  {{- $pastEvents := slice -}}
+
+  {{- range .Pages -}}
+    {{- if .Params.startDate -}}
+      {{- $isPast := partial "events/event_is_past.html" . -}}
+      {{- if eq $isPast "true" -}}
+        {{- $pastEvents = $pastEvents | append . -}}
+      {{- else -}}
+        {{- $upcomingEvents = $upcomingEvents | append . -}}
+      {{- end -}}
+    {{- end -}}
+  {{- end -}}
+
+  {{- /* Sort events by date */ -}}
+  {{- $upcomingEvents = sort $upcomingEvents ".Params.startDate" "asc" -}}
+  {{- $pastEvents = sort $pastEvents ".Params.startDate" "desc" -}}
+
+  {{- /* Display upcoming events */ -}}
+  {{- if $upcomingEvents -}}
+  <section class="events-section upcoming-events" aria-labelledby="upcoming-heading">
+    <h2 id="upcoming-heading" class="section-title">
+      <span class="icon">
+        {{ partial "calendar_icon.html" "arrow-right" }}
+      </span>
+      {{ T "ical_events_list_upcoming" }}
+    </h2>
+    <ul class="events-grid" role="list">
+      {{- range $upcomingEvents -}}
+        <li class="events-grid-item">
+          {{ partial "events/event-card.html" . }}
+        </li>
+      {{- end -}}
+    </ul>
+  </section>
+  {{- end -}}
+
+  {{- /* Display past events */ -}}
+  {{- if $pastEvents -}}
+  <section class="events-section past-events" aria-labelledby="past-heading">
+    <h2 id="past-heading" class="section-title">
+      <span class="icon">
+        {{ partial "calendar_icon.html" "time" }}
+      </span>
+      {{ T "ical_events_list_past" }}
+    </h2>
+    <ul class="events-grid" role="list">
+      {{- range $pastEvents -}}
+        <li class="events-grid-item">
+          {{ partial "events/event-card.html" . }}
+        </li>
+      {{- end -}}
+    </ul>
+  </section>
+  {{- end -}}
+
+  {{- /* No events message */ -}}
+  {{- if and (not $upcomingEvents) (not $pastEvents) -}}
+  <div class="no-events-message" role="status" aria-live="polite">
+    <span class="icon no-events-icon">
+      {{ partial "calendar_icon.html" "circle-info" }}
+    </span>
+    <p>{{ T "ical_events_list_no_events" }}</p>
+  </div>
+  {{- end -}}
+</main>
+{{ if or .Params.calendar_inline_javascript site.Params.calendar_inline_javascript }}{{ partial "calendar_js.html" . }}{{ end }}
+{{- else -}}
+{{- errorf "Partial '%s' is used, but there is no 'Calendar' in .Params.outputs: '%s'" templates.Current.Name .Params.outputs -}}
+{{- end -}}

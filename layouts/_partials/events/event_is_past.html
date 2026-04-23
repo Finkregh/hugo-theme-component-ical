@@ -1,0 +1,95 @@
+{{- /* 
+  Event Past/Upcoming Determination Helper
+  
+  Returns: "true" if event is past, "false" if upcoming
+  
+  Logic:
+  1. Cancelled events → always past
+  2. Simple events → compare startDate with now
+  3. Recurring events:
+     - With UNTIL → compare until with now
+     - With COUNT → calculate lastDate, compare with now
+     - Infinite → always upcoming
+*/ -}}
+
+{{- $now := now -}}
+{{- $isPast := "false" -}}
+
+{{- /* Step 1: Check if cancelled */ -}}
+{{- if .Params.cancelled -}}
+  {{- $isPast = "true" -}}
+{{- else -}}
+
+  {{- /* Step 2: Check if recurring */ -}}
+  {{- if .Params.recurrenceRule -}}
+    {{- $rrule := .Params.recurrenceRule -}}
+
+    {{- /* Step 3: Check UNTIL (takes precedence over COUNT) */ -}}
+    {{- if $rrule.until -}}
+      {{- $untilDate := time.AsTime $rrule.until -}}
+      {{- if gt $untilDate $now -}}
+        {{- $isPast = "false" -}}
+      {{- else -}}
+        {{- $isPast = "true" -}}
+      {{- end -}}
+
+    {{- /* Step 4: Check COUNT */ -}}
+    {{- else if $rrule.count -}}
+      {{- $startDate := time.AsTime .Params.startDate -}}
+      {{- $count := $rrule.count | int -}}
+      {{- $interval := 1 -}}
+      {{- with $rrule.interval -}}
+        {{- $interval = . | int -}}
+      {{- end -}}
+      {{- $freq := $rrule.freq | upper -}}
+
+      {{- /* Calculate lastDate based on frequency */ -}}
+      {{- $lastDate := $startDate -}}
+
+      {{- if eq $freq "DAILY" -}}
+        {{- $daysToAdd := mul (sub $count 1) $interval -}}
+        {{- $lastDate = $startDate.AddDate 0 0 $daysToAdd -}}
+
+      {{- else if eq $freq "WEEKLY" -}}
+        {{- $daysToAdd := mul (mul (sub $count 1) $interval) 7 -}}
+        {{- $lastDate = $startDate.AddDate 0 0 $daysToAdd -}}
+
+      {{- else if eq $freq "MONTHLY" -}}
+        {{- $monthsToAdd := mul (sub $count 1) $interval -}}
+        {{- $lastDate = $startDate.AddDate 0 $monthsToAdd 0 -}}
+
+      {{- else if eq $freq "YEARLY" -}}
+        {{- $yearsToAdd := mul (sub $count 1) $interval -}}
+        {{- $lastDate = $startDate.AddDate $yearsToAdd 0 0 -}}
+
+      {{- else -}}
+        {{- /* Unknown frequency - fallback to startDate comparison */ -}}
+        {{- warnf "Unknown frequency '%s' for event '%s' - using startDate comparison" $freq .Title -}}
+        {{- $lastDate = $startDate -}}
+      {{- end -}}
+
+      {{- /* Compare lastDate with now */ -}}
+      {{- if gt $lastDate $now -}}
+        {{- $isPast = "false" -}}
+      {{- else -}}
+        {{- $isPast = "true" -}}
+      {{- end -}}
+
+    {{- /* Step 5: Infinite recurrence (no UNTIL, no COUNT) */ -}}
+    {{- else -}}
+      {{- $isPast = "false" -}}
+    {{- end -}}
+
+  {{- /* Step 6: Simple event (no recurrenceRule) */ -}}
+  {{- else -}}
+    {{- $startDate := time.AsTime .Params.startDate -}}
+    {{- if gt $startDate $now -}}
+      {{- $isPast = "false" -}}
+    {{- else -}}
+      {{- $isPast = "true" -}}
+    {{- end -}}
+  {{- end -}}
+{{- end -}}
+
+{{- /* Return result */ -}}
+{{- $isPast -}}
