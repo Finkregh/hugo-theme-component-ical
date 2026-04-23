@@ -4,7 +4,7 @@ PRODID:-//Hugo Calendar Templates//Event Template//EN
 CALSCALE:GREGORIAN
 METHOD:PUBLISH
 UID:f99e9c85c9ea7d07a90d77e33eab90a9
-LAST-MODIFIED:20260423T202654Z
+LAST-MODIFIED:20260423T203900Z
 URL:https://finkregh.github.io/hugo-theme-component-ical/events/event_9_second_tuesday/
 REFRESH-INTERVAL;VALUE=DURATION:P1W
 SOURCE;VALUE=URI:https://finkregh.github.io/hugo-theme-component-ical/events/event_9_second_tuesday/calendar.ics
@@ -19,7 +19,7 @@ UID:f99e9c85c9ea7d07a90d77e33eab90a9
 DTSTART;VALUE=DATE-TIME:20240109T130000Z
 CLASS:PUBLIC
 DESCRIPTION;LANGUAGE=en-US:Bi-weekly planning meeting held every second Tuesday. The team reviews progress from the previous two weeks\, discusses upcoming priorities\, and allocates resources for the next sprint cycle.\nFront matter:\ntitle: Every Second Tuesday startDate: 2024-01-09T14:00:00+01:00 endDate: 2024-01-09T15:30:00+01:00 where: "Conference Room B\, Second Floor" orga: "Department Head" orgaEmail: "depthead@example.org" # Every second Tuesday (every other Tuesday) recurrenceRule: freq: "WEEKLY" interval: 2 byDay: "TU"
-LAST-MODIFIED:20260423T202654Z
+LAST-MODIFIED:20260423T203900Z
 LOCATION;LANGUAGE=en-US:
 STATUS:CONFIRMED
 SUMMARY;LANGUAGE=en-US:Every Second Tuesday
