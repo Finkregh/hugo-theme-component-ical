@@ -1,0 +1,34 @@
+BEGIN:VCALENDAR
+VERSION:2.0
+PRODID:-//Hugo Calendar Templates//Event Template//EN
+CALSCALE:GREGORIAN
+METHOD:PUBLISH
+UID:8d537b853a3b0afff74b0862a3389ba6
+LAST-MODIFIED:20260423T192849Z
+URL:https://finkregh.github.io/hugo-theme-component-ical/de/events/event_3_yearly_april/
+REFRESH-INTERVAL;VALUE=DURATION:P1W
+SOURCE;VALUE=URI:https://finkregh.github.io/hugo-theme-component-ical/de/events/event_3_yearly_april/calendar.ics
+COLOR:crimson
+NAME;LANGUAGE=de:Example Events
+DESCRIPTION;LANGUAGE=de:Example Events Calendar
+X-WR-CALNAME:Example Events
+X-WR-CALDESC:Example Events Calendar
+BEGIN:VEVENT
+DTSTAMP:00010101T000000Z
+UID:8d537b853a3b0afff74b0862a3389ba6
+DTSTART;VALUE=DATE-TIME:20240421T070000Z
+CLASS:PUBLIC
+DESCRIPTION;LANGUAGE=de:Unsere jährliche Frühjahrskonferenz findet am dritten Sonntag im April statt. Freuen Sie sich auf einen Tag voller Vorträge\, Networking und Innovation.\nFront matter:\ntitle: Jährliche Frühjahrskonferenz startDate: 2024-04-21T09:00:00+02:00 endDate: 2024-04-21T17:00:00+02:00 where: "Kongresszentrum\, Großer Saal" orga: "Konferenzkomitee" orgaEmail: "committee@example.org" # Dritter Sonntag im April jedes Jahr recurrenceRule: freq: "YEARLY" byMonth: 4 byDay: "SU" bySetPos: 3
+LAST-MODIFIED:20260423T192849Z
+LOCATION;LANGUAGE=de:
+STATUS:CONFIRMED
+SUMMARY;LANGUAGE=de:Jährliche Frühjahrskonferenz
+TRANSP:OPAQUE
+URL:https://finkregh.github.io/hugo-theme-component-ical/de/events/event_3_yearly_april/
+
+RRULE:FREQ=YEARLY;INTERVAL=1;BYDAY=3SU;BYMONTH=4
+DTEND;VALUE=DATE-TIME:20240421T150000Z
+CONTACT;LANGUAGE=de:Konferenzkomitee: committee@example.org
+COLOR:crimson
+END:VEVENT
+END:VCALENDAR
