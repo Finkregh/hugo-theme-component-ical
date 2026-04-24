@@ -167,14 +167,3 @@ jobs:
         with:
           path: .github/exampleSite/public
 
-  deploy:
-    if: github.ref == 'refs/heads/main' && github.server_url == 'https://github.com'
-    environment:
-      name: github-pages
-      url: ${{ steps.deployment.outputs.page_url }}
-    runs-on: ubuntu-latest
-    needs: validate-ical
-    steps:
-      - name: Deploy to GitHub Pages
-        id: deployment
-        uses: actions/deploy-pages@v5

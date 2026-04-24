@@ -12,9 +12,7 @@ jobs:
         with:
           fetch-depth: 0
       - name: Install cocogitto
-        uses: cocogitto/cocogitto-action@v4
-        with:
-          install-only: true
+        uses: https://codeberg.org/PurpleBooth/common-pipelines/actions/install-cocogitto@install-cocogitto-0.1.0
       - name: Semver release
         id: cog
         run: |
