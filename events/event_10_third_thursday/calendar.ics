@@ -4,7 +4,7 @@ PRODID:-//Hugo Calendar Templates//Event Template//EN
 CALSCALE:GREGORIAN
 METHOD:PUBLISH
 UID:5089da2db4156cafdedfe66e06d7f56c
-LAST-MODIFIED:20260423T220136Z
+LAST-MODIFIED:20260424T114659Z
 URL:https://finkregh.github.io/hugo-theme-component-ical/events/event_10_third_thursday/
 REFRESH-INTERVAL;VALUE=DURATION:P1W
 SOURCE;VALUE=URI:https://finkregh.github.io/hugo-theme-component-ical/events/event_10_third_thursday/calendar.ics
@@ -19,7 +19,7 @@ UID:5089da2db4156cafdedfe66e06d7f56c
 DTSTART;VALUE=DATE-TIME:20240118T100000Z
 CLASS:PUBLIC
 DESCRIPTION;LANGUAGE=en-US:Monthly strategy review meeting held on the third Thursday of each month. Senior leadership discusses strategic initiatives\, reviews market conditions\, and adjusts long-term planning based on current performance metrics.\nFront matter:\ntitle: Every Third Thursday of the Month startDate: 2024-01-18T11:00:00+01:00 endDate: 2024-01-18T12:30:00+01:00 where: "Executive Boardroom\, Top Floor" orga: "Strategy Director" orgaEmail: "strategy@example.org" # Every third Thursday of the month recurrenceRule: freq: "MONTHLY" byDay: "TH" bySetPos: 3
-LAST-MODIFIED:20260423T220136Z
+LAST-MODIFIED:20260424T114659Z
 LOCATION;LANGUAGE=en-US:
 STATUS:CONFIRMED
 SUMMARY;LANGUAGE=en-US:Every Third Thursday of the Month
