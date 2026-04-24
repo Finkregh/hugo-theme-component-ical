@@ -4,7 +4,7 @@ PRODID:-//Hugo Calendar Templates//Event Template//EN
 CALSCALE:GREGORIAN
 METHOD:PUBLISH
 UID:7067fec41c3c5445270fe37db1233b5d
-LAST-MODIFIED:20260424T142149Z
+LAST-MODIFIED:20260424T153652Z
 URL:https://finkregh.github.io/hugo-theme-component-ical/de/events/
 REFRESH-INTERVAL;VALUE=DURATION:P1W
 SOURCE;VALUE=URI:https://finkregh.github.io/hugo-theme-component-ical/de/events/calendar.ics
@@ -19,7 +19,7 @@ UID:909e51d15b9104e7be547513581e8ef3
 DTSTART;VALUE=DATE-TIME:20200826T180000Z
 CLASS:PUBLIC
 DESCRIPTION;LANGUAGE=de:Bei dieser Veranstaltung stellen wir das Projekt zum ersten Mal vor.\nFront matter:\nstartDate: 2020-08-26T20:00:00+02:00 endDate: 2020-08-26T22:00:00+02:00 where: "Irgendwo im Internet" orga: "F. Nord" orgaEmail: "me@example.org"
-LAST-MODIFIED:20260424T142149Z
+LAST-MODIFIED:20260424T153652Z
 LOCATION;LANGUAGE=de:
 STATUS:CONFIRMED
 SUMMARY;LANGUAGE=de:Erstvorstellung
@@ -35,7 +35,7 @@ UID:8d537b853a3b0afff74b0862a3389ba6
 DTSTART;VALUE=DATE-TIME:20240421T070000Z
 CLASS:PUBLIC
 DESCRIPTION;LANGUAGE=de:Unsere jährliche Frühjahrskonferenz findet am dritten Sonntag im April statt. Freuen Sie sich auf einen Tag voller Vorträge\, Networking und Innovation.\nFront matter:\ntitle: Jährliche Frühjahrskonferenz startDate: 2024-04-21T09:00:00+02:00 endDate: 2024-04-21T17:00:00+02:00 where: "Kongresszentrum\, Großer Saal" orga: "Konferenzkomitee" orgaEmail: "committee@example.org" # Dritter Sonntag im April jedes Jahr recurrenceRule: freq: "YEARLY" byMonth: 4 byDay: "SU" bySetPos: 3
-LAST-MODIFIED:20260424T142149Z
+LAST-MODIFIED:20260424T153652Z
 LOCATION;LANGUAGE=de:
 STATUS:CONFIRMED
 SUMMARY;LANGUAGE=de:Jährliche Frühjahrskonferenz
@@ -53,7 +53,7 @@ UID:3336043e425e22477708f374e90083c1
 DTSTART;VALUE=DATE-TIME:20240118T100000Z
 CLASS:PUBLIC
 DESCRIPTION;LANGUAGE=de:Monatliche Strategiebesprechung am dritten Donnerstag jedes Monats. Die Geschäftsleitung bespricht strategische Initiativen\, bewertet die Marktlage und passt die langfristige Planung anhand aktueller Leistungskennzahlen an.\nFront matter:\ntitle: Jeden dritten Donnerstag im Monat startDate: 2024-01-18T11:00:00+01:00 endDate: 2024-01-18T12:30:00+01:00 where: "Vorstandszimmer\, Obergeschoss" orga: "Strategiedirektor" orgaEmail: "strategy@example.org" # Jeden dritten Donnerstag im Monat recurrenceRule: freq: "MONTHLY" byDay: "TH" bySetPos: 3
-LAST-MODIFIED:20260424T142149Z
+LAST-MODIFIED:20260424T153652Z
 LOCATION;LANGUAGE=de:
 STATUS:CONFIRMED
 SUMMARY;LANGUAGE=de:Jeden dritten Donnerstag im Monat
@@ -71,7 +71,7 @@ UID:5fe69e3303e6a2f16a1487ea161dc69c
 DTSTART;VALUE=DATE-TIME:20250108T080000Z
 CLASS:PUBLIC
 DESCRIPTION;LANGUAGE=de:Wöchentliches Team-Standup jeden Montagmorgen. Teammitglieder berichten über ihre aktuelle Arbeit\, besprechen Hindernisse und planen die kommende Woche.\nFront matter:\ntitle: Jeden Montag startDate: 2025-01-08T09:00:00+01:00 endDate: 2025-01-08T09:30:00+01:00 where: "Besprechungsraum 1\, Hauptgebäude" orga: "Scrum Master" orgaEmail: "scrummaster@example.org" # Jeden Montag recurrenceRule: freq: "WEEKLY" byDay: "MO"
-LAST-MODIFIED:20260424T142149Z
+LAST-MODIFIED:20260424T153652Z
 LOCATION;LANGUAGE=de:
 STATUS:CONFIRMED
 SUMMARY;LANGUAGE=de:Jeden Montag
