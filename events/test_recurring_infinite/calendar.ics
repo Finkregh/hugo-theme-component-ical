@@ -4,7 +4,7 @@ PRODID:-//Hugo Calendar Templates//Event Template//EN
 CALSCALE:GREGORIAN
 METHOD:PUBLISH
 UID:9c5204c70193d97eb6de0d5345c593d3
-LAST-MODIFIED:20260424T141343Z
+LAST-MODIFIED:20260424T141940Z
 REFRESH-INTERVAL;VALUE=DURATION:P1W
 SOURCE;VALUE=URI:https://finkregh.github.io/hugo-theme-component-ical/events/test_recurring_infinite/calendar.ics
 COLOR:crimson
@@ -18,7 +18,7 @@ UID:9c5204c70193d97eb6de0d5345c593d3
 DTSTART;VALUE=DATE-TIME:20250101T080000Z
 CLASS:PUBLIC
 DESCRIPTION;LANGUAGE=en-US:Weekly Monday meeting with no end date. Started in the past but continues indefinitely. Should appear in “Upcoming Events” section.
-LAST-MODIFIED:20260424T141343Z
+LAST-MODIFIED:20260424T141940Z
 LOCATION;LANGUAGE=en-US:
 STATUS:CONFIRMED
 SUMMARY;LANGUAGE=en-US:Test: Recurring Infinite

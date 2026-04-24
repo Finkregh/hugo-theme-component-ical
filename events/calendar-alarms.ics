@@ -4,7 +4,7 @@ PRODID:-//Hugo Calendar Templates//Event Template//EN
 CALSCALE:GREGORIAN
 METHOD:PUBLISH
 UID:03c1ca7de80bdb806a60bce3d3b7f652
-LAST-MODIFIED:20260424T141343Z
+LAST-MODIFIED:20260424T141940Z
 URL:https://finkregh.github.io/hugo-theme-component-ical/events/
 REFRESH-INTERVAL;VALUE=DURATION:P1W
 SOURCE;VALUE=URI:https://finkregh.github.io/hugo-theme-component-ical/events/calendar.ics
@@ -19,7 +19,7 @@ UID:4b5ffd65e5b69ecb6e84d982f5c2a3d1
 DTSTART;VALUE=DATE-TIME:20240421T070000Z
 CLASS:PUBLIC
 DESCRIPTION;LANGUAGE=en-US:Our annual spring conference takes place on the third Sunday of April each year. Join us for a day of presentations\, networking\, and innovation.\nFront matter:\ntitle: Annual Spring Conference startDate: 2024-04-21T09:00:00+02:00 endDate: 2024-04-21T17:00:00+02:00 where: "Convention Center\, Main Hall" orga: "Conference Committee" orgaEmail: "committee@example.org" # Third Sunday of April every year recurrenceRule: freq: "YEARLY" byMonth: 4 byDay: "SU" bySetPos: 3
-LAST-MODIFIED:20260424T141343Z
+LAST-MODIFIED:20260424T141940Z
 LOCATION;LANGUAGE=en-US:
 STATUS:CONFIRMED
 SUMMARY;LANGUAGE=en-US:Annual Spring Conference
@@ -37,7 +37,7 @@ UID:88aa212e637e8196af91540dce2cb49e
 DTSTART;VALUE=DATE-TIME:20260303T190000Z
 CLASS:PUBLIC
 DESCRIPTION;LANGUAGE=en-US:Our first monthly developer meeting.\nFront matter:\ntitle: Developer meeting 1 startDate: 2020-09-30T14:00:00+02:00 endDate: 2020-09-30T17:00:00+02:00 where: "Meeting room 1\, Headquarters" orga: "F. Nord" orgaEmail: "me@example.org" cancelled: true
-LAST-MODIFIED:20260424T141343Z
+LAST-MODIFIED:20260424T141940Z
 LOCATION;LANGUAGE=en-US:
 STATUS:CANCELLED
 SUMMARY;LANGUAGE=en-US:Developer meeting 1 Winter
@@ -53,7 +53,7 @@ UID:190ee21d91545e60b3708976b35af3f7
 DTSTART;VALUE=DATE-TIME:20250108T080000Z
 CLASS:PUBLIC
 DESCRIPTION;LANGUAGE=en-US:Weekly team standup meeting every Monday morning. Team members share updates on their current work\, discuss blockers\, and plan for the week ahead.\nFront matter:\ntitle: Every Monday startDate: 2025-01-08T09:00:00+01:00 endDate: 2025-01-08T09:30:00+01:00 where: "Meeting Room 1\, Main Office" orga: "Scrum Master" orgaEmail: "scrummaster@example.org" # Every Monday recurrenceRule: freq: "WEEKLY" byDay: "MO"
-LAST-MODIFIED:20260424T141343Z
+LAST-MODIFIED:20260424T141940Z
 LOCATION;LANGUAGE=en-US:
 STATUS:CONFIRMED
 SUMMARY;LANGUAGE=en-US:Every Monday
@@ -71,7 +71,7 @@ UID:d32d508c9801ef68459317f39197acb0
 DTSTART;VALUE=DATE-TIME:20400108T150000Z
 CLASS:PUBLIC
 DESCRIPTION;LANGUAGE=en-US:Brief check-in sessions held every Monday and Friday afternoon. These quick meetings help maintain team alignment and address any urgent issues at the start and end of each work week.\nFront matter:\ntitle: Every Monday and Friday #date: 2040-01-08T16:00:00+01:00 startDate: 2040-01-08T16:00:00+01:00 endDate: 2040-01-08T16:15:00+01:00 where: "Virtual Meeting Room" orga: "Project Manager" orgaEmail: "pm@example.org" # Every Monday and Friday recurrenceRule: freq: "WEEKLY" byDay: ["MO"\, "FR"]
-LAST-MODIFIED:20260424T141343Z
+LAST-MODIFIED:20260424T141940Z
 LOCATION;LANGUAGE=en-US:
 STATUS:CONFIRMED
 SUMMARY;LANGUAGE=en-US:Every Monday and Friday -- future
@@ -89,7 +89,7 @@ UID:f99e9c85c9ea7d07a90d77e33eab90a9
 DTSTART;VALUE=DATE-TIME:20240109T130000Z
 CLASS:PUBLIC
 DESCRIPTION;LANGUAGE=en-US:Bi-weekly planning meeting held every second Tuesday. The team reviews progress from the previous two weeks\, discusses upcoming priorities\, and allocates resources for the next sprint cycle.\nFront matter:\ntitle: Every Second Tuesday startDate: 2024-01-09T14:00:00+01:00 endDate: 2024-01-09T15:30:00+01:00 where: "Conference Room B\, Second Floor" orga: "Department Head" orgaEmail: "depthead@example.org" # Every second Tuesday (every other Tuesday) recurrenceRule: freq: "WEEKLY" interval: 2 byDay: "TU"
-LAST-MODIFIED:20260424T141343Z
+LAST-MODIFIED:20260424T141940Z
 LOCATION;LANGUAGE=en-US:
 STATUS:CONFIRMED
 SUMMARY;LANGUAGE=en-US:Every Second Tuesday
@@ -107,7 +107,7 @@ UID:19047b453eee8624a6270f68e3635f48
 DTSTART;VALUE=DATE-TIME:20240118T100000Z
 CLASS:PUBLIC
 DESCRIPTION;LANGUAGE=en-US:Every third day.\nFront matter:\nstartDate: 2024-01-18T11:00:00+01:00 endDate: 2024-01-18T12:30:00+01:00 where: "Executive Boardroom\, Top Floor" orga: "Strategy Director" orgaEmail: "strategy@example.org" # Every third Thursday of the month recurrenceRule: freq: "DAILY" interval: 3
-LAST-MODIFIED:20260424T141343Z
+LAST-MODIFIED:20260424T141940Z
 LOCATION;LANGUAGE=en-US:
 STATUS:CONFIRMED
 SUMMARY;LANGUAGE=en-US:Every Third Day
@@ -125,7 +125,7 @@ UID:5089da2db4156cafdedfe66e06d7f56c
 DTSTART;VALUE=DATE-TIME:20240118T100000Z
 CLASS:PUBLIC
 DESCRIPTION;LANGUAGE=en-US:Monthly strategy review meeting held on the third Thursday of each month. Senior leadership discusses strategic initiatives\, reviews market conditions\, and adjusts long-term planning based on current performance metrics.\nFront matter:\ntitle: Every Third Thursday of the Month startDate: 2024-01-18T11:00:00+01:00 endDate: 2024-01-18T12:30:00+01:00 where: "Executive Boardroom\, Top Floor" orga: "Strategy Director" orgaEmail: "strategy@example.org" # Every third Thursday of the month recurrenceRule: freq: "MONTHLY" byDay: "TH" bySetPos: 3
-LAST-MODIFIED:20260424T141343Z
+LAST-MODIFIED:20260424T141940Z
 LOCATION;LANGUAGE=en-US:
 STATUS:CONFIRMED
 SUMMARY;LANGUAGE=en-US:Every Third Thursday of the Month
@@ -143,7 +143,7 @@ UID:0e8b077c201dedc707ce5190aa4387b5
 DTSTART;VALUE=DATE-TIME:20260826T180000Z
 CLASS:PUBLIC
 DESCRIPTION;LANGUAGE=en-US:At this event we proudly present the project for the first time.\nFront matter:\nstartDate: 2020-08-26T20:00:00+02:00 endDate: 2020-08-26T22:00:00+02:00 where: "Somewhere on the internet" orga: "F. Nord" orgaEmail: "me@example.org"
-LAST-MODIFIED:20260424T141343Z
+LAST-MODIFIED:20260424T141940Z
 LOCATION;LANGUAGE=en-US:
 STATUS:CONFIRMED
 SUMMARY;LANGUAGE=en-US:Initial Presentation\, Summer
@@ -159,7 +159,7 @@ UID:bf5df994f9574976a920cf05140f65c2
 DTSTART;VALUE=DATE-TIME:20250115T130000Z
 CLASS:PUBLIC
 DESCRIPTION;LANGUAGE=en-US:This is a meeting that demonstrates VALARM functionality with multiple types of alarms:\nDisplay Alarm: Shows a popup 15 minutes before the meeting Email Alarm: Sends email reminders 1 hour before to attendees Audio Alarm: Plays a sound 5 minutes before the meeting The alarms are configured in the front matter and will be included in the generated iCalendar file.\nFront matter:\ntitle: "Meeting with Alarm Reminders" startDate: "2025-01-15T14:00:00" endDate: "2025-01-15T15:30:00" location: "Conference Room A" orga: "John Doe" orgaEmail: "john.doe@example.com" alarms: - action: "DISPLAY" trigger: duration: "-PT15M" description: text: "Meeting starts in 15 minutes" lang: "en" - action: "EMAIL" trigger: duration: "-PT1H" description: text: "Don't forget about the meeting in 1 hour" lang: "en" summary: text: "Meeting Reminder" lang: "en" attendee: - email: "john.doe@example.com" commonName: "John Doe" - email: "jane.smith@example.com" commonName: "Jane Smith" - action: "AUDIO" trigger: duration: "-PT5M" attach: uri: "file:///System/Library/Sounds/Glass.aiff" mediaType: "audio/aiff"
-LAST-MODIFIED:20260424T141343Z
+LAST-MODIFIED:20260424T141940Z
 LOCATION;LANGUAGE=en-US:Conference Room A
 STATUS:CONFIRMED
 SUMMARY;LANGUAGE=en-US:Meeting with Alarm Reminders
@@ -193,7 +193,7 @@ UID:8ffb88ac9255557e957b453b68e1844e
 DTSTART;VALUE=DATE-TIME:20240128T130000Z
 CLASS:PUBLIC
 DESCRIPTION;LANGUAGE=en-US:Specialized workshop series held on the fourth Sunday of every third month. These hands-on sessions focus on practical skills and collaborative learning.\nFront matter:\ntitle: Monthly Workshop Series startDate: 2024-01-28T14:00:00+01:00 endDate: 2024-01-28T16:00:00+01:00 where: "Workshop Space\, Innovation Lab" orga: "Workshop Coordinator" orgaEmail: "workshops@example.org" # Every fourth Sunday of every 3 months recurrenceRule: freq: "MONTHLY" interval: 3 byDay: "SU" bySetPos: 4
-LAST-MODIFIED:20260424T141343Z
+LAST-MODIFIED:20260424T141940Z
 LOCATION;LANGUAGE=en-US:
 STATUS:CONFIRMED
 SUMMARY;LANGUAGE=en-US:Monthly Workshop Series
@@ -211,7 +211,7 @@ UID:b7dfa98c93aa357a06dbd2088bb3a273
 DTSTART;VALUE=DATE-TIME:20241007T080000Z
 CLASS:PUBLIC
 DESCRIPTION;LANGUAGE=en-US:Special training sessions held on the first and second Monday of October each year. These intensive workshops cover advanced topics and best practices.\nFront matter:\ntitle: October Training Sessions startDate: 2024-10-07T10:00:00+02:00 endDate: 2024-10-07T12:00:00+02:00 where: "Training Room B\, Office Building" orga: "Training Department" orgaEmail: "training@example.org" # First and second Monday of October every year recurrenceRule: freq: "YEARLY" byMonth: 10 byDay: "MO" bySetPos: [1\, 2]
-LAST-MODIFIED:20260424T141343Z
+LAST-MODIFIED:20260424T141940Z
 LOCATION;LANGUAGE=en-US:
 STATUS:CONFIRMED
 SUMMARY;LANGUAGE=en-US:October Training Sessions
@@ -229,7 +229,7 @@ UID:fe961c623ce3524a6ba06229f9d5160c
 DTSTART;VALUE=DATE-TIME:20240128T140000Z
 CLASS:PUBLIC
 DESCRIPTION;LANGUAGE=en-US:Quarterly team review meetings held on the last Sunday of every third month. We discuss progress\, challenges\, and plan for the upcoming quarter.\nFront matter:\ntitle: Quarterly Team Review startDate: 2024-01-28T15:00:00+01:00 #endDate: 2024-01-28T17:00:00+01:00 where: "Conference Room A\, Headquarters" orga: "Team Lead" orgaEmail: "teamlead@example.org" # Every last Sunday of every 3 months recurrenceRule: freq: "MONTHLY" interval: 3 byDay: "SU" bySetPos: -1
-LAST-MODIFIED:20260424T141343Z
+LAST-MODIFIED:20260424T141940Z
 LOCATION;LANGUAGE=en-US:
 STATUS:CONFIRMED
 SUMMARY;LANGUAGE=en-US:Quarterly Team Review
@@ -247,7 +247,7 @@ UID:6bce8620f70cd0e758cc921428b8ed5c
 DTSTART;VALUE=DATE-TIME:20240205T090000Z
 CLASS:PUBLIC
 DESCRIPTION;LANGUAGE=en-US:This is a test event to verify the new array ordinal BYDAY format works correctly. It should occur on the first and third Monday of each month using the new byDay: ["1MO"\, "3MO"] format.
-LAST-MODIFIED:20260424T141343Z
+LAST-MODIFIED:20260424T141940Z
 LOCATION;LANGUAGE=en-US:
 STATUS:CONFIRMED
 SUMMARY;LANGUAGE=en-US:Test Array Ordinal Format
@@ -265,7 +265,7 @@ UID:2b33c3139ab83bd570c5204733534614
 DTSTART;VALUE=DATE-TIME:20260301T150000Z
 CLASS:PUBLIC
 DESCRIPTION;LANGUAGE=en-US:Test event to verify mutual exclusivity validation for COUNT and UNTIL.\nThis event has BOTH count and until parameters\, which violates RFC 5545.\nExpected behavior: Build should fail with error message about mutual exclusivity.\nError message should be: “RRULE cannot have both COUNT and UNTIL (RFC 5545 Section 3.3.10)”
-LAST-MODIFIED:20260424T141343Z
+LAST-MODIFIED:20260424T141940Z
 LOCATION;LANGUAGE=en-US:
 STATUS:CONFIRMED
 SUMMARY;LANGUAGE=en-US:Test COUNT and UNTIL Conflict
@@ -283,7 +283,7 @@ UID:da2ab7190ae3db74d83da83cd8bef4b4
 DTSTART;VALUE=DATE-TIME:20260301T090000Z
 CLASS:PUBLIC
 DESCRIPTION;LANGUAGE=en-US:Test event to verify COUNT parameter is correctly included in RRULE.\nThis event should recur every Wednesday for exactly 10 occurrences.\nExpected RRULE: RRULE:FREQ=WEEKLY\;INTERVAL=1\;COUNT=10\;BYDAY=WE
-LAST-MODIFIED:20260424T141343Z
+LAST-MODIFIED:20260424T141940Z
 LOCATION;LANGUAGE=en-US:
 STATUS:CONFIRMED
 SUMMARY;LANGUAGE=en-US:Test COUNT Parameter
@@ -301,7 +301,7 @@ UID:481f301e50dc2ca4d35bff7cd9854eff
 DTSTART;VALUE=DATE-TIME:20240321T130000Z
 CLASS:PUBLIC
 DESCRIPTION;LANGUAGE=en-US:This is a test event to verify the Phase 1 implementation works correctly for every second month\, third Thursday pattern. It should generate FREQ=MONTHLY\;INTERVAL=2\;BYDAY=3TH as specified in Task 4.1 of the RFC5545 RRULE Fix Plan.\nThis tests:\nPhase 1: BYDAY ordinal support (3TH) Phase 1: INTERVAL=2 (every second month) Phase 1: Explicit INTERVAL parameter inclusion
-LAST-MODIFIED:20260424T141343Z
+LAST-MODIFIED:20260424T141940Z
 LOCATION;LANGUAGE=en-US:
 STATUS:CONFIRMED
 SUMMARY;LANGUAGE=en-US:Test Every Second Month Third Thursday
@@ -319,7 +319,7 @@ UID:87733ef228483aa5559cca05826901d4
 DTSTART;VALUE=DATE-TIME:20240223T150000Z
 CLASS:PUBLIC
 DESCRIPTION;LANGUAGE=en-US:This is a test event to verify the new negative ordinal BYDAY format works correctly. It should occur on the last Friday of each month using the new byDay: "-1FR" format.
-LAST-MODIFIED:20260424T141343Z
+LAST-MODIFIED:20260424T141940Z
 LOCATION;LANGUAGE=en-US:
 STATUS:CONFIRMED
 SUMMARY;LANGUAGE=en-US:Test Last Friday Format
@@ -337,7 +337,7 @@ UID:5eaf1472ccb9a8969e5f634a22b31442
 DTSTART;VALUE=DATE-TIME:20240223T150000Z
 CLASS:PUBLIC
 DESCRIPTION;LANGUAGE=en-US:This is a test event to verify the Phase 1 implementation works correctly for the last Friday in February yearly pattern. It should generate FREQ=YEARLY\;INTERVAL=1\;BYMONTH=2\;BYDAY=-1FR as specified in Task 4.1 of the RFC5545 RRULE Fix Plan.\nThis tests:\nPhase 1: BYDAY ordinal support with negative ordinals (-1FR) Phase 1: BYMONTH support (February = 2) Phase 1: YEARLY frequency Phase 1: Explicit INTERVAL=1 parameter inclusion
-LAST-MODIFIED:20260424T141343Z
+LAST-MODIFIED:20260424T141940Z
 LOCATION;LANGUAGE=en-US:
 STATUS:CONFIRMED
 SUMMARY;LANGUAGE=en-US:Test Last Friday in February Yearly
@@ -355,7 +355,7 @@ UID:888c8a5674c475cb05ac6067be93cf40
 DTSTART;VALUE=DATE-TIME:20240215T130000Z
 CLASS:PUBLIC
 DESCRIPTION;LANGUAGE=en-US:This is a test event to verify the new ordinal BYDAY format works correctly. It should occur on the third Thursday of each month using the new byDay: "3TH" format instead of the old byDay: "TH" + bySetPos: 3 format.
-LAST-MODIFIED:20260424T141343Z
+LAST-MODIFIED:20260424T141940Z
 LOCATION;LANGUAGE=en-US:
 STATUS:CONFIRMED
 SUMMARY;LANGUAGE=en-US:Test New Ordinal BYDAY Format
@@ -373,7 +373,7 @@ UID:3e1352e0a51966fbf081454631ef0389
 DTSTART;VALUE=DATE-TIME:20260301T130000Z
 CLASS:PUBLIC
 DESCRIPTION;LANGUAGE=en-US:Test event to verify UNTIL parameter is correctly included in RRULE.\nThis event should recur every Thursday until December 31\, 2026.\nExpected RRULE: RRULE:FREQ=WEEKLY\;INTERVAL=1\;UNTIL=20261231T225959Z\;BYDAY=TH
-LAST-MODIFIED:20260424T141343Z
+LAST-MODIFIED:20260424T141940Z
 LOCATION;LANGUAGE=en-US:
 STATUS:CONFIRMED
 SUMMARY;LANGUAGE=en-US:Test UNTIL Parameter
@@ -391,7 +391,7 @@ UID:162295288b54ce6301409bec8c400c0f
 DTSTART;VALUE=DATE-TIME:20260615T090000Z
 CLASS:PUBLIC
 DESCRIPTION;LANGUAGE=en-US:This event is scheduled for the future but has been cancelled. It should appear in “Past Events” section.
-LAST-MODIFIED:20260424T141343Z
+LAST-MODIFIED:20260424T141940Z
 LOCATION;LANGUAGE=en-US:
 STATUS:CANCELLED
 SUMMARY;LANGUAGE=en-US:Test: Cancelled Future Event
@@ -405,7 +405,7 @@ UID:6555f341a5f0220c42225eba3292a317
 DTSTART;VALUE=DATE-TIME:20260101T130000Z
 CLASS:PUBLIC
 DESCRIPTION;LANGUAGE=en-US:12-month series starting January 1\, 2026. Last occurrence will be December 1\, 2026. Should appear in “Upcoming Events” section.
-LAST-MODIFIED:20260424T141343Z
+LAST-MODIFIED:20260424T141940Z
 LOCATION;LANGUAGE=en-US:
 STATUS:CONFIRMED
 SUMMARY;LANGUAGE=en-US:Test: Recurring COUNT Active
@@ -421,7 +421,7 @@ UID:45610ba5a793b385c3edafabbaf2e939
 DTSTART;VALUE=DATE-TIME:20250101T130000Z
 CLASS:PUBLIC
 DESCRIPTION;LANGUAGE=en-US:10-week series that started January 1\, 2025. Last occurrence was March 5\, 2025 (10 weeks later). Should appear in “Past Events” section.
-LAST-MODIFIED:20260424T141343Z
+LAST-MODIFIED:20260424T141940Z
 LOCATION;LANGUAGE=en-US:
 STATUS:CONFIRMED
 SUMMARY;LANGUAGE=en-US:Test: Recurring COUNT Exhausted
@@ -437,7 +437,7 @@ UID:9c5204c70193d97eb6de0d5345c593d3
 DTSTART;VALUE=DATE-TIME:20250101T080000Z
 CLASS:PUBLIC
 DESCRIPTION;LANGUAGE=en-US:Weekly Monday meeting with no end date. Started in the past but continues indefinitely. Should appear in “Upcoming Events” section.
-LAST-MODIFIED:20260424T141343Z
+LAST-MODIFIED:20260424T141940Z
 LOCATION;LANGUAGE=en-US:
 STATUS:CONFIRMED
 SUMMARY;LANGUAGE=en-US:Test: Recurring Infinite
@@ -453,7 +453,7 @@ UID:2849365d29d62d71894d66c86ea876af
 DTSTART;VALUE=DATE-TIME:20260101T080000Z
 CLASS:PUBLIC
 DESCRIPTION;LANGUAGE=en-US:Weekly event that continues until December 31\, 2026. Should appear in “Upcoming Events” section.
-LAST-MODIFIED:20260424T141343Z
+LAST-MODIFIED:20260424T141940Z
 LOCATION;LANGUAGE=en-US:
 STATUS:CONFIRMED
 SUMMARY;LANGUAGE=en-US:Test: Recurring UNTIL Future
@@ -469,7 +469,7 @@ UID:6d9a03aacd7b7a0b23bfbef10466935b
 DTSTART;VALUE=DATE-TIME:20250101T080000Z
 CLASS:PUBLIC
 DESCRIPTION;LANGUAGE=en-US:Weekly event that ended on December 31\, 2025. Should appear in “Past Events” section.
-LAST-MODIFIED:20260424T141343Z
+LAST-MODIFIED:20260424T141940Z
 LOCATION;LANGUAGE=en-US:
 STATUS:CONFIRMED
 SUMMARY;LANGUAGE=en-US:Test: Recurring UNTIL Past
@@ -485,7 +485,7 @@ UID:b8c55cc000317e28edf47c981880fe05
 DTSTART;VALUE=DATE-TIME:20260315T010000Z
 CLASS:PUBLIC
 DESCRIPTION;LANGUAGE=en-US:This event uses a page-level timezone override to Pacific/Auckland. The site default is Europe/Zurich\, but this event should use Pacific/Auckland timezone information.
-LAST-MODIFIED:20260424T141343Z
+LAST-MODIFIED:20260424T141940Z
 LOCATION;LANGUAGE=en-US:Auckland\, New Zealand
 STATUS:CONFIRMED
 SUMMARY;LANGUAGE=en-US:Test: Timezone Override (Pacific/Auckland)
