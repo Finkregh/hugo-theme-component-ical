@@ -1,4 +1,4 @@
-from_latest_tag = false
+from_latest_tag = true
 ignore_merge_commits = true
 disable_changelog = false
 generate_mono_repository_global_tag = true
@@ -20,7 +20,7 @@ path = "CHANGELOG.md"
 authors = []
 template = "remote"
 remote = "github.com"
-repository = "hugo-theme-component-ical@"
+repository = "hugo-theme-component-ical"
 owner = "finkregh"
 
 [commit_types]
