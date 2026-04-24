@@ -7,7 +7,7 @@
     "gray-matter": "^4.0.3",
     "loglevel": "^1.9.2",
     "loglevel-plugin-prefix": "^0.8.4",
-    "node-ical": "^0.23.1",
+    "node-ical": "^0.26.0",
     "stylelint": "^17.0.0",
     "stylelint-config-standard": "^40.0.0"
   }
