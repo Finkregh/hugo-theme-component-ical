@@ -3,6 +3,16 @@
 All notable changes to this project will be documented in this file. See [conventional commits](https://www.conventionalcommits.org/) for commit guidelines.
 
 - - -
+## [v0.11.1](https://github.com/finkregh/hugo-theme-component-ical/compare/1c8704e6ce3c94cb31d164856d20cd54fba29050..v0.11.1) - 2026-04-24
+#### Documentation
+- cleanup - ([9045baa](https://github.com/finkregh/hugo-theme-component-ical/commit/9045baaa7149d9bb8b0bffcfbc5aff42d8497e00)) - Oluf Lorenzen
+#### Continuous Integration
+- cache stuff, install cog properly - ([a27cfa2](https://github.com/finkregh/hugo-theme-component-ical/commit/a27cfa2870f867df5706ca04f5ffaa3437767a21)) - Oluf Lorenzen
+- fixes - ([c071ca7](https://github.com/finkregh/hugo-theme-component-ical/commit/c071ca7c7ae8f68b994100e82409d585c37cd592)) - Oluf Lorenzen
+- fix changelog generation - ([1c8704e](https://github.com/finkregh/hugo-theme-component-ical/commit/1c8704e6ce3c94cb31d164856d20cd54fba29050)) - Oluf Lorenzen
+
+- - -
+
 ## [v0.11.0](https://github.com/finkregh/hugo-theme-component-ical@/compare/b843b06d3bb72bc9b3ad845046ce9bd5e2b7b4d7..v0.11.0) - 2026-04-23
 #### Features
 - (**js**) get language from browser - ([73912af](https://github.com/finkregh/hugo-theme-component-ical@/commit/73912af520b46ce4efef8fd67ac70d7cab5a442e)) - Oluf Lorenzen
