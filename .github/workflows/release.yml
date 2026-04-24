@@ -11,8 +11,13 @@ jobs:
         uses: actions/checkout@v6
         with:
           fetch-depth: 0
+      - name: Setup Rust toolchain
+        uses: actions-rust-lang/setup-rust-toolchain@v1
+        with:
+          toolchain: stable
+          cache-all-crates: "true"
       - name: Install cocogitto
-        uses: https://codeberg.org/PurpleBooth/common-pipelines/actions/install-cocogitto@install-cocogitto-0.1.0
+        run: command -v cog || cargo install cocogitto
       - name: Semver release
         id: cog
         run: |

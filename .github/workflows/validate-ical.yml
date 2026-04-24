@@ -96,6 +96,16 @@ jobs:
           activate-environment: true
           enable-cache: true
 
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "lts/*"
+          cache: "npm"
+          cache-dependency-path: |
+            package-lock.json
+            .github/package-lock.json
+            .github/exampleSite/package-lock.json
+
       - name: Install Just
         uses: extractions/setup-just@v4
 
