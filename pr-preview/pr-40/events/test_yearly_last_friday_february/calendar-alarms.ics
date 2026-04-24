@@ -4,7 +4,7 @@ PRODID:-//Hugo Calendar Templates//Event Template//EN
 CALSCALE:GREGORIAN
 METHOD:PUBLISH
 UID:5eaf1472ccb9a8969e5f634a22b31442
-LAST-MODIFIED:20260424T153443Z
+LAST-MODIFIED:20260424T153528Z
 URL:https://finkregh.github.io/hugo-theme-component-ical/pr-preview/pr-40/events/test_yearly_last_friday_february/
 REFRESH-INTERVAL;VALUE=DURATION:P1W
 SOURCE;VALUE=URI:https://finkregh.github.io/hugo-theme-component-ical/pr-preview/pr-40/events/test_yearly_last_friday_february/calendar.ics
@@ -19,7 +19,7 @@ UID:5eaf1472ccb9a8969e5f634a22b31442
 DTSTART;VALUE=DATE-TIME:20240223T150000Z
 CLASS:PUBLIC
 DESCRIPTION;LANGUAGE=en-US:This is a test event to verify the Phase 1 implementation works correctly for the last Friday in February yearly pattern. It should generate FREQ=YEARLY\;INTERVAL=1\;BYMONTH=2\;BYDAY=-1FR as specified in Task 4.1 of the RFC5545 RRULE Fix Plan.\nThis tests:\nPhase 1: BYDAY ordinal support with negative ordinals (-1FR) Phase 1: BYMONTH support (February = 2) Phase 1: YEARLY frequency Phase 1: Explicit INTERVAL=1 parameter inclusion
-LAST-MODIFIED:20260424T153443Z
+LAST-MODIFIED:20260424T153528Z
 LOCATION;LANGUAGE=en-US:
 STATUS:CONFIRMED
 SUMMARY;LANGUAGE=en-US:Test Last Friday in February Yearly
