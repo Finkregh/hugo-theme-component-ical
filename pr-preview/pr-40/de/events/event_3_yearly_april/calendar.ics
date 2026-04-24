@@ -4,7 +4,7 @@ PRODID:-//Hugo Calendar Templates//Event Template//EN
 CALSCALE:GREGORIAN
 METHOD:PUBLISH
 UID:8d537b853a3b0afff74b0862a3389ba6
-LAST-MODIFIED:20260424T153323Z
+LAST-MODIFIED:20260424T153408Z
 URL:https://finkregh.github.io/hugo-theme-component-ical/pr-preview/pr-40/de/events/event_3_yearly_april/
 REFRESH-INTERVAL;VALUE=DURATION:P1W
 SOURCE;VALUE=URI:https://finkregh.github.io/hugo-theme-component-ical/pr-preview/pr-40/de/events/event_3_yearly_april/calendar.ics
@@ -19,7 +19,7 @@ UID:8d537b853a3b0afff74b0862a3389ba6
 DTSTART;VALUE=DATE-TIME:20240421T070000Z
 CLASS:PUBLIC
 DESCRIPTION;LANGUAGE=de:Unsere jährliche Frühjahrskonferenz findet am dritten Sonntag im April statt. Freuen Sie sich auf einen Tag voller Vorträge\, Networking und Innovation.\nFront matter:\ntitle: Jährliche Frühjahrskonferenz startDate: 2024-04-21T09:00:00+02:00 endDate: 2024-04-21T17:00:00+02:00 where: "Kongresszentrum\, Großer Saal" orga: "Konferenzkomitee" orgaEmail: "committee@example.org" # Dritter Sonntag im April jedes Jahr recurrenceRule: freq: "YEARLY" byMonth: 4 byDay: "SU" bySetPos: 3
-LAST-MODIFIED:20260424T153323Z
+LAST-MODIFIED:20260424T153408Z
 LOCATION;LANGUAGE=de:
 STATUS:CONFIRMED
 SUMMARY;LANGUAGE=de:Jährliche Frühjahrskonferenz
