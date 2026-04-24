@@ -1,0 +1,34 @@
+BEGIN:VCALENDAR
+VERSION:2.0
+PRODID:-//Hugo Calendar Templates//Event Template//EN
+CALSCALE:GREGORIAN
+METHOD:PUBLISH
+UID:8ffb88ac9255557e957b453b68e1844e
+LAST-MODIFIED:20260424T153323Z
+URL:https://finkregh.github.io/hugo-theme-component-ical/pr-preview/pr-40/events/event_6_monthly_fourth_sunday/
+REFRESH-INTERVAL;VALUE=DURATION:P1W
+SOURCE;VALUE=URI:https://finkregh.github.io/hugo-theme-component-ical/pr-preview/pr-40/events/event_6_monthly_fourth_sunday/calendar.ics
+COLOR:crimson
+NAME;LANGUAGE=en-US:Example Events
+DESCRIPTION;LANGUAGE=en-US:Example Events Calendar
+X-WR-CALNAME:Example Events
+X-WR-CALDESC:Example Events Calendar
+BEGIN:VEVENT
+DTSTAMP:00010101T000000Z
+UID:8ffb88ac9255557e957b453b68e1844e
+DTSTART;VALUE=DATE-TIME:20240128T130000Z
+CLASS:PUBLIC
+DESCRIPTION;LANGUAGE=en-US:Specialized workshop series held on the fourth Sunday of every third month. These hands-on sessions focus on practical skills and collaborative learning.\nFront matter:\ntitle: Monthly Workshop Series startDate: 2024-01-28T14:00:00+01:00 endDate: 2024-01-28T16:00:00+01:00 where: "Workshop Space\, Innovation Lab" orga: "Workshop Coordinator" orgaEmail: "workshops@example.org" # Every fourth Sunday of every 3 months recurrenceRule: freq: "MONTHLY" interval: 3 byDay: "SU" bySetPos: 4
+LAST-MODIFIED:20260424T153323Z
+LOCATION;LANGUAGE=en-US:
+STATUS:CONFIRMED
+SUMMARY;LANGUAGE=en-US:Monthly Workshop Series
+TRANSP:OPAQUE
+URL:https://finkregh.github.io/hugo-theme-component-ical/pr-preview/pr-40/events/event_6_monthly_fourth_sunday/
+
+RRULE:FREQ=MONTHLY;INTERVAL=3;BYDAY=4SU
+DTEND;VALUE=DATE-TIME:20240128T150000Z
+CONTACT;LANGUAGE=en-US:Workshop Coordinator: workshops@example.org
+COLOR:crimson
+END:VEVENT
+END:VCALENDAR

@@ -1,0 +1,34 @@
+BEGIN:VCALENDAR
+VERSION:2.0
+PRODID:-//Hugo Calendar Templates//Event Template//EN
+CALSCALE:GREGORIAN
+METHOD:PUBLISH
+UID:d32d508c9801ef68459317f39197acb0
+LAST-MODIFIED:20260424T153323Z
+URL:https://finkregh.github.io/hugo-theme-component-ical/pr-preview/pr-40/events/event_8_monday_friday/
+REFRESH-INTERVAL;VALUE=DURATION:P1W
+SOURCE;VALUE=URI:https://finkregh.github.io/hugo-theme-component-ical/pr-preview/pr-40/events/event_8_monday_friday/calendar.ics
+COLOR:crimson
+NAME;LANGUAGE=en-US:Example Events
+DESCRIPTION;LANGUAGE=en-US:Example Events Calendar
+X-WR-CALNAME:Example Events
+X-WR-CALDESC:Example Events Calendar
+BEGIN:VEVENT
+DTSTAMP:00010101T000000Z
+UID:d32d508c9801ef68459317f39197acb0
+DTSTART;VALUE=DATE-TIME:20400108T150000Z
+CLASS:PUBLIC
+DESCRIPTION;LANGUAGE=en-US:Brief check-in sessions held every Monday and Friday afternoon. These quick meetings help maintain team alignment and address any urgent issues at the start and end of each work week.\nFront matter:\ntitle: Every Monday and Friday #date: 2040-01-08T16:00:00+01:00 startDate: 2040-01-08T16:00:00+01:00 endDate: 2040-01-08T16:15:00+01:00 where: "Virtual Meeting Room" orga: "Project Manager" orgaEmail: "pm@example.org" # Every Monday and Friday recurrenceRule: freq: "WEEKLY" byDay: ["MO"\, "FR"]
+LAST-MODIFIED:20260424T153323Z
+LOCATION;LANGUAGE=en-US:
+STATUS:CONFIRMED
+SUMMARY;LANGUAGE=en-US:Every Monday and Friday -- future
+TRANSP:OPAQUE
+URL:https://finkregh.github.io/hugo-theme-component-ical/pr-preview/pr-40/events/event_8_monday_friday/
+
+RRULE:FREQ=WEEKLY;INTERVAL=1;BYDAY=MO,FR
+DTEND;VALUE=DATE-TIME:20400108T151500Z
+CONTACT;LANGUAGE=en-US:Project Manager: pm@example.org
+COLOR:crimson
+END:VEVENT
+END:VCALENDAR
