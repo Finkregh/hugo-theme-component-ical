@@ -1,0 +1,34 @@
+BEGIN:VCALENDAR
+VERSION:2.0
+PRODID:-//Hugo Calendar Templates//Event Template//EN
+CALSCALE:GREGORIAN
+METHOD:PUBLISH
+UID:6bce8620f70cd0e758cc921428b8ed5c
+LAST-MODIFIED:20260424T121441Z
+URL:https://finkregh.github.io/hugo-theme-component-ical/pr-preview/pr-39/events/test_array_ordinal/
+REFRESH-INTERVAL;VALUE=DURATION:P1W
+SOURCE;VALUE=URI:https://finkregh.github.io/hugo-theme-component-ical/pr-preview/pr-39/events/test_array_ordinal/calendar.ics
+COLOR:crimson
+NAME;LANGUAGE=en-US:Example Events
+DESCRIPTION;LANGUAGE=en-US:Example Events Calendar
+X-WR-CALNAME:Example Events
+X-WR-CALDESC:Example Events Calendar
+BEGIN:VEVENT
+DTSTAMP:00010101T000000Z
+UID:6bce8620f70cd0e758cc921428b8ed5c
+DTSTART;VALUE=DATE-TIME:20240205T090000Z
+CLASS:PUBLIC
+DESCRIPTION;LANGUAGE=en-US:This is a test event to verify the new array ordinal BYDAY format works correctly. It should occur on the first and third Monday of each month using the new byDay: ["1MO"\, "3MO"] format.
+LAST-MODIFIED:20260424T121441Z
+LOCATION;LANGUAGE=en-US:
+STATUS:CONFIRMED
+SUMMARY;LANGUAGE=en-US:Test Array Ordinal Format
+TRANSP:OPAQUE
+URL:https://finkregh.github.io/hugo-theme-component-ical/pr-preview/pr-39/events/test_array_ordinal/
+
+RRULE:FREQ=MONTHLY;INTERVAL=1;BYDAY=1MO,3MO
+DTEND;VALUE=DATE-TIME:20240205T100000Z
+CONTACT;LANGUAGE=en-US:Test Organizer: test@example.org
+COLOR:crimson
+END:VEVENT
+END:VCALENDAR

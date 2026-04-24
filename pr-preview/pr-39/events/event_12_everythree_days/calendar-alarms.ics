@@ -1,0 +1,34 @@
+BEGIN:VCALENDAR
+VERSION:2.0
+PRODID:-//Hugo Calendar Templates//Event Template//EN
+CALSCALE:GREGORIAN
+METHOD:PUBLISH
+UID:19047b453eee8624a6270f68e3635f48
+LAST-MODIFIED:20260424T121441Z
+URL:https://finkregh.github.io/hugo-theme-component-ical/pr-preview/pr-39/events/event_12_everythree_days/
+REFRESH-INTERVAL;VALUE=DURATION:P1W
+SOURCE;VALUE=URI:https://finkregh.github.io/hugo-theme-component-ical/pr-preview/pr-39/events/event_12_everythree_days/calendar.ics
+COLOR:crimson
+NAME;LANGUAGE=en-US:Example Events
+DESCRIPTION;LANGUAGE=en-US:Example Events Calendar
+X-WR-CALNAME:Example Events
+X-WR-CALDESC:Example Events Calendar
+BEGIN:VEVENT
+DTSTAMP:00010101T000000Z
+UID:19047b453eee8624a6270f68e3635f48
+DTSTART;VALUE=DATE-TIME:20240118T100000Z
+CLASS:PUBLIC
+DESCRIPTION;LANGUAGE=en-US:Every third day.\nFront matter:\nstartDate: 2024-01-18T11:00:00+01:00 endDate: 2024-01-18T12:30:00+01:00 where: "Executive Boardroom\, Top Floor" orga: "Strategy Director" orgaEmail: "strategy@example.org" # Every third Thursday of the month recurrenceRule: freq: "DAILY" interval: 3
+LAST-MODIFIED:20260424T121441Z
+LOCATION;LANGUAGE=en-US:
+STATUS:CONFIRMED
+SUMMARY;LANGUAGE=en-US:Every Third Day
+TRANSP:OPAQUE
+URL:https://finkregh.github.io/hugo-theme-component-ical/pr-preview/pr-39/events/event_12_everythree_days/
+
+RRULE:FREQ=DAILY;INTERVAL=3
+DTEND;VALUE=DATE-TIME:20240118T113000Z
+CONTACT;LANGUAGE=en-US:Strategy Director: strategy@example.org
+COLOR:crimson
+END:VEVENT
+END:VCALENDAR

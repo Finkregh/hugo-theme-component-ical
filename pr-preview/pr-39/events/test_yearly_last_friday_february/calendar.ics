@@ -1,0 +1,34 @@
+BEGIN:VCALENDAR
+VERSION:2.0
+PRODID:-//Hugo Calendar Templates//Event Template//EN
+CALSCALE:GREGORIAN
+METHOD:PUBLISH
+UID:5eaf1472ccb9a8969e5f634a22b31442
+LAST-MODIFIED:20260424T121441Z
+URL:https://finkregh.github.io/hugo-theme-component-ical/pr-preview/pr-39/events/test_yearly_last_friday_february/
+REFRESH-INTERVAL;VALUE=DURATION:P1W
+SOURCE;VALUE=URI:https://finkregh.github.io/hugo-theme-component-ical/pr-preview/pr-39/events/test_yearly_last_friday_february/calendar.ics
+COLOR:crimson
+NAME;LANGUAGE=en-US:Example Events
+DESCRIPTION;LANGUAGE=en-US:Example Events Calendar
+X-WR-CALNAME:Example Events
+X-WR-CALDESC:Example Events Calendar
+BEGIN:VEVENT
+DTSTAMP:00010101T000000Z
+UID:5eaf1472ccb9a8969e5f634a22b31442
+DTSTART;VALUE=DATE-TIME:20240223T150000Z
+CLASS:PUBLIC
+DESCRIPTION;LANGUAGE=en-US:This is a test event to verify the Phase 1 implementation works correctly for the last Friday in February yearly pattern. It should generate FREQ=YEARLY\;INTERVAL=1\;BYMONTH=2\;BYDAY=-1FR as specified in Task 4.1 of the RFC5545 RRULE Fix Plan.\nThis tests:\nPhase 1: BYDAY ordinal support with negative ordinals (-1FR) Phase 1: BYMONTH support (February = 2) Phase 1: YEARLY frequency Phase 1: Explicit INTERVAL=1 parameter inclusion
+LAST-MODIFIED:20260424T121441Z
+LOCATION;LANGUAGE=en-US:
+STATUS:CONFIRMED
+SUMMARY;LANGUAGE=en-US:Test Last Friday in February Yearly
+TRANSP:OPAQUE
+URL:https://finkregh.github.io/hugo-theme-component-ical/pr-preview/pr-39/events/test_yearly_last_friday_february/
+
+RRULE:FREQ=YEARLY;INTERVAL=1;BYDAY=-1FR;BYMONTH=2
+DTEND;VALUE=DATE-TIME:20240223T163000Z
+CONTACT;LANGUAGE=en-US:Test Organizer: test@example.org
+COLOR:crimson
+END:VEVENT
+END:VCALENDAR

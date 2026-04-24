@@ -1,0 +1,34 @@
+BEGIN:VCALENDAR
+VERSION:2.0
+PRODID:-//Hugo Calendar Templates//Event Template//EN
+CALSCALE:GREGORIAN
+METHOD:PUBLISH
+UID:87733ef228483aa5559cca05826901d4
+LAST-MODIFIED:20260424T121441Z
+URL:https://finkregh.github.io/hugo-theme-component-ical/pr-preview/pr-39/events/test_last_friday/
+REFRESH-INTERVAL;VALUE=DURATION:P1W
+SOURCE;VALUE=URI:https://finkregh.github.io/hugo-theme-component-ical/pr-preview/pr-39/events/test_last_friday/calendar.ics
+COLOR:crimson
+NAME;LANGUAGE=en-US:Example Events
+DESCRIPTION;LANGUAGE=en-US:Example Events Calendar
+X-WR-CALNAME:Example Events
+X-WR-CALDESC:Example Events Calendar
+BEGIN:VEVENT
+DTSTAMP:00010101T000000Z
+UID:87733ef228483aa5559cca05826901d4
+DTSTART;VALUE=DATE-TIME:20240223T150000Z
+CLASS:PUBLIC
+DESCRIPTION;LANGUAGE=en-US:This is a test event to verify the new negative ordinal BYDAY format works correctly. It should occur on the last Friday of each month using the new byDay: "-1FR" format.
+LAST-MODIFIED:20260424T121441Z
+LOCATION;LANGUAGE=en-US:
+STATUS:CONFIRMED
+SUMMARY;LANGUAGE=en-US:Test Last Friday Format
+TRANSP:OPAQUE
+URL:https://finkregh.github.io/hugo-theme-component-ical/pr-preview/pr-39/events/test_last_friday/
+
+RRULE:FREQ=MONTHLY;INTERVAL=1;BYDAY=-1FR
+DTEND;VALUE=DATE-TIME:20240223T160000Z
+CONTACT;LANGUAGE=en-US:Test Organizer: test@example.org
+COLOR:crimson
+END:VEVENT
+END:VCALENDAR
