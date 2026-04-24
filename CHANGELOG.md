@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file. See [conventional commits](https://www.conventionalcommits.org/) for commit guidelines.
 
 - - -
+## [v0.11.2](https://github.com/finkregh/hugo-theme-component-ical/compare/a78bdab039718d304b9463e34482887a1c0de32e..v0.11.2) - 2026-04-24
+#### Miscellaneous Chores
+- (**deps**) update actions/setup-node action to v6 - ([fd6f211](https://github.com/finkregh/hugo-theme-component-ical/commit/fd6f2116c7e57a2d6997789c0884ac132e2dd02e)) - renovate[bot]
+
+- - -
+
 ## [v0.11.1](https://github.com/finkregh/hugo-theme-component-ical/compare/1c8704e6ce3c94cb31d164856d20cd54fba29050..v0.11.1) - 2026-04-24
 #### Documentation
 - cleanup - ([9045baa](https://github.com/finkregh/hugo-theme-component-ical/commit/9045baaa7149d9bb8b0bffcfbc5aff42d8497e00)) - Oluf Lorenzen
