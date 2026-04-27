@@ -165,7 +165,7 @@ BEGIN:VEVENT
 {{- end }}
 {{- /* recurid */ -}}
 {{- with .recurrenceRule }}
-{{ partial "ical/prop_recurrence_rule.ics" . }}
+{{ partial "ical/prop_recurrence_rule.ics" (dict "rule" . "tz" $._rruleTimezone) }}
 {{- end -}}
 {{- with .eventEnd }}
 {{- partial "ical/prop_date_time_end.ics" (merge . (dict "justDate" $.allDay)) }}

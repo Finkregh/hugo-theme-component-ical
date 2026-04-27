@@ -215,7 +215,7 @@ class ICalValidatorJS {
   }
 
   /**
-   * Validate datetime format - expect UTC format with Z suffix
+   * Validate datetime format - accept TZID format (preferred) or UTC format
    */
   validateDateTimeFormat(dateTime, propertyName, icsPath) {
     if (!dateTime) return;
@@ -226,43 +226,32 @@ class ICalValidatorJS {
       return;
     }
 
-    // Check if it's a string with UTC format
+    // Check if it's a string representation
     const dateTimeStr = String(dateTime);
 
-    // We expect UTC format with Z suffix (either ISO or iCal format)
+    // Accept UTC format (Z suffix) for protocol timestamps like DTSTAMP
     const utcFormats = [
-      /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}Z$/, // ISO format: 2026-12-31T23:59:59Z
-      /^\d{8}T\d{6}Z$/, // iCal format: 20261231T235959Z
+      /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}Z$/, // ISO format
+      /^\d{8}T\d{6}Z$/, // iCal format
     ];
 
-    const hasValidUtcFormat = utcFormats.some((format) =>
-      format.test(dateTimeStr),
-    );
+    // Accept TZID format for event times (DTSTART, DTEND)
+    const tzidFormat = /^\d{8}T\d{6}$/; // iCal local time (no Z, used with TZID)
 
-    if (!hasValidUtcFormat) {
-      // Check for timezone parameters (which we no longer want)
-      if (
-        dateTimeStr.includes("TZID=") ||
-        dateTimeStr.match(/[+-]\d{2}:\d{2}$/)
-      ) {
-        this.logError(
-          `${propertyName} should use UTC format (Z suffix) instead of timezone parameters`,
-          icsPath,
-          {
-            actual: dateTimeStr,
-            expected: "UTC format with Z suffix",
-          },
-        );
-      } else {
-        this.logWarning(
-          `${propertyName} format may not be standard UTC`,
-          icsPath,
-          {
-            actual: dateTimeStr,
-            expected: "YYYYMMDDTHHMMSSZ or YYYY-MM-DDTHH:MM:SSZ",
-          },
-        );
-      }
+    const hasValidFormat =
+      utcFormats.some((format) => format.test(dateTimeStr)) ||
+      tzidFormat.test(dateTimeStr) ||
+      dateTimeStr.includes("TZID=");
+
+    if (!hasValidFormat) {
+      this.logWarning(
+        `${propertyName} format may not be standard`,
+        icsPath,
+        {
+          actual: dateTimeStr,
+          expected: "YYYYMMDDTHHMMSS (with TZID) or YYYYMMDDTHHMMSSZ (UTC)",
+        },
+      );
     }
   }
 

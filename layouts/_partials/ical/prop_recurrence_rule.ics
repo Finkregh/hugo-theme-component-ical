@@ -39,10 +39,14 @@
       - .bySetPos  : An integer or array of integers (positive for nth occurrence, negative for last occurrences)
 */ -}}
 
+{{- /* Unwrap: caller passes (dict "rule" <recurrenceRule> "tz" <timezone>) */ -}}
+{{- $r := .rule -}}
+{{- $rruleTz := .tz | default "" -}}
+
 {{- $parts := slice -}}
 
 {{- /* FREQ is required */ -}}
-{{- with .freq -}}
+{{- with $r.freq -}}
   {{- $parts = $parts | append (printf "FREQ=%s" (partial "ical/dt_freq.ics" .)) -}}
 {{- else -}}
   {{- errorf "RRULE requires a freq value" -}}
@@ -50,18 +54,18 @@
 
 {{- /* INTERVAL is required, always include it (RFC 5545 compliance) */ -}}
 {{- $interval := 1 -}}
-{{- with .interval -}}
+{{- with $r.interval -}}
   {{- $interval = . | int -}}
 {{- end -}}
 {{- $parts = $parts | append (printf "INTERVAL=%d" $interval) -}}
 
 {{- /* COUNT and UNTIL are mutually exclusive per RFC 5545 Section 3.3.10 */ -}}
-{{- if and .count .until -}}
+{{- if and $r.count $r.until -}}
   {{- errorf "RRULE cannot have both COUNT and UNTIL (RFC 5545 Section 3.3.10)" -}}
 {{- end -}}
 
 {{- /* COUNT: Number of occurrences (must be positive) */ -}}
-{{- with .count -}}
+{{- with $r.count -}}
   {{- if gt (. | int) 0 -}}
     {{- $parts = $parts | append (printf "COUNT=%s" (partial "ical/dt_integer.ics" .)) -}}
   {{- else -}}
@@ -69,10 +73,11 @@
   {{- end -}}
 {{- end -}}
 
-{{- /* UNTIL: End date/time for recurrence */ -}}
-{{- with .until -}}
+{{- /* UNTIL: End date/time for recurrence (must be UTC per RFC 5545 §3.3.10) */ -}}
+{{- with $r.until -}}
+  {{- $untilDt := cond (ne $rruleTz "") (time.AsTime . $rruleTz).UTC (time.AsTime .).UTC -}}
   {{- with dict `` `
-    ` "dateTime" (. | time.AsTime).UTC `` `
+    ` "dateTime" $untilDt `` `
     ` "isUTC" true `` `
     ` -}}
     {{- $parts = $parts | append (printf "UNTIL=%s" (partial "ical/dt_date_time.ics" .)) -}}
@@ -81,21 +86,21 @@
 
 {{- /* Handle BYDAY and BYSETPOS - convert BYDAY+BYSETPOS to ordinal BYDAY format for RFC 5545 compliance */ -}}
 {{- $skipBySetPos := false -}}
-{{- if and .byDay .bySetPos -}}
+{{- if and $r.byDay $r.bySetPos -}}
   {{- /* Convert BYDAY+BYSETPOS combination to ordinal BYDAY format */ -}}
-  {{- $byDayValue := .byDay -}}
-  {{- $bySetPosValue := .bySetPos -}}
-  
+  {{- $byDayValue := $r.byDay -}}
+  {{- $bySetPosValue := $r.bySetPos -}}
+
   {{- /* Handle single bySetPos value */ -}}
   {{- if not (reflect.IsSlice $bySetPosValue) -}}
     {{- $bySetPosValue = slice $bySetPosValue -}}
   {{- end -}}
-  
+
   {{- /* Handle single byDay value */ -}}
   {{- if not (reflect.IsSlice $byDayValue) -}}
     {{- $byDayValue = slice $byDayValue -}}
   {{- end -}}
-  
+
   {{- /* Convert to ordinal format if we have single day and single position */ -}}
   {{- if and (eq (len $byDayValue) 1) (eq (len $bySetPosValue) 1) -}}
     {{- $day := index $byDayValue 0 -}}
@@ -105,21 +110,21 @@
     {{- $skipBySetPos = true -}}
   {{- else -}}
     {{- /* Multiple days or positions - keep separate BYDAY and BYSETPOS */ -}}
-    {{- $parts = $parts | append (printf "BYDAY=%s" (partial "ical/dt_weekday.ics" .byDay)) -}}
+    {{- $parts = $parts | append (printf "BYDAY=%s" (partial "ical/dt_weekday.ics" $r.byDay)) -}}
   {{- end -}}
-{{- else if .byDay -}}
+{{- else if $r.byDay -}}
   {{- /* Only BYDAY without BYSETPOS */ -}}
-  {{- $parts = $parts | append (printf "BYDAY=%s" (partial "ical/dt_weekday.ics" .byDay)) -}}
+  {{- $parts = $parts | append (printf "BYDAY=%s" (partial "ical/dt_weekday.ics" $r.byDay)) -}}
 {{- end -}}
 
 {{- /* BYMONTH */ -}}
-{{- with .byMonth -}}
+{{- with $r.byMonth -}}
   {{- $parts = $parts | append (printf "BYMONTH=%s" (partial "ical/dt_month.ics" .)) -}}
 {{- end -}}
 
 {{- /* BYSETPOS - only include if not converted to ordinal BYDAY */ -}}
-{{- if and .bySetPos (not $skipBySetPos) -}}
-  {{- $parts = $parts | append (printf "BYSETPOS=%s" (partial "ical/dt_setpos.ics" .bySetPos)) -}}
+{{- if and $r.bySetPos (not $skipBySetPos) -}}
+  {{- $parts = $parts | append (printf "BYSETPOS=%s" (partial "ical/dt_setpos.ics" $r.bySetPos)) -}}
 {{- end -}}
 
 RRULE:{{- delimit $parts ";" }}

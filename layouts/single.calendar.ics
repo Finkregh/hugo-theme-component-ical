@@ -2,7 +2,8 @@
 {{- /* Check if current page has valid event metadata before generating calendar */ -}}
 {{- if .Params.startDate -}}
 BEGIN:VCALENDAR
-{{- partial "header.ics" . -}}
+{{- partial "header.ics" . }}
+{{ partial "timezone.ics" . }}
 {{- partial "event.ics" . -}}
 END:VCALENDAR
 {{- end -}}

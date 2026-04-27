@@ -140,6 +140,20 @@ class ICalValidator:
         if not cal.get("PRODID"):
             self.log_error("Missing PRODID property", ics_file=ics_file)
 
+        # Check for VTIMEZONE components
+        vtimezones = [c for c in cal.walk() if c.name == "VTIMEZONE"]
+        if not vtimezones and self.site_timezone:
+            self.log_error(
+                "No VTIMEZONE components found (required when using TZID)",
+                ics_file=ics_file,
+            )
+        else:
+            # Verify each VTIMEZONE has required sub-components
+            for vtz in vtimezones:
+                tzid = vtz.get("TZID")
+                if not tzid:
+                    self.log_error("VTIMEZONE missing TZID property", ics_file=ics_file)
+
         # Check for events
         events = [component for component in cal.walk() if component.name == "VEVENT"]
         if not events:
@@ -177,11 +191,11 @@ class ICalValidator:
             if not dtstart:
                 self.log_error("Missing DTSTART property", ics_file=ics_file)
             else:
-                # Validate UTC format (should have Z suffix)
-                self.validate_utc_datetime(dtstart, "DTSTART", ics_file)
-                # Validate timezone conversion is correct
-                self.validate_timezone_conversion(
-                    dtstart, "DTSTART", frontmatter["startDate"], ics_file,
+                # Validate TZID format for event times
+                self.validate_tzid_datetime(dtstart, "DTSTART", ics_file)
+                # Validate the local time matches frontmatter
+                self.validate_local_time_match(
+                    dtstart, "DTSTART", frontmatter["startDate"], frontmatter, ics_file,
                 )
 
         # Check DTEND - be more flexible about detection
@@ -199,11 +213,11 @@ class ICalValidator:
                 else:
                     self.log_error("Missing DTEND property", ics_file=ics_file)
             else:
-                # Validate UTC format (should have Z suffix)
-                self.validate_utc_datetime(dtend, "DTEND", ics_file)
-                # Validate timezone conversion is correct
-                self.validate_timezone_conversion(
-                    dtend, "DTEND", frontmatter["endDate"], ics_file,
+                # Validate TZID format for event times
+                self.validate_tzid_datetime(dtend, "DTEND", ics_file)
+                # Validate the local time matches frontmatter
+                self.validate_local_time_match(
+                    dtend, "DTEND", frontmatter["endDate"], frontmatter, ics_file,
                 )
 
         # Check UID
@@ -246,29 +260,11 @@ class ICalValidator:
     def validate_utc_datetime(
         self, dt_property: Any, property_name: str, ics_file: str
     ) -> None:
-        """Validate that a datetime property is in UTC format (ends with Z)."""
+        """Validate that a datetime property is in UTC format (ends with Z).
+
+        Used for protocol timestamps (DTSTAMP, CREATED, LAST-MODIFIED) which must be UTC.
+        """
         try:
-            # Get the actual datetime value
-            dt_value = dt_property.dt if hasattr(dt_property, "dt") else dt_property
-
-            # Check if it's a datetime with UTC timezone
-            if hasattr(dt_value, "tzinfo") and dt_value.tzinfo is not None:
-                # Handle both pytz and zoneinfo UTC representations
-                timezone_str = str(dt_value.tzinfo)
-                is_utc = (
-                    timezone_str == "UTC"
-                    or timezone_str == "+00:00"
-                    or timezone_str == "utc"
-                    or getattr(dt_value.tzinfo, "key", None) == "UTC"
-                    or getattr(dt_value.tzinfo, "zone", None) == "UTC"
-                )
-
-                if not is_utc:
-                    self.log_warning(
-                        f"{property_name} should be in UTC format but has timezone: {dt_value.tzinfo}",
-                        ics_file=ics_file,
-                    )
-
             # Check the raw iCalendar representation for Z suffix
             if hasattr(dt_property, "to_ical"):
                 ical_str = dt_property.to_ical().decode("utf-8")
@@ -278,28 +274,73 @@ class ICalValidator:
                         ics_file=ics_file,
                     )
         except Exception as e:
-            # Only log warning if it's not the known zoneinfo issue
             if "'zoneinfo.ZoneInfo' object has no attribute 'zone'" not in str(e):
                 self.log_warning(
                     f"Could not validate UTC format for {property_name}: {e}",
                     ics_file=ics_file,
                 )
 
-    def validate_timezone_conversion(
+    def validate_tzid_datetime(
+        self, dt_property: Any, property_name: str, ics_file: str
+    ) -> None:
+        """Validate that a datetime property uses TZID format (not UTC Z-suffix).
+
+        Used for event times (DTSTART, DTEND) which should reference a VTIMEZONE.
+        """
+        if not self.site_timezone:
+            return  # Can't validate without knowing the expected timezone
+
+        try:
+            dt_value = dt_property.dt if hasattr(dt_property, "dt") else dt_property
+
+            # Check that the property has a timezone (TZID) and it's not UTC
+            if hasattr(dt_value, "tzinfo") and dt_value.tzinfo is not None:
+                tz_str = str(dt_value.tzinfo)
+                is_utc = tz_str in ("UTC", "+00:00", "utc")
+                if is_utc:
+                    self.log_warning(
+                        f"{property_name} uses UTC format but should use TZID with VTIMEZONE",
+                        ics_file=ics_file,
+                    )
+            else:
+                # No timezone info at all — floating time
+                self.log_warning(
+                    f"{property_name} has no timezone info (floating time)",
+                    ics_file=ics_file,
+                )
+        except Exception as e:
+            self.log_warning(
+                f"Could not validate TZID format for {property_name}: {e}",
+                ics_file=ics_file,
+            )
+
+    def validate_local_time_match(
         self,
         dt_property: Any,
         property_name: str,
         frontmatter_value: Any,
+        frontmatter: dict[str, Any],
         ics_file: str,
     ) -> None:
-        """Validate that a UTC datetime correctly represents the frontmatter time in the site timezone."""
+        """Validate that a TZID datetime's local time matches the frontmatter value.
+
+        With TZID format, the local time in the ICS should match what the user wrote
+        in frontmatter (after parsing in the page/site timezone).
+
+        Hugo uses get_timezone.ics which checks (in priority order):
+        1. Page parameter: icaltimezone
+        2. Site parameter: params.ical.timezone
+        3. Language parameter: language.params.timezone
+        4. Global parameter: params.timezone
+
+        When icaltimezone is set, Hugo parses bare timestamps in that timezone
+        (not the site timezone), because $timezone from get_timezone.ics is passed
+        as the second argument to time.AsTime.
+        """
         if not self.site_timezone:
             return
 
         try:
-            tz = ZoneInfo(self.site_timezone)
-
-            # Get the UTC datetime from the ICS
             ics_dt = dt_property.dt if hasattr(dt_property, "dt") else dt_property
             if not hasattr(ics_dt, "year"):
                 return  # Not a datetime, skip
@@ -308,23 +349,40 @@ class ICalValidator:
             fm_str = str(frontmatter_value)
             fm_dt = datetime.fromisoformat(fm_str)
 
-            if fm_dt.tzinfo is None:
-                # Bare timestamp — should be interpreted in site timezone
-                fm_dt = fm_dt.replace(tzinfo=tz)
-            # Convert to UTC for comparison
-            fm_utc = fm_dt.astimezone(timezone.utc).replace(tzinfo=None)
-            ics_utc = ics_dt.replace(tzinfo=None)
+            # Determine the page's effective timezone (mirrors get_timezone.ics priority)
+            page_timezone = frontmatter.get("icaltimezone") or self.site_timezone
 
-            if fm_utc != ics_utc:
+            # Determine the ICS output timezone from the TZID on the parsed property
+            output_tz_name = page_timezone
+            if hasattr(ics_dt, "tzinfo") and ics_dt.tzinfo is not None:
+                tz_key = getattr(ics_dt.tzinfo, "key", None)
+                if tz_key and tz_key != "UTC":
+                    output_tz_name = tz_key
+
+            output_tz = ZoneInfo(output_tz_name)
+            parse_tz = ZoneInfo(page_timezone)
+
+            if fm_dt.tzinfo is None:
+                # Bare timestamp — Hugo parses in page_timezone (icaltimezone or site TZ)
+                fm_dt = fm_dt.replace(tzinfo=parse_tz)
+
+            # Convert frontmatter time to the output timezone for comparison
+            fm_in_tz = fm_dt.astimezone(output_tz)
+
+            # Compare the local time components (strip tzinfo for comparison)
+            ics_local = ics_dt.replace(tzinfo=None)
+            fm_local = fm_in_tz.replace(tzinfo=None)
+
+            if ics_local != fm_local:
                 self.log_error(
-                    f"{property_name} UTC value {ics_utc.isoformat()}Z does not match "
-                    f"frontmatter '{fm_str}' converted via {self.site_timezone} "
-                    f"(expected {fm_utc.isoformat()}Z)",
+                    f"{property_name} local time {ics_local.isoformat()} does not match "
+                    f"frontmatter '{fm_str}' in timezone {output_tz_name} "
+                    f"(expected {fm_local.isoformat()})",
                     ics_file=ics_file,
                 )
         except Exception as e:
             self.log_warning(
-                f"Could not validate timezone conversion for {property_name}: {e}",
+                f"Could not validate local time match for {property_name}: {e}",
                 ics_file=ics_file,
             )
 

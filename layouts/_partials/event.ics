@@ -5,8 +5,8 @@
 {{- with dict `` `
   ` "description"  (dict "text" .Plain "lang" .Site.Language.LanguageCode) `` `
   ` "summary"      (dict "text" .Title "lang" .Site.Language.LanguageCode) `` `
-  ` "eventStart"   (dict "dateTime" (time.AsTime .Params.startDate $timezone).UTC "isUTC" true) `` `
-  ` "eventEnd"     (dict "dateTime" (time.AsTime .Params.endDate $timezone).UTC "isUTC" true) `` `
+  ` "eventStart"   (dict "dateTime" ((time.AsTime .Params.startDate $timezone) | time.In $timezone) "timeZoneID" $timezone) `` `
+  ` "eventEnd"     (dict "dateTime" ((time.AsTime .Params.endDate $timezone) | time.In $timezone) "timeZoneID" $timezone) `` `
   ` "location"     (dict "text" (or .Params.where .Params.location) "lang" .Site.Language.LanguageCode) `` `
   ` "url"          (.OutputFormats.Get "HTML").Permalink `` `
   ` "contact"      (cond (and .Params.orga .Params.orgaEmail) (dict "text" (printf "%s: %s" .Params.orga .Params.orgaEmail) "lang" .Site.Language.LanguageCode) nil) `` `
@@ -17,5 +17,6 @@
   ` "created"      .Date `` `
   ` "lastmod"      .Lastmod `` `
   ` "recurrenceRule" .Params.recurrenceRule `` `
+  ` "_rruleTimezone" $timezone `` `
   ` -}}{{ partial "ical/comp_event.ics" . }}
 {{ end -}}

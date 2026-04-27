@@ -9,7 +9,20 @@
 {{- /* Only generate calendar if valid events exist */ -}}
 {{- if $hasValidEvents -}}
 BEGIN:VCALENDAR
-{{- partial "header.ics" . -}}
+{{- partial "header.ics" . }}
+{{- /* Collect unique timezones from all events and emit VTIMEZONE for each */ -}}
+{{- $timezones := slice -}}
+{{- range .Pages -}}
+  {{- if .Params.startDate -}}
+    {{- $tz := partial "ical/get_timezone.ics" . -}}
+    {{- if not (in $timezones $tz) -}}
+      {{- $timezones = $timezones | append $tz -}}
+    {{- end -}}
+  {{- end -}}
+{{- end -}}
+{{- range $timezones }}
+{{ partial "timezone.ics" . }}
+{{- end -}}
 {{- range .Pages -}}
   {{- if .Params.startDate -}}
 {{ partial "event-with-alarms.ics" . }}
