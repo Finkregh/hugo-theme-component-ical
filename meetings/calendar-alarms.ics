@@ -4,7 +4,7 @@ PRODID:-//Hugo Calendar Templates//Event Template//EN
 CALSCALE:GREGORIAN
 METHOD:PUBLISH
 UID:97caa1379e59b522cfd0140e123ac10d
-LAST-MODIFIED:20260424T153528Z
+LAST-MODIFIED:20260427T163903Z
 URL:https://finkregh.github.io/hugo-theme-component-ical/meetings/
 REFRESH-INTERVAL;VALUE=DURATION:P1W
 SOURCE;VALUE=URI:https://finkregh.github.io/hugo-theme-component-ical/meetings/calendar.ics
@@ -18,9 +18,10 @@ DTSTAMP:00010101T000000Z
 UID:31c771c4049911507f800303987880bd
 DTSTART;VALUE=DATE-TIME:20240108T080000Z
 CLASS:PUBLIC
+
 DESCRIPTION;LANGUAGE=en-US:Weekly team standup meeting every Monday morning. Team members share updates on their current work\, discuss blockers\, and plan for the week ahead.\nFront matter:\ntitle: Every Monday startDate: 2024-01-08T09:00:00+01:00 endDate: 2024-01-08T09:30:00+01:00 where: "Meeting Room 1\, Main Office" orga: "Scrum Master" orgaEmail: "scrummaster@example.org" # Every Monday recurrenceRule: freq: "WEEKLY" byDay: "MO"
-LAST-MODIFIED:20260424T153528Z
-LOCATION;LANGUAGE=en-US:
+LAST-MODIFIED:20260427T163903Z
+LOCATION;LANGUAGE=en-US:Meeting Room 1\, Main Office
 STATUS:CONFIRMED
 SUMMARY;LANGUAGE=en-US:Meeting Every Monday
 TRANSP:OPAQUE
@@ -36,9 +37,10 @@ DTSTAMP:00010101T000000Z
 UID:bd74d37f8a5936e0e98b906c6c53455b
 DTSTART;VALUE=DATE-TIME:20240108T150000Z
 CLASS:PUBLIC
+
 DESCRIPTION;LANGUAGE=en-US:Brief check-in sessions held every Monday and Friday afternoon. These quick meetings help maintain team alignment and address any urgent issues at the start and end of each work week.\nFront matter:\ntitle: Every Monday and Friday startDate: 2024-01-08T16:00:00+01:00 endDate: 2024-01-08T16:15:00+01:00 where: "Virtual Meeting Room" orga: "Project Manager" orgaEmail: "pm@example.org" # Every Monday and Friday recurrenceRule: freq: "WEEKLY" byDay: ["MO"\, "FR"]
-LAST-MODIFIED:20260424T153528Z
-LOCATION;LANGUAGE=en-US:
+LAST-MODIFIED:20260427T163903Z
+LOCATION;LANGUAGE=en-US:Virtual Meeting Room
 STATUS:CONFIRMED
 SUMMARY;LANGUAGE=en-US:Meeting Every Monday and Friday
 TRANSP:OPAQUE
