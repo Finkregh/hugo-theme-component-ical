@@ -219,6 +219,30 @@ class ICalValidator:
             # Validate UTC format (should have Z suffix)
             self.validate_utc_datetime(dtstamp, "DTSTAMP", ics_file)
 
+        # Check LOCATION — frontmatter may use "where" or "location"
+        expected_location = frontmatter.get("where") or frontmatter.get("location")
+        location = event.get("LOCATION")
+        if expected_location:
+            if not location:
+                self.log_error(
+                    f"Missing LOCATION property (frontmatter has "
+                    f"{'where' if 'where' in frontmatter else 'location'}: "
+                    f"'{expected_location}')",
+                    ics_file=ics_file,
+                )
+            elif str(location) != str(expected_location):
+                self.log_error(
+                    f"LOCATION mismatch: got '{location}', "
+                    f"expected '{expected_location}'",
+                    ics_file=ics_file,
+                )
+        elif location:
+            self.log_warning(
+                f"LOCATION property '{location}' present but no 'where' or "
+                f"'location' in frontmatter",
+                ics_file=ics_file,
+            )
+
     def validate_utc_datetime(
         self, dt_property: Any, property_name: str, ics_file: str
     ) -> None:
