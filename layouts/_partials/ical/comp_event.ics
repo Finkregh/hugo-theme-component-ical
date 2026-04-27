@@ -130,8 +130,8 @@ BEGIN:VEVENT
 {{- with .eventStart }}
 {{- partial "ical/prop_date_time_start.ics" (merge . (dict "justDate" $.allDay)) }}
 {{- end -}}
-{{- partial "ical/prop_classification.ics" .classification -}}
-{{- with .created }}
+{{- partial "ical/prop_classification.ics" .classification }}
+{{ with .created -}}
 {{- partial "ical/prop_date_time_created.ics" . -}}
 {{- end -}}
 {{- with .description }}
@@ -143,9 +143,9 @@ BEGIN:VEVENT
 {{- with .lastmod }}
 {{ partial "ical/prop_last_modified.ics" . }}
 {{- end -}}
-{{- with .location }}
-{{- partial "ical/prop_location.ics" . }}
-{{- end -}}
+{{- with .location }}{{ with .text }}
+{{- partial "ical/prop_location.ics" $.location }}
+{{- end }}{{ end -}}
 {{- with .organizer }}
 {{- partial "ical/prop_organizer.ics" . }}
 {{- end -}}
