@@ -1,0 +1,52 @@
+BEGIN:VCALENDAR
+VERSION:2.0
+PRODID:-//Hugo Calendar Templates//Event Template//EN
+CALSCALE:GREGORIAN
+METHOD:PUBLISH
+UID:2849365d29d62d71894d66c86ea876af
+LAST-MODIFIED:20260427T164054Z
+REFRESH-INTERVAL;VALUE=DURATION:P1W
+SOURCE;VALUE=URI:https://finkregh.github.io/hugo-theme-component-ical/pr-preview/pr-42/events/test_recurring_until_future/calendar.ics
+COLOR:crimson
+NAME;LANGUAGE=en-US:Example Events
+DESCRIPTION;LANGUAGE=en-US:Example Events Calendar
+X-WR-CALNAME:Example Events
+X-WR-CALDESC:Example Events Calendar
+
+BEGIN:VTIMEZONE
+TZID:America/New_York
+LAST-MODIFIED:20260203T210914Z
+TZURL:https://www.tzurl.org/zoneinfo-outlook/America/New_York
+X-LIC-LOCATION:America/New_York
+BEGIN:DAYLIGHT
+TZNAME:EDT
+TZOFFSETFROM:-0500
+TZOFFSETTO:-0400
+DTSTART:19700308T020000
+RRULE:FREQ=YEARLY;INTERVAL=1;BYMONTH=3;BYDAY=2SU
+END:DAYLIGHT
+BEGIN:STANDARD
+TZNAME:EST
+TZOFFSETFROM:-0400
+TZOFFSETTO:-0500
+DTSTART:19701101T020000
+RRULE:FREQ=YEARLY;INTERVAL=1;BYMONTH=11;BYDAY=1SU
+END:STANDARD
+END:VTIMEZONE
+BEGIN:VEVENT
+DTSTAMP:00010101T000000Z
+UID:2849365d29d62d71894d66c86ea876af
+DTSTART;VALUE=DATE-TIME;TZID=America/New_York:20260315T180000
+CLASS:PUBLIC
+DESCRIPTION;LANGUAGE=en-US:Weekly Monday event with page-level icaltimezone override to America/New_York. Uses same bare timestamp values (18:00-20:00) as test_recurring_infinite for comparison. With icaltimezone\, bare timestamps are parsed in America/New_York (not site TZ). DTSTART should be TZID=America/New_York:20260315T180000 (18:00 EDT). Compare: the sibling test_recurring_infinite has the same 18:00 but in Europe/Zurich.
+LAST-MODIFIED:20260427T164054Z
+LOCATION;LANGUAGE=en-US:
+STATUS:CONFIRMED
+SUMMARY;LANGUAGE=en-US:Test: Recurring with icaltimezone Override
+TRANSP:OPAQUE
+RRULE:FREQ=WEEKLY;INTERVAL=1;UNTIL=20270101T045959Z;BYDAY=MO
+DTEND;VALUE=DATE-TIME;TZID=America/New_York:20260315T200000
+CONTACT;LANGUAGE=en-US:%!s(<nil>): %!s(<nil>)
+COLOR:crimson
+END:VEVENT
+END:VCALENDAR
