@@ -159,16 +159,16 @@ BEGIN:VEVENT
 {{- with .summary }}
 {{- partial "ical/prop_summary.ics" . }}
 {{- end }}
-{{ partial "ical/prop_time_transparency.ics" }}
+{{ partial "ical/prop_time_transparency.ics" -}}
 {{- with .url }}
-{{ partial "ical/prop_url.ics" . }}
-{{- end }}
+{{ partial "ical/prop_url.ics" . -}}
+{{- end -}}
 {{- /* recurid */ -}}
 {{- with .recurrenceRule }}
-{{ partial "ical/prop_recurrence_rule.ics" (dict "rule" . "tz" $._rruleTimezone) }}
+{{ partial "ical/prop_recurrence_rule.ics" (dict "rule" . "tz" $._rruleTimezone) -}}
 {{- end -}}
 {{- with .eventEnd }}
-{{- partial "ical/prop_date_time_end.ics" (merge . (dict "justDate" $.allDay)) }}
+{{ partial "ical/prop_date_time_end.ics" (merge . (dict "justDate" $.allDay)) -}}
 {{- end -}}
 {{/* duration */ -}}
 {{/* attach */ -}}
