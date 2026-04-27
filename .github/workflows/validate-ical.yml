@@ -107,7 +107,7 @@ jobs:
             .github/exampleSite/package-lock.json
 
       - name: Install Just
-        uses: extractions/setup-just@v4
+        uses: extractions/setup-just@v4.0.0
 
       - name: Install Hugo
         uses: peaceiris/actions-hugo@v3
@@ -166,14 +166,3 @@ jobs:
           branch: gh-pages
           clean-exclude: pr-preview
           force: false
-
-      - name: Setup Pages
-        if: github.ref == 'refs/heads/main' && github.server_url == 'https://github.com'
-        uses: actions/configure-pages@v6
-
-      - name: Upload to GitHub Pages
-        if: github.ref == 'refs/heads/main' && github.server_url == 'https://github.com'
-        uses: actions/upload-pages-artifact@v5
-        with:
-          path: .github/exampleSite/public
-
