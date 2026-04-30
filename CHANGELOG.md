@@ -3,6 +3,26 @@
 All notable changes to this project will be documented in this file. See [conventional commits](https://www.conventionalcommits.org/) for commit guidelines.
 
 - - -
+## [v0.11.3](https://github.com/finkregh/hugo-theme-component-ical/compare/a53558bfa3f8a4f831d554dde30759a2439f8f7f..v0.11.3) - 2026-04-30
+#### Bug Fixes
+- (**ci**) avoid gray-matter caching bug in frontmatter parsing - ([fa1c8b7](https://github.com/finkregh/hugo-theme-component-ical/commit/fa1c8b73e336fc95b7a5414f7e98bc799e0d31e8)) - Oluf Lorenzen
+- (**ci**) node date parsing - ([ce63788](https://github.com/finkregh/hugo-theme-component-ical/commit/ce63788bb8c8f9451426bdcbae0288f6d0a3b122)) - Oluf Lorenzen
+- (**ical**) spacing - ([ed7336d](https://github.com/finkregh/hugo-theme-component-ical/commit/ed7336d3cc0ad6add9baed27dce07fef8a4ab6cc)) - Oluf Lorenzen
+- (**ical**) set dates with timezones - ([73ba65e](https://github.com/finkregh/hugo-theme-component-ical/commit/73ba65e367e57c882456218cb848997a7f101a23)) - Oluf Lorenzen
+- (**ical**) newline issues - ([415c0a2](https://github.com/finkregh/hugo-theme-component-ical/commit/415c0a26f7c5a645699ac5a0120240148b241d8f)) - Oluf Lorenzen
+- (**ical**) set location from `location` OR `where` frontmatter - ([b8dbed1](https://github.com/finkregh/hugo-theme-component-ical/commit/b8dbed184f849a14476b96f3fd0b85f676c34122)) - Oluf Lorenzen
+- dont use .Site.Language.LanguageCode, deprecated - ([068e703](https://github.com/finkregh/hugo-theme-component-ical/commit/068e703773728d0e34764f2b10aff7a613778abf)) - Oluf Lorenzen
+#### Continuous Integration
+- add deps - ([dde5df6](https://github.com/finkregh/hugo-theme-component-ical/commit/dde5df63c71d74e94264e569893ebf1e70eb3113)) - Oluf Lorenzen
+#### Miscellaneous Chores
+- fix action version - ([507644e](https://github.com/finkregh/hugo-theme-component-ical/commit/507644e9f63e94b946a2a9ed0f946017d32420f3)) - Oluf Lorenzen
+- cleanup - ([78384c4](https://github.com/finkregh/hugo-theme-component-ical/commit/78384c48953d60b06ed4bb49c5fa2ce42e296e34)) - Oluf Lorenzen
+- cleanup - ([d5790e5](https://github.com/finkregh/hugo-theme-component-ical/commit/d5790e53e5ceffb180d4226c8d02896b07577847)) - Oluf Lorenzen
+- cleanup - ([400553d](https://github.com/finkregh/hugo-theme-component-ical/commit/400553dab6a6330499052a809491526f038898dc)) - Oluf Lorenzen
+- cleanup - ([a53558b](https://github.com/finkregh/hugo-theme-component-ical/commit/a53558bfa3f8a4f831d554dde30759a2439f8f7f)) - Oluf Lorenzen
+
+- - -
+
 ## [v0.11.2](https://github.com/finkregh/hugo-theme-component-ical/compare/a78bdab039718d304b9463e34482887a1c0de32e..v0.11.2) - 2026-04-24
 #### Miscellaneous Chores
 - (**deps**) update actions/setup-node action to v6 - ([fd6f211](https://github.com/finkregh/hugo-theme-component-ical/commit/fd6f2116c7e57a2d6997789c0884ac132e2dd02e)) - renovate[bot]
