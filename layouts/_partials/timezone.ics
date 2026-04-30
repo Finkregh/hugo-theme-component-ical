@@ -1,4 +1,14 @@
 {{- if or (eq hugo.Environment "development") (eq hugo.Environment "debug") }}{{ warnidf "debug-partial-used" "Partial used: %s" templates.Current.Name }}{{ end -}}
-{{- $timezone := partial "ical/get_timezone.ics" . -}}
+{{- /*
+  Include VTIMEZONE component for a given timezone.
+  Input: Either a page context (resolves timezone via get_timezone.ics)
+         or a plain timezone string (e.g., "Europe/Zurich").
+*/ -}}
+{{- $timezone := "" -}}
+{{- if eq (printf "%T" .) "string" -}}
+  {{- $timezone = . -}}
+{{- else -}}
+  {{- $timezone = partial "ical/get_timezone.ics" . -}}
+{{- end -}}
 {{- $tzfile := printf "zoneinfo-outlook/%s.ics" $timezone -}}
 {{- partial $tzfile . -}}

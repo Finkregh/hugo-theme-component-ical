@@ -3,13 +3,13 @@
 {{- if or (eq hugo.Environment "development") (eq hugo.Environment "debug") }}{{ warnidf "debug-partial-used" "Partial used: %s" templates.Current.Name }}{{ end -}}
 {{- $timezone := partial "ical/get_timezone.ics" . -}}
 {{- with dict `` `
-  ` "description"  (dict "text" .Plain "lang" .Site.Language.LanguageCode) `` `
-  ` "summary"      (dict "text" .Title "lang" .Site.Language.LanguageCode) `` `
-  ` "eventStart"   (dict "dateTime" (time.AsTime .Params.startDate $timezone).UTC "isUTC" true) `` `
-  ` "eventEnd"     (dict "dateTime" (time.AsTime .Params.endDate $timezone).UTC "isUTC" true) `` `
-  ` "location"     (dict "text" (or .Params.where .Params.location) "lang" .Site.Language.LanguageCode) `` `
+  ` "description"  (dict "text" .Plain "lang" .Site.Language.Locale) `` `
+  ` "summary"      (dict "text" .Title "lang" .Site.Language.Locale) `` `
+  ` "eventStart"   (dict "dateTime" ((time.AsTime .Params.startDate $timezone) | time.In $timezone) "timeZoneID" $timezone) `` `
+  ` "eventEnd"     (dict "dateTime" ((time.AsTime .Params.endDate $timezone) | time.In $timezone) "timeZoneID" $timezone) `` `
+  ` "location"     (dict "text" (or .Params.where .Params.location) "lang" .Site.Language.Locale) `` `
   ` "url"          (.OutputFormats.Get "HTML").Permalink `` `
-  ` "contact"      (dict "text" (printf "%s: %s" .Params.orga .Params.orgaEmail) "lang" .Site.Language.LanguageCode) `` `
+  ` "contact"      (dict "text" (printf "%s: %s" .Params.orga .Params.orgaEmail) "lang" .Site.Language.Locale) `` `
   ` "color"        "crimson" `` `
   ` "status"       (cond (.Params.cancelled | default false) "CANCELLED" "CONFIRMED") `` `
   ` "uid"          .File.UniqueID `` `
@@ -17,6 +17,7 @@
   ` "created"      .Date `` `
   ` "lastmod"      .Lastmod `` `
   ` "recurrenceRule" .Params.recurrenceRule `` `
+  ` "_rruleTimezone" $timezone `` `
   ` "alarms"        .Params.alarms `` `
   ` -}}{{ partial "ical/comp_event.ics" . }}
 {{ end -}}

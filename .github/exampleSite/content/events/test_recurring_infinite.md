@@ -1,7 +1,7 @@
 ---
-title: "Test: Recurring Infinite"
-startDate: 2025-01-01T09:00:00+01:00
-endDate: 2025-01-01T10:00:00+01:00
+title: "Test: Recurring Bare Timestamp (Site TZ)"
+startDate: 2026-03-15T18:00:00
+endDate: 2026-03-15T20:00:00
 where: "Test Location"
 recurrenceRule:
   freq: WEEKLY
@@ -13,6 +13,7 @@ outputs:
   - CalendarWithAlarms
 ---
 
-Weekly Monday meeting with no end date.
-Started in the past but continues indefinitely.
-Should appear in "Upcoming Events" section.
+Weekly Monday event using bare timestamps (no offset).
+Hugo interprets these in the site timezone (Europe/Zurich).
+DTSTART should be `TZID=Europe/Zurich:20260315T180000`.
+Compare with test_recurring_until_future which uses the same date/time but icaltimezone override.

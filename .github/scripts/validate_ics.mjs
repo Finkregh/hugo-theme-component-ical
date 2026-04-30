@@ -8,7 +8,7 @@
  * 2. Cross-implementation compatibility with JavaScript parsers
  * 3. Correct recurrence rules and event properties
  * 4. Proper VALARM component handling
- * 5. UTC-only datetime format (Z suffix, no timezone parameters)
+ * 5. Correct datetime format (TZID for event times, UTC for protocol timestamps)
  *
  * Usage:
  *     node validate_ics.mjs [base_path] [--showlog]
@@ -21,6 +21,7 @@ import fs from "fs";
 import path from "path";
 import ical from "node-ical";
 import matter from "gray-matter";
+import yaml from "js-yaml";
 import chalk from "chalk";
 import log from "loglevel";
 import prefix from "loglevel-plugin-prefix";
@@ -44,12 +45,39 @@ prefix.apply(log, {
 // Set default log level to ERROR (only show errors by default)
 log.setDefaultLevel("error");
 
+/**
+ * Read the ical timezone from hugo.toml config.
+ * Checks params.ical.timezone first, then top-level timeZone.
+ */
+function readSiteTimezone(basePath) {
+  const hugoToml = path.join(basePath, "hugo.toml");
+  if (!fs.existsSync(hugoToml)) return null;
+
+  try {
+    const content = fs.readFileSync(hugoToml, "utf-8");
+
+    // Check [params.ical] timezone first (may appear after the section header)
+    const icalTzMatch = content.match(
+      /\[params\.ical\][^[]*?timezone\s*=\s*"([^"]+)"/s,
+    );
+    if (icalTzMatch) return icalTzMatch[1];
+
+    // Fall back to top-level timeZone
+    const topTzMatch = content.match(/^timeZone\s*=\s*['"]([^'"]+)['"]/m);
+    if (topTzMatch) return topTzMatch[1];
+  } catch {
+    // Ignore read errors
+  }
+  return null;
+}
+
 class ICalValidatorJS {
-  constructor() {
+  constructor(siteTimezone = null) {
     this.errors = [];
     this.warnings = [];
     this.validatedFiles = 0;
     this.startTime = Date.now();
+    this.siteTimezone = siteTimezone;
   }
 
   /**
@@ -88,18 +116,43 @@ class ICalValidatorJS {
   }
 
   /**
-   * Parse YAML frontmatter from a markdown file
+   * Parse YAML frontmatter from a markdown file.
+   * Returns parsed data with an extra `_raw` property containing
+   * the raw frontmatter string (for extracting unparsed values).
    */
   parseFrontmatter(mdPath) {
     try {
       const content = fs.readFileSync(mdPath, "utf-8");
       const { data } = matter(content);
-      return data || {};
+      const result = data || {};
+      // Extract raw frontmatter directly from content string.
+      // gray-matter's .matter property is unreliable due to internal caching
+      // (returns undefined on second parse of the same file content).
+      const fmMatch = content.match(/^---\r?\n([\s\S]*?)\r?\n---/);
+      result._raw = fmMatch ? fmMatch[1] : "";
+      return result;
     } catch (error) {
       this.logError(`Failed to parse frontmatter from ${mdPath}`, null, {
         error: error.message,
       });
       return {};
+    }
+  }
+
+  /**
+   * Extract the raw string value of `until` from frontmatter YAML.
+   * gray-matter converts unquoted YAML datetimes to Date objects,
+   * losing the original format. Re-parse with JSON_SCHEMA to keep strings.
+   */
+  getRawUntilString(frontmatter) {
+    const raw = frontmatter._raw || "";
+    if (!raw) return null;
+    try {
+      const parsed = yaml.load(raw, { schema: yaml.JSON_SCHEMA });
+      const until = parsed?.recurrenceRule?.until;
+      return typeof until === "string" ? until : null;
+    } catch {
+      return null;
     }
   }
 
@@ -215,7 +268,7 @@ class ICalValidatorJS {
   }
 
   /**
-   * Validate datetime format - expect UTC format with Z suffix
+   * Validate datetime format - accept TZID format (preferred) or UTC format
    */
   validateDateTimeFormat(dateTime, propertyName, icsPath) {
     if (!dateTime) return;
@@ -226,43 +279,32 @@ class ICalValidatorJS {
       return;
     }
 
-    // Check if it's a string with UTC format
+    // Check if it's a string representation
     const dateTimeStr = String(dateTime);
 
-    // We expect UTC format with Z suffix (either ISO or iCal format)
+    // Accept UTC format (Z suffix) for protocol timestamps like DTSTAMP
     const utcFormats = [
-      /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}Z$/, // ISO format: 2026-12-31T23:59:59Z
-      /^\d{8}T\d{6}Z$/, // iCal format: 20261231T235959Z
+      /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}Z$/, // ISO format
+      /^\d{8}T\d{6}Z$/, // iCal format
     ];
 
-    const hasValidUtcFormat = utcFormats.some((format) =>
-      format.test(dateTimeStr),
-    );
+    // Accept TZID format for event times (DTSTART, DTEND)
+    const tzidFormat = /^\d{8}T\d{6}$/; // iCal local time (no Z, used with TZID)
 
-    if (!hasValidUtcFormat) {
-      // Check for timezone parameters (which we no longer want)
-      if (
-        dateTimeStr.includes("TZID=") ||
-        dateTimeStr.match(/[+-]\d{2}:\d{2}$/)
-      ) {
-        this.logError(
-          `${propertyName} should use UTC format (Z suffix) instead of timezone parameters`,
-          icsPath,
-          {
-            actual: dateTimeStr,
-            expected: "UTC format with Z suffix",
-          },
-        );
-      } else {
-        this.logWarning(
-          `${propertyName} format may not be standard UTC`,
-          icsPath,
-          {
-            actual: dateTimeStr,
-            expected: "YYYYMMDDTHHMMSSZ or YYYY-MM-DDTHH:MM:SSZ",
-          },
-        );
-      }
+    const hasValidFormat =
+      utcFormats.some((format) => format.test(dateTimeStr)) ||
+      tzidFormat.test(dateTimeStr) ||
+      dateTimeStr.includes("TZID=");
+
+    if (!hasValidFormat) {
+      this.logWarning(
+        `${propertyName} format may not be standard`,
+        icsPath,
+        {
+          actual: dateTimeStr,
+          expected: "YYYYMMDDTHHMMSS (with TZID) or YYYYMMDDTHHMMSSZ (UTC)",
+        },
+      );
     }
   }
 
@@ -324,81 +366,90 @@ class ICalValidatorJS {
   }
 
   /**
-   * Normalize UNTIL values for comparison by converting to UTC timestamps
-   * Note: This simulates Hugo template behavior where timezone-aware frontmatter
-   * dates have their timezone stripped and local time treated as UTC
+   * Convert a bare datetime string to UTC using a specific IANA timezone.
+   * Mirrors Hugo's behavior: bare timestamps are parsed in the page timezone,
+   * then converted to UTC for RRULE UNTIL.
+   *
+   * Uses Intl.DateTimeFormat to resolve the UTC offset for the given timezone
+   * at the specific datetime, which correctly handles DST transitions.
    */
-  normalizeUntilForComparison(untilStr) {
-    try {
-      let dateObj;
+  bareToUtcMs(isoStr, timeZone) {
+    // Parse components from bare ISO string (e.g., "2026-12-31T23:59:59")
+    const [datePart, timePart] = isoStr.split("T");
+    const [year, month, day] = datePart.split("-").map(Number);
+    const [hour, minute, second] = (timePart || "00:00:00")
+      .split(":")
+      .map(Number);
 
-      if (untilStr instanceof Date) {
-        // For Date objects from frontmatter (parsed by gray-matter):
-        // Hugo template behavior is to take the original timezone-aware string
-        // and strip the timezone, treating local time as UTC
+    // Target: the wall-clock digits as if they were UTC
+    const targetAsUtc = Date.UTC(year, month - 1, day, hour, minute, second);
 
-        // The Date object represents the correct UTC time (gray-matter parsed correctly)
-        // But Hugo template strips timezone from original string and treats as UTC
-        // So we need to "undo" the timezone conversion to simulate Hugo's behavior
+    // Create a formatter that outputs parts in the target timezone
+    const fmt = new Intl.DateTimeFormat("en-US", {
+      timeZone,
+      year: "numeric",
+      month: "2-digit",
+      day: "2-digit",
+      hour: "2-digit",
+      minute: "2-digit",
+      second: "2-digit",
+      hour12: false,
+    });
 
-        // Get the local timezone offset at the time this script runs
-        // This is a reasonable approximation for the timezone used in frontmatter
-        const localOffset = untilStr.getTimezoneOffset() * 60 * 1000;
+    // First guess: interpret the bare datetime as UTC
+    // Then compute the wall-clock time in the target timezone
+    // The difference tells us the UTC offset at that moment
+    const parts = fmt.formatToParts(new Date(targetAsUtc));
+    const get = (type) => Number(parts.find((p) => p.type === type).value);
+    const wallAsUtc = Date.UTC(
+      get("year"),
+      get("month") - 1,
+      get("day"),
+      get("hour"),
+      get("minute"),
+      get("second"),
+    );
+    // offset = wallClock(asUTC) - utcInstant → positive means TZ is ahead of UTC
+    const offset = wallAsUtc - targetAsUtc;
+    // The UTC instant where wall clock equals our target:
+    // wallClock = utcInstant + offset → utcInstant = target - offset
+    return targetAsUtc - offset;
+  }
 
-        // Hugo strips timezone and treats local time as UTC, so we add back the offset
-        const hugoSimulatedTime = untilStr.getTime() - localOffset;
-
-        return hugoSimulatedTime.toString();
-      } else {
-        // Convert to string and handle various formats
-        let cleanStr = String(untilStr);
-
-        // Remove IANA timezone identifiers like [Etc/UTC]
-        cleanStr = cleanStr.replace(/\[.*\]$/, "");
-
-        // Handle various datetime formats
-        if (
-          cleanStr.match(/^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}[+-]\d{2}:\d{2}$/)
-        ) {
-          // Hugo template behavior: strip timezone and treat local time as UTC
-          const datePart = cleanStr.substring(0, 19); // YYYY-MM-DDTHH:MM:SS
-          cleanStr = datePart + "Z";
-        } else if (cleanStr.match(/^\d{8}T\d{6}Z?$/)) {
-          // iCal format: YYYYMMDDTHHMMSSZ
-          if (!cleanStr.endsWith("Z")) {
-            cleanStr += "Z";
-          }
-          // Convert to ISO format for Date parsing
-          const year = cleanStr.substring(0, 4);
-          const month = cleanStr.substring(4, 6);
-          const day = cleanStr.substring(6, 8);
-          const hour = cleanStr.substring(9, 11);
-          const minute = cleanStr.substring(11, 13);
-          const second = cleanStr.substring(13, 15);
-          cleanStr = `${year}-${month}-${day}T${hour}:${minute}:${second}Z`;
-        } else if (cleanStr.match(/^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}$/)) {
-          // ISO format without timezone - add Z for UTC
-          cleanStr += "Z";
-        } else if (
-          cleanStr.match(/^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}\+00:00$/)
-        ) {
-          // ISO format with +00:00 timezone - convert to Z
-          cleanStr = cleanStr.replace(/\+00:00$/, "Z");
-        }
-
-        dateObj = new Date(cleanStr);
-      }
-
-      if (dateObj && isNaN(dateObj.getTime())) {
-        return String(untilStr); // Fallback to string comparison
-      }
-
-      // Return UTC timestamp for accurate comparison
-      return dateObj.getTime().toString();
-    } catch (error) {
-      // Fallback to string comparison if parsing fails
-      return String(untilStr);
+  /**
+   * Parse an RRULE UNTIL value to UTC milliseconds.
+   * node-ical may return Date, Temporal.ZonedDateTime, or string.
+   */
+  icalUtcToMs(val) {
+    // Handle Temporal.ZonedDateTime (node-ical with Temporal support)
+    if (val && typeof val === "object" && val.epochMilliseconds !== undefined) {
+      return Number(val.epochMilliseconds);
     }
+
+    // Handle Date objects
+    if (val instanceof Date) {
+      return val.getTime();
+    }
+
+    let cleanStr = String(val).replace(/\[.*\]$/, "");
+
+    // iCal UTC format: YYYYMMDDTHHMMSSZ
+    if (cleanStr.match(/^\d{8}T\d{6}Z$/)) {
+      const y = cleanStr.substring(0, 4);
+      const m = cleanStr.substring(4, 6);
+      const d = cleanStr.substring(6, 8);
+      const h = cleanStr.substring(9, 11);
+      const mi = cleanStr.substring(11, 13);
+      const s = cleanStr.substring(13, 15);
+      return Date.UTC(+y, +m - 1, +d, +h, +mi, +s);
+    }
+
+    // ISO format with or without offset
+    const date = new Date(cleanStr);
+    if (!isNaN(date.getTime())) {
+      return date.getTime();
+    }
+    return null;
   }
 
   /**
@@ -505,78 +556,76 @@ class ICalValidatorJS {
   }
 
   /**
-   * Validate UNTIL parameter
+   * Validate UNTIL parameter.
+   * Hugo converts UNTIL timestamps to UTC using the page timezone
+   * (icaltimezone or site timezone). We replicate that conversion here.
+   *
+   * gray-matter parses bare YAML datetimes (e.g., 2026-12-31T23:59:59)
+   * into Date objects using the machine's local timezone. But Hugo parses
+   * them using the page timezone. So for bare timestamps, we extract the
+   * wall-clock components and re-interpret in the page timezone.
    */
-  validateUntil(rruleOpts, expectedRule, icsPath) {
-    if (expectedRule.until !== undefined) {
-      const actualUntil = rruleOpts.until;
+  validateUntil(rruleOpts, expectedRule, icsPath, frontmatter = {}) {
+    if (expectedRule.until === undefined) return;
 
-      if (!actualUntil) {
-        this.logError("UNTIL missing", icsPath, {
-          expected: expectedRule.until,
-          actual: null,
-        });
-      } else {
-        // Use UTC timestamp comparison for accurate validation
-        const expectedNormalized = this.normalizeUntilForComparison(
-          expectedRule.until,
-        );
-        const actualNormalized = this.normalizeUntilForComparison(actualUntil);
+    const actualUntil = rruleOpts.until;
 
-        if (expectedNormalized === actualNormalized) {
-          // Perfect match
-          let readableDate;
-          try {
-            if (actualUntil instanceof Date) {
-              readableDate = actualUntil.toISOString().split("T")[0];
-            } else {
-              const parsedDate = new Date(
-                String(actualUntil).replace(/\[.*\]$/, ""),
-              );
-              readableDate = parsedDate.toISOString().split("T")[0];
-            }
-            console.log(
-              `ℹ️  Event will occur until ${readableDate} (UNTIL=${String(expectedRule.until)})`,
-            );
-          } catch (error) {
-            console.log(
-              `ℹ️  Event will occur until ${String(expectedRule.until)} (UNTIL=${String(expectedRule.until)})`,
-            );
-          }
-        } else {
-          // Check if this is a timezone conversion issue (frontmatter with timezone -> UTC output)
-          // Parse both dates and check if they represent the same moment in UTC
-          try {
-            const expectedDate = new Date(String(expectedRule.until));
-            const actualDateStr = String(actualUntil).replace(/\[.*\]$/, "");
-            const actualDate = new Date(actualDateStr);
+    if (!actualUntil) {
+      this.logError("UNTIL missing", icsPath, {
+        expected: expectedRule.until,
+        actual: null,
+      });
+      return;
+    }
 
-            if (
-              !isNaN(expectedDate.getTime()) &&
-              !isNaN(actualDate.getTime())
-            ) {
-              // Compare the UTC timestamps
-              if (expectedDate.getTime() === actualDate.getTime()) {
-                // Same moment in time, just different representations
-                const readableDate = actualDate.toISOString().split("T")[0];
-                console.log(
-                  `ℹ️  Event will occur until ${readableDate} (UNTIL converted from ${String(expectedRule.until)} to UTC)`,
-                );
-                return; // Valid conversion
-              }
-            }
-          } catch (error) {
-            // Fall through to error case
-          }
+    // Determine the page timezone (mirrors get_timezone.ics priority)
+    const pageTz =
+      frontmatter.icaltimezone || this.siteTimezone || "UTC";
 
-          this.logError("UNTIL mismatch", icsPath, {
-            expected: String(expectedRule.until),
-            actual: String(actualUntil),
-            expectedNormalized,
-            actualNormalized,
-          });
-        }
-      }
+    // Get the raw UNTIL string from frontmatter YAML to avoid
+    // gray-matter's timezone-dependent Date conversion.
+    const rawUntil = this.getRawUntilString(frontmatter);
+    const untilStr = rawUntil || String(expectedRule.until);
+
+    // Compute expected UTC milliseconds from frontmatter UNTIL + page timezone.
+    // Hugo uses (time.AsTime <value> $timezone).UTC:
+    //   - Bare timestamps → parsed in page timezone, converted to UTC
+    //   - Offset timestamps → offset is respected, converted to UTC
+    let expectedMs;
+
+    if (untilStr.match(/[+-]\d{2}:\d{2}$/) || untilStr.endsWith("Z")) {
+      // Explicit offset — parse directly (Hugo respects the offset)
+      expectedMs = new Date(untilStr).getTime();
+    } else {
+      // Bare timestamp — Hugo interprets in page timezone, then .UTC
+      const bareStr = untilStr.substring(0, 19);
+      expectedMs = this.bareToUtcMs(bareStr, pageTz);
+    }
+
+    // Compute actual UTC milliseconds from the ICS RRULE UNTIL value
+    const actualMs = this.icalUtcToMs(actualUntil);
+
+    if (expectedMs === null || actualMs === null || isNaN(expectedMs) || isNaN(actualMs)) {
+      this.logWarning(
+        `Could not parse UNTIL for comparison`,
+        icsPath,
+        { expected: untilStr, actual: String(actualUntil) },
+      );
+      return;
+    }
+
+    if (expectedMs === actualMs) {
+      const readableDate = new Date(actualMs).toISOString().split("T")[0];
+      console.log(
+        `ℹ️  Event will occur until ${readableDate} (UNTIL=${untilStr})`,
+      );
+    } else {
+      this.logError("UNTIL mismatch", icsPath, {
+        expected: untilStr,
+        actual: String(actualUntil),
+        expectedUtcMs: expectedMs,
+        actualUtcMs: actualMs,
+      });
     }
   }
 
@@ -672,7 +721,7 @@ class ICalValidatorJS {
 
     // Validate COUNT and UNTIL parameters
     this.validateCount(rruleOpts, expectedRule, icsPath);
-    this.validateUntil(rruleOpts, expectedRule, icsPath);
+    this.validateUntil(rruleOpts, expectedRule, icsPath, frontmatter);
     this.validateCountUntilMutualExclusivity(rruleOpts, expectedRule, icsPath);
 
     // Validate BYMONTH
@@ -1072,11 +1121,16 @@ async function main() {
     log.setLevel("error");
   }
 
+  const siteTimezone = readSiteTimezone(basePath);
+
   console.log(
     chalk.blue(`Starting JavaScript iCalendar validation for: ${basePath}`),
   );
+  if (siteTimezone) {
+    console.log(chalk.blue(`Site timezone: ${siteTimezone}`));
+  }
 
-  const validator = new ICalValidatorJS();
+  const validator = new ICalValidatorJS(siteTimezone);
   const overallSuccess = await validator.validateAllFiles(basePath);
   const reportSuccess = validator.generateReport();
 
