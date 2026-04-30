@@ -5,6 +5,7 @@
   "dependencies": {
     "chalk": "^5.6.2",
     "gray-matter": "^4.0.3",
+    "js-yaml": "^4.1.1",
     "loglevel": "^1.9.2",
     "loglevel-plugin-prefix": "^0.8.4",
     "node-ical": "^0.26.0",
