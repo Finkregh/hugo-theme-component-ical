@@ -4,7 +4,7 @@ PRODID:-//Hugo Calendar Templates//Event Template//EN
 CALSCALE:GREGORIAN
 METHOD:PUBLISH
 UID:5fe69e3303e6a2f16a1487ea161dc69c
-LAST-MODIFIED:20260427T164054Z
+LAST-MODIFIED:20260430T135516Z
 URL:https://finkregh.github.io/hugo-theme-component-ical/pr-preview/pr-42/de/events/event_7_every_monday/
 REFRESH-INTERVAL;VALUE=DURATION:P1W
 SOURCE;VALUE=URI:https://finkregh.github.io/hugo-theme-component-ical/pr-preview/pr-42/de/events/event_7_every_monday/calendar.ics
@@ -39,15 +39,17 @@ DTSTAMP:00010101T000000Z
 UID:5fe69e3303e6a2f16a1487ea161dc69c
 DTSTART;VALUE=DATE-TIME;TZID=Europe/Zurich:20250108T090000
 CLASS:PUBLIC
+
 DESCRIPTION;LANGUAGE=de:Wöchentliches Team-Standup jeden Montagmorgen. Teammitglieder berichten über ihre aktuelle Arbeit\, besprechen Hindernisse und planen die kommende Woche.\nFront matter:\ntitle: Jeden Montag startDate: 2025-01-08T09:00:00+01:00 endDate: 2025-01-08T09:30:00+01:00 where: "Besprechungsraum 1\, Hauptgebäude" orga: "Scrum Master" orgaEmail: "scrummaster@example.org" # Jeden Montag recurrenceRule: freq: "WEEKLY" byDay: "MO"
-LAST-MODIFIED:20260427T164054Z
-LOCATION;LANGUAGE=de:
+LAST-MODIFIED:20260430T135516Z
+LOCATION;LANGUAGE=de:Besprechungsraum 1\, Hauptgebäude
 STATUS:CONFIRMED
 SUMMARY;LANGUAGE=de:Jeden Montag
 TRANSP:OPAQUE
 URL:https://finkregh.github.io/hugo-theme-component-ical/pr-preview/pr-42/de/events/event_7_every_monday/
 
 RRULE:FREQ=WEEKLY;INTERVAL=1;COUNT=50;BYDAY=MO
+
 DTEND;VALUE=DATE-TIME;TZID=Europe/Zurich:20250108T093000
 CONTACT;LANGUAGE=de:Scrum Master: scrummaster@example.org
 COLOR:crimson
