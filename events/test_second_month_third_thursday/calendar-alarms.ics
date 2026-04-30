@@ -4,7 +4,7 @@ PRODID:-//Hugo Calendar Templates//Event Template//EN
 CALSCALE:GREGORIAN
 METHOD:PUBLISH
 UID:481f301e50dc2ca4d35bff7cd9854eff
-LAST-MODIFIED:20260427T163903Z
+LAST-MODIFIED:20260430T135841Z
 URL:https://finkregh.github.io/hugo-theme-component-ical/events/test_second_month_third_thursday/
 REFRESH-INTERVAL;VALUE=DURATION:P1W
 SOURCE;VALUE=URI:https://finkregh.github.io/hugo-theme-component-ical/events/test_second_month_third_thursday/calendar.ics
@@ -13,14 +13,35 @@ NAME;LANGUAGE=en-US:Example Events
 DESCRIPTION;LANGUAGE=en-US:Example Events Calendar
 X-WR-CALNAME:Example Events
 X-WR-CALDESC:Example Events Calendar
+
+BEGIN:VTIMEZONE
+TZID:Europe/Zurich
+LAST-MODIFIED:20260203T210914Z
+TZURL:https://www.tzurl.org/zoneinfo-outlook/Europe/Zurich
+X-LIC-LOCATION:Europe/Zurich
+BEGIN:DAYLIGHT
+TZNAME:CEST
+TZOFFSETFROM:+0100
+TZOFFSETTO:+0200
+DTSTART:19700329T020000
+RRULE:FREQ=YEARLY;INTERVAL=1;BYMONTH=3;BYDAY=-1SU
+END:DAYLIGHT
+BEGIN:STANDARD
+TZNAME:CET
+TZOFFSETFROM:+0200
+TZOFFSETTO:+0100
+DTSTART:19701025T030000
+RRULE:FREQ=YEARLY;INTERVAL=1;BYMONTH=10;BYDAY=-1SU
+END:STANDARD
+END:VTIMEZONE
 BEGIN:VEVENT
 DTSTAMP:00010101T000000Z
 UID:481f301e50dc2ca4d35bff7cd9854eff
-DTSTART;VALUE=DATE-TIME:20240321T130000Z
+DTSTART;VALUE=DATE-TIME;TZID=Europe/Zurich:20240321T140000
 CLASS:PUBLIC
 
 DESCRIPTION;LANGUAGE=en-US:This is a test event to verify the Phase 1 implementation works correctly for every second month\, third Thursday pattern. It should generate FREQ=MONTHLY\;INTERVAL=2\;BYDAY=3TH as specified in Task 4.1 of the RFC5545 RRULE Fix Plan.\nThis tests:\nPhase 1: BYDAY ordinal support (3TH) Phase 1: INTERVAL=2 (every second month) Phase 1: Explicit INTERVAL parameter inclusion
-LAST-MODIFIED:20260427T163903Z
+LAST-MODIFIED:20260430T135841Z
 LOCATION;LANGUAGE=en-US:Conference Room C
 STATUS:CONFIRMED
 SUMMARY;LANGUAGE=en-US:Test Every Second Month Third Thursday
@@ -28,7 +49,8 @@ TRANSP:OPAQUE
 URL:https://finkregh.github.io/hugo-theme-component-ical/events/test_second_month_third_thursday/
 
 RRULE:FREQ=MONTHLY;INTERVAL=2;BYDAY=3TH
-DTEND;VALUE=DATE-TIME:20240321T143000Z
+
+DTEND;VALUE=DATE-TIME;TZID=Europe/Zurich:20240321T153000
 CONTACT;LANGUAGE=en-US:Test Organizer: test@example.org
 COLOR:crimson
 END:VEVENT

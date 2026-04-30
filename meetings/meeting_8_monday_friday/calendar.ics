@@ -4,7 +4,7 @@ PRODID:-//Hugo Calendar Templates//Event Template//EN
 CALSCALE:GREGORIAN
 METHOD:PUBLISH
 UID:bd74d37f8a5936e0e98b906c6c53455b
-LAST-MODIFIED:20260427T163903Z
+LAST-MODIFIED:20260430T135841Z
 URL:https://finkregh.github.io/hugo-theme-component-ical/meetings/meeting_8_monday_friday/
 REFRESH-INTERVAL;VALUE=DURATION:P1W
 SOURCE;VALUE=URI:https://finkregh.github.io/hugo-theme-component-ical/meetings/meeting_8_monday_friday/calendar.ics
@@ -13,14 +13,35 @@ NAME;LANGUAGE=en-US:Example Events
 DESCRIPTION;LANGUAGE=en-US:Example Events Calendar
 X-WR-CALNAME:Example Events
 X-WR-CALDESC:Example Events Calendar
+
+BEGIN:VTIMEZONE
+TZID:Europe/Zurich
+LAST-MODIFIED:20260203T210914Z
+TZURL:https://www.tzurl.org/zoneinfo-outlook/Europe/Zurich
+X-LIC-LOCATION:Europe/Zurich
+BEGIN:DAYLIGHT
+TZNAME:CEST
+TZOFFSETFROM:+0100
+TZOFFSETTO:+0200
+DTSTART:19700329T020000
+RRULE:FREQ=YEARLY;INTERVAL=1;BYMONTH=3;BYDAY=-1SU
+END:DAYLIGHT
+BEGIN:STANDARD
+TZNAME:CET
+TZOFFSETFROM:+0200
+TZOFFSETTO:+0100
+DTSTART:19701025T030000
+RRULE:FREQ=YEARLY;INTERVAL=1;BYMONTH=10;BYDAY=-1SU
+END:STANDARD
+END:VTIMEZONE
 BEGIN:VEVENT
 DTSTAMP:00010101T000000Z
 UID:bd74d37f8a5936e0e98b906c6c53455b
-DTSTART;VALUE=DATE-TIME:20240108T150000Z
+DTSTART;VALUE=DATE-TIME;TZID=Europe/Zurich:20240108T160000
 CLASS:PUBLIC
 
 DESCRIPTION;LANGUAGE=en-US:Brief check-in sessions held every Monday and Friday afternoon. These quick meetings help maintain team alignment and address any urgent issues at the start and end of each work week.\nFront matter:\ntitle: Every Monday and Friday startDate: 2024-01-08T16:00:00+01:00 endDate: 2024-01-08T16:15:00+01:00 where: "Virtual Meeting Room" orga: "Project Manager" orgaEmail: "pm@example.org" # Every Monday and Friday recurrenceRule: freq: "WEEKLY" byDay: ["MO"\, "FR"]
-LAST-MODIFIED:20260427T163903Z
+LAST-MODIFIED:20260430T135841Z
 LOCATION;LANGUAGE=en-US:Virtual Meeting Room
 STATUS:CONFIRMED
 SUMMARY;LANGUAGE=en-US:Meeting Every Monday and Friday
@@ -28,7 +49,8 @@ TRANSP:OPAQUE
 URL:https://finkregh.github.io/hugo-theme-component-ical/meetings/meeting_8_monday_friday/
 
 RRULE:FREQ=WEEKLY;INTERVAL=1;BYDAY=MO,FR
-DTEND;VALUE=DATE-TIME:20240108T151500Z
+
+DTEND;VALUE=DATE-TIME;TZID=Europe/Zurich:20240108T161500
 CONTACT;LANGUAGE=en-US:Project Manager: pm@example.org
 COLOR:crimson
 END:VEVENT

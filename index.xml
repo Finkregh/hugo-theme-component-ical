@@ -197,6 +197,13 @@
       <description>&lt;p&gt;This event is scheduled for the future but has been cancelled.&#xA;It should appear in &amp;ldquo;Past Events&amp;rdquo; section.&lt;/p&gt;</description>
     </item>
     <item>
+      <title>Test: Recurring Bare Timestamp (Site TZ)</title>
+      <link>https://finkregh.github.io/hugo-theme-component-ical/events/test_recurring_infinite/calendar.ics</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      <guid>https://finkregh.github.io/hugo-theme-component-ical/events/test_recurring_infinite/calendar.ics</guid>
+      <description>&lt;p&gt;Weekly Monday event using bare timestamps (no offset).&#xA;Hugo interprets these in the site timezone (Europe/Zurich).&#xA;DTSTART should be &lt;code&gt;TZID=Europe/Zurich:20260315T180000&lt;/code&gt;.&#xA;Compare with test_recurring_until_future which uses the same date/time but icaltimezone override.&lt;/p&gt;</description>
+    </item>
+    <item>
       <title>Test: Recurring COUNT Active</title>
       <link>https://finkregh.github.io/hugo-theme-component-ical/events/test_recurring_count_active/calendar.ics</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
@@ -211,25 +218,18 @@
       <description>&lt;p&gt;10-week series that started January 1, 2025.&#xA;Last occurrence was March 5, 2025 (10 weeks later).&#xA;Should appear in &amp;ldquo;Past Events&amp;rdquo; section.&lt;/p&gt;</description>
     </item>
     <item>
-      <title>Test: Recurring Infinite</title>
-      <link>https://finkregh.github.io/hugo-theme-component-ical/events/test_recurring_infinite/calendar.ics</link>
-      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
-      <guid>https://finkregh.github.io/hugo-theme-component-ical/events/test_recurring_infinite/calendar.ics</guid>
-      <description>&lt;p&gt;Weekly Monday meeting with no end date.&#xA;Started in the past but continues indefinitely.&#xA;Should appear in &amp;ldquo;Upcoming Events&amp;rdquo; section.&lt;/p&gt;</description>
-    </item>
-    <item>
-      <title>Test: Recurring UNTIL Future</title>
-      <link>https://finkregh.github.io/hugo-theme-component-ical/events/test_recurring_until_future/calendar.ics</link>
-      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
-      <guid>https://finkregh.github.io/hugo-theme-component-ical/events/test_recurring_until_future/calendar.ics</guid>
-      <description>&lt;p&gt;Weekly event that continues until December 31, 2026.&#xA;Should appear in &amp;ldquo;Upcoming Events&amp;rdquo; section.&lt;/p&gt;</description>
-    </item>
-    <item>
       <title>Test: Recurring UNTIL Past</title>
       <link>https://finkregh.github.io/hugo-theme-component-ical/events/test_recurring_until_past/calendar.ics</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       <guid>https://finkregh.github.io/hugo-theme-component-ical/events/test_recurring_until_past/calendar.ics</guid>
       <description>&lt;p&gt;Weekly event that ended on December 31, 2025.&#xA;Should appear in &amp;ldquo;Past Events&amp;rdquo; section.&lt;/p&gt;</description>
+    </item>
+    <item>
+      <title>Test: Recurring with icaltimezone Override</title>
+      <link>https://finkregh.github.io/hugo-theme-component-ical/events/test_recurring_until_future/calendar.ics</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      <guid>https://finkregh.github.io/hugo-theme-component-ical/events/test_recurring_until_future/calendar.ics</guid>
+      <description>&lt;p&gt;Weekly Monday event with page-level icaltimezone override to America/New_York.&#xA;Uses same bare timestamp values (18:00-20:00) as test_recurring_infinite for comparison.&#xA;With &lt;code&gt;icaltimezone&lt;/code&gt;, bare timestamps are parsed in America/New_York (not site TZ).&#xA;DTSTART should be &lt;code&gt;TZID=America/New_York:20260315T180000&lt;/code&gt; (18:00 EDT).&#xA;Compare: the sibling test_recurring_infinite has the same &lt;code&gt;18:00&lt;/code&gt; but in Europe/Zurich.&lt;/p&gt;</description>
     </item>
     <item>
       <title>Test: Timezone Override (Pacific/Auckland)</title>
