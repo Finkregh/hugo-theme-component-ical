@@ -123,9 +123,13 @@ class ICalValidatorJS {
   parseFrontmatter(mdPath) {
     try {
       const content = fs.readFileSync(mdPath, "utf-8");
-      const { data, matter: rawFm } = matter(content);
+      const { data } = matter(content);
       const result = data || {};
-      result._raw = rawFm || "";
+      // Extract raw frontmatter directly from content string.
+      // gray-matter's .matter property is unreliable due to internal caching
+      // (returns undefined on second parse of the same file content).
+      const fmMatch = content.match(/^---\r?\n([\s\S]*?)\r?\n---/);
+      result._raw = fmMatch ? fmMatch[1] : "";
       return result;
     } catch (error) {
       this.logError(`Failed to parse frontmatter from ${mdPath}`, null, {
