@@ -1,0 +1,251 @@
+/*
+ * Calendar Single Event Component Styles
+ * 
+ * Styles specific to the single event detail view.
+ * Common styles are in shared/ directory.
+ */
+
+/* ========================================
+ * SINGLE EVENT SPECIFIC OVERRIDES
+ * ======================================== */
+
+/* Section title variant for single event page */
+.event-section .section-title {
+  --section-title-margin-bottom: var(--calendar-space-3);
+  --section-title-padding-bottom: var(--calendar-space-1);
+  --section-title-border-width: 1px;
+  --section-title-font-size: var(--calendar-font-size-lg);
+}
+
+/* Calendar widget height for single event page */
+.event-calendar-widget .single-event-calendar {
+  min-height: var(--calendar-widget-height-min);
+}
+
+/* ========================================
+ * EVENT METADATA CARD
+ * ======================================== */
+
+.event-metadata-card {
+  background-color: var(--calendar-secondary-color-dark);
+  border-radius: var(--calendar-radius-lg);
+  box-shadow: var(--calendar-shadow-md);
+  margin-bottom: var(--calendar-space-8);
+  overflow: hidden;
+  font-family: var(--calendar-font-family-primary);
+}
+
+.event-header {
+  background-color: var(--calendar-accent-color-light);
+  padding: var(--calendar-space-4) var(--calendar-space-6);
+  border-bottom: 1px solid var(--calendar-secondary-color-dark);
+}
+
+.event-title {
+  margin: 0;
+  color: var(--calendar-primary-color);
+  font-size: var(--calendar-font-size-xl);
+  font-weight: var(--calendar-font-weight-semibold);
+  line-height: var(--calendar-line-height-tight);
+  display: flex;
+  align-items: center;
+  gap: var(--calendar-space-2);
+}
+
+.event-title::before {
+  content: none;
+}
+
+.event-details {
+  padding: var(--calendar-space-6);
+}
+
+/* ========================================
+ * EVENT SECTIONS
+ * ======================================== */
+
+.event-section {
+  margin-bottom: var(--calendar-space-6);
+}
+
+.event-section:last-child {
+  margin-bottom: 0;
+}
+
+/* ========================================
+ * STATUS STYLES
+ * ======================================== */
+
+.status-notice {
+  padding: var(--calendar-space-2) 0;
+}
+
+/* ========================================
+ * RECURRENCE STYLES
+ * ======================================== */
+
+.recurrence-content {
+  display: flex;
+  flex-direction: column;
+  gap: var(--calendar-space-3);
+}
+
+.recurrence-summary {
+  background-color: var(--calendar-secondary-color);
+  padding: var(--calendar-space-3);
+  border-radius: var(--calendar-radius-md);
+  color: var(--calendar-primary-color);
+}
+
+.technical-details {
+  margin-top: var(--calendar-space-2);
+}
+
+.technical-summary {
+  cursor: pointer;
+  font-weight: var(--calendar-font-weight-medium);
+  color: var(--calendar-accent-color);
+  padding: var(--calendar-space-2) 0;
+  border-bottom: 1px solid var(--calendar-secondary-color-dark);
+  margin-bottom: var(--calendar-space-2);
+  transition: var(--calendar-transition-fast);
+  list-style: none;
+}
+
+.technical-summary::-webkit-details-marker {
+  display: none;
+}
+
+.technical-summary::before {
+  content: "▶";
+  display: inline-block;
+  margin-right: var(--calendar-space-2);
+  transition: var(--calendar-transition-fast);
+}
+
+.technical-details[open] .technical-summary::before {
+  transform: rotate(90deg);
+}
+
+.technical-summary:hover {
+  color: var(--calendar-text-link-hover);
+}
+
+.technical-details[open] .technical-summary {
+  margin-bottom: var(--calendar-space-3);
+}
+
+.technical-content {
+  padding-top: var(--calendar-space-2);
+}
+
+/* ========================================
+ * ALARMS STYLES
+ * ======================================== */
+
+.alarms-list {
+  display: flex;
+  flex-direction: column;
+  gap: var(--calendar-space-2);
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.alarm-item {
+  background-color: var(--calendar-secondary-color);
+  padding: var(--calendar-space-2) var(--calendar-space-3);
+  border-radius: var(--calendar-radius-md);
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--calendar-space-2);
+  align-items: center;
+}
+
+.alarm-type {
+  background-color: var(--calendar-accent-color);
+  color: var(--calendar-text-inverse);
+  padding: var(--calendar-space-1) var(--calendar-space-2);
+  border-radius: var(--calendar-radius-base);
+  font-size: var(--calendar-font-size-sm);
+  font-weight: var(--calendar-font-weight-semibold);
+  text-transform: uppercase;
+  letter-spacing: 0.025em;
+}
+
+.alarm-timing {
+  color: var(--calendar-text-link);
+  font-weight: var(--calendar-font-weight-medium);
+}
+
+.alarm-description {
+  color: var(--calendar-primary-color);
+  font-style: italic;
+}
+
+/* ========================================
+ * ACTIONS SECTION
+ * ======================================== */
+
+.event-actions {
+  padding: var(--calendar-space-4) var(--calendar-space-6);
+  background-color: var(--calendar-secondary-color);
+  border-top: 1px solid var(--calendar-secondary-color-dark);
+}
+
+/* ========================================
+ * CALENDAR WIDGET STYLES
+ * ======================================== */
+
+.event-calendar-widget {
+  background-color: var(--calendar-secondary-color-dark);
+  border-radius: var(--calendar-radius-lg);
+  box-shadow: var(--calendar-shadow-md);
+  overflow: hidden;
+  margin-top: var(--calendar-space-8);
+  font-family: var(--calendar-font-family-primary);
+}
+
+/* ========================================
+ * RESPONSIVE DESIGN
+ * ======================================== */
+
+@media (max-width: 768px) {
+  .event-header,
+  .event-details,
+  .event-actions {
+    padding: var(--calendar-space-4);
+  }
+  
+  .alarm-item {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  
+  .event-title {
+    font-size: var(--calendar-font-size-lg);
+  }
+  
+  .event-section .section-title {
+    --section-title-font-size: var(--calendar-font-size-base);
+  }
+}
+
+@media (max-width: 480px) {
+  .event-metadata-card,
+  .event-calendar-widget {
+    margin-left: calc(-1 * var(--calendar-space-2));
+    margin-right: calc(-1 * var(--calendar-space-2));
+    border-radius: 0;
+  }
+  
+  .event-header,
+  .event-details,
+  .event-actions {
+    padding: var(--calendar-space-3);
+  }
+  
+  .calendar-header {
+    padding: var(--calendar-space-3);
+  }
+}
