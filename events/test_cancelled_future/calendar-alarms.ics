@@ -4,12 +4,12 @@ PRODID:-//Hugo Calendar Templates//Event Template//EN
 CALSCALE:GREGORIAN
 METHOD:PUBLISH
 UID:162295288b54ce6301409bec8c400c0f
-LAST-MODIFIED:20260430T135841Z
+LAST-MODIFIED:20260601T183210Z
 REFRESH-INTERVAL;VALUE=DURATION:P1W
 SOURCE;VALUE=URI:https://finkregh.github.io/hugo-theme-component-ical/events/test_cancelled_future/calendar.ics
 COLOR:crimson
-NAME;LANGUAGE=en-US:Example Events
-DESCRIPTION;LANGUAGE=en-US:Example Events Calendar
+NAME;LANGUAGE=en:Example Events
+DESCRIPTION;LANGUAGE=en:Example Events Calendar
 X-WR-CALNAME:Example Events
 X-WR-CALDESC:Example Events Calendar
 
@@ -39,14 +39,13 @@ UID:162295288b54ce6301409bec8c400c0f
 DTSTART;VALUE=DATE-TIME;TZID=Europe/Zurich:20260615T110000
 CLASS:PUBLIC
 
-DESCRIPTION;LANGUAGE=en-US:This event is scheduled for the future but has been cancelled. It should appear in “Past Events” section.
-LAST-MODIFIED:20260430T135841Z
-LOCATION;LANGUAGE=en-US:Test Location
+DESCRIPTION;LANGUAGE=en:This event is scheduled for the future but has been cancelled. It should appear in “Past Events” section.
+LAST-MODIFIED:20260601T183210Z
+LOCATION;LANGUAGE=en:Test Location
 STATUS:CANCELLED
-SUMMARY;LANGUAGE=en-US:Test: Cancelled Future Event
+SUMMARY;LANGUAGE=en:Test: Cancelled Future Event
 TRANSP:OPAQUE
 DTEND;VALUE=DATE-TIME;TZID=Europe/Zurich:20260615T130000
-CONTACT;LANGUAGE=en-US:%!s(<nil>): %!s(<nil>)
 COLOR:crimson
 END:VEVENT
 END:VCALENDAR

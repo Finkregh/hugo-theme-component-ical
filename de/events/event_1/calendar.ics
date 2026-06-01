@@ -4,7 +4,7 @@ PRODID:-//Hugo Calendar Templates//Event Template//EN
 CALSCALE:GREGORIAN
 METHOD:PUBLISH
 UID:909e51d15b9104e7be547513581e8ef3
-LAST-MODIFIED:20260430T135841Z
+LAST-MODIFIED:20260601T183210Z
 URL:https://finkregh.github.io/hugo-theme-component-ical/de/events/event_1/
 REFRESH-INTERVAL;VALUE=DURATION:P1W
 SOURCE;VALUE=URI:https://finkregh.github.io/hugo-theme-component-ical/de/events/event_1/calendar.ics
@@ -13,7 +13,6 @@ NAME;LANGUAGE=de:Example Events
 DESCRIPTION;LANGUAGE=de:Example Events Calendar
 X-WR-CALNAME:Example Events
 X-WR-CALDESC:Example Events Calendar
-
 BEGIN:VTIMEZONE
 TZID:Europe/Zurich
 LAST-MODIFIED:20260203T210914Z
@@ -41,7 +40,7 @@ DTSTART;VALUE=DATE-TIME;TZID=Europe/Zurich:20200826T200000
 CLASS:PUBLIC
 
 DESCRIPTION;LANGUAGE=de:Bei dieser Veranstaltung stellen wir das Projekt zum ersten Mal vor.\nFront matter:\nstartDate: 2020-08-26T20:00:00+02:00 endDate: 2020-08-26T22:00:00+02:00 where: "Irgendwo im Internet" orga: "F. Nord" orgaEmail: "me@example.org"
-LAST-MODIFIED:20260430T135841Z
+LAST-MODIFIED:20260601T183210Z
 LOCATION;LANGUAGE=de:Irgendwo im Internet
 STATUS:CONFIRMED
 SUMMARY;LANGUAGE=de:Erstvorstellung

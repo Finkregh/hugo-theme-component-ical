@@ -22,7 +22,7 @@
   <link rel="stylesheet" href="/hugo-theme-component-ical/css/calendar.css"><link rel="stylesheet" href="/hugo-theme-component-ical/css/shared/base.css"><link rel="stylesheet" href="/hugo-theme-component-ical/css/shared/icons.css"><link rel="stylesheet" href="/hugo-theme-component-ical/css/shared/buttons.css"><link rel="stylesheet" href="/hugo-theme-component-ical/css/shared/forms.css"><link rel="stylesheet" href="/hugo-theme-component-ical/css/shared/accessibility.css"><link rel="stylesheet" href="/hugo-theme-component-ical/css/shared/responsive.css"><link rel="stylesheet" href="/hugo-theme-component-ical/css/components/calendar-single.css"><link rel="stylesheet" href="/hugo-theme-component-ical/css/components/calendar-list.css">
 
   <title>
-    Meeting Every Monday | Demo of hugo-theme-component-ical
+    Hugo Conference 2026 | Demo of hugo-theme-component-ical
   </title>
 
   
@@ -192,23 +192,37 @@
   <main style="margin-top: 50px; margin-bottom: 50px;">
     
 
-<h1>Meeting Every Monday</h1>
+<h1>Hugo Conference 2026</h1>
 
-<p>Weekly team standup meeting every Monday morning. Team members share updates on their current work, discuss blockers, and plan for the week ahead.</p>
-<p>Front matter:</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-yaml" data-lang="yaml"><span style="display:flex;"><span><span style="color:#f92672">title</span>: <span style="color:#ae81ff">Every Monday</span>
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span><span style="color:#f92672">startDate</span>: <span style="color:#e6db74">2024-01-08T09:00:00</span><span style="color:#ae81ff">+01</span>:<span style="color:#ae81ff">00</span>
-</span></span><span style="display:flex;"><span><span style="color:#f92672">endDate</span>:   <span style="color:#e6db74">2024-01-08T09:30:00</span><span style="color:#ae81ff">+01</span>:<span style="color:#ae81ff">00</span>
-</span></span><span style="display:flex;"><span><span style="color:#f92672">where</span>: <span style="color:#e6db74">&#34;Meeting Room 1, Main Office&#34;</span>
-</span></span><span style="display:flex;"><span><span style="color:#f92672">orga</span>: <span style="color:#e6db74">&#34;Scrum Master&#34;</span>
-</span></span><span style="display:flex;"><span><span style="color:#f92672">orgaEmail</span>: <span style="color:#e6db74">&#34;scrummaster@example.org&#34;</span>
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span><span style="color:#75715e"># Every Monday</span>
-</span></span><span style="display:flex;"><span><span style="color:#f92672">recurrenceRule</span>:
-</span></span><span style="display:flex;"><span>  <span style="color:#f92672">freq</span>: <span style="color:#e6db74">&#34;WEEKLY&#34;</span>
-</span></span><span style="display:flex;"><span>  <span style="color:#f92672">byDay</span>: <span style="color:#e6db74">&#34;MO&#34;</span>
-</span></span></code></pre></div>
+<p>This event demonstrates the <strong>external URL</strong> feature, which allows calendar events to link to external websites instead of the local Hugo page.</p>
+<h2 id="external-url-feature">External URL Feature</h2>
+<p>When you specify <code>externalUrl</code> in the front matter, the generated iCalendar file will use that URL instead of the local Hugo page permalink. This is useful for:</p>
+<ul>
+<li><strong>External conferences</strong> or events hosted elsewhere</li>
+<li><strong>Registration pages</strong> on third-party platforms</li>
+<li><strong>Zoom/Teams links</strong> for virtual meetings</li>
+<li><strong>Ticketing systems</strong> like Eventbrite</li>
+</ul>
+<h2 id="front-matter">Front Matter</h2>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-yaml" data-lang="yaml"><span style="display:flex;"><span><span style="color:#f92672">title</span>: <span style="color:#e6db74">&#34;Hugo Conference 2026&#34;</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">startDate</span>: <span style="color:#e6db74">&#34;2026-09-15T09:00:00&#34;</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">endDate</span>: <span style="color:#e6db74">&#34;2026-09-15T17:00:00&#34;</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">where</span>: <span style="color:#e6db74">&#34;Virtual Conference&#34;</span>  <span style="color:#75715e"># Use &#39;where&#39;, not &#39;location&#39;</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">orga</span>: <span style="color:#e6db74">&#34;Hugo Community&#34;</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">orgaEmail</span>: <span style="color:#e6db74">&#34;contact@gohugo.io&#34;</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">externalUrl</span>: <span style="color:#e6db74">&#34;https://gohugo.io/conference/2026/&#34;</span>  <span style="color:#75715e"># External link</span>
+</span></span></code></pre></div><h2 id="implementation">Implementation</h2>
+<p>The URL property in the iCalendar template uses:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-go" data-lang="go"><span style="display:flex;"><span><span style="color:#e6db74">&#34;url&#34;</span>: (<span style="color:#a6e22e">or</span> .<span style="color:#a6e22e">Params</span>.<span style="color:#a6e22e">externalUrl</span> ((.<span style="color:#a6e22e">OutputFormats</span>.<span style="color:#a6e22e">Get</span> <span style="color:#e6db74">&#34;HTML&#34;</span>).<span style="color:#a6e22e">Permalink</span>))
+</span></span></code></pre></div><p>This means:</p>
+<ol>
+<li>If <code>externalUrl</code> is specified → use external URL</li>
+<li>If <code>externalUrl</code> is empty → fallback to local Hugo page</li>
+<li>The URL becomes the <code>URL</code> property in the generated <code>.ics</code> file</li>
+</ol>
+<h2 id="try-it">Try It</h2>
+<p>Download the <a href="calendar.ics">calendar file</a> and import it into your calendar app - clicking on the event will take you to the external Hugo conference website instead of this demo page.</p>
+
 
 
 <article class="event-metadata-card">
@@ -241,8 +255,8 @@
         <div class="detail-item">
           <dt class="detail-label">Start:</dt>
           <dd class="detail-value">
-            <time datetime="2024-01-08T09:00:00&#43;01:00">
-              January 8, 2024, 9:00:00 am 
+            <time datetime="2026-09-15T09:00:00&#43;02:00">
+              September 15, 2026, 9:00:00 am CEST
             </time>
           </dd>
         </div>
@@ -250,8 +264,8 @@
         <div class="detail-item">
           <dt class="detail-label">End:</dt>
           <dd class="detail-value">
-            <time datetime="2024-01-08T09:30:00&#43;01:00">
-              January 8, 2024, 9:30:00 am 
+            <time datetime="2026-09-15T17:00:00&#43;02:00">
+              September 15, 2026, 5:00:00 pm CEST
             </time>
           </dd>
         </div>
@@ -270,7 +284,7 @@
         Location
       </h3>
       <address class="event-location">
-        Meeting Room 1, Main Office
+        Virtual Conference
       </address>
     </section>
     
@@ -289,14 +303,14 @@
           
           <div class="detail-item">
             <dt class="detail-label">Name:</dt>
-            <dd class="detail-value">Scrum Master</dd>
+            <dd class="detail-value">Hugo Community</dd>
           </div>
           
           
           <div class="detail-item">
             <dt class="detail-label">Email:</dt>
             <dd class="detail-value">
-              <a href="mailto:scrummaster@example.org">scrummaster@example.org</a>
+              <a href="mailto:contact@gohugo.io">contact@gohugo.io</a>
             </dd>
           </div>
           
@@ -310,68 +324,6 @@
 
     
     
-    <section class="event-section" aria-labelledby="recurrence-heading">
-      <h3 id="recurrence-heading" class="section-title">
-        <span class="icon">
-          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--!Font Awesome Free 6.6.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2024 Fonticons, Inc.--><path fill="currentColor" d="M438.6 278.6c12.5-12.5 12.5-32.8 0-45.3l-160-160c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3L338.8 224 32 224c-17.7 0-32 14.3-32 32s14.3 32 32 32l306.7 0L233.4 393.4c-12.5 12.5-12.5 32.8 0 45.3s32.8 12.5 45.3 0l160-160z"/></svg>
-
-        </span>
-        Recurrence
-      </h3>
-      <div class="recurrence-content">
-        <div class="recurrence-summary">
-          <div style="border: 2px dotted #ff6b6b; padding: 15px; margin: 15px 0; background-color: #fff5f5; font-family: monospace; font-size: 12px; line-height: 1.4;">
-  <h4 style="margin: 0 0 10px 0; color: #d63031; font-size: 14px; font-weight: bold;">🐛 Recurrence Rule Debug</h4><div style="margin-bottom: 12px; padding: 8px; background-color: #f8f9fa; border-left: 3px solid #6c757d;">
-    <h5 style="margin: 0 0 6px 0; color: #495057; font-size: 12px;">📋 Context Information</h5>
-    <p style="margin: 2px 0;"><strong>Context Type:</strong> *hugolib.pageState</p>
-    <p style="margin: 2px 0;"><strong>Hugo Environment:</strong> development</p>
-    <p style="margin: 2px 0;"><strong>Has .Params:</strong> ✅ YES</p><p style="margin: 2px 0;"><strong>Params Keys:</strong>draft, enddate, iscjklanguage, lastmod, orga, orgaemail, outputs, recurrencerule, startdate, title, where
-      </p>
-      <p style="margin: 2px 0;"><strong>Has recurrenceRule:</strong> ✅ YES</p></div><div style="margin-bottom: 12px; padding: 8px; background-color: #e8f4fd; border-left: 3px solid #007bff;">
-    <h5 style="margin: 0 0 6px 0; color: #0056b3; font-size: 12px;">🔄 Recurrence Rule Analysis</h5><p style="margin: 2px 0;"><strong>Rule Status:</strong> ✅ FOUND</p>
-      <p style="margin: 2px 0;"><strong>Rule Type:</strong> hmaps.Params</p><div style="margin: 6px 0; padding: 6px; background-color: #ffffff; border: 1px solid #dee2e6;">
-        <strong>Core Parameters:</strong><br>• <strong>Frequency:</strong> WEEKLY<br>• <strong>By Day:</strong> MO (string)<br></div><div style="margin: 6px 0; padding: 6px; background-color: #f0f8ff; border: 1px solid #b3d9ff;">
-        <strong>Handler Routing:</strong><br>
-        • <strong>Frequency (normalized):</strong> weekly<br>
-        • <strong>Target Handler:</strong>📅 recurrence/weekly_frequency.html<br>
-      </div><div style="margin: 6px 0; padding: 6px; background-color: #f0fff0; border: 1px solid #90ee90;">
-        <strong>Parameter Validation:</strong><br>• ✅ All validations passed<br></div></div><div style="margin-bottom: 12px; padding: 8px; background-color: #fff3cd; border-left: 3px solid #ffc107;">
-    <h5 style="margin: 0 0 6px 0; color: #856404; font-size: 12px;">📅 Day Names Reference</h5>
-    <div style="font-size: 11px; line-height: 1.2;">
-      <strong>Day Code Mapping:</strong><br>
-      SU=Sunday, MO=Monday, TU=Tuesday, WE=Wednesday, TH=Thursday, FR=Friday, SA=Saturday
-    </div>
-  </div><div style="margin-bottom: 0; padding: 8px; background-color: #e2e3e5; border-left: 3px solid #6c757d;">
-    <h5 style="margin: 0 0 6px 0; color: #495057; font-size: 12px;">⚡ Performance Metrics</h5>
-    <p style="margin: 2px 0;"><strong>Debug Processing Time:</strong> 146.242µs</p>
-    <p style="margin: 2px 0;"><strong>Timestamp:</strong> 2026-06-01 16:32:44.767 UTC</p>
-    <p style="margin: 2px 0;"><strong>Hugo Version:</strong> 0.162.1</p>
-  </div><div style="margin-top: 10px; padding-top: 8px; border-top: 1px solid #dee2e6; font-size: 10px; color: #6c757d; text-align: center;">
-    🔧 Debug output from layouts/_partials/recurrence/debug_output.html
-  </div>
-</div>Every Monday
-        </div>
-        <details class="technical-details">
-          <summary class="technical-summary">Technical Details</summary>
-          <div class="technical-content">
-            <dl class="detail-list">
-              
-              <div class="detail-item">
-                <dt class="detail-label">Byday:</dt>
-                <dd class="detail-value">MO</dd>
-              </div>
-              
-              <div class="detail-item">
-                <dt class="detail-label">Freq:</dt>
-                <dd class="detail-value">WEEKLY</dd>
-              </div>
-              
-            </dl>
-          </div>
-        </details>
-      </div>
-    </section>
-    
 
     
     
@@ -380,12 +332,12 @@
   
   
   <footer class="event-actions">
-    <a href="/hugo-theme-component-ical/meetings/meeting_7_every_monday/calendar.ics" type="text/calendar" class="download-btn">
+    <a href="/hugo-theme-component-ical/events/event_13_external_link/calendar.ics" type="text/calendar" class="download-btn">
       <span class="icon">
         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
 <path fill="currentColor" d="M288 32c0-17.7-14.3-32-32-32s-32 14.3-32 32V274.7l-73.4-73.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3l128 128c12.5 12.5 32.8 12.5 45.3 0l128-128c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L288 274.7V32zM64 352c-35.3 0-64 28.7-64 64v32c0 35.3 28.7 64 64 64H448c35.3 0 64-28.7 64-64V416c0-35.3-28.7-64-64-64H346.5l-45.3 45.3c-25 25-65.5 25-90.5 0L165.5 352H64zM432 456c-13.3 0-24-10.7-24-24s10.7-24 24-24s24 10.7 24 24s-10.7 24-24 24z"/></svg>
       </span>
-      Download Meeting Every Monday.ics
+      Download Hugo Conference 2026.ics
     </a>
   </footer>
   
@@ -401,14 +353,11 @@
       <select id="locale-selector" class="locale-selector"></select>
     </div>
   </header>
-  <div id="calendar" class="single-event-calendar" role="application" aria-label="Calendar View" data-initial-date="2024-01-08"></div>
+  <div id="calendar" class="single-event-calendar" role="application" aria-label="Calendar View" data-initial-date="2026-09-15"></div>
 </section>
 
 
 
-
-
-<script type="module" src="https://finkregh.github.io/hugo-theme-component-ical/js/vendor/finkregh/ical/minified.680a045079869069f3e314516dd2d8a852cca8f0d135674f067f528b38686f2bd15422268f79f9202022553b9bce6207c0c5f2cd2e96eccc020da88e7dd58736.js"  defer></script>
 
 
 
@@ -432,44 +381,41 @@
   &#34;Keywords&#34;: null,
   &#34;Kind&#34;: &#34;page&#34;,
   &#34;Layout&#34;: &#34;&#34;,
-  &#34;LinkTitle&#34;: &#34;Meeting Every Monday&#34;,
+  &#34;LinkTitle&#34;: &#34;Hugo Conference 2026&#34;,
   &#34;IsNode&#34;: false,
   &#34;IsPage&#34;: true,
-  &#34;Path&#34;: &#34;/meetings/meeting_7_every_monday&#34;,
+  &#34;Path&#34;: &#34;/events/event_13_external_link&#34;,
   &#34;Slug&#34;: &#34;&#34;,
   &#34;Lang&#34;: &#34;en&#34;,
   &#34;IsSection&#34;: false,
-  &#34;Section&#34;: &#34;meetings&#34;,
+  &#34;Section&#34;: &#34;events&#34;,
   &#34;Sitemap&#34;: {
     &#34;ChangeFreq&#34;: &#34;&#34;,
     &#34;Priority&#34;: -1,
     &#34;Filename&#34;: &#34;sitemap.xml&#34;,
     &#34;Disable&#34;: false
   },
-  &#34;Type&#34;: &#34;meetings&#34;,
+  &#34;Type&#34;: &#34;events&#34;,
   &#34;Weight&#34;: 0
 }</pre>
 
       Debug dump of <code>.Params</code> (map defined in the current Page&rsquo;s front matter):
       <pre>{
   &#34;draft&#34;: false,
-  &#34;enddate&#34;: &#34;2024-01-08T09:30:00&#43;01:00&#34;,
+  &#34;enddate&#34;: &#34;2026-09-15T17:00:00&#34;,
+  &#34;externalurl&#34;: &#34;https://gohugo.io/conference/2026/&#34;,
   &#34;iscjklanguage&#34;: false,
   &#34;lastmod&#34;: &#34;2026-06-01T18:32:10&#43;02:00&#34;,
-  &#34;orga&#34;: &#34;Scrum Master&#34;,
-  &#34;orgaemail&#34;: &#34;scrummaster@example.org&#34;,
+  &#34;orga&#34;: &#34;Hugo Community&#34;,
+  &#34;orgaemail&#34;: &#34;contact@gohugo.io&#34;,
   &#34;outputs&#34;: [
     &#34;html&#34;,
     &#34;Calendar&#34;,
     &#34;CalendarWithAlarms&#34;
   ],
-  &#34;recurrencerule&#34;: {
-    &#34;byday&#34;: &#34;MO&#34;,
-    &#34;freq&#34;: &#34;WEEKLY&#34;
-  },
-  &#34;startdate&#34;: &#34;2024-01-08T09:00:00&#43;01:00&#34;,
-  &#34;title&#34;: &#34;Meeting Every Monday&#34;,
-  &#34;where&#34;: &#34;Meeting Room 1, Main Office&#34;
+  &#34;startdate&#34;: &#34;2026-09-15T09:00:00&#34;,
+  &#34;title&#34;: &#34;Hugo Conference 2026&#34;,
+  &#34;where&#34;: &#34;Virtual Conference&#34;
 }</pre>
 
       Debug dump of <code>.Site.Params</code> (custom parameters as defined in the <a href="https://gohugo.io/methods/site/">site config</a>):

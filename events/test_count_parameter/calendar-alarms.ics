@@ -4,13 +4,13 @@ PRODID:-//Hugo Calendar Templates//Event Template//EN
 CALSCALE:GREGORIAN
 METHOD:PUBLISH
 UID:da2ab7190ae3db74d83da83cd8bef4b4
-LAST-MODIFIED:20260430T135841Z
+LAST-MODIFIED:20260601T183210Z
 URL:https://finkregh.github.io/hugo-theme-component-ical/events/test_count_parameter/
 REFRESH-INTERVAL;VALUE=DURATION:P1W
 SOURCE;VALUE=URI:https://finkregh.github.io/hugo-theme-component-ical/events/test_count_parameter/calendar.ics
 COLOR:crimson
-NAME;LANGUAGE=en-US:Example Events
-DESCRIPTION;LANGUAGE=en-US:Example Events Calendar
+NAME;LANGUAGE=en:Example Events
+DESCRIPTION;LANGUAGE=en:Example Events Calendar
 X-WR-CALNAME:Example Events
 X-WR-CALDESC:Example Events Calendar
 
@@ -40,18 +40,18 @@ UID:da2ab7190ae3db74d83da83cd8bef4b4
 DTSTART;VALUE=DATE-TIME;TZID=Europe/Zurich:20260301T100000
 CLASS:PUBLIC
 
-DESCRIPTION;LANGUAGE=en-US:Test event to verify COUNT parameter is correctly included in RRULE.\nThis event should recur every Wednesday for exactly 10 occurrences.\nExpected RRULE: RRULE:FREQ=WEEKLY\;INTERVAL=1\;COUNT=10\;BYDAY=WE
-LAST-MODIFIED:20260430T135841Z
-LOCATION;LANGUAGE=en-US:Test Location
+DESCRIPTION;LANGUAGE=en:Test event to verify COUNT parameter is correctly included in RRULE.\nThis event should recur every Wednesday for exactly 10 occurrences.\nExpected RRULE: RRULE:FREQ=WEEKLY\;INTERVAL=1\;COUNT=10\;BYDAY=WE
+LAST-MODIFIED:20260601T183210Z
+LOCATION;LANGUAGE=en:Test Location
 STATUS:CONFIRMED
-SUMMARY;LANGUAGE=en-US:Test COUNT Parameter
+SUMMARY;LANGUAGE=en:Test COUNT Parameter
 TRANSP:OPAQUE
 URL:https://finkregh.github.io/hugo-theme-component-ical/events/test_count_parameter/
 
 RRULE:FREQ=WEEKLY;INTERVAL=1;COUNT=10;BYDAY=WE
 
 DTEND;VALUE=DATE-TIME;TZID=Europe/Zurich:20260301T110000
-CONTACT;LANGUAGE=en-US:Test Organizer: test@example.org
+CONTACT;LANGUAGE=en:Test Organizer: test@example.org
 COLOR:crimson
 END:VEVENT
 END:VCALENDAR

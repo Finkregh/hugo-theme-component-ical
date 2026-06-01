@@ -4,16 +4,15 @@ PRODID:-//Hugo Calendar Templates//Event Template//EN
 CALSCALE:GREGORIAN
 METHOD:PUBLISH
 UID:87733ef228483aa5559cca05826901d4
-LAST-MODIFIED:20260430T135841Z
+LAST-MODIFIED:20260601T183210Z
 URL:https://finkregh.github.io/hugo-theme-component-ical/events/test_last_friday/
 REFRESH-INTERVAL;VALUE=DURATION:P1W
 SOURCE;VALUE=URI:https://finkregh.github.io/hugo-theme-component-ical/events/test_last_friday/calendar.ics
 COLOR:crimson
-NAME;LANGUAGE=en-US:Example Events
-DESCRIPTION;LANGUAGE=en-US:Example Events Calendar
+NAME;LANGUAGE=en:Example Events
+DESCRIPTION;LANGUAGE=en:Example Events Calendar
 X-WR-CALNAME:Example Events
 X-WR-CALDESC:Example Events Calendar
-
 BEGIN:VTIMEZONE
 TZID:Europe/Zurich
 LAST-MODIFIED:20260203T210914Z
@@ -40,18 +39,18 @@ UID:87733ef228483aa5559cca05826901d4
 DTSTART;VALUE=DATE-TIME;TZID=Europe/Zurich:20240223T160000
 CLASS:PUBLIC
 
-DESCRIPTION;LANGUAGE=en-US:This is a test event to verify the new negative ordinal BYDAY format works correctly. It should occur on the last Friday of each month using the new byDay: "-1FR" format.
-LAST-MODIFIED:20260430T135841Z
-LOCATION;LANGUAGE=en-US:Meeting Room B
+DESCRIPTION;LANGUAGE=en:This is a test event to verify the new negative ordinal BYDAY format works correctly. It should occur on the last Friday of each month using the new byDay: "-1FR" format.
+LAST-MODIFIED:20260601T183210Z
+LOCATION;LANGUAGE=en:Meeting Room B
 STATUS:CONFIRMED
-SUMMARY;LANGUAGE=en-US:Test Last Friday Format
+SUMMARY;LANGUAGE=en:Test Last Friday Format
 TRANSP:OPAQUE
 URL:https://finkregh.github.io/hugo-theme-component-ical/events/test_last_friday/
 
 RRULE:FREQ=MONTHLY;INTERVAL=1;BYDAY=-1FR
 
 DTEND;VALUE=DATE-TIME;TZID=Europe/Zurich:20240223T170000
-CONTACT;LANGUAGE=en-US:Test Organizer: test@example.org
+CONTACT;LANGUAGE=en:Test Organizer: test@example.org
 COLOR:crimson
 END:VEVENT
 END:VCALENDAR

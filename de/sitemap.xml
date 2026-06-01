@@ -1,3 +1,4 @@
+
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
@@ -6,7 +7,7 @@
     <lastmod>2025-08-27T10:00:00+00:00</lastmod>
     <xhtml:link
                 rel="alternate"
-                hreflang="en-us"
+                hreflang="en"
                 href="https://finkregh.github.io/hugo-theme-component-ical/posts/post-1/"
                 />
     <xhtml:link
@@ -19,7 +20,7 @@
     <lastmod>2025-08-27T10:00:00+00:00</lastmod>
     <xhtml:link
                 rel="alternate"
-                hreflang="en-us"
+                hreflang="en"
                 href="https://finkregh.github.io/hugo-theme-component-ical/posts/"
                 />
     <xhtml:link
@@ -32,7 +33,7 @@
     <lastmod>2025-08-27T10:00:00+00:00</lastmod>
     <xhtml:link
                 rel="alternate"
-                hreflang="en-us"
+                hreflang="en"
                 href="https://finkregh.github.io/hugo-theme-component-ical/"
                 />
     <xhtml:link
@@ -44,7 +45,7 @@
     <loc>https://finkregh.github.io/hugo-theme-component-ical/de/categories/</loc>
     <xhtml:link
                 rel="alternate"
-                hreflang="en-us"
+                hreflang="en"
                 href="https://finkregh.github.io/hugo-theme-component-ical/categories/"
                 />
     <xhtml:link
@@ -54,10 +55,10 @@
                 />
   </url><url>
     <loc>https://finkregh.github.io/hugo-theme-component-ical/de/events/event_1/</loc>
-    <lastmod>2026-04-30T13:58:41+02:00</lastmod>
+    <lastmod>2026-06-01T18:32:10+02:00</lastmod>
     <xhtml:link
                 rel="alternate"
-                hreflang="en-us"
+                hreflang="en"
                 href="https://finkregh.github.io/hugo-theme-component-ical/events/event_1/"
                 />
     <xhtml:link
@@ -67,10 +68,10 @@
                 />
   </url><url>
     <loc>https://finkregh.github.io/hugo-theme-component-ical/de/events/event_3_yearly_april/</loc>
-    <lastmod>2026-04-30T13:58:41+02:00</lastmod>
+    <lastmod>2026-06-01T18:32:10+02:00</lastmod>
     <xhtml:link
                 rel="alternate"
-                hreflang="en-us"
+                hreflang="en"
                 href="https://finkregh.github.io/hugo-theme-component-ical/events/event_3_yearly_april/"
                 />
     <xhtml:link
@@ -80,10 +81,10 @@
                 />
   </url><url>
     <loc>https://finkregh.github.io/hugo-theme-component-ical/de/events/event_10_third_thursday/</loc>
-    <lastmod>2026-04-30T13:58:41+02:00</lastmod>
+    <lastmod>2026-06-01T18:32:10+02:00</lastmod>
     <xhtml:link
                 rel="alternate"
-                hreflang="en-us"
+                hreflang="en"
                 href="https://finkregh.github.io/hugo-theme-component-ical/events/event_10_third_thursday/"
                 />
     <xhtml:link
@@ -93,10 +94,10 @@
                 />
   </url><url>
     <loc>https://finkregh.github.io/hugo-theme-component-ical/de/events/event_7_every_monday/</loc>
-    <lastmod>2026-04-30T13:58:41+02:00</lastmod>
+    <lastmod>2026-06-01T18:32:10+02:00</lastmod>
     <xhtml:link
                 rel="alternate"
-                hreflang="en-us"
+                hreflang="en"
                 href="https://finkregh.github.io/hugo-theme-component-ical/events/event_7_every_monday/"
                 />
     <xhtml:link
@@ -108,7 +109,7 @@
     <loc>https://finkregh.github.io/hugo-theme-component-ical/de/tags/</loc>
     <xhtml:link
                 rel="alternate"
-                hreflang="en-us"
+                hreflang="en"
                 href="https://finkregh.github.io/hugo-theme-component-ical/tags/"
                 />
     <xhtml:link
@@ -118,10 +119,10 @@
                 />
   </url><url>
     <loc>https://finkregh.github.io/hugo-theme-component-ical/de/events/</loc>
-    <lastmod>2026-04-30T13:58:41+02:00</lastmod>
+    <lastmod>2026-06-01T18:32:10+02:00</lastmod>
     <xhtml:link
                 rel="alternate"
-                hreflang="en-us"
+                hreflang="en"
                 href="https://finkregh.github.io/hugo-theme-component-ical/events/"
                 />
     <xhtml:link
