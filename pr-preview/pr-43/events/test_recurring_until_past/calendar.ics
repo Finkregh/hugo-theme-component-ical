@@ -4,7 +4,7 @@ PRODID:-//Hugo Calendar Templates//Event Template//EN
 CALSCALE:GREGORIAN
 METHOD:PUBLISH
 UID:6d9a03aacd7b7a0b23bfbef10466935b
-LAST-MODIFIED:20260601T081314Z
+LAST-MODIFIED:20260601T165227Z
 REFRESH-INTERVAL;VALUE=DURATION:P1W
 SOURCE;VALUE=URI:https://finkregh.github.io/hugo-theme-component-ical/pr-preview/pr-43/events/test_recurring_until_past/calendar.ics
 COLOR:crimson
@@ -12,7 +12,6 @@ NAME;LANGUAGE=en-US:Example Events
 DESCRIPTION;LANGUAGE=en-US:Example Events Calendar
 X-WR-CALNAME:Example Events
 X-WR-CALDESC:Example Events Calendar
-
 
 BEGIN:VTIMEZONE
 TZID:Europe/Zurich
@@ -41,7 +40,7 @@ DTSTART;VALUE=DATE-TIME;TZID=Europe/Zurich:20250101T090000
 CLASS:PUBLIC
 
 DESCRIPTION;LANGUAGE=en-US:Weekly event that ended on December 31\, 2025. Should appear in “Past Events” section.
-LAST-MODIFIED:20260601T081314Z
+LAST-MODIFIED:20260601T165227Z
 LOCATION;LANGUAGE=en-US:Test Location
 STATUS:CONFIRMED
 SUMMARY;LANGUAGE=en-US:Test: Recurring UNTIL Past
