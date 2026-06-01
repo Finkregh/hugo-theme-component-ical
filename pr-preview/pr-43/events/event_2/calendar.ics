@@ -4,16 +4,15 @@ PRODID:-//Hugo Calendar Templates//Event Template//EN
 CALSCALE:GREGORIAN
 METHOD:PUBLISH
 UID:88aa212e637e8196af91540dce2cb49e
-LAST-MODIFIED:20260601T081314Z
+LAST-MODIFIED:20260601T171414Z
 URL:https://finkregh.github.io/hugo-theme-component-ical/pr-preview/pr-43/events/event_2/
 REFRESH-INTERVAL;VALUE=DURATION:P1W
 SOURCE;VALUE=URI:https://finkregh.github.io/hugo-theme-component-ical/pr-preview/pr-43/events/event_2/calendar.ics
 COLOR:crimson
-NAME;LANGUAGE=en-US:Example Events
-DESCRIPTION;LANGUAGE=en-US:Example Events Calendar
+NAME;LANGUAGE=en:Example Events
+DESCRIPTION;LANGUAGE=en:Example Events Calendar
 X-WR-CALNAME:Example Events
 X-WR-CALDESC:Example Events Calendar
-
 BEGIN:VTIMEZONE
 TZID:Europe/Zurich
 LAST-MODIFIED:20260203T210914Z
@@ -40,16 +39,16 @@ UID:88aa212e637e8196af91540dce2cb49e
 DTSTART;VALUE=DATE-TIME;TZID=Europe/Zurich:20260303T200000
 CLASS:PUBLIC
 
-DESCRIPTION;LANGUAGE=en-US:Our first monthly developer meeting.\nFront matter:\ntitle: Developer meeting 1 startDate: 2020-09-30T14:00:00+02:00 endDate: 2020-09-30T17:00:00+02:00 where: "Meeting room 1\, Headquarters" orga: "F. Nord" orgaEmail: "me@example.org" cancelled: true
-LAST-MODIFIED:20260601T081314Z
-LOCATION;LANGUAGE=en-US:Meeting room 1\, Headquarters
+DESCRIPTION;LANGUAGE=en:Our first monthly developer meeting.\nFront matter:\ntitle: Developer meeting 1 startDate: 2020-09-30T14:00:00+02:00 endDate: 2020-09-30T17:00:00+02:00 where: "Meeting room 1\, Headquarters" orga: "F. Nord" orgaEmail: "me@example.org" cancelled: true
+LAST-MODIFIED:20260601T171414Z
+LOCATION;LANGUAGE=en:Meeting room 1\, Headquarters
 STATUS:CANCELLED
-SUMMARY;LANGUAGE=en-US:Developer meeting 1 Winter
+SUMMARY;LANGUAGE=en:Developer meeting 1 Winter
 TRANSP:OPAQUE
 URL:https://finkregh.github.io/hugo-theme-component-ical/pr-preview/pr-43/events/event_2/
 
 DTEND;VALUE=DATE-TIME;TZID=Europe/Zurich:20260303T220000
-CONTACT;LANGUAGE=en-US:F. Nord: me@example.org
+CONTACT;LANGUAGE=en:F. Nord: me@example.org
 COLOR:crimson
 END:VEVENT
 END:VCALENDAR

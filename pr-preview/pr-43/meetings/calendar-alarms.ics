@@ -4,13 +4,13 @@ PRODID:-//Hugo Calendar Templates//Event Template//EN
 CALSCALE:GREGORIAN
 METHOD:PUBLISH
 UID:97caa1379e59b522cfd0140e123ac10d
-LAST-MODIFIED:20260601T081314Z
+LAST-MODIFIED:20260601T171414Z
 URL:https://finkregh.github.io/hugo-theme-component-ical/pr-preview/pr-43/meetings/
 REFRESH-INTERVAL;VALUE=DURATION:P1W
 SOURCE;VALUE=URI:https://finkregh.github.io/hugo-theme-component-ical/pr-preview/pr-43/meetings/calendar.ics
 COLOR:crimson
-NAME;LANGUAGE=en-US:Example Events
-DESCRIPTION;LANGUAGE=en-US:Example Events Calendar
+NAME;LANGUAGE=en:Example Events
+DESCRIPTION;LANGUAGE=en:Example Events Calendar
 X-WR-CALNAME:Example Events
 X-WR-CALDESC:Example Events Calendar
 
@@ -40,18 +40,18 @@ UID:31c771c4049911507f800303987880bd
 DTSTART;VALUE=DATE-TIME;TZID=Europe/Zurich:20240108T090000
 CLASS:PUBLIC
 
-DESCRIPTION;LANGUAGE=en-US:Weekly team standup meeting every Monday morning. Team members share updates on their current work\, discuss blockers\, and plan for the week ahead.\nFront matter:\ntitle: Every Monday startDate: 2024-01-08T09:00:00+01:00 endDate: 2024-01-08T09:30:00+01:00 where: "Meeting Room 1\, Main Office" orga: "Scrum Master" orgaEmail: "scrummaster@example.org" # Every Monday recurrenceRule: freq: "WEEKLY" byDay: "MO"
-LAST-MODIFIED:20260601T081314Z
-LOCATION;LANGUAGE=en-US:Meeting Room 1\, Main Office
+DESCRIPTION;LANGUAGE=en:Weekly team standup meeting every Monday morning. Team members share updates on their current work\, discuss blockers\, and plan for the week ahead.\nFront matter:\ntitle: Every Monday startDate: 2024-01-08T09:00:00+01:00 endDate: 2024-01-08T09:30:00+01:00 where: "Meeting Room 1\, Main Office" orga: "Scrum Master" orgaEmail: "scrummaster@example.org" # Every Monday recurrenceRule: freq: "WEEKLY" byDay: "MO"
+LAST-MODIFIED:20260601T171414Z
+LOCATION;LANGUAGE=en:Meeting Room 1\, Main Office
 STATUS:CONFIRMED
-SUMMARY;LANGUAGE=en-US:Meeting Every Monday
+SUMMARY;LANGUAGE=en:Meeting Every Monday
 TRANSP:OPAQUE
 URL:https://finkregh.github.io/hugo-theme-component-ical/pr-preview/pr-43/meetings/meeting_7_every_monday/
 
 RRULE:FREQ=WEEKLY;INTERVAL=1;BYDAY=MO
 
 DTEND;VALUE=DATE-TIME;TZID=Europe/Zurich:20240108T093000
-CONTACT;LANGUAGE=en-US:Scrum Master: scrummaster@example.org
+CONTACT;LANGUAGE=en:Scrum Master: scrummaster@example.org
 COLOR:crimson
 END:VEVENT
 BEGIN:VEVENT
@@ -60,18 +60,18 @@ UID:bd74d37f8a5936e0e98b906c6c53455b
 DTSTART;VALUE=DATE-TIME;TZID=Europe/Zurich:20240108T160000
 CLASS:PUBLIC
 
-DESCRIPTION;LANGUAGE=en-US:Brief check-in sessions held every Monday and Friday afternoon. These quick meetings help maintain team alignment and address any urgent issues at the start and end of each work week.\nFront matter:\ntitle: Every Monday and Friday startDate: 2024-01-08T16:00:00+01:00 endDate: 2024-01-08T16:15:00+01:00 where: "Virtual Meeting Room" orga: "Project Manager" orgaEmail: "pm@example.org" # Every Monday and Friday recurrenceRule: freq: "WEEKLY" byDay: ["MO"\, "FR"]
-LAST-MODIFIED:20260601T081314Z
-LOCATION;LANGUAGE=en-US:Virtual Meeting Room
+DESCRIPTION;LANGUAGE=en:Brief check-in sessions held every Monday and Friday afternoon. These quick meetings help maintain team alignment and address any urgent issues at the start and end of each work week.\nFront matter:\ntitle: Every Monday and Friday startDate: 2024-01-08T16:00:00+01:00 endDate: 2024-01-08T16:15:00+01:00 where: "Virtual Meeting Room" orga: "Project Manager" orgaEmail: "pm@example.org" # Every Monday and Friday recurrenceRule: freq: "WEEKLY" byDay: ["MO"\, "FR"]
+LAST-MODIFIED:20260601T171414Z
+LOCATION;LANGUAGE=en:Virtual Meeting Room
 STATUS:CONFIRMED
-SUMMARY;LANGUAGE=en-US:Meeting Every Monday and Friday
+SUMMARY;LANGUAGE=en:Meeting Every Monday and Friday
 TRANSP:OPAQUE
 URL:https://finkregh.github.io/hugo-theme-component-ical/pr-preview/pr-43/meetings/meeting_8_monday_friday/
 
 RRULE:FREQ=WEEKLY;INTERVAL=1;BYDAY=MO,FR
 
 DTEND;VALUE=DATE-TIME;TZID=Europe/Zurich:20240108T161500
-CONTACT;LANGUAGE=en-US:Project Manager: pm@example.org
+CONTACT;LANGUAGE=en:Project Manager: pm@example.org
 COLOR:crimson
 END:VEVENT
 END:VCALENDAR

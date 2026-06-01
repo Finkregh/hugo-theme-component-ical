@@ -4,13 +4,13 @@ PRODID:-//Hugo Calendar Templates//Event Template//EN
 CALSCALE:GREGORIAN
 METHOD:PUBLISH
 UID:2b33c3139ab83bd570c5204733534614
-LAST-MODIFIED:20260601T081314Z
+LAST-MODIFIED:20260601T171414Z
 URL:https://finkregh.github.io/hugo-theme-component-ical/pr-preview/pr-43/events/test_count_until_conflict/
 REFRESH-INTERVAL;VALUE=DURATION:P1W
 SOURCE;VALUE=URI:https://finkregh.github.io/hugo-theme-component-ical/pr-preview/pr-43/events/test_count_until_conflict/calendar.ics
 COLOR:crimson
-NAME;LANGUAGE=en-US:Example Events
-DESCRIPTION;LANGUAGE=en-US:Example Events Calendar
+NAME;LANGUAGE=en:Example Events
+DESCRIPTION;LANGUAGE=en:Example Events Calendar
 X-WR-CALNAME:Example Events
 X-WR-CALDESC:Example Events Calendar
 
@@ -40,18 +40,18 @@ UID:2b33c3139ab83bd570c5204733534614
 DTSTART;VALUE=DATE-TIME;TZID=Europe/Zurich:20260301T160000
 CLASS:PUBLIC
 
-DESCRIPTION;LANGUAGE=en-US:Test event to verify mutual exclusivity validation for COUNT and UNTIL.\nThis event has BOTH count and until parameters\, which violates RFC 5545.\nExpected behavior: Build should fail with error message about mutual exclusivity.\nError message should be: “RRULE cannot have both COUNT and UNTIL (RFC 5545 Section 3.3.10)”
-LAST-MODIFIED:20260601T081314Z
-LOCATION;LANGUAGE=en-US:Test Location
+DESCRIPTION;LANGUAGE=en:Test event to verify mutual exclusivity validation for COUNT and UNTIL.\nThis event has BOTH count and until parameters\, which violates RFC 5545.\nExpected behavior: Build should fail with error message about mutual exclusivity.\nError message should be: “RRULE cannot have both COUNT and UNTIL (RFC 5545 Section 3.3.10)”
+LAST-MODIFIED:20260601T171414Z
+LOCATION;LANGUAGE=en:Test Location
 STATUS:CONFIRMED
-SUMMARY;LANGUAGE=en-US:Test COUNT and UNTIL Conflict
+SUMMARY;LANGUAGE=en:Test COUNT and UNTIL Conflict
 TRANSP:OPAQUE
 URL:https://finkregh.github.io/hugo-theme-component-ical/pr-preview/pr-43/events/test_count_until_conflict/
 
 RRULE:FREQ=WEEKLY;INTERVAL=1;COUNT=20;BYDAY=FR
 
 DTEND;VALUE=DATE-TIME;TZID=Europe/Zurich:20260301T170000
-CONTACT;LANGUAGE=en-US:Test Organizer: test@example.org
+CONTACT;LANGUAGE=en:Test Organizer: test@example.org
 COLOR:crimson
 END:VEVENT
 END:VCALENDAR
