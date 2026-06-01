@@ -3,6 +3,13 @@
 All notable changes to this project will be documented in this file. See [conventional commits](https://www.conventionalcommits.org/) for commit guidelines.
 
 - - -
+## [v0.11.4](https://github.com/finkregh/hugo-theme-component-ical/compare/cb3baed8e515dbccff6ed72ea4a2a9458af00798..v0.11.4) - 2026-06-01
+#### Miscellaneous Chores
+- cleanup - ([696aeee](https://github.com/finkregh/hugo-theme-component-ical/commit/696aeeec30c9b4edb0370e2eb37eaa9379a693c9)) - Oluf Lorenzen
+- refactor language, optional event end, allow override link in ics - ([cb3baed](https://github.com/finkregh/hugo-theme-component-ical/commit/cb3baed8e515dbccff6ed72ea4a2a9458af00798)) - Oluf Lorenzen
+
+- - -
+
 ## [v0.11.3](https://github.com/finkregh/hugo-theme-component-ical/compare/a53558bfa3f8a4f831d554dde30759a2439f8f7f..v0.11.3) - 2026-04-30
 #### Bug Fixes
 - (**ci**) avoid gray-matter caching bug in frontmatter parsing - ([fa1c8b7](https://github.com/finkregh/hugo-theme-component-ical/commit/fa1c8b73e336fc95b7a5414f7e98bc799e0d31e8)) - Oluf Lorenzen
