@@ -1,5 +1,4 @@
 baseURL = 'https://finkregh.github.io/hugo-theme-component-ical/'
-languageCode = 'en-us'
 title = 'Demo of hugo-theme-component-ical'
 enableGitInfo = true
 # Required: Hugo uses this to parse front matter dates without timezone offsets
@@ -8,11 +7,9 @@ defaultContentLanguage = 'en'
 
 [languages]
 [languages.en]
-languageName = 'English'
 weight = 1
 
 [languages.de]
-languageName = 'Deutsch'
 weight = 2
 
 [module]
