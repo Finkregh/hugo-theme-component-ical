@@ -1,9 +1,10 @@
 {{/* Adapt the dict here to fit your data model. See 'cal_props.ics' for available keys. */}}
 {{/* Multiline hack from: https://github.com/gohugoio/hugoDocs/issues/764#issuecomment-625711237 */}}
 {{- if or (eq hugo.Environment "development") (eq hugo.Environment "debug") }}{{ warnidf "debug-partial-used" "Partial used: %s" templates.Current.Name }}{{ end -}}
+{{- $lang := or .Site.Language.Locale .Site.Language.Lang "en" -}}{{- /* Fallback to "en" */ -}}
 {{ with dict `` `
-  ` "name"         (dict "text" "Example Events" "lang" .Site.Language.Locale) `` `
-  ` "description"  (dict "text" "Example Events Calendar" "lang" .Site.Language.Locale) `` `
+  ` "name"         (dict "text" "Example Events" "lang" $lang) `` `
+  ` "description"  (dict "text" "Example Events Calendar" "lang" $lang) `` `
   ` "url"          (.OutputFormats.Get "HTML").Permalink `` `
   ` "color"        "crimson" `` `
   ` "uid"          .File.UniqueID `` `

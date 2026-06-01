@@ -2,14 +2,19 @@
 {{- /* Multiline hack from: https://github.com/gohugoio/hugoDocs/issues/764#issuecomment-625711237 */ -}}
 {{- if or (eq hugo.Environment "development") (eq hugo.Environment "debug") }}{{ warnidf "debug-partial-used" "Partial used: %s" templates.Current.Name }}{{ end -}}
 {{- $timezone := partial "ical/get_timezone.ics" . -}}
+{{- $lang := or .Site.Language.Locale .Site.Language.Lang "en" -}}
+{{- $endDate := "" -}}
+{{- if .Params.endDate -}}
+  {{- $endDate = (time.AsTime .Params.endDate $timezone) | time.In $timezone -}}
+{{- end -}}
 {{- with dict `` `
-  ` "description"  (dict "text" .Plain "lang" .Site.Language.Locale) `` `
-  ` "summary"      (dict "text" .Title "lang" .Site.Language.Locale) `` `
+  ` "description"  (dict "text" .Plain "lang" $lang) `` `
+  ` "summary"      (dict "text" .Title "lang" $lang) `` `
   ` "eventStart"   (dict "dateTime" ((time.AsTime .Params.startDate $timezone) | time.In $timezone) "timeZoneID" $timezone) `` `
-  ` "eventEnd"     (dict "dateTime" ((time.AsTime .Params.endDate $timezone) | time.In $timezone) "timeZoneID" $timezone) `` `
-  ` "location"     (dict "text" (or .Params.where .Params.location) "lang" .Site.Language.Locale) `` `
-  ` "url"          (.OutputFormats.Get "HTML").Permalink `` `
-  ` "contact"      (cond (and .Params.orga .Params.orgaEmail) (dict "text" (printf "%s: %s" .Params.orga .Params.orgaEmail) "lang" .Site.Language.Locale) nil) `` `
+  ` "eventEnd"     (cond (ne $endDate "") (dict "dateTime" $endDate "timeZoneID" $timezone) nil) `` `
+  ` "location"     (dict "text" (or .Params.where .Params.location) "lang" $lang) `` `
+  ` "url"          (or .Params.externalUrl ((.OutputFormats.Get "HTML").Permalink)) `` `
+  ` "contact"      (cond (and .Params.orga .Params.orgaEmail) (dict "text" (printf "%s: %s" .Params.orga .Params.orgaEmail) "lang" $lang) nil) `` `
   ` "color"        "crimson" `` `
   ` "status"       (cond (.Params.cancelled | default false) "CANCELLED" "CONFIRMED") `` `
   ` "uid"          .File.UniqueID `` `

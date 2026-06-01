@@ -1,6 +1,6 @@
 # Hugo iCalendar Theme Component
 
-[![Hugo Version](https://img.shields.io/badge/Hugo-v0.146.0+-blue.svg)](https://gohugo.io/)
+[![Hugo Version](https://img.shields.io/badge/Hugo-v0.158.0+-blue.svg)](https://gohugo.io/)
 [![RFC 5545](https://img.shields.io/badge/RFC%205545-Compliant-green.svg)](https://tools.ietf.org/html/rfc5545)
 [![i18n Support](https://img.shields.io/badge/i18n-EN%20%7C%20DE-blue.svg)](#internationalization)
 
@@ -25,7 +25,7 @@ A Hugo theme component to generate [iCalendar (.ics)](https://en.wikipedia.org/w
 
 - **Timezone Support**: UTC conversion for universal compatibility (specify timestamps with explicit timezone or without and use timezone from settings)
 - **Recurrence Rules**: RRULE patterns with BYSETPOS, BYDAY support
-- **Alarm System**: DISPLAY, EMAIL, and AUDIO alarms 
+- **Alarm System**: DISPLAY, EMAIL, and AUDIO alarms
 - **Status Management**: Event status handling(CONFIRMED, TENTATIVE, CANCELLED)
 
 ### Additional templates
@@ -80,7 +80,7 @@ layouts/
 
 ### Hugo Version Compatibility
 
-- **Recommended**: v0.150.0+ (as specified in [`hugo.toml`](hugo.toml))
+- **Minimum Required**: v0.158.0+ (uses modern Language API)
 - **Tested With**: v0.160.1+extended
 
 ### 1. Add Hugo Module
@@ -240,6 +240,54 @@ orgaEmail: "scrummaster@example.org"
 ---
 ```
 
+### External URL Support
+
+Events can link to external websites instead of the local Hugo page using the `externalUrl` parameter:
+
+```yaml
+---
+title: "Hugo Conference 2026"
+startDate: "2026-09-15T09:00:00"
+endDate: "2026-09-15T17:00:00"
+where: "Virtual Conference"
+externalUrl: "https://gohugo.io/conference/2026/" # Links to external site
+---
+```
+
+This is useful for:
+
+- External conferences or events hosted elsewhere
+- Registration pages on third-party platforms
+- Zoom/Teams meeting links for virtual events
+- Ticketing systems like Eventbrite
+
+**Demo**: See [Hugo Conference 2026](https://finkregh.github.io/hugo-theme-component-ical/events/event_13_external_link/) example ([source file](.github/exampleSite/content/events/event_13_external_link.md)).
+
+### Optional End Date
+
+The `endDate` parameter is optional per RFC 5545:
+
+```yaml
+---
+title: "All Day Event"
+startDate: "2026-03-15" # DATE value, no end date
+# endDate is optional - event duration defaults to the whole day
+---
+```
+
+```yaml
+---
+title: "Point-in-Time Event"
+startDate: "2026-03-15T14:00:00+01:00" # DATE-TIME value, no end date
+# endDate is optional - event ends at the same time as startDate (24 hours later)
+---
+```
+
+**RFC 5545 Compliance**:
+
+- For DATE values (all-day events): duration defaults to one day
+- For DATE-TIME values: event ends at the same calendar date and time as startDate
+- When `endDate` is specified, it must be later in time than `startDate`
 
 ### Timezone Handling
 
@@ -270,6 +318,7 @@ icaltimezone: "Pacific/Auckland"
 ```
 
 The ICS template timezone resolution order is:
+
 1. Page parameter: `icaltimezone`
 2. Site parameter: `params.ical.timezone`
 3. Build fails if neither is set
@@ -308,7 +357,6 @@ HTML event pages display times in the configured timezone:
 ```
 
 This relies entirely on Hugo's built-in `timeZone` config for correct parsing and formatting.
-
 
 ### Recurrence Patterns
 
@@ -392,7 +440,6 @@ alarms:
 - `P1W` = 1 week
 - `-PT15M` = 15 minutes before (negative for "before")
 - `PT15M` = 15 minutes after (positive for "after")
-
 
 ### Internationalization
 
@@ -523,10 +570,10 @@ PRs, issues, comments, and suggestions are welcome!
 
 ## Known Issues
 
-This project has been generated with *help* of LLMs as well as a lot of swearing
+This project has been generated with _help_ of LLMs as well as a lot of swearing
 (hugo templating and documentation, go module handling and versioning),
 long stretches of ignorance, etc... I tried to make sure that this template monster
-behaves properly as *I* want to use it for a website myself.
+behaves properly as _I_ want to use it for a website myself.
 Having people show up due to broken calendar entries would not be so nice.
 
 As we all know there is no ethical consumption under capitalism.
@@ -534,7 +581,7 @@ If the usage of an LLM is a no-go you have hereby been informed.
 
 ### No Folding of Long Lines
 
-Due to template limitations, long lines are not folded. This is acceptable as RFC 5545 specifies *SHOULD* rather than *MUST*:
+Due to template limitations, long lines are not folded. This is acceptable as RFC 5545 specifies _SHOULD_ rather than _MUST_:
 
 > Lines of text SHOULD NOT be longer than 75 octets, excluding the line break.
 
@@ -555,4 +602,4 @@ This implementation follows these RFCs as far as possible:
 
 ---
 
-*This [Hugo theme component](https://gohugo.io/hugo-modules/theme-components/) was scaffolded with the [cookiecutter-hugo-theme-component](https://github.com/devidw/cookiecutter-hugo-theme-component) template.*
+_This [Hugo theme component](https://gohugo.io/hugo-modules/theme-components/) was scaffolded with the [cookiecutter-hugo-theme-component](https://github.com/devidw/cookiecutter-hugo-theme-component) template._

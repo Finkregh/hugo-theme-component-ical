@@ -11,4 +11,4 @@ authors = [{ name = "Oluf Lorenzen", homepage = "https://oluflorenzen.de" }]
 
 tags = ["ical", "icalendar", "component"]
 features = ["minimalist"]
-min_version = "0.146.0"
+min_version = "0.158.0"
