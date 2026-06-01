@@ -4,13 +4,13 @@ PRODID:-//Hugo Calendar Templates//Event Template//EN
 CALSCALE:GREGORIAN
 METHOD:PUBLISH
 UID:888c8a5674c475cb05ac6067be93cf40
-LAST-MODIFIED:20260601T081712Z
+LAST-MODIFIED:20260601T081314Z
 URL:https://finkregh.github.io/hugo-theme-component-ical/pr-preview/pr-43/events/test_new_ordinal_format/
 REFRESH-INTERVAL;VALUE=DURATION:P1W
 SOURCE;VALUE=URI:https://finkregh.github.io/hugo-theme-component-ical/pr-preview/pr-43/events/test_new_ordinal_format/calendar.ics
 COLOR:crimson
-NAME;LANGUAGE=en:Example Events
-DESCRIPTION;LANGUAGE=en:Example Events Calendar
+NAME;LANGUAGE=en-US:Example Events
+DESCRIPTION;LANGUAGE=en-US:Example Events Calendar
 X-WR-CALNAME:Example Events
 X-WR-CALDESC:Example Events Calendar
 
@@ -41,18 +41,18 @@ UID:888c8a5674c475cb05ac6067be93cf40
 DTSTART;VALUE=DATE-TIME;TZID=Europe/Zurich:20240215T140000
 CLASS:PUBLIC
 
-DESCRIPTION;LANGUAGE=en:This is a test event to verify the new ordinal BYDAY format works correctly. It should occur on the third Thursday of each month using the new byDay: "3TH" format instead of the old byDay: "TH" + bySetPos: 3 format.
-LAST-MODIFIED:20260601T081712Z
-LOCATION;LANGUAGE=en:Conference Room A
+DESCRIPTION;LANGUAGE=en-US:This is a test event to verify the new ordinal BYDAY format works correctly. It should occur on the third Thursday of each month using the new byDay: "3TH" format instead of the old byDay: "TH" + bySetPos: 3 format.
+LAST-MODIFIED:20260601T081314Z
+LOCATION;LANGUAGE=en-US:Conference Room A
 STATUS:CONFIRMED
-SUMMARY;LANGUAGE=en:Test New Ordinal BYDAY Format
+SUMMARY;LANGUAGE=en-US:Test New Ordinal BYDAY Format
 TRANSP:OPAQUE
 URL:https://finkregh.github.io/hugo-theme-component-ical/pr-preview/pr-43/events/test_new_ordinal_format/
 
 RRULE:FREQ=MONTHLY;INTERVAL=1;BYDAY=3TH
 
 DTEND;VALUE=DATE-TIME;TZID=Europe/Zurich:20240215T153000
-CONTACT;LANGUAGE=en:Test Organizer: test@example.org
+CONTACT;LANGUAGE=en-US:Test Organizer: test@example.org
 COLOR:crimson
 END:VEVENT
 END:VCALENDAR
