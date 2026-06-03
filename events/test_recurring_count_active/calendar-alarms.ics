@@ -4,7 +4,7 @@ PRODID:-//Hugo Calendar Templates//Event Template//EN
 CALSCALE:GREGORIAN
 METHOD:PUBLISH
 UID:6555f341a5f0220c42225eba3292a317
-LAST-MODIFIED:20260603T184917Z
+LAST-MODIFIED:20260603T160225Z
 REFRESH-INTERVAL;VALUE=DURATION:P1W
 SOURCE;VALUE=URI:https://finkregh.github.io/hugo-theme-component-ical/events/test_recurring_count_active/calendar.ics
 COLOR:crimson
@@ -40,7 +40,7 @@ DTSTART;VALUE=DATE-TIME;TZID=Europe/Zurich:20260101T140000
 CLASS:PUBLIC
 
 DESCRIPTION;LANGUAGE=en:12-month series starting January 1\, 2026. Last occurrence will be December 1\, 2026. Should appear in “Upcoming Events” section.
-LAST-MODIFIED:20260603T184917Z
+LAST-MODIFIED:20260603T160225Z
 LOCATION;LANGUAGE=en:Test Location
 STATUS:CONFIRMED
 SUMMARY;LANGUAGE=en:Test: Recurring COUNT Active
