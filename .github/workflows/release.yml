@@ -36,7 +36,7 @@ jobs:
             echo "EOF"
           } >> "$GITHUB_OUTPUT"
       - name: Release
-        uses: softprops/action-gh-release@v3.0.0
+        uses: softprops/action-gh-release@v3.0.1
         with:
           body: ${{ steps.changelog.outputs.body }}
           tag_name: ${{ steps.cog.outputs.version }}
