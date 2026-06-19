@@ -1,4 +1,3 @@
-
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
@@ -55,7 +54,7 @@
                 />
   </url><url>
     <loc>https://finkregh.github.io/hugo-theme-component-ical/de/events/event_1/</loc>
-    <lastmod>2026-06-03T16:02:25+00:00</lastmod>
+    <lastmod>2026-06-18T21:13:06+00:00</lastmod>
     <xhtml:link
                 rel="alternate"
                 hreflang="en"
@@ -68,7 +67,7 @@
                 />
   </url><url>
     <loc>https://finkregh.github.io/hugo-theme-component-ical/de/events/event_3_yearly_april/</loc>
-    <lastmod>2026-06-03T16:02:25+00:00</lastmod>
+    <lastmod>2026-06-18T21:13:06+00:00</lastmod>
     <xhtml:link
                 rel="alternate"
                 hreflang="en"
@@ -81,7 +80,7 @@
                 />
   </url><url>
     <loc>https://finkregh.github.io/hugo-theme-component-ical/de/events/event_10_third_thursday/</loc>
-    <lastmod>2026-06-03T16:02:25+00:00</lastmod>
+    <lastmod>2026-06-18T21:13:06+00:00</lastmod>
     <xhtml:link
                 rel="alternate"
                 hreflang="en"
@@ -94,7 +93,7 @@
                 />
   </url><url>
     <loc>https://finkregh.github.io/hugo-theme-component-ical/de/events/event_7_every_monday/</loc>
-    <lastmod>2026-06-03T16:02:25+00:00</lastmod>
+    <lastmod>2026-06-18T21:13:06+00:00</lastmod>
     <xhtml:link
                 rel="alternate"
                 hreflang="en"
@@ -119,7 +118,7 @@
                 />
   </url><url>
     <loc>https://finkregh.github.io/hugo-theme-component-ical/de/events/</loc>
-    <lastmod>2026-06-03T16:02:25+00:00</lastmod>
+    <lastmod>2026-06-18T21:13:06+00:00</lastmod>
     <xhtml:link
                 rel="alternate"
                 hreflang="en"

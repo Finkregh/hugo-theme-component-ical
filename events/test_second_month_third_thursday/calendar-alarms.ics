@@ -4,7 +4,7 @@ PRODID:-//Hugo Calendar Templates//Event Template//EN
 CALSCALE:GREGORIAN
 METHOD:PUBLISH
 UID:481f301e50dc2ca4d35bff7cd9854eff
-LAST-MODIFIED:20260603T160225Z
+LAST-MODIFIED:20260618T211306Z
 URL:https://finkregh.github.io/hugo-theme-component-ical/events/test_second_month_third_thursday/
 REFRESH-INTERVAL;VALUE=DURATION:P1W
 SOURCE;VALUE=URI:https://finkregh.github.io/hugo-theme-component-ical/events/test_second_month_third_thursday/calendar.ics
@@ -41,7 +41,7 @@ DTSTART;VALUE=DATE-TIME;TZID=Europe/Zurich:20240321T140000
 CLASS:PUBLIC
 
 DESCRIPTION;LANGUAGE=en:This is a test event to verify the Phase 1 implementation works correctly for every second month\, third Thursday pattern. It should generate FREQ=MONTHLY\;INTERVAL=2\;BYDAY=3TH as specified in Task 4.1 of the RFC5545 RRULE Fix Plan.\nThis tests:\nPhase 1: BYDAY ordinal support (3TH) Phase 1: INTERVAL=2 (every second month) Phase 1: Explicit INTERVAL parameter inclusion
-LAST-MODIFIED:20260603T160225Z
+LAST-MODIFIED:20260618T211306Z
 LOCATION;LANGUAGE=en:Conference Room C
 STATUS:CONFIRMED
 SUMMARY;LANGUAGE=en:Test Every Second Month Third Thursday
