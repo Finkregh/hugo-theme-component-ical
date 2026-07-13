@@ -4,7 +4,7 @@ PRODID:-//Hugo Calendar Templates//Event Template//EN
 CALSCALE:GREGORIAN
 METHOD:PUBLISH
 UID:9c5204c70193d97eb6de0d5345c593d3
-LAST-MODIFIED:20260708T112725Z
+LAST-MODIFIED:20260713T132710Z
 REFRESH-INTERVAL;VALUE=DURATION:P1W
 SOURCE;VALUE=URI:https://finkregh.github.io/hugo-theme-component-ical/events/test_recurring_infinite/calendar.ics
 COLOR:crimson
@@ -40,7 +40,7 @@ DTSTART;VALUE=DATE-TIME;TZID=Europe/Zurich:20260315T180000
 CLASS:PUBLIC
 
 DESCRIPTION;LANGUAGE=en:Weekly Monday event using bare timestamps (no offset). Hugo interprets these in the site timezone (Europe/Zurich). DTSTART should be TZID=Europe/Zurich:20260315T180000. Compare with test_recurring_until_future which uses the same date/time but icaltimezone override.
-LAST-MODIFIED:20260708T112725Z
+LAST-MODIFIED:20260713T132710Z
 LOCATION;LANGUAGE=en:Test Location
 STATUS:CONFIRMED
 SUMMARY;LANGUAGE=en:Test: Recurring Bare Timestamp (Site TZ)
