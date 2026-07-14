@@ -4,7 +4,7 @@ PRODID:-//Hugo Calendar Templates//Event Template//EN
 CALSCALE:GREGORIAN
 METHOD:PUBLISH
 UID:6d9a03aacd7b7a0b23bfbef10466935b
-LAST-MODIFIED:20260713T204551Z
+LAST-MODIFIED:20260714T180354Z
 REFRESH-INTERVAL;VALUE=DURATION:P1W
 SOURCE;VALUE=URI:https://finkregh.github.io/hugo-theme-component-ical/events/test_recurring_until_past/calendar.ics
 COLOR:crimson
@@ -39,7 +39,7 @@ DTSTART;VALUE=DATE-TIME;TZID=Europe/Zurich:20250101T090000
 CLASS:PUBLIC
 
 DESCRIPTION;LANGUAGE=en:Weekly event that ended on December 31\, 2025. Should appear in “Past Events” section.
-LAST-MODIFIED:20260713T204551Z
+LAST-MODIFIED:20260714T180354Z
 LOCATION;LANGUAGE=en:Test Location
 STATUS:CONFIRMED
 SUMMARY;LANGUAGE=en:Test: Recurring UNTIL Past
