@@ -4,7 +4,7 @@ PRODID:-//Hugo Calendar Templates//Event Template//EN
 CALSCALE:GREGORIAN
 METHOD:PUBLISH
 UID:9bb895036b6310e4f2dbf282f8a90a1a
-LAST-MODIFIED:20260712T130133Z
+LAST-MODIFIED:20260717T004155Z
 URL:https://finkregh.github.io/hugo-theme-component-ical/pr-preview/pr-45/events/event_13_external_link/
 REFRESH-INTERVAL;VALUE=DURATION:P1W
 SOURCE;VALUE=URI:https://finkregh.github.io/hugo-theme-component-ical/pr-preview/pr-45/events/event_13_external_link/calendar.ics
@@ -40,7 +40,7 @@ DTSTART;VALUE=DATE-TIME;TZID=Europe/Zurich:20260915T090000
 CLASS:PUBLIC
 
 DESCRIPTION;LANGUAGE=en:This event demonstrates the external URL feature\, which allows calendar events to link to external websites instead of the local Hugo page.\nExternal URL Feature When you specify externalUrl in the front matter\, the generated iCalendar file will use that URL instead of the local Hugo page permalink. This is useful for:\nExternal conferences or events hosted elsewhere Registration pages on third-party platforms Zoom/Teams links for virtual meetings Ticketing systems like Eventbrite Front Matter title: "Hugo Conference 2026" startDate: "2026-09-15T09:00:00" endDate: "2026-09-15T17:00:00" where: "Virtual Conference" # Use 'where'\, not 'location' orga: "Hugo Community" orgaEmail: "contact@gohugo.io" externalUrl: "https://gohugo.io/conference/2026/" # External link Implementation The URL property in the iCalendar template uses:\n"url": (or .Params.externalUrl ((.OutputFormats.Get "HTML").Permalink)) This means:\nIf externalUrl is specified → use external URL If externalUrl is empty → fallback to local Hugo page The URL becomes the URL property in the generated .ics file Try It Download the calendar file and import it into your calendar app - clicking on the event will take you to the external Hugo conference website instead of this demo page.
-LAST-MODIFIED:20260712T130133Z
+LAST-MODIFIED:20260717T004155Z
 LOCATION;LANGUAGE=en:Virtual Conference
 STATUS:CONFIRMED
 SUMMARY;LANGUAGE=en:Hugo Conference 2026
