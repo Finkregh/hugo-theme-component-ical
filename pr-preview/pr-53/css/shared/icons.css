@@ -1,0 +1,51 @@
+/*
+ * Shared Icon Styles
+ * 
+ * Icon utilities used across calendar components.
+ */
+
+/* ========================================
+ * BASE ICON STYLES
+ * ======================================== */
+
+.icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.icon svg {
+  width: var(--calendar-icon-size-base);
+  height: var(--calendar-icon-size-base);
+  fill: currentColor;
+}
+
+/* ========================================
+ * ICON VARIANTS
+ * ======================================== */
+
+.detail-icon {
+  color: var(--calendar-accent-color);
+  margin-top: var(--calendar-space-0-5);
+  flex-shrink: 0;
+}
+
+.detail-icon svg {
+  width: var(--calendar-icon-size-sm);
+  height: var(--calendar-icon-size-sm);
+  fill: currentColor;
+}
+
+.no-events-icon {
+  font-size: var(--calendar-font-size-4xl);
+  color: var(--calendar-accent-color);
+  margin-bottom: var(--calendar-space-4);
+  display: block;
+}
+
+.no-events-icon svg {
+  width: var(--calendar-space-16);
+  height: var(--calendar-space-16);
+  fill: currentColor;
+}
