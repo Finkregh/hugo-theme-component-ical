@@ -4,7 +4,7 @@ PRODID:-//Hugo Calendar Templates//Event Template//EN
 CALSCALE:GREGORIAN
 METHOD:PUBLISH
 UID:162295288b54ce6301409bec8c400c0f
-LAST-MODIFIED:20260720T034632Z
+LAST-MODIFIED:20260720T095442Z
 REFRESH-INTERVAL;VALUE=DURATION:P1W
 SOURCE;VALUE=URI:https://finkregh.github.io/hugo-theme-component-ical/pr-preview/pr-54/events/test_cancelled_future/calendar.ics
 COLOR:crimson
@@ -40,7 +40,7 @@ DTSTART;VALUE=DATE-TIME;TZID=Europe/Zurich:20260615T110000
 CLASS:PUBLIC
 
 DESCRIPTION;LANGUAGE=en:This event is scheduled for the future but has been cancelled. It should appear in “Past Events” section.
-LAST-MODIFIED:20260720T034632Z
+LAST-MODIFIED:20260720T095442Z
 LOCATION;LANGUAGE=en:Test Location
 STATUS:CANCELLED
 SUMMARY;LANGUAGE=en:Test: Cancelled Future Event
