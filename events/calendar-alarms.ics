@@ -4,7 +4,7 @@ PRODID:-//Hugo Calendar Templates//Event Template//EN
 CALSCALE:GREGORIAN
 METHOD:PUBLISH
 UID:03c1ca7de80bdb806a60bce3d3b7f652
-LAST-MODIFIED:20260721T181854Z
+LAST-MODIFIED:20260720T095442Z
 URL:https://finkregh.github.io/hugo-theme-component-ical/events/
 REFRESH-INTERVAL;VALUE=DURATION:P1W
 SOURCE;VALUE=URI:https://finkregh.github.io/hugo-theme-component-ical/events/calendar.ics
@@ -83,7 +83,7 @@ DTSTART;VALUE=DATE-TIME;TZID=Europe/Zurich:20240421T090000
 CLASS:PUBLIC
 
 DESCRIPTION;LANGUAGE=en:Our annual spring conference takes place on the third Sunday of April each year. Join us for a day of presentations\, networking\, and innovation.\nFront matter:\ntitle: Annual Spring Conference startDate: 2024-04-21T09:00:00+02:00 endDate: 2024-04-21T17:00:00+02:00 where: "Convention Center\, Main Hall" orga: "Conference Committee" orgaEmail: "committee@example.org" # Third Sunday of April every year recurrenceRule: freq: "YEARLY" byMonth: 4 byDay: "SU" bySetPos: 3
-LAST-MODIFIED:20260721T181854Z
+LAST-MODIFIED:20260720T095442Z
 LOCATION;LANGUAGE=en:Convention Center\, Main Hall
 STATUS:CONFIRMED
 SUMMARY;LANGUAGE=en:Annual Spring Conference
@@ -103,7 +103,7 @@ DTSTART;VALUE=DATE-TIME;TZID=Europe/Zurich:20260303T200000
 CLASS:PUBLIC
 
 DESCRIPTION;LANGUAGE=en:Our first monthly developer meeting.\nFront matter:\ntitle: Developer meeting 1 startDate: 2020-09-30T14:00:00+02:00 endDate: 2020-09-30T17:00:00+02:00 where: "Meeting room 1\, Headquarters" orga: "F. Nord" orgaEmail: "me@example.org" cancelled: true
-LAST-MODIFIED:20260721T181854Z
+LAST-MODIFIED:20260720T095442Z
 LOCATION;LANGUAGE=en:Meeting room 1\, Headquarters
 STATUS:CANCELLED
 SUMMARY;LANGUAGE=en:Developer meeting 1 Winter
@@ -121,7 +121,7 @@ DTSTART;VALUE=DATE-TIME;TZID=Europe/Zurich:20250108T090000
 CLASS:PUBLIC
 
 DESCRIPTION;LANGUAGE=en:Weekly team standup meeting every Monday morning. Team members share updates on their current work\, discuss blockers\, and plan for the week ahead.\nFront matter:\ntitle: Every Monday startDate: 2025-01-08T09:00:00+01:00 endDate: 2025-01-08T09:30:00+01:00 where: "Meeting Room 1\, Main Office" orga: "Scrum Master" orgaEmail: "scrummaster@example.org" # Every Monday recurrenceRule: freq: "WEEKLY" byDay: "MO"
-LAST-MODIFIED:20260721T181854Z
+LAST-MODIFIED:20260720T095442Z
 LOCATION;LANGUAGE=en:Meeting Room 1\, Main Office
 STATUS:CONFIRMED
 SUMMARY;LANGUAGE=en:Every Monday
@@ -141,7 +141,7 @@ DTSTART;VALUE=DATE-TIME;TZID=Europe/Zurich:20400108T160000
 CLASS:PUBLIC
 
 DESCRIPTION;LANGUAGE=en:Brief check-in sessions held every Monday and Friday afternoon. These quick meetings help maintain team alignment and address any urgent issues at the start and end of each work week.\nFront matter:\ntitle: Every Monday and Friday #date: 2040-01-08T16:00:00+01:00 startDate: 2040-01-08T16:00:00+01:00 endDate: 2040-01-08T16:15:00+01:00 where: "Virtual Meeting Room" orga: "Project Manager" orgaEmail: "pm@example.org" # Every Monday and Friday recurrenceRule: freq: "WEEKLY" byDay: ["MO"\, "FR"]
-LAST-MODIFIED:20260721T181854Z
+LAST-MODIFIED:20260720T095442Z
 LOCATION;LANGUAGE=en:Virtual Meeting Room
 STATUS:CONFIRMED
 SUMMARY;LANGUAGE=en:Every Monday and Friday -- future
@@ -161,7 +161,7 @@ DTSTART;VALUE=DATE-TIME;TZID=Europe/Zurich:20240109T140000
 CLASS:PUBLIC
 
 DESCRIPTION;LANGUAGE=en:Bi-weekly planning meeting held every second Tuesday. The team reviews progress from the previous two weeks\, discusses upcoming priorities\, and allocates resources for the next sprint cycle.\nFront matter:\ntitle: Every Second Tuesday startDate: 2024-01-09T14:00:00+01:00 endDate: 2024-01-09T15:30:00+01:00 where: "Conference Room B\, Second Floor" orga: "Department Head" orgaEmail: "depthead@example.org" # Every second Tuesday (every other Tuesday) recurrenceRule: freq: "WEEKLY" interval: 2 byDay: "TU"
-LAST-MODIFIED:20260721T181854Z
+LAST-MODIFIED:20260720T095442Z
 LOCATION;LANGUAGE=en:Conference Room B\, Second Floor
 STATUS:CONFIRMED
 SUMMARY;LANGUAGE=en:Every Second Tuesday
@@ -181,7 +181,7 @@ DTSTART;VALUE=DATE-TIME;TZID=Europe/Zurich:20240118T110000
 CLASS:PUBLIC
 
 DESCRIPTION;LANGUAGE=en:Every third day.\nFront matter:\nstartDate: 2024-01-18T11:00:00+01:00 endDate: 2024-01-18T12:30:00+01:00 where: "Executive Boardroom\, Top Floor" orga: "Strategy Director" orgaEmail: "strategy@example.org" # Every third Thursday of the month recurrenceRule: freq: "DAILY" interval: 3
-LAST-MODIFIED:20260721T181854Z
+LAST-MODIFIED:20260720T095442Z
 LOCATION;LANGUAGE=en:Executive Boardroom\, Top Floor
 STATUS:CONFIRMED
 SUMMARY;LANGUAGE=en:Every Third Day
@@ -201,7 +201,7 @@ DTSTART;VALUE=DATE-TIME;TZID=Europe/Zurich:20240118T110000
 CLASS:PUBLIC
 
 DESCRIPTION;LANGUAGE=en:Monthly strategy review meeting held on the third Thursday of each month. Senior leadership discusses strategic initiatives\, reviews market conditions\, and adjusts long-term planning based on current performance metrics.\nFront matter:\ntitle: Every Third Thursday of the Month startDate: 2024-01-18T11:00:00+01:00 endDate: 2024-01-18T12:30:00+01:00 where: "Executive Boardroom\, Top Floor" orga: "Strategy Director" orgaEmail: "strategy@example.org" # Every third Thursday of the month recurrenceRule: freq: "MONTHLY" byDay: "TH" bySetPos: 3
-LAST-MODIFIED:20260721T181854Z
+LAST-MODIFIED:20260720T095442Z
 LOCATION;LANGUAGE=en:Executive Boardroom\, Top Floor
 STATUS:CONFIRMED
 SUMMARY;LANGUAGE=en:Every Third Thursday of the Month
@@ -221,7 +221,7 @@ DTSTART;VALUE=DATE-TIME;TZID=Europe/Zurich:20260915T090000
 CLASS:PUBLIC
 
 DESCRIPTION;LANGUAGE=en:This event demonstrates the external URL feature\, which allows calendar events to link to external websites instead of the local Hugo page.\nExternal URL Feature When you specify externalUrl in the front matter\, the generated iCalendar file will use that URL instead of the local Hugo page permalink. This is useful for:\nExternal conferences or events hosted elsewhere Registration pages on third-party platforms Zoom/Teams links for virtual meetings Ticketing systems like Eventbrite Front Matter title: "Hugo Conference 2026" startDate: "2026-09-15T09:00:00" endDate: "2026-09-15T17:00:00" where: "Virtual Conference" # Use 'where'\, not 'location' orga: "Hugo Community" orgaEmail: "contact@gohugo.io" externalUrl: "https://gohugo.io/conference/2026/" # External link Implementation The URL property in the iCalendar template uses:\n"url": (or .Params.externalUrl ((.OutputFormats.Get "HTML").Permalink)) This means:\nIf externalUrl is specified → use external URL If externalUrl is empty → fallback to local Hugo page The URL becomes the URL property in the generated .ics file Try It Download the calendar file and import it into your calendar app - clicking on the event will take you to the external Hugo conference website instead of this demo page.
-LAST-MODIFIED:20260721T181854Z
+LAST-MODIFIED:20260720T095442Z
 LOCATION;LANGUAGE=en:Virtual Conference
 STATUS:CONFIRMED
 SUMMARY;LANGUAGE=en:Hugo Conference 2026
@@ -239,7 +239,7 @@ DTSTART;VALUE=DATE-TIME;TZID=Europe/Zurich:20260826T200000
 CLASS:PUBLIC
 
 DESCRIPTION;LANGUAGE=en:At this event we proudly present the project for the first time.\nFront matter:\nstartDate: 2020-08-26T20:00:00+02:00 endDate: 2020-08-26T22:00:00+02:00 where: "Somewhere on the internet" orga: "F. Nord" orgaEmail: "me@example.org"
-LAST-MODIFIED:20260721T181854Z
+LAST-MODIFIED:20260720T095442Z
 LOCATION;LANGUAGE=en:Somewhere on the internet
 STATUS:CONFIRMED
 SUMMARY;LANGUAGE=en:Initial Presentation\, Summer
@@ -257,7 +257,7 @@ DTSTART;VALUE=DATE-TIME;TZID=Europe/Zurich:20250115T140000
 CLASS:PUBLIC
 
 DESCRIPTION;LANGUAGE=en:This is a meeting that demonstrates VALARM functionality with multiple types of alarms:\nDisplay Alarm: Shows a popup 15 minutes before the meeting Email Alarm: Sends email reminders 1 hour before to attendees Audio Alarm: Plays a sound 5 minutes before the meeting The alarms are configured in the front matter and will be included in the generated iCalendar file.\nFront matter:\ntitle: "Meeting with Alarm Reminders" startDate: "2025-01-15T14:00:00" endDate: "2025-01-15T15:30:00" location: "Conference Room A" orga: "John Doe" orgaEmail: "john.doe@example.com" alarms: - action: "DISPLAY" trigger: duration: "-PT15M" description: text: "Meeting starts in 15 minutes" lang: "en" - action: "EMAIL" trigger: duration: "-PT1H" description: text: "Don't forget about the meeting in 1 hour" lang: "en" summary: text: "Meeting Reminder" lang: "en" attendee: - email: "john.doe@example.com" commonName: "John Doe" - email: "jane.smith@example.com" commonName: "Jane Smith" - action: "AUDIO" trigger: duration: "-PT5M" attach: uri: "file:///System/Library/Sounds/Glass.aiff" mediaType: "audio/aiff"
-LAST-MODIFIED:20260721T181854Z
+LAST-MODIFIED:20260720T095442Z
 LOCATION;LANGUAGE=en:Conference Room A
 STATUS:CONFIRMED
 SUMMARY;LANGUAGE=en:Meeting with Alarm Reminders
@@ -293,7 +293,7 @@ DTSTART;VALUE=DATE-TIME;TZID=Europe/Zurich:20240128T140000
 CLASS:PUBLIC
 
 DESCRIPTION;LANGUAGE=en:Specialized workshop series held on the fourth Sunday of every third month. These hands-on sessions focus on practical skills and collaborative learning.\nFront matter:\ntitle: Monthly Workshop Series startDate: 2024-01-28T14:00:00+01:00 endDate: 2024-01-28T16:00:00+01:00 where: "Workshop Space\, Innovation Lab" orga: "Workshop Coordinator" orgaEmail: "workshops@example.org" # Every fourth Sunday of every 3 months recurrenceRule: freq: "MONTHLY" interval: 3 byDay: "SU" bySetPos: 4
-LAST-MODIFIED:20260721T181854Z
+LAST-MODIFIED:20260720T095442Z
 LOCATION;LANGUAGE=en:Workshop Space\, Innovation Lab
 STATUS:CONFIRMED
 SUMMARY;LANGUAGE=en:Monthly Workshop Series
@@ -313,7 +313,7 @@ DTSTART;VALUE=DATE-TIME;TZID=Europe/Zurich:20241007T100000
 CLASS:PUBLIC
 
 DESCRIPTION;LANGUAGE=en:Special training sessions held on the first and second Monday of October each year. These intensive workshops cover advanced topics and best practices.\nFront matter:\ntitle: October Training Sessions startDate: 2024-10-07T10:00:00+02:00 endDate: 2024-10-07T12:00:00+02:00 where: "Training Room B\, Office Building" orga: "Training Department" orgaEmail: "training@example.org" # First and second Monday of October every year recurrenceRule: freq: "YEARLY" byMonth: 10 byDay: "MO" bySetPos: [1\, 2]
-LAST-MODIFIED:20260721T181854Z
+LAST-MODIFIED:20260720T095442Z
 LOCATION;LANGUAGE=en:Training Room B\, Office Building
 STATUS:CONFIRMED
 SUMMARY;LANGUAGE=en:October Training Sessions
@@ -333,7 +333,7 @@ DTSTART;VALUE=DATE-TIME;TZID=Europe/Zurich:20240128T150000
 CLASS:PUBLIC
 
 DESCRIPTION;LANGUAGE=en:Quarterly team review meetings held on the last Sunday of every third month. We discuss progress\, challenges\, and plan for the upcoming quarter.\nFront matter:\ntitle: Quarterly Team Review startDate: 2024-01-28T15:00:00+01:00 #endDate: 2024-01-28T17:00:00+01:00 where: "Conference Room A\, Headquarters" orga: "Team Lead" orgaEmail: "teamlead@example.org" # Every last Sunday of every 3 months recurrenceRule: freq: "MONTHLY" interval: 3 byDay: "SU" bySetPos: -1
-LAST-MODIFIED:20260721T181854Z
+LAST-MODIFIED:20260720T095442Z
 LOCATION;LANGUAGE=en:Conference Room A\, Headquarters
 STATUS:CONFIRMED
 SUMMARY;LANGUAGE=en:Quarterly Team Review
@@ -353,7 +353,7 @@ DTSTART;VALUE=DATE-TIME;TZID=Europe/Zurich:20240205T100000
 CLASS:PUBLIC
 
 DESCRIPTION;LANGUAGE=en:This is a test event to verify the new array ordinal BYDAY format works correctly. It should occur on the first and third Monday of each month using the new byDay: ["1MO"\, "3MO"] format.
-LAST-MODIFIED:20260721T181854Z
+LAST-MODIFIED:20260720T095442Z
 LOCATION;LANGUAGE=en:Training Room
 STATUS:CONFIRMED
 SUMMARY;LANGUAGE=en:Test Array Ordinal Format
@@ -373,7 +373,7 @@ DTSTART;VALUE=DATE-TIME;TZID=Europe/Zurich:20260301T160000
 CLASS:PUBLIC
 
 DESCRIPTION;LANGUAGE=en:Test event to verify mutual exclusivity validation for COUNT and UNTIL.\nThis event has BOTH count and until parameters\, which violates RFC 5545.\nExpected behavior: Build should fail with error message about mutual exclusivity.\nError message should be: “RRULE cannot have both COUNT and UNTIL (RFC 5545 Section 3.3.10)”
-LAST-MODIFIED:20260721T181854Z
+LAST-MODIFIED:20260720T095442Z
 LOCATION;LANGUAGE=en:Test Location
 STATUS:CONFIRMED
 SUMMARY;LANGUAGE=en:Test COUNT and UNTIL Conflict
@@ -393,7 +393,7 @@ DTSTART;VALUE=DATE-TIME;TZID=Europe/Zurich:20260301T100000
 CLASS:PUBLIC
 
 DESCRIPTION;LANGUAGE=en:Test event to verify COUNT parameter is correctly included in RRULE.\nThis event should recur every Wednesday for exactly 10 occurrences.\nExpected RRULE: RRULE:FREQ=WEEKLY\;INTERVAL=1\;COUNT=10\;BYDAY=WE
-LAST-MODIFIED:20260721T181854Z
+LAST-MODIFIED:20260720T095442Z
 LOCATION;LANGUAGE=en:Test Location
 STATUS:CONFIRMED
 SUMMARY;LANGUAGE=en:Test COUNT Parameter
@@ -413,7 +413,7 @@ DTSTART;VALUE=DATE-TIME;TZID=Europe/Zurich:20240321T140000
 CLASS:PUBLIC
 
 DESCRIPTION;LANGUAGE=en:This is a test event to verify the Phase 1 implementation works correctly for every second month\, third Thursday pattern. It should generate FREQ=MONTHLY\;INTERVAL=2\;BYDAY=3TH as specified in Task 4.1 of the RFC5545 RRULE Fix Plan.\nThis tests:\nPhase 1: BYDAY ordinal support (3TH) Phase 1: INTERVAL=2 (every second month) Phase 1: Explicit INTERVAL parameter inclusion
-LAST-MODIFIED:20260721T181854Z
+LAST-MODIFIED:20260720T095442Z
 LOCATION;LANGUAGE=en:Conference Room C
 STATUS:CONFIRMED
 SUMMARY;LANGUAGE=en:Test Every Second Month Third Thursday
@@ -433,7 +433,7 @@ DTSTART;VALUE=DATE-TIME;TZID=Europe/Zurich:20240223T160000
 CLASS:PUBLIC
 
 DESCRIPTION;LANGUAGE=en:This is a test event to verify the new negative ordinal BYDAY format works correctly. It should occur on the last Friday of each month using the new byDay: "-1FR" format.
-LAST-MODIFIED:20260721T181854Z
+LAST-MODIFIED:20260720T095442Z
 LOCATION;LANGUAGE=en:Meeting Room B
 STATUS:CONFIRMED
 SUMMARY;LANGUAGE=en:Test Last Friday Format
@@ -453,7 +453,7 @@ DTSTART;VALUE=DATE-TIME;TZID=Europe/Zurich:20240223T160000
 CLASS:PUBLIC
 
 DESCRIPTION;LANGUAGE=en:This is a test event to verify the Phase 1 implementation works correctly for the last Friday in February yearly pattern. It should generate FREQ=YEARLY\;INTERVAL=1\;BYMONTH=2\;BYDAY=-1FR as specified in Task 4.1 of the RFC5545 RRULE Fix Plan.\nThis tests:\nPhase 1: BYDAY ordinal support with negative ordinals (-1FR) Phase 1: BYMONTH support (February = 2) Phase 1: YEARLY frequency Phase 1: Explicit INTERVAL=1 parameter inclusion
-LAST-MODIFIED:20260721T181854Z
+LAST-MODIFIED:20260720T095442Z
 LOCATION;LANGUAGE=en:Annual Meeting Room
 STATUS:CONFIRMED
 SUMMARY;LANGUAGE=en:Test Last Friday in February Yearly
@@ -473,7 +473,7 @@ DTSTART;VALUE=DATE-TIME;TZID=Europe/Zurich:20240215T140000
 CLASS:PUBLIC
 
 DESCRIPTION;LANGUAGE=en:This is a test event to verify the new ordinal BYDAY format works correctly. It should occur on the third Thursday of each month using the new byDay: "3TH" format instead of the old byDay: "TH" + bySetPos: 3 format.
-LAST-MODIFIED:20260721T181854Z
+LAST-MODIFIED:20260720T095442Z
 LOCATION;LANGUAGE=en:Conference Room A
 STATUS:CONFIRMED
 SUMMARY;LANGUAGE=en:Test New Ordinal BYDAY Format
@@ -493,7 +493,7 @@ DTSTART;VALUE=DATE-TIME;TZID=Europe/Zurich:20260301T140000
 CLASS:PUBLIC
 
 DESCRIPTION;LANGUAGE=en:Test event to verify UNTIL parameter is correctly included in RRULE.\nThis event should recur every Thursday until December 31\, 2026.\nExpected RRULE: RRULE:FREQ=WEEKLY\;INTERVAL=1\;UNTIL=20261231T225959Z\;BYDAY=TH
-LAST-MODIFIED:20260721T181854Z
+LAST-MODIFIED:20260720T095442Z
 LOCATION;LANGUAGE=en:Test Location
 STATUS:CONFIRMED
 SUMMARY;LANGUAGE=en:Test UNTIL Parameter
@@ -513,7 +513,7 @@ DTSTART;VALUE=DATE-TIME;TZID=Europe/Zurich:20260615T110000
 CLASS:PUBLIC
 
 DESCRIPTION;LANGUAGE=en:This event is scheduled for the future but has been cancelled. It should appear in “Past Events” section.
-LAST-MODIFIED:20260721T181854Z
+LAST-MODIFIED:20260720T095442Z
 LOCATION;LANGUAGE=en:Test Location
 STATUS:CANCELLED
 SUMMARY;LANGUAGE=en:Test: Cancelled Future Event
@@ -528,7 +528,7 @@ DTSTART;VALUE=DATE-TIME;TZID=Europe/Zurich:20260315T180000
 CLASS:PUBLIC
 
 DESCRIPTION;LANGUAGE=en:Weekly Monday event using bare timestamps (no offset). Hugo interprets these in the site timezone (Europe/Zurich). DTSTART should be TZID=Europe/Zurich:20260315T180000. Compare with test_recurring_until_future which uses the same date/time but icaltimezone override.
-LAST-MODIFIED:20260721T181854Z
+LAST-MODIFIED:20260720T095442Z
 LOCATION;LANGUAGE=en:Test Location
 STATUS:CONFIRMED
 SUMMARY;LANGUAGE=en:Test: Recurring Bare Timestamp (Site TZ)
@@ -545,7 +545,7 @@ DTSTART;VALUE=DATE-TIME;TZID=Europe/Zurich:20260101T140000
 CLASS:PUBLIC
 
 DESCRIPTION;LANGUAGE=en:12-month series starting January 1\, 2026. Last occurrence will be December 1\, 2026. Should appear in “Upcoming Events” section.
-LAST-MODIFIED:20260721T181854Z
+LAST-MODIFIED:20260720T095442Z
 LOCATION;LANGUAGE=en:Test Location
 STATUS:CONFIRMED
 SUMMARY;LANGUAGE=en:Test: Recurring COUNT Active
@@ -562,7 +562,7 @@ DTSTART;VALUE=DATE-TIME;TZID=Europe/Zurich:20250101T140000
 CLASS:PUBLIC
 
 DESCRIPTION;LANGUAGE=en:10-week series that started January 1\, 2025. Last occurrence was March 5\, 2025 (10 weeks later). Should appear in “Past Events” section.
-LAST-MODIFIED:20260721T181854Z
+LAST-MODIFIED:20260720T095442Z
 LOCATION;LANGUAGE=en:Test Location
 STATUS:CONFIRMED
 SUMMARY;LANGUAGE=en:Test: Recurring COUNT Exhausted
@@ -579,7 +579,7 @@ DTSTART;VALUE=DATE-TIME;TZID=Europe/Zurich:20250101T090000
 CLASS:PUBLIC
 
 DESCRIPTION;LANGUAGE=en:Weekly event that ended on December 31\, 2025. Should appear in “Past Events” section.
-LAST-MODIFIED:20260721T181854Z
+LAST-MODIFIED:20260720T095442Z
 LOCATION;LANGUAGE=en:Test Location
 STATUS:CONFIRMED
 SUMMARY;LANGUAGE=en:Test: Recurring UNTIL Past
@@ -596,7 +596,7 @@ DTSTART;VALUE=DATE-TIME;TZID=America/New_York:20260315T180000
 CLASS:PUBLIC
 
 DESCRIPTION;LANGUAGE=en:Weekly Monday event with page-level icaltimezone override to America/New_York. Uses same bare timestamp values (18:00-20:00) as test_recurring_infinite for comparison. With icaltimezone\, bare timestamps are parsed in America/New_York (not site TZ). DTSTART should be TZID=America/New_York:20260315T180000 (18:00 EDT). Compare: the sibling test_recurring_infinite has the same 18:00 but in Europe/Zurich.
-LAST-MODIFIED:20260721T181854Z
+LAST-MODIFIED:20260720T095442Z
 LOCATION;LANGUAGE=en:New York Office
 STATUS:CONFIRMED
 SUMMARY;LANGUAGE=en:Test: Recurring with icaltimezone Override
@@ -613,7 +613,7 @@ DTSTART;VALUE=DATE-TIME;TZID=Pacific/Auckland:20260315T140000
 CLASS:PUBLIC
 
 DESCRIPTION;LANGUAGE=en:This event uses a page-level timezone override to Pacific/Auckland. The site default is Europe/Zurich\, but this event should use Pacific/Auckland timezone information.
-LAST-MODIFIED:20260721T181854Z
+LAST-MODIFIED:20260720T095442Z
 LOCATION;LANGUAGE=en:Auckland\, New Zealand
 STATUS:CONFIRMED
 SUMMARY;LANGUAGE=en:Test: Timezone Override (Pacific/Auckland)
