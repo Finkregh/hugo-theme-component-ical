@@ -1,0 +1,151 @@
+/*
+ * Shared Button Styles
+ * 
+ * Button components used across calendar pages.
+ */
+
+/* ========================================
+ * BASE BUTTON STYLES
+ * ======================================== */
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--calendar-space-2);
+  padding: var(--calendar-btn-padding);
+  border-radius: var(--calendar-btn-radius);
+  text-decoration: none;
+  border: 1px solid transparent;
+  font-weight: var(--calendar-btn-font-weight);
+  font-size: var(--calendar-font-size-base);
+  transition: var(--calendar-btn-transition);
+  cursor: pointer;
+}
+
+.btn:focus-visible {
+  outline: 2px solid var(--calendar-accent-color);
+  outline-offset: 2px;
+}
+
+/* ========================================
+ * BUTTON VARIANTS
+ * ======================================== */
+
+.btn-primary {
+  background-color: var(--calendar-btn-primary-bg);
+  color: var(--calendar-btn-primary-text) !important;
+  border-color: var(--calendar-btn-primary-border);
+}
+
+.btn-primary:hover {
+  background-color: var(--calendar-btn-primary-bg-hover);
+  border-color: var(--calendar-btn-primary-border-hover);
+  transform: translateY(-1px);
+}
+
+.btn-secondary {
+  background-color: var(--calendar-btn-secondary-bg);
+  color: var(--calendar-btn-secondary-text) !important;
+  border-color: var(--calendar-btn-secondary-border);
+}
+
+.btn-secondary:hover {
+  background-color: var(--calendar-btn-secondary-bg-hover);
+  border-color: var(--calendar-btn-secondary-border-hover);
+}
+
+/* ========================================
+ * BUTTON SIZE VARIANTS
+ * ======================================== */
+
+.btn-sm {
+  padding: var(--calendar-btn-padding-sm);
+  font-size: var(--calendar-font-size-sm);
+}
+
+.btn-lg {
+  padding: var(--calendar-btn-padding-lg);
+  font-size: var(--calendar-font-size-lg);
+}
+
+/* ========================================
+ * SPECIFIC BUTTON IMPLEMENTATIONS
+ * ======================================== */
+
+.download-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--calendar-space-2);
+  background-color: var(--calendar-btn-primary-bg);
+  color: var(--calendar-btn-primary-text) !important;
+  padding: var(--calendar-btn-padding);
+  border-radius: var(--calendar-btn-radius);
+  text-decoration: none;
+  border: none;
+  font-weight: var(--calendar-btn-font-weight);
+  font-size: var(--calendar-font-size-base);
+  transition: var(--calendar-btn-transition);
+  cursor: pointer;
+}
+
+.download-btn:hover {
+  background-color: var(--calendar-btn-primary-bg-hover);
+  transform: translateY(-1px);
+  box-shadow: var(--calendar-shadow-md);
+}
+
+.download-btn:focus-visible {
+  outline: 2px solid var(--calendar-accent-color);
+  outline-offset: 2px;
+}
+
+.view-details-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--calendar-space-2);
+  background-color: var(--calendar-btn-primary-bg);
+  color: var(--calendar-btn-primary-text) !important;
+  padding: var(--calendar-btn-padding);
+  border-radius: var(--calendar-btn-radius);
+  text-decoration: none;
+  font-weight: var(--calendar-btn-font-weight);
+  font-size: var(--calendar-font-size-sm);
+  transition: var(--calendar-btn-transition);
+  border: 1px solid var(--calendar-btn-primary-border);
+}
+
+.view-details-btn:hover {
+  background-color: var(--calendar-btn-primary-bg-hover);
+  border-color: var(--calendar-btn-primary-border-hover);
+  transform: translateY(-1px);
+}
+
+.view-details-btn:focus-visible {
+  outline: 2px solid var(--calendar-accent-color);
+  outline-offset: 2px;
+}
+
+.view-details-btn .icon svg {
+  width: var(--calendar-icon-size-sm);
+  height: var(--calendar-icon-size-sm);
+}
+
+/* ========================================
+ * REDUCED MOTION SUPPORT
+ * ======================================== */
+
+@media (prefers-reduced-motion: reduce) {
+  .btn,
+  .btn-primary,
+  .btn-secondary,
+  .download-btn,
+  .view-details-btn {
+    transition: none;
+  }
+  
+  .btn-primary:hover,
+  .download-btn:hover,
+  .view-details-btn:hover {
+    transform: none;
+  }
+}
