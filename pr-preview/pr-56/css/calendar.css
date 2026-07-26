@@ -1,0 +1,349 @@
+/*
+ * Hugo Calendar Template - CSS Variables System
+ *
+ * Comprehensive 4-tier CSS variable system for consistent theming
+ * and maintainable styling across all calendar components.
+ *
+ * Tier 1: Color System - Semantic color palette
+ * Tier 2: Typography - Font families, sizes, weights, line heights
+ * Tier 3: Spacing - 8-point spacing scale with component-specific variables
+ * Tier 4: Layout - Border radius, shadows, transitions, z-index scale
+ */
+
+/* Shared styles - imported first
+@import './shared/base.css';
+@import './shared/icons.css';
+@import './shared/buttons.css';
+@import './shared/forms.css';
+@import './shared/accessibility.css';
+@import './shared/responsive.css';
+
+/* Component-specific styles - imported last 
+@import './components/calendar-single.css';
+@import './components/calendar-list.css';
+
+Import happens via calendar_css.html!
+*/
+
+:root {
+  /* Enable light-dark() function support */
+  color-scheme: light dark;
+  /* ========================================
+   * TIER 1: COLOR SYSTEM
+   * ======================================== */
+  
+  /* Primary Color Palette */
+  --calendar-primary-color: light-dark(#2c3e50, #ecf0f1);
+  --calendar-primary-color-light: light-dark(#34495e, #f8f9fa);
+  --calendar-primary-color-dark: light-dark(#1a252f, #bdc3c7);
+  
+  /* Secondary Color Palette */
+  --calendar-secondary-color: light-dark(#ecf0f1, #34495e);
+  --calendar-secondary-color-light: light-dark(#f8f9fa, #2c3e50);
+  --calendar-secondary-color-dark: light-dark(#bdc3c7, #1a252f);
+  
+  /* Accent Color Palette */
+  --calendar-accent-color: #3498db;
+  --calendar-accent-color-light: #5dade2;
+  --calendar-accent-color-dark: #2980b9;
+  --calendar-accent-color-light-dark: light-dark()
+  
+  /* Status Colors */
+  --calendar-success-color: #27ae60;
+  --calendar-success-color-light: #2ecc71;
+  --calendar-success-color-dark: #229954;
+  
+  --calendar-warning-color: #f39c12;
+  --calendar-warning-color-light: #f1c40f;
+  --calendar-warning-color-dark: #d68910;
+  
+  --calendar-error-color: #e74c3c;
+  --calendar-error-color-light: #ec7063;
+  --calendar-error-color-dark: #c0392b;
+  
+  --calendar-info-color: #3498db;
+  --calendar-info-color-light: #5dade2;
+  --calendar-info-color-dark: #2980b9;
+  
+  /* Text Colors */
+  --calendar-text-primary: light-dark(#2c3e50, #ecf0f1);
+  --calendar-text-secondary: light-dark(#7f8c8d, #bdc3c7);
+  --calendar-text-muted: #95a5a6;
+  --calendar-text-inverse: light-dark(#ffffff, #2c3e50);
+  --calendar-text-link: #3498db;
+  --calendar-text-link-hover: #2980b9;
+  
+  /* Background Colors */
+  --calendar-bg-primary: light-dark(#ffffff, #2c3e50);
+  --calendar-bg-secondary: light-dark(#f8f9fa, #34495e);
+  --calendar-bg-tertiary: light-dark(#ecf0f1, #1a252f);
+  --calendar-bg-dark: light-dark(#2c3e50, #ecf0f1);
+  --calendar-bg-overlay: light-dark(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.7));
+  
+  /* Border Colors */
+  --calendar-border-color: light-dark(#dee2e600, #34495e00);
+  --calendar-border-color-light: light-dark(#f1f3f4, #2c3e50);
+  --calendar-border-color-dark: light-dark(#adb5bd, #1a252f);
+  
+  /* ========================================
+   * TIER 2: TYPOGRAPHY SYSTEM
+   * ======================================== */
+  
+  /* Font Families */
+  --calendar-font-family-primary: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+  --calendar-font-family-monospace: 'SF Mono', Monaco, 'Cascadia Code', 'Roboto Mono', Consolas, 'Courier New', monospace;
+  
+  /* Font Sizes */
+  --calendar-font-size-xs: 0.75rem;    /* 12px */
+  --calendar-font-size-sm: 0.875rem;   /* 14px */
+  --calendar-font-size-base: 1rem;     /* 16px */
+  --calendar-font-size-lg: 1.125rem;   /* 18px */
+  --calendar-font-size-xl: 1.25rem;    /* 20px */
+  --calendar-font-size-2xl: 1.5rem;    /* 24px */
+  --calendar-font-size-3xl: 1.875rem;  /* 30px */
+  --calendar-font-size-4xl: 2.25rem;   /* 36px */
+  
+  /* Font Weights */
+  --calendar-font-weight-light: 300;
+  --calendar-font-weight-normal: 400;
+  --calendar-font-weight-medium: 500;
+  --calendar-font-weight-semibold: 600;
+  --calendar-font-weight-bold: 700;
+  --calendar-font-weight-extrabold: 800;
+  
+  /* Line Heights */
+  --calendar-line-height-tight: 1.25;
+  --calendar-line-height-snug: 1.375;
+  --calendar-line-height-normal: 1.5;
+  --calendar-line-height-relaxed: 1.625;
+  --calendar-line-height-loose: 2;
+  
+  /* ========================================
+   * TIER 3: SPACING SYSTEM
+   * ======================================== */
+  
+  /* Base Spacing Scale (8-point grid) */
+  --calendar-space-0: 0;
+  --calendar-space-px: 1px;
+  --calendar-space-0-5: 0.125rem;  /* 2px */
+  --calendar-space-1: 0.25rem;     /* 4px */
+  --calendar-space-1-5: 0.375rem;  /* 6px */
+  --calendar-space-2: 0.5rem;      /* 8px */
+  --calendar-space-2-5: 0.625rem;  /* 10px */
+  --calendar-space-3: 0.75rem;     /* 12px */
+  --calendar-space-3-5: 0.875rem;  /* 14px */
+  --calendar-space-4: 1rem;        /* 16px */
+  --calendar-space-5: 1.25rem;     /* 20px */
+  --calendar-space-6: 1.5rem;      /* 24px */
+  --calendar-space-7: 1.75rem;     /* 28px */
+  --calendar-space-8: 2rem;        /* 32px */
+  --calendar-space-9: 2.25rem;     /* 36px */
+  --calendar-space-10: 2.5rem;     /* 40px */
+  --calendar-space-11: 2.75rem;    /* 44px */
+  --calendar-space-12: 3rem;       /* 48px */
+  --calendar-space-14: 3.5rem;     /* 56px */
+  --calendar-space-16: 4rem;       /* 64px */
+  --calendar-space-20: 5rem;       /* 80px */
+  --calendar-space-24: 6rem;       /* 96px */
+  --calendar-space-28: 7rem;       /* 112px */
+  --calendar-space-32: 8rem;       /* 128px */
+  
+  /* Component-Specific Spacing */
+  --calendar-padding-xs: var(--calendar-space-1) var(--calendar-space-2);
+  --calendar-padding-sm: var(--calendar-space-2) var(--calendar-space-3);
+  --calendar-padding-md: var(--calendar-space-3) var(--calendar-space-4);
+  --calendar-padding-lg: var(--calendar-space-4) var(--calendar-space-6);
+  --calendar-padding-xl: var(--calendar-space-6) var(--calendar-space-8);
+  
+  /* Section Margins */
+  --calendar-margin-section: var(--calendar-space-8);
+  --calendar-margin-component: var(--calendar-space-6);
+  --calendar-margin-element: var(--calendar-space-4);
+  --calendar-margin-detail: var(--calendar-space-3);
+  
+  --calendar-widget-height-min: 500px;
+
+  /* ========================================
+   * TIER 4: LAYOUT SYSTEM
+   * ======================================== */
+  
+  /* Border Radius */
+  --calendar-radius-none: 0;
+  --calendar-radius-sm: 0.125rem;   /* 2px */
+  --calendar-radius-base: 0.25rem;  /* 4px */
+  --calendar-radius-md: 0.375rem;   /* 6px */
+  --calendar-radius-lg: 0.5rem;     /* 8px */
+  --calendar-radius-xl: 0.75rem;    /* 12px */
+  --calendar-radius-2xl: 1rem;      /* 16px */
+  --calendar-radius-3xl: 1.5rem;    /* 24px */
+  --calendar-radius-full: 9999px;
+  
+  /* Shadows */
+  --calendar-shadow-xs: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+  --calendar-shadow-sm: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
+  --calendar-shadow-base: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+  --calendar-shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+  --calendar-shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+  --calendar-shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+  --calendar-shadow-2xl: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+  --calendar-shadow-inner: inset 0 2px 4px 0 rgba(0, 0, 0, 0.06);
+  
+  /* Transitions */
+  --calendar-transition-none: none;
+  --calendar-transition-all: all 150ms cubic-bezier(0.4, 0, 0.2, 1);
+  --calendar-transition-fast: 150ms cubic-bezier(0.4, 0, 0.2, 1);
+  --calendar-transition-normal: 250ms cubic-bezier(0.4, 0, 0.2, 1);
+  --calendar-transition-slow: 350ms cubic-bezier(0.4, 0, 0.2, 1);
+  
+  /* Z-Index Scale */
+  --calendar-z-auto: auto;
+  --calendar-z-0: 0;
+  --calendar-z-10: 10;
+  --calendar-z-20: 20;
+  --calendar-z-30: 30;
+  --calendar-z-40: 40;
+  --calendar-z-50: 50;
+  --calendar-z-dropdown: 1000;
+  --calendar-z-sticky: 1020;
+  --calendar-z-fixed: 1030;
+  --calendar-z-modal-backdrop: 1040;
+  --calendar-z-modal: 1050;
+  --calendar-z-popover: 1060;
+  --calendar-z-tooltip: 1070;
+  --calendar-z-toast: 1080;
+  
+  /* ========================================
+   * COMPONENT-SPECIFIC VARIABLES
+   * ======================================== */
+  
+  /* Event Card Variables */
+  --calendar-card-bg: var(--calendar-bg-primary);
+  --calendar-card-bg-hover: var(--calendar-bg-secondary);
+  --calendar-card-border: var(--calendar-border-color);
+  --calendar-card-border-hover: var(--calendar-border-color-dark);
+  --calendar-card-shadow: var(--calendar-shadow-md);
+  --calendar-card-shadow-hover: var(--calendar-shadow-lg);
+  --calendar-card-radius: var(--calendar-radius-lg);
+  --calendar-card-padding: var(--calendar-padding-lg);
+  --calendar-card-transition: var(--calendar-transition-normal);
+  
+  /* Event Header Variables */
+  --calendar-header-bg: var(--calendar-bg-secondary);
+  --calendar-header-text: var(--calendar-text-primary);
+  --calendar-header-border: var(--calendar-border-color);
+  --calendar-header-padding: var(--calendar-padding-lg);
+  
+  /* Button Variables */
+  --calendar-btn-primary-bg: var(--calendar-accent-color);
+  --calendar-btn-primary-bg-hover: var(--calendar-accent-color-dark);
+  --calendar-btn-primary-text: var(--calendar-text-inverse);
+  --calendar-btn-primary-border: var(--calendar-accent-color);
+  --calendar-btn-primary-border-hover: var(--calendar-accent-color-dark);
+  
+  --calendar-btn-secondary-bg: var(--calendar-bg-secondary);
+  --calendar-btn-secondary-bg-hover: var(--calendar-bg-tertiary);
+  --calendar-btn-secondary-text: var(--calendar-text-primary);
+  --calendar-btn-secondary-border: var(--calendar-border-color);
+  --calendar-btn-secondary-border-hover: var(--calendar-border-color-dark);
+  
+  --calendar-btn-padding: var(--calendar-space-2) var(--calendar-space-4);
+  --calendar-btn-padding-sm: var(--calendar-space-1-5) var(--calendar-space-3);
+  --calendar-btn-padding-lg: var(--calendar-space-3) var(--calendar-space-6);
+  --calendar-btn-radius: var(--calendar-radius-md);
+  --calendar-btn-font-weight: var(--calendar-font-weight-semibold);
+  --calendar-btn-transition: var(--calendar-transition-fast);
+  
+  /* Status Variables */
+  --calendar-cancelled-color: var(--calendar-error-color);
+  --calendar-cancelled-bg: light-dark(rgba(231, 76, 60, 0.1), rgba(231, 76, 60, 0.2));
+  --calendar-cancelled-border: var(--calendar-error-color);
+  
+  --calendar-success-bg: light-dark(rgba(39, 174, 96, 0.1), rgba(39, 174, 96, 0.2));
+  --calendar-warning-bg: light-dark(rgba(243, 156, 18, 0.1), rgba(243, 156, 18, 0.2));
+  --calendar-info-bg: light-dark(rgba(52, 152, 219, 0.1), rgba(52, 152, 219, 0.2));
+  
+  /* Focus Shadow Color */
+  --calendar-focus-shadow-color: light-dark(rgba(52, 152, 219, 0.1), rgba(52, 152, 219, 0.2));
+  
+  /* Form Variables */
+  --calendar-input-bg: var(--calendar-bg-primary);
+  --calendar-input-border: var(--calendar-border-color);
+  --calendar-input-border-focus: var(--calendar-accent-color);
+  --calendar-input-text: var(--calendar-text-primary);
+  --calendar-input-placeholder: var(--calendar-text-muted);
+  --calendar-input-padding: var(--calendar-space-2) var(--calendar-space-3);
+  --calendar-input-radius: var(--calendar-radius-md);
+  
+  /* Icon Variables */
+  --calendar-icon-size-xs: 0.75rem;
+  --calendar-icon-size-sm: 1rem;
+  --calendar-icon-size-base: 1.25rem;
+  --calendar-icon-size-lg: 1.5rem;
+  --calendar-icon-size-xl: 2rem;
+
+  /* Overrides */
+  --fc-page-bg-color: var(--calendar-bg-primary);
+  --fc-border-color: var(--calendar-border-color);
+  /*--fc-neutral-bg-color: var(--calendar-bg-tertiary);*/
+  --fc-list-event-hover-bg-color: var(--calendar-bg-tertiary);
+  --fc-neutral-text-color: var(--calendar-text-secondary);
+}
+
+.fc .fc-daygrid-week-number {
+  background-color: var(--calendar-bg-tertiary);
+  color: var(--calendar-text-primary);
+}
+
+/* ========================================
+ * UTILITY CLASSES
+ * ======================================== */
+
+/* Screen Reader Only */
+.calendar-sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  /* clip-path: rect(0, 0, 0, 0); */
+  white-space: nowrap;
+  border: 0;
+}
+
+/* Focus Visible */
+.calendar-focus-visible:focus-visible {
+  outline: 2px solid var(--calendar-accent-color);
+  outline-offset: 2px;
+}
+
+/* Transitions */
+.calendar-transition {
+  transition: var(--calendar-transition-normal);
+}
+
+.calendar-transition-fast {
+  transition: var(--calendar-transition-fast);
+}
+
+.calendar-transition-slow {
+  transition: var(--calendar-transition-slow);
+}
+
+/* Overrides for fullcalendar.js */
+
+.fc .fc-list-sticky .fc-list-day > * {
+  /* Override FullCalendar background color for light/dark mode support */
+  --fc-page-bg-color: light-dark(#ffffff, #2c3e50);
+}
+
+.fc .fc-view-harness {
+  overflow: visible;
+}
+
+
+/* Reset table display for FullCalendar - Blowfish theme sets global `table { display: block }`
+   which breaks FullCalendar's grid layout that relies on native table rendering */
+.fc table {
+  display: table;
+}

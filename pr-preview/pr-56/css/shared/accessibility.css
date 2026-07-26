@@ -1,0 +1,89 @@
+/*
+ * Shared Accessibility Styles
+ * 
+ * Accessibility enhancements including high contrast mode,
+ * reduced motion, focus management, and print styles.
+ */
+
+/* ========================================
+ * HIGH CONTRAST MODE SUPPORT
+ * ======================================== */
+
+@media (prefers-contrast: more) {
+  .event-metadata-card,
+  .event-calendar-widget,
+  .event-card {
+    border-width: 2px;
+  }
+  
+  .section-title {
+    border-bottom-width: 2px;
+  }
+  
+  .event-cancelled {
+    border-left-width: 6px;
+  }
+}
+
+/* ========================================
+ * REDUCED MOTION SUPPORT
+ * ======================================== */
+
+@media (prefers-reduced-motion: reduce) {
+  .technical-summary,
+  .technical-summary::before,
+  .event-card,
+  .event-card-title a {
+    transition: none;
+  }
+  
+  .event-card:hover {
+    transform: none;
+  }
+}
+
+/* ========================================
+ * FOCUS MANAGEMENT
+ * ======================================== */
+
+.technical-summary:focus-visible {
+  outline: 2px solid var(--calendar-accent-color);
+  outline-offset: 2px;
+}
+
+.event-card-title a:focus-visible {
+  outline: 2px solid var(--calendar-accent-color);
+  outline-offset: 2px;
+  border-radius: var(--calendar-radius-base);
+}
+
+/* Focus management for keyboard navigation */
+.events-grid:focus-within .event-card {
+  opacity: 0.7;
+}
+
+.events-grid:focus-within .event-card:focus-within {
+  opacity: 1;
+}
+
+/* ========================================
+ * PRINT STYLES
+ * ======================================== */
+
+@media print {
+  .event-card {
+    break-inside: avoid;
+    box-shadow: none;
+    border: 1px solid var(--calendar-border-color-dark);
+  }
+  
+  .view-details-btn,
+  .download-btn {
+    display: none;
+  }
+  
+  .event-card-title a {
+    color: var(--calendar-primary-color) !important;
+    text-decoration: underline;
+  }
+}
