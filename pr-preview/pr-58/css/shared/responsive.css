@@ -1,0 +1,48 @@
+/*
+ * Shared Responsive Styles
+ * 
+ * Common responsive adjustments used across calendar components.
+ */
+
+/* ========================================
+ * TABLET BREAKPOINT (768px)
+ * ======================================== */
+
+@media (max-width: 768px) {
+  /* Toolbar: allow chunks to wrap so buttons don't overflow */
+  .fc .fc-toolbar.fc-header-toolbar {
+    flex-wrap: wrap;
+    gap: 0.5em 0.75em;
+  }
+
+  .fc .fc-toolbar-title {
+    font-size: 1.3em;
+  }
+}
+
+/* ========================================
+ * MOBILE BREAKPOINT (480px)
+ * ======================================== */
+
+@media (max-width: 480px) {
+  .single-event-calendar {
+    padding: var(--calendar-space-2);
+  }
+
+  .fc .fc-toolbar.fc-header-toolbar {
+    flex-wrap: wrap;
+    gap: 0.5em;
+    justify-content: center;
+  }
+
+  .fc .fc-toolbar-title {
+    font-size: 1.1em;
+    width: 100%;
+    text-align: center;
+  }
+
+  .fc .fc-button {
+    padding: 0.3em 0.5em;
+    font-size: 0.85em;
+  }
+}
