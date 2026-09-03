@@ -22,11 +22,11 @@
     "devDependencies": {}
   },
   "dependencies": {
-    "@fullcalendar/core": "^6.1.20",
+    "@fullcalendar/core": "^7.0.0",
     "@fullcalendar/daygrid": "^6.1.20",
-    "@fullcalendar/icalendar": "^6.1.20",
+    "@fullcalendar/icalendar": "^7.0.0",
     "@fullcalendar/list": "^6.1.20",
-    "@fullcalendar/rrule": "^6.1.20",
+    "@fullcalendar/rrule": "^7.0.0",
     "@fullcalendar/timegrid": "^6.1.20"
   },
   "devDependencies": {}
