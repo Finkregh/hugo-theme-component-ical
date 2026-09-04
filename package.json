@@ -10,24 +10,13 @@
     "url": "https://github.com/finkregh/hugo-theme-component-ical/issues"
   },
   "homepage": "https://github.com/finkregh/hugo-theme-component-ical#readme",
-  "comments": {
-    "dependencies": {
-      "@fullcalendar/core": "project",
-      "@fullcalendar/daygrid": "project",
-      "@fullcalendar/icalendar": "project",
-      "@fullcalendar/list": "project",
-      "@fullcalendar/timegrid": "project",
-      "@fullcalendar/rrule": "project"
-    },
-    "devDependencies": {}
-  },
   "dependencies": {
-    "@fullcalendar/core": "^6.1.20",
-    "@fullcalendar/daygrid": "^6.1.20",
-    "@fullcalendar/icalendar": "^6.1.20",
-    "@fullcalendar/list": "^6.1.20",
-    "@fullcalendar/rrule": "^6.1.20",
-    "@fullcalendar/timegrid": "^6.1.20"
+    "fullcalendar": "^7.0.0",
+    "fullcalendar/daygrid": "^7.0.0",
+    "@fullcalendar/icalendar": "^7.0.0",
+    "fullcalendar/list": "^7.0.0",
+    "@fullcalendar/rrule": "^7.0.0",
+    "fullcalendar/timegrid": "^7.0.0"
   },
   "devDependencies": {}
 }

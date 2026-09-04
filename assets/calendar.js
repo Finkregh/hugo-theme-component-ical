@@ -1,12 +1,17 @@
 // FullCalendar ES6 Module - Unified Calendar Initialization
 // Handles both event list pages and single event pages
-import { Calendar } from "@fullcalendar/core";
-import dayGridPlugin from "@fullcalendar/daygrid";
-import timeGridPlugin from "@fullcalendar/timegrid";
-import listPlugin from "@fullcalendar/list";
+import { Calendar } from "fullcalendar";
+import themePlugin from "fullcalendar/themes/classic";
+import dayGridPlugin from "fullcalendar/daygrid";
+import timeGridPlugin from "fullcalendar/timegrid";
+import listPlugin from "fullcalendar/list";
 import iCalendarPlugin from "@fullcalendar/icalendar";
-import allLocales from "@fullcalendar/core/locales-all";
+import allLocales from "fullcalendar/locales-all";
 import rrulePlugin from "@fullcalendar/rrule";
+
+import "fullcalendar/skeleton.css";
+import "fullcalendar/themes/classic/theme.css";
+import "fullcalendar/themes/classic/palette.css";
 
 document.addEventListener("DOMContentLoaded", function () {
   var calendarEl = document.getElementById("calendar");
@@ -30,6 +35,7 @@ document.addEventListener("DOMContentLoaded", function () {
   // Configure calendar based on page type
   var calendarConfig = {
     plugins: [
+      themePlugin,
       rrulePlugin,
       dayGridPlugin,
       timeGridPlugin,
