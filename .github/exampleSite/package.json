@@ -1,23 +1,4 @@
 {
-  "comments": {
-    "dependencies": {
-      "@fullcalendar/core": "../../..",
-      "@fullcalendar/daygrid": "../../..",
-      "@fullcalendar/icalendar": "../../..",
-      "@fullcalendar/list": "../../..",
-      "@fullcalendar/rrule": "../../..",
-      "@fullcalendar/timegrid": "../../.."
-    },
-    "devDependencies": {}
-  },
-  "dependencies": {
-    "@fullcalendar/core": "^7.0.0",
-    "@fullcalendar/daygrid": "^7.0.0",
-    "@fullcalendar/icalendar": "^7.0.0",
-    "@fullcalendar/list": "^7.0.0",
-    "@fullcalendar/rrule": "^7.0.0",
-    "@fullcalendar/timegrid": "^7.0.0"
-  },
   "devDependencies": {},
   "name": "exampleSite",
   "version": "0.1.0",
