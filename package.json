@@ -23,11 +23,11 @@
   },
   "dependencies": {
     "@fullcalendar/core": "^7.0.0",
-    "@fullcalendar/daygrid": "^6.1.20",
+    "@fullcalendar/daygrid": "^7.0.0",
     "@fullcalendar/icalendar": "^7.0.0",
-    "@fullcalendar/list": "^6.1.20",
+    "@fullcalendar/list": "^7.0.0",
     "@fullcalendar/rrule": "^7.0.0",
-    "@fullcalendar/timegrid": "^6.1.20"
+    "@fullcalendar/timegrid": "^7.0.0"
   },
   "devDependencies": {}
 }
