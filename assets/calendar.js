@@ -97,6 +97,7 @@ document.addEventListener("DOMContentLoaded", () => {
   // Event list page configuration
   else {
     Object.assign(calendarConfig, {
+      initialView: "dayGridMonth",
       headerToolbar: {
         left: "prev,next today",
         center: "title",
