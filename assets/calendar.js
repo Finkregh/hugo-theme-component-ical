@@ -9,6 +9,18 @@ import iCalendarPlugin from "@fullcalendar/icalendar";
 import allLocales from "fullcalendar/locales-all";
 import rrulePlugin from "@fullcalendar/rrule";
 
+function applyBrowserColorScheme() {
+  var scheme = window.matchMedia("(prefers-color-scheme: dark)").matches
+    ? "dark"
+    : "light";
+  document.documentElement.setAttribute("data-color-scheme", scheme);
+}
+
+applyBrowserColorScheme();
+window
+  .matchMedia("(prefers-color-scheme: dark)")
+  .addEventListener("change", applyBrowserColorScheme);
+
 document.addEventListener("DOMContentLoaded", () => {
   var calendarEl = document.getElementById("calendar");
 
