@@ -9,11 +9,7 @@ import iCalendarPlugin from "@fullcalendar/icalendar";
 import allLocales from "fullcalendar/locales-all";
 import rrulePlugin from "@fullcalendar/rrule";
 
-import "fullcalendar/skeleton.css";
-import "fullcalendar/themes/classic/theme.css";
-import "fullcalendar/themes/classic/palette.css";
-
-document.addEventListener("DOMContentLoaded", function () {
+document.addEventListener("DOMContentLoaded", () => {
   var calendarEl = document.getElementById("calendar");
 
   if (!calendarEl) {
@@ -44,7 +40,6 @@ document.addEventListener("DOMContentLoaded", function () {
     ],
     locales: allLocales,
     locale: initialLocaleCode,
-    buttonIcons: true,
     dayMaxEvents: true,
     contentHeight: "auto", // let view rows size to content instead of using aspectRatio
     editable: false,
@@ -53,6 +48,18 @@ document.addEventListener("DOMContentLoaded", function () {
     events: {
       url: window.location.pathname + "/calendar.ics",
       format: "ics",
+    },
+    buttons: {
+      next: {
+        iconContent: {
+          html: '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" data-attribution="cc0-icons" viewBox="0 0 24 24"><path d="m8.95 5.8 6.1 6.2-6.1 6.2"/></svg>',
+        },
+      },
+      prev: {
+        iconContent: {
+          html: '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" data-attribution="cc0-icons" viewBox="0 0 24 24"><path d="M15.05 18.2 8.95 12l6.1-6.2"/></svg>',
+        },
+      },
     },
   };
 
@@ -65,7 +72,7 @@ document.addEventListener("DOMContentLoaded", function () {
       headerToolbar: {
         left: "prev,next today",
         center: "title",
-        right: 'dayGridMonth,timeGridWeek,timeGridDay,listMonth',
+        right: "dayGridMonth,timeGridWeek,timeGridDay,listMonth",
       },
       //eventDisplay: "block",
       //eventDidMount: function (info) {
@@ -96,7 +103,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
   // Build locale selector if present
   if (localeSelectorEl) {
-    calendar.getAvailableLocaleCodes().forEach(function (localeCode) {
+    calendar.getAvailableLocaleCodes().forEach((localeCode) => {
       var optionEl = document.createElement("option");
       optionEl.value = localeCode;
       optionEl.selected = localeCode == initialLocaleCode;
