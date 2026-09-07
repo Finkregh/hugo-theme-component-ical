@@ -1,7 +1,7 @@
 // FullCalendar ES6 Module - Unified Calendar Initialization
 // Handles both event list pages and single event pages
 import { Calendar } from "fullcalendar";
-import themePlugin from "fullcalendar/themes/classic";
+import themePlugin from "fullcalendar/themes/forma";
 import dayGridPlugin from "fullcalendar/daygrid";
 import timeGridPlugin from "fullcalendar/timegrid";
 import listPlugin from "fullcalendar/list";
