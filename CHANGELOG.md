@@ -3,6 +3,35 @@
 All notable changes to this project will be documented in this file. See [conventional commits](https://www.conventionalcommits.org/) for commit guidelines.
 
 - - -
+## [v0.12.0](https://github.com/finkregh/hugo-theme-component-ical/compare/5ecd2035b32adf38bdf5b02641a373d2f1a62bdc..v0.12.0) - 2026-09-08
+#### Features
+- ![BREAKING](https://img.shields.io/badge/BREAKING-red) switch to fullcalendar forma theme by default - ([652691f](https://github.com/finkregh/hugo-theme-component-ical/commit/652691f22b72a8d7e33bbc7870c63b1eda36d186)) - Oluf Lorenzen
+- ![BREAKING](https://img.shields.io/badge/BREAKING-red) migrate FullCalendar theming to v7 - ([91db3f8](https://github.com/finkregh/hugo-theme-component-ical/commit/91db3f846871a33fae8ae89ef78805bd56de48dc)) - Oluf Lorenzen
+#### Bug Fixes
+- (**deps**) update fullcalendar monorepo to v7 - ([72b5ce4](https://github.com/finkregh/hugo-theme-component-ical/commit/72b5ce415419b32886d90d9c783198da00c277f7)) - renovate[bot]
+- (**deps**) update dependency js-yaml to v5 - ([b045adb](https://github.com/finkregh/hugo-theme-component-ical/commit/b045adb8da0a5752d9cd9013ac40fad556511f7f)) - renovate[bot]
+- (**deps**) update dependency chalk to v6 - ([a9b6645](https://github.com/finkregh/hugo-theme-component-ical/commit/a9b66453aa26176334fd244234b638e8ee3c18d0)) - renovate[bot]
+- (**deps**) update dependency node-ical to ^0.27.0 - ([8d905b9](https://github.com/finkregh/hugo-theme-component-ical/commit/8d905b9ad6591bcc95cc94512387dd55d8b4854e)) - renovate[bot]
+- ![BREAKING](https://img.shields.io/badge/BREAKING-red) display month grid for event section pages - ([e9614c3](https://github.com/finkregh/hugo-theme-component-ical/commit/e9614c3bb55e8c8a843f30e22cb23a7e4b59b7cb)) - Oluf Lorenzen
+- js helper to make fullcalendar follow browser dark/light selection - ([767503c](https://github.com/finkregh/hugo-theme-component-ical/commit/767503c4bcc7e8cfe586c71c20a4be62d73468fc)) - Oluf Lorenzen
+#### Miscellaneous Chores
+- (**deps**) update actions-rust-lang/setup-rust-toolchain action to v2 - ([8ff2aec](https://github.com/finkregh/hugo-theme-component-ical/commit/8ff2aec64b68bb7573c9db6553a3615a63ff5727)) - renovate[bot]
+- (**deps**) update softprops/action-gh-release action to v3.0.3 - ([90c7e26](https://github.com/finkregh/hugo-theme-component-ical/commit/90c7e2622ad22ee36b04e7d209e7af4018442b7e)) - renovate[bot]
+- (**deps**) update astral-sh/setup-uv action to v10 - ([5cf1a54](https://github.com/finkregh/hugo-theme-component-ical/commit/5cf1a54f3dfa7f058e7aee0e01fea44897c3b322)) - renovate[bot]
+- (**deps**) update astral-sh/setup-uv action to v9 - ([dd8c82b](https://github.com/finkregh/hugo-theme-component-ical/commit/dd8c82bb09f2c6c34d2d16ff79e63742460b7e50)) - renovate[bot]
+- (**deps**) update actions/setup-python action to v7 - ([ea33909](https://github.com/finkregh/hugo-theme-component-ical/commit/ea3390985cffb4f803a1ee01a4e7a05668324b94)) - renovate[bot]
+- (**deps**) update actions/setup-node action to v7 - ([4e0370f](https://github.com/finkregh/hugo-theme-component-ical/commit/4e0370fff3db11051ce14d2fa445bd3b2d0e20ac)) - renovate[bot]
+- (**deps**) update softprops/action-gh-release action to v3.0.2 - ([adc8568](https://github.com/finkregh/hugo-theme-component-ical/commit/adc8568e9b16bc04d83d16f70aba85ee1a122ebf)) - renovate[bot]
+- (**deps**) update astral-sh/setup-uv action to v8.3.2 - ([47c594b](https://github.com/finkregh/hugo-theme-component-ical/commit/47c594be73a7e6f97cca132ee950baee4460756a)) - renovate[bot]
+- (**deps**) update softprops/action-gh-release action to v3.0.1 - ([d2ecb2c](https://github.com/finkregh/hugo-theme-component-ical/commit/d2ecb2c9f0288a4532bc7d4613a14bb50f29eec4)) - renovate[bot]
+- (**deps**) update actions/checkout action to v7 - ([37aaf77](https://github.com/finkregh/hugo-theme-component-ical/commit/37aaf77eabe3522cf526cf3a3985aaffb8c4cac7)) - renovate[bot]
+- (**deps**) update astral-sh/setup-uv action to v8.2.0 - ([5ecd203](https://github.com/finkregh/hugo-theme-component-ical/commit/5ecd2035b32adf38bdf5b02641a373d2f1a62bdc)) - renovate[bot]
+- cleanup unused file - ([33cec96](https://github.com/finkregh/hugo-theme-component-ical/commit/33cec969a1d9b2c4e9d681a52ac024e4a851a723)) - Oluf Lorenzen
+- fix dependencies - ([395f180](https://github.com/finkregh/hugo-theme-component-ical/commit/395f180d5eebbca282216f5d30bc726779a7d005)) - Oluf Lorenzen
+- dont reformat layouts/ - ([d0ab8cc](https://github.com/finkregh/hugo-theme-component-ical/commit/d0ab8ccc9ce92001a5d1b231b77e6e0fa1fc7012)) - Oluf Lorenzen
+
+- - -
+
 ## [v0.11.4](https://github.com/finkregh/hugo-theme-component-ical/compare/cb3baed8e515dbccff6ed72ea4a2a9458af00798..v0.11.4) - 2026-06-01
 #### Miscellaneous Chores
 - cleanup - ([696aeee](https://github.com/finkregh/hugo-theme-component-ical/commit/696aeeec30c9b4edb0370e2eb37eaa9379a693c9)) - Oluf Lorenzen
