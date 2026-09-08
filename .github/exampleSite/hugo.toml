@@ -20,7 +20,7 @@ replacements = 'github.com/finkregh/hugo-theme-component-ical -> ../../..'
 # This theme component
 [[module.imports]]
 path = 'github.com/finkregh/hugo-theme-component-ical'
-version = "refactor"
+version = "main"
 
 # The base theme for the demo site
 [[module.imports]]

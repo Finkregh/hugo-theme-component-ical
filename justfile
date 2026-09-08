@@ -34,6 +34,9 @@ hugo_go_modules:
     hugo mod vendor
     hugo mod npm pack
     npm install
+    npm list
+    git status
+    git diff
 
 [working-directory: '.github/exampleSite']
 build_hugo:

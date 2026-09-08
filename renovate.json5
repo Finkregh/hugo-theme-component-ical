@@ -1,14 +1,19 @@
 {
   $schema: "https://docs.renovatebot.com/renovate-schema.json",
-"packageRules": [
+  packageRules: [
     {
-      "matchManagers": ["gomod"],
-      "matchDepTypes": ["indirect"],
-      "enabled": true
-    }
+      matchManagers: ["gomod"],
+      matchDepTypes: ["indirect"],
+      enabled: true,
+    },
+    {
+      description: "Group all FullCalendar packages so they are updated together",
+      matchPackageNames: ["fullcalendar", "@fullcalendar/**"],
+      matchManagers: ["npm"],
+      groupName: "fullcalendar",
+      groupSlug: "fullcalendar",
+    },
   ],
-  "postUpdateOptions": [
-    "gomodTidy"
-  ],
-"extends": ["config:recommended"],
+  postUpdateOptions: ["gomodTidy"],
+  extends: ["config:recommended"],
 }

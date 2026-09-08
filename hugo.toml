@@ -2,6 +2,25 @@
 [module.hugoVersion]
 min = "0.158.0"
 
+# Explicit mounts for this theme component. When any mount is declared,
+# Hugo no longer applies the implicit defaults, so assets/layouts/etc.
+# must be listed as well.
+[[module.mounts]]
+source = "assets"
+target = "assets"
+[[module.mounts]]
+source = "layouts"
+target = "layouts"
+[[module.mounts]]
+source = "i18n"
+target = "i18n"
+
+# Expose FullCalendar CSS files from node_modules to the Hugo asset pipeline
+# so they can be loaded with resources.Get without copying upstream files.
+[[module.mounts]]
+source = "node_modules/fullcalendar"
+target = "assets/vendor/fullcalendar"
+
 [outputs]
 home = ["HTML", "RSS"]
 page = ["HTML", "RSS", "Calendar", "CalendarWithAlarms"]
