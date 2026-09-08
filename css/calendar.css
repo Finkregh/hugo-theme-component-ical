@@ -282,21 +282,16 @@ Import happens via calendar_css.html!
   --calendar-icon-size-xl: 2rem;
 
   /* Overrides */
-  /* NOTE: FullCalendar v6 CSS variables are disabled while migrating to v7.
-     The v7 Classic theme ships its own palette (including dark mode).
-     Re-enable/adapt overrides only after visually verifying the v7 look.
   --fc-page-bg-color: var(--calendar-bg-primary);
   --fc-border-color: var(--calendar-border-color);
+  /*--fc-neutral-bg-color: var(--calendar-bg-tertiary);*/
   --fc-list-event-hover-bg-color: var(--calendar-bg-tertiary);
   --fc-neutral-text-color: var(--calendar-text-secondary);
-  */
 }
 
 .fc .fc-daygrid-week-number {
-  /* NOTE: disabled during v7 migration. Classic theme provides week-number styling.
   background-color: var(--calendar-bg-tertiary);
   color: var(--calendar-text-primary);
-  */
 }
 
 /* ========================================
@@ -336,11 +331,16 @@ Import happens via calendar_css.html!
 }
 
 /* Overrides for fullcalendar.js */
-/* NOTE: FullCalendar v6-specific overrides disabled during v7 migration.
-   The v7 Classic theme manages its own colors and dark mode.
-   .fc .fc-list-sticky .fc-list-day > * { --fc-page-bg-color: light-dark(#ffffff, #2c3e50); }
-   .fc .fc-view-harness { overflow: visible; }
-*/
+
+.fc .fc-list-sticky .fc-list-day > * {
+  /* Override FullCalendar background color for light/dark mode support */
+  --fc-page-bg-color: light-dark(#ffffff, #2c3e50);
+}
+
+.fc .fc-view-harness {
+  overflow: visible;
+}
+
 
 /* Reset table display for FullCalendar - Blowfish theme sets global `table { display: block }`
    which breaks FullCalendar's grid layout that relies on native table rendering */
