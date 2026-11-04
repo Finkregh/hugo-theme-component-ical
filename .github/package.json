@@ -10,6 +10,6 @@
     "loglevel-plugin-prefix": "^0.8.4",
     "node-ical": "^0.27.0",
     "stylelint": "^18.0.0",
-    "stylelint-config-standard": "^40.0.0"
+    "stylelint-config-standard": "^41.0.0"
   }
 }
